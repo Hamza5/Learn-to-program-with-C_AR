@@ -1,0 +1,46 @@
+\documentclass[11pt, a4paper]{book}
+\usepackage{fontspec} % font selecting commands
+\usepackage{tcolorbox} % For colored boxes
+\usepackage{polyglossia} % Babel alternative in XeLaTex
+\usepackage{graphicx} % For pictures
+\usepackage[export]{adjustbox}
+\usepackage[colorlinks=true,urlcolor=blue,unicode=true]{hyperref} % For hyperlinks
+% Language settings
+\setmainlanguage[locale=algeria]{arabic}
+\setotherlanguage{english}
+% Font settings
+\defaultfontfeatures{Ligatures=TeX}
+\setmainfont[Script=Arabic, Scale=1.2]{Amiri} % An arabic font
+\setmonofont{Courier New} % Monospace font, for displaying codes
+\newfontfamily\englishfont[Script=Latin]{Arial} % Font used for latin text in the document
+% Boxes definitions
+\tcbset{boxrule=0mm, arc=2pt}
+\newtcolorbox{information}{colback=blue!70!green!10, colframe=blue!80!green!5} % Used for information boxes
+\newtcolorbox{critical}{colback=red!20, colframe=red!50} % Used for critical warning boxes
+\newtcolorbox{warning}{colback=yellow!20, colframe=yellow!50} % Used for warning boxes
+\newtcolorbox{question}{colback=black!5, colframe=black!10, fontupper=\itshape} % Used for question boxes
+\newcommand\InlineCode[1]{\fcolorbox{black!25}{black!10}{\ttfamily #1}}
+% Titles settings (Make them orange)
+\let\oldchapter\chapter
+\renewcommand\chapter[1]{{\color{orange}\oldchapter{#1}}}
+\let\oldpart\part
+\renewcommand\part[1]{{\color{orange}\oldpart{#1}}}
+\let\oldsection\section
+\renewcommand\section[1]{{\color{orange}\oldsection{#1}}}
+% Pictures settings
+\graphicspath{{Pictures/}} % Folder of pictures
+\newcommand\Picture[2][]{ % This command automatically centers the picture and fits its size to the page. It supports captions too.
+  \begin{figure}[h]
+    \centering
+    \includegraphics[max size={\textwidth}{\textheight}]{#2}
+    #1
+  \end{figure}
+}
+% Paragraphs settings
+\setlength{\parskip}{5mm plus2mm minus2mm} % Spacing between paragraphs (+/-)
+
+\title{تعلّم البرمجة بلغة الـC}
+\begin{document}
+  \part{أساسيّات البرمجة بلغة الـC}
+  \include{Chapter_I-1}
+\end{document}

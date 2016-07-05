@@ -1,0 +1,9 @@
+# gitignore for this project
+# Ignore everything
+*
+# except this file, .md, .tex files and Pictures folder and its content
+!.gitignore
+!*.tex
+!*.md
+!Pictures/
+!Pictures/*
