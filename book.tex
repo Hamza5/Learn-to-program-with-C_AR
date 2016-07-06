@@ -1,13 +1,18 @@
 \documentclass[11pt, a4paper]{book}
 \usepackage{fontspec} % font selecting commands
 \usepackage{tcolorbox} % For colored boxes
-\usepackage{polyglossia} % Babel alternative in XeLaTex
 \usepackage{graphicx} % For pictures
 \usepackage[export]{adjustbox}
 \usepackage[colorlinks=true,urlcolor=blue,unicode=true]{hyperref} % For hyperlinks
+\usepackage{fancyhdr} % For page headers
+\usepackage{polyglossia} % Babel alternative in XeLaTex
 % Language settings
 \setmainlanguage[locale=algeria]{arabic}
 \setotherlanguage{english}
+\addto\captionsarabic{ % Without this, changes won't take effect, because of Polyglossia
+  \renewcommand{\partname}{الجزء}
+  \renewcommand{\chaptername}{الفصل}
+}
 % Font settings
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont[Script=Arabic, Scale=1.2]{Amiri} % An arabic font
@@ -38,6 +43,19 @@
 }
 % Paragraphs settings
 \setlength{\parskip}{5mm plus2mm minus2mm} % Spacing between paragraphs (+/-)
+% Page header
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{ \markboth{{\thechapter\ #1}}{} }
+\renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1} }
+\fancyhead{}
+\fancyhead[OR,EL]{\rightmark}
+\fancyhead[ER,OL]{\leftmark}
+% Fixing the issues of the numbering
+\renewcommand{\thepart}{\Alph{part}}
+\renewcommand{\thechapter}{\Alph{part}.\arabic{chapter}}
+\renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
+\renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
 
 \title{تعلّم البرمجة بلغة الـC}
 \begin{document}
