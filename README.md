@@ -47,6 +47,7 @@ xelatex book.tex
 * hyperref
 * fancyhdr
 * polyglossia
+* geometry
 
 ## <div dir='rtl'>المساهمة</div>
 
