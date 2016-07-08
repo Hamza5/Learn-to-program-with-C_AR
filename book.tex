@@ -29,15 +29,15 @@
 % Titles settings (Make them orange)
 \makeatletter
 \let\oldchapter\chapter
-\newcommand{\@chapterstar}[1]{{\color{green!30!blue!80}\oldchapter*{#1}}}
+\newcommand{\@chapterstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{#1}{\color{green!30!blue!80}\oldchapter*{#1}}}
 \newcommand{\@chapternostar}[1]{{\color{green!30!blue!80}\oldchapter{#1}}}
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
 \let\oldpart\part
-\newcommand{\@partstar}[1]{{\color{orange}\oldpart*{#1}}}
+\newcommand{\@partstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{part}{#1}{\color{orange}\oldpart*{#1}}}
 \newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
 \renewcommand{\part}{\@ifstar{\@partstar}{\@partnostar}}
 \let\oldsection\section
-\newcommand{\@sectionstar}[1]{{\color{orange}\oldsection*{#1}}}
+\newcommand{\@sectionstar}[1]{\phantomsection\addcontentsline{toc}{section}{#1}{\color{orange}\oldsection*{#1}}}
 \newcommand{\@sectionnostar}[1]{{\color{orange}\oldsection{#1}}}
 \renewcommand\section{\@ifstar{\@sectionstar}{\@sectionnostar}}
 \makeatother
