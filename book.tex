@@ -27,12 +27,20 @@
 \newtcolorbox{information}{colback=blue!5!green!20, colframe=blue!10!green} % Used for information boxes
 \newcommand\InlineCode[1]{\fcolorbox{black!25}{black!10}{\ttfamily #1}}
 % Titles settings (Make them orange)
+\makeatletter
 \let\oldchapter\chapter
-\renewcommand\chapter[1]{{\color{green!30!blue!80}\oldchapter{#1}}}
+\newcommand{\@chapterstar}[1]{{\color{green!30!blue!80}\oldchapter*{#1}}}
+\newcommand{\@chapternostar}[1]{{\color{green!30!blue!80}\oldchapter{#1}}}
+\renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
 \let\oldpart\part
-\renewcommand\part[1]{{\color{orange}\oldpart{#1}}}
+\newcommand{\@partstar}[1]{{\color{orange}\oldpart*{#1}}}
+\newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
+\renewcommand{\part}{\@ifstar{\@partstar}{\@partnostar}}
 \let\oldsection\section
-\renewcommand\section[1]{{\color{orange}\oldsection{#1}}}
+\newcommand{\@sectionstar}[1]{{\color{orange}\oldsection*{#1}}}
+\newcommand{\@sectionnostar}[1]{{\color{orange}\oldsection{#1}}}
+\renewcommand\section{\@ifstar{\@sectionstar}{\@sectionnostar}}
+\makeatother
 % Pictures settings
 \graphicspath{{Pictures/}} % Folder of pictures
 \newcommand\Picture[2][]{ % This command automatically centers the picture and fits its size to the page. It supports captions too.
@@ -61,6 +69,7 @@
 
 \title{تعلّم البرمجة بلغة الـC}
 \begin{document}
+  \include{Introduction}
   \part{أساسيّات البرمجة بلغة الـC}
   \include{Chapter_I-1}
 \end{document}
