@@ -49,6 +49,8 @@ xelatex book.tex
 * polyglossia
 * geometry
 * listings
+* bidi
+* float
 
 ## <div dir='rtl'>المساهمة</div>
 
