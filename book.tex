@@ -1,17 +1,21 @@
 \documentclass[11pt, a4paper]{book}
+\usepackage[dvipsnames]{xcolor} % For color names
 \usepackage{fontspec} % font selecting commands
 \usepackage{tcolorbox} % For colored boxes
 \usepackage{graphicx} % For pictures
 \usepackage[export]{adjustbox}
+\usepackage{polyglossia} % Babel alternative in XeLaTex
+\usepackage{fancyhdr} % For page headers
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=3cm]{geometry} % To control page margins
+\usepackage{listings} % For source code
 \usepackage[colorlinks=true,
             urlcolor=blue,
             unicode=true,
-            pdftitle=تعلّم\ البرمجة\ بلغة\ الـC,
-            pdfauthor=عدن\ بلواضح،\ حمزة\ عباد\ و\ أحمد\ زبوشي,
+            pdftitle={تعلّم البرمجة بلغة الـC},
+            pdfauthor={عدن بلواضح,حمزة عباد,أحمد زبوشي}
             pdfdisplaydoctitle=true]{hyperref} % For hyperlinks and PDF metadata
-\usepackage{fancyhdr} % For page headers
-\usepackage{polyglossia} % Babel alternative in XeLaTex
-\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=3cm]{geometry} % To control page margins
+\usepackage{float}
+\usepackage{bidi}
 % Language settings
 \setmainlanguage[locale=algeria]{arabic}
 \setotherlanguage{english}
@@ -21,16 +25,16 @@
 }
 % Font settings
 \defaultfontfeatures{Ligatures=TeX}
-\setmainfont[Script=Arabic, Scale=1.2]{Amiri} % An arabic font
-\setmonofont{Courier New} % Monospace font, for displaying codes
+\newfontfamily\arabicfont[Script=Arabic, Scale=1.2]{Amiri} % An arabic font
 \newfontfamily\englishfont[Script=Latin]{Arial} % Font used for latin text in the document
+\newfontfamily\arabicfonttt{Courier New} % Monospace font, for displaying codes
 % Boxes definitions
 \tcbset{boxrule=0mm, arc=2pt}
 \newtcolorbox{question}{colback=blue!70!green!10, colframe=blue!80!green!5, fontupper=\itshape} % Used for question boxes
 \newtcolorbox{critical}{colback=red!20, colframe=red!50} % Used for critical warning boxes
 \newtcolorbox{warning}{colback=yellow!20, colframe=yellow!50} % Used for warning boxes
 \newtcolorbox{information}{colback=blue!5!green!20, colframe=blue!10!green} % Used for information boxes
-\newcommand\InlineCode[1]{\fcolorbox{black!25}{black!10}{\ttfamily #1}}
+\newcommand\InlineCode[1]{\fcolorbox{black!25}{black!10}{\ttfamily \LR{#1}}}
 % Titles settings (Make them orange)
 \makeatletter
 \let\oldchapter\chapter
@@ -49,9 +53,9 @@
 % Pictures settings
 \graphicspath{{Pictures/}} % Folder of pictures
 \newcommand\Picture[2][]{ % This command automatically centers the picture and fits its size to the page. It supports captions too.
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
-    \includegraphics[max size={\textwidth}{\textheight}]{#2}
+    \includegraphics[max size={0.8\textwidth}{0.5\textheight}]{#2}
     #1
   \end{figure}
 }
@@ -71,10 +75,19 @@
 \renewcommand{\thechapter}{\Alph{part}.\arabic{chapter}}
 \renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
 \renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
+% C source code
+\lstset{language=C, showstringspaces=false, frame=single, numbers=left,
+        breaklines=true, keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{LightGray},
+        numberstyle=\color{Gray}, stringstyle=\color{BrickRed}, basicstyle=\ttfamily,
+        morecomment=[l][\color{YellowOrange}]{\#}, showlines, deletekeywords={return,if,else,switch,for,while,do},
+        morekeywords=[2]{return,if,else,switch,for,while,do}, keywordstyle=[2]\bfseries\color{Magenta},
+        morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan}}
+\lstnewenvironment{Csource}{\setLTR}{\unsetLTR}
 
 \title{تعلّم البرمجة بلغة الـC}
 \begin{document}
   \include{Introduction}
   \part{أساسيّات البرمجة بلغة الـC}
   \include{Chapter_I-1}
+  \include{Chapter_I-3}
 \end{document}
