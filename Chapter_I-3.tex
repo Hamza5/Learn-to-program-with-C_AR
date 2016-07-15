@@ -385,3 +385,45 @@ int main()
  في الشفرة المصدرية لن يعمل كما تتوقع، لهذا يجب استخدام المحارف الخاصّة (
 \textenglish{Special characters}
 ).
+
+\subsection{المحارف الخاصّة}
+المحارف أو الرموز الخاصّة هي محارف تمكّن من تعريف عودة إلى السطر، جدولة، إلخ.\\
+من السهل التعرّف عليها، فهي مكوّنة من محرفين. الأوّل هو الشَرْطَةُ المائلة الخلفية (
+\textbackslash
+) (
+\textenglish{backslash}
+) والثاني يكون رقما أو حرفا. إليك محرفين خاصّين قد تحتاجهما كثيرا:
+\begin{itemize}
+  \item \InlineCode{\textbackslash n}:
+ العودة إلى السطر.
+ \item \InlineCode{\textbackslash t}:
+ الجدولة (فراغ كبير في نفس السطر).
+\end{itemize}
+
+في حالتنا هذه، يكفي أن نكتب
+\InlineCode{\textbackslash n}
+ لإنشاء العودة إلى السطر. إذن، إذا أردنا أن نضع عودة إلى السطر بعد
+\textenglish{Good morning}
+، فيكفي أن نكتب:
+\begin{Csource}
+printf("Good morning\n");
+\end{Csource}
+
+وسيفهم حاسوبك أنّ عليه كتابة
+"\textenglish{Good morning}"
+ ويعود إلى السطر.
+\Picture{Chapter_I-3_Good-Morning-backslash-n}
+
+\begin{information}
+  يمكنك الكتابة بعد
+\InlineCode{\textbackslash n}
+بدون أيّة مشكلة. كلّ ما تكتبه بعد
+\InlineCode{\textbackslash n}
+ سيوضع في السطر الجديد. يمكنك إذن التدرّب على كتابة:
+\InlineCode{printf("Good morning\textbackslash nGood bye\textbackslash n");}\\
+و سيتمّ عرض
+"\textenglish{Good morning}"
+على السطر الأوّل و
+"\textenglish{Good bye}"
+على السطر الثاني.
+\end{information}
