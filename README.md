@@ -14,6 +14,47 @@
 ترجمة الدرس و مراجعته تمّت بشكل متقطع على مدى السنوات الثلاث الأخيرة و الآن يتم تحضيرها على شكل كتاب رقمي.
 </div>
 
+#### <div dir='rtl'> فصول الكتاب (الفصول المكتملة تم تعليمها) </div>
+
+- [x] <span dir='rtl'>مقدمة المترجمة</span>
+- [ ] <span dir='rtl'>مقدمة المؤلف</span>
+- [ ] <span dir='rtl'>أساسيّات البرمحة بلغة الـC</span>
+    - [x] <span dir='rtl'>قلت برمجة ؟</span>
+    - [ ] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
+    - [x] <span dir='rtl'>برنامجك الأوّل</span>
+    - [ ] <span dir='rtl'>عالم المتغيّرات</span>
+    - [ ] <span dir='rtl'>حسابات سهلة</span>
+    - [ ] <span dir='rtl'>الشروط</span>
+    - [ ] <span dir='rtl'>الحلقات التكراريّة</span>
+    - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
+    - [ ] <span dir='rtl'>الدوال</span>
+    - [ ] <span dir='rtl'></span>
+- [ ] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
+    - [ ] <span dir='rtl'>البرمجة المجزأة</span>
+    - [ ] <span dir='rtl'>المؤشّرات</span>
+    - [ ] <span dir='rtl'>الجداول</span>
+    - [ ] <span dir='rtl'>السلاسل المحرفيّة</span>
+    - [ ] <span dir='rtl'>المعالج القبلي</span>
+    - [ ] <span dir='rtl'>انشئ أنواع متغيّرات خاصة بك</span>
+    - [ ] <span dir='rtl'>قراءة و كتابة الملفّات</span>
+    - [ ] <span dir='rtl'>الحجز الحيّ للذاكرة</span>
+    - [ ] <span dir='rtl'>عمل تطبيقي: لعبة الـPendu</span>
+    - [ ] <span dir='rtl'>ادخال نص بشكل أكثر أمانا</span>
+- [ ] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
+    - [ ] <span dir='rtl'>تثبيت SDL</span>
+    - [ ] <span dir='rtl'>انشاء نافذة و مساحات</span>
+    - [ ] <span dir='rtl'>اظهار صور</span>
+    - [ ] <span dir='rtl'>التحكّم في الاحداث</span>
+    - [ ] <span dir='rtl'>عمل تطبيقي: Mario Sokoban</span>
+    - [ ] <span dir='rtl'>تحكّم في الوقت</span>
+    - [ ] <span dir='rtl'>كتابة نصوص باستخدام SDL_ttf</span>
+    - [ ] <span dir='rtl'>تشغيل الصوت بـFMOD</span>
+    - [ ] <span dir='rtl'>عمل تطبيقي: الاظهار الطيفيّ للصوت</span>
+- [ ] <span dir='rtl'>هياكل البيانات</span>
+    - [ ] <span dir='rtl'>السلاسل المتّصلة</span>
+    - [ ] <span dir='rtl'>المكدّسات و الطوابير</span>
+    - [ ] <span dir='rtl'>جداول التجزئة</span>
+
 ## <div dir='rtl'>الترخيص</div>
 
 <div dir='rtl'>
