@@ -1,5 +1,5 @@
 \documentclass[11pt, a4paper]{book}
-\usepackage[dvipsnames]{xcolor} % For color names
+\usepackage[svgnames,table]{xcolor} % For color names
 \usepackage{fontspec} % font selecting commands
 \usepackage{tcolorbox} % For colored boxes
 \usepackage{graphicx} % For pictures
@@ -15,6 +15,7 @@
             pdfauthor={عدن بلواضح,حمزة عباد,أحمد زبوشي}
             pdfdisplaydoctitle=true]{hyperref} % For hyperlinks and PDF metadata
 \usepackage{float}
+\usepackage{tabu,booktabs}
 \usepackage{bidi}
 % Language settings
 \setmainlanguage[locale=algeria]{arabic}
@@ -34,7 +35,7 @@
 \newtcolorbox{critical}{colback=red!20, colframe=red!50} % Used for critical warning boxes
 \newtcolorbox{warning}{colback=yellow!20, colframe=yellow!50} % Used for warning boxes
 \newtcolorbox{information}{colback=blue!5!green!20, colframe=blue!10!green} % Used for information boxes
-\newcommand\InlineCode[1]{\fcolorbox{black!25}{black!10}{\ttfamily \LR{#1}}}
+\newcommand\InlineCode[1]{\fcolorbox{LightGray}{Snow}{\ttfamily \LR{#1}}}
 % Titles settings (Make them orange)
 \makeatletter
 \let\oldchapter\chapter
@@ -53,11 +54,10 @@
 % Pictures settings
 \graphicspath{{Pictures/}} % Folder of pictures
 \newcommand\Picture[2][]{ % This command automatically centers the picture and fits its size to the page. It supports captions too.
-  \begin{figure}[H]
-    \centering
-    \includegraphics[max size={0.8\textwidth}{0.5\textheight}]{#2}
+  \begin{center}
+    \includegraphics[max size={0.8\textwidth}{0.5\textheight}]{#2}\\
     #1
-  \end{figure}
+  \end{center}
 }
 % Paragraphs settings
 \setlength{\parskip}{5mm plus2mm minus2mm} % Spacing between paragraphs (+/-)
@@ -78,11 +78,27 @@
 % C source code
 \lstset{language=C, showstringspaces=false, frame=single, numbers=left,
         breaklines=true, keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{Gray},
-        numberstyle=\color{Gray}, stringstyle=\color{BrickRed}, basicstyle=\ttfamily,
-        morecomment=[l][\color{YellowOrange}]{\#}, showlines, deletekeywords={return,if,else,switch,for,while,do},
+        numberstyle=\color{Gray}, stringstyle=\color{Crimson}, basicstyle=\ttfamily,
+        morecomment=[l][\color{DarkOrange}]{\#}, showlines, deletekeywords={return,if,else,switch,for,while,do},
         morekeywords=[2]{return,if,else,switch,for,while,do}, keywordstyle=[2]\bfseries\color{Magenta},
         morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan}}
 \lstnewenvironment{Csource}{\setLTR}{\unsetLTR}
+% Table settings
+\taburowcolors[2] 2{LightGray!40 .. LightGray!80}
+\setlength{\tabulinesep}{2pt}
+\setlength{\arrayrulewidth}{2pt}
+\taburulecolor{White}
+\newenvironment{Table}[1]{
+\begin{center}
+  \begin{tabu}{*{#1}{|r}|}
+    \toprule
+    \rowfont{\bfseries\color{White}}
+    \rowcolor{OrangeRed}
+    \everyrow{\hline}
+}{
+  \end{tabu}
+\end{center}
+}
 
 \title{تعلّم البرمجة بلغة الـC}
 \begin{document}

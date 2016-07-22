@@ -92,6 +92,9 @@ xelatex book.tex
 * listings
 * bidi
 * float
+* xcolor
+* tabu
+* booktabs
 
 ## <div dir='rtl'>المساهمة</div>
 
