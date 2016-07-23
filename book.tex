@@ -84,16 +84,26 @@
         morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan}}
 \lstnewenvironment{Csource}{\setLTR}{\unsetLTR}
 % Table settings
-\taburowcolors[2] 2{LightGray!40 .. LightGray!80}
 \setlength{\tabulinesep}{2pt}
 \setlength{\arrayrulewidth}{2pt}
 \taburulecolor{White}
-\newenvironment{Table}[1]{
+\newenvironment{Table}[1]{ % Accepts 1 parameter which is the number of columns
+\taburowcolors[2] 2{LightGray!40 .. LightGray!80}
 \begin{center}
   \begin{tabu}{*{#1}{|r}|}
     \toprule
     \rowfont{\bfseries\color{White}}
     \rowcolor{OrangeRed}
+    \everyrow{\hline}
+}{
+  \end{tabu}
+\end{center}
+}
+\newenvironment{Table*}[1]{
+\taburowcolors[1] 2{LightGray!40 .. LightGray!80}
+\begin{center}
+  \begin{tabu}{*{#1}{|r}|}
+    \toprule
     \everyrow{\hline}
 }{
   \end{tabu}
