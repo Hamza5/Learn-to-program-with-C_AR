@@ -79,9 +79,11 @@
 \lstset{language=C, showstringspaces=false, frame=single, numbers=left,
         breaklines=true, keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{Gray},
         numberstyle=\color{Gray}, stringstyle=\color{Crimson}, basicstyle=\ttfamily,
-        morecomment=[l][\color{DarkOrange}]{\#}, showlines, deletekeywords={return,if,else,switch,for,while,do},
-        morekeywords=[2]{return,if,else,switch,for,while,do}, keywordstyle=[2]\bfseries\color{Magenta},
-        morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan}}
+        morecomment=[l][\color{DarkOrange}]{\#}, showlines,
+        deletekeywords={return,if,else,switch,for,while,do,const},
+        morekeywords=[2]{return,if,else,switch,for,while,do,const}, keywordstyle=[2]\bfseries\color{Magenta},
+        morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan},
+        aboveskip=\parskip}
 \lstnewenvironment{Csource}{\setLTR}{\unsetLTR}
 % Table settings
 \setlength{\tabulinesep}{2pt}
