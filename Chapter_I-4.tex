@@ -228,7 +228,6 @@ $54.9$!
 إلى النوع لاستخدامها.
 
 \begin{Table*}{2}
-  % النوع & المجال\\
   \LR{\ttfamily unsigned char} & من
 $0$
  إلى
@@ -433,3 +432,130 @@ const int INITIAL_NUMBER_OF_LIVES = 5;
 
 أخطاء الترجمة تعرض أسفل الشاشة (في المكان الذي أسميه "منطقة الموت" هل تتذكر ؟)، في هذه الحالة سيقوم المترجم بعرض رسالة تشبه التالي :\\
 \InlineCode{[Warning] assignment of read-only variable 'INITIAL\_NUMBER\_OF\_LIVES'}
+
+\section{عرض محتوى متغير}
+نحن نعرف كيف نعرض نصّا على الشاشة باستخدام الدالة
+\InlineCode{printf}.\\
+الآن سنتعلم كيف نعرض القيمة الخاصة بالمتغير باسخدام نفس الدالة.
+
+سنستخدم الدالة
+\InlineCode{printf}
+بنفس الطريقة، باستثناء أننا سنقوم بإضافة رمز خاص في المكان الّذي نريد عرض قيمة المتغيّر فيه. مثلا :
+\begin{Csource}
+printf("You have %d lives left");
+\end{Csource}
+هذا الرمز الخاص ما هو إلّا
+\InlineCode{\%}
+ متبوعا بحرف (
+\InlineCode{'d'}
+في هذا المثال). هذا الحرف يبيّن ما الذي سنقوم بعرضه.
+\InlineCode{'d'}
+تعني أننا سنعرض قيمة متغيّر من نوع
+\InlineCode{int}.\\
+توجد حروف أخرى عديدة، لكن من أجل التبسيط فسنكتفي بهذه :
+\begin{Table}{2}
+الشكل & النوع المنتظر\\
+\LR{\ttfamily \%d} & \LR{\ttfamily int}\\
+\LR{\ttfamily \%ld} & \LR{\ttfamily long}\\
+\LR{\ttfamily \%f} & \LR{\ttfamily float}\\
+\LR{\ttfamily \%f} & \LR{\ttfamily double}\\
+\end{Table}
+\begin{information}
+  لاحظوا أنّ الشكل المستخدم لعرض
+\InlineCode{float}
+و
+\InlineCode{double}
+هو نفسه.
+\end{information}
+سأعلّمك رموزا أخرى في الوقت المناسب، حاليّا تذكّر هذه فقط.
+
+شارفنا على الإنتهاء. حددنا موضع كتابة عدد صحيح، لكننا لم نذكر ما هو ! يجب علينا أن نحدد للدالة
+\InlineCode{printf}
+المتغيّر الذي نريد عرض قيمته.\\
+لفعل ذلك، أكتب اسم المتغيّر بعد علامات الاقتباس بعد وضع فاصلة :
+\begin{Csource}
+printf("You have %d lives left", numberOfLives);
+\end{Csource}
+\InlineCode{\%d}
+ سيتمّ استبداله بقيمة المتغيّر المكتوب بعد الفاصلة، أي
+\InlineCode{numberOfLives}.\\
+فلنجرّب هذا في برنامج :
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+  int numberOfLives = 5; // The player has 5 lives in the beginning.
+
+  printf("You have %d lives left\n", numberOfLives);
+  printf("**** B A M ****\n"); // A big blow on his head.
+  numberOfLives = 4; // Life lost
+  printf("Sorry, only %d lives are remaining now !\n\n", numberOfLives);
+
+  return 0;
+}
+\end{Csource}
+يمكن أن يكون البرنامج قاعدة للعبة فيديو (ينقصه الخيال فقط).\\
+هذا البرنامج يعرض على الشاشة :
+\begin{Console}
+You have 5 lives left
+**** B A M ****
+Sorry, only 4 lives are remaining now !
+
+\end{Console}
+يجب أن تفهم ما الذي يحدث في البرنامج :
+\begin{enumerate}
+  \item في البداية يملك اللاعب 5 أرواح، نعرض هذا في
+\InlineCode{printf}.
+  \item  بعدها يتلقى اللاعب ضربة على رأسه (في مكان
+\textenglish{BAM}).
+  \item بعدها لا يبقى له سوى 4 أرواح، نعرض هذا أيضا باستخدام
+\InlineCode{printf}.
+\end{enumerate}
+كان ذلك سهلا !
+
+\subsection{عرض عدّة متغيّرات باستخدام
+\texttt{printf}
+واحدة
+}
+يمكن عرض قيم متغيرات عديدة بنفس الدالة
+\InlineCode{printf}.
+يكفي فقط أن تضع
+\InlineCode{\%d}
+أو
+\InlineCode{\%f}
+ في الأمكنة المناسبة، ثم تحديد المتغيّرات الموافقة بنفس الترتيب، مفصولة عن بعضها البعض بفواصل.
+
+مثال :
+\begin{Csource}
+printf("You have %d lives and you are in the level n° %d", numberOfLives, level);
+\end{Csource}
+\begin{warning}
+  يجب عليك تحديد المتغيّرات بالترتيب الصحيح،
+\InlineCode{\%d}
+الأولى توافق المتغيّر الأوّل
+(\InlineCode{numberOfLives})
+و
+\InlineCode{\%d}
+الثانية توافق المتغيّر الثاني
+(\InlineCode{level}).
+إذا أخطأت في الترتيب، فلن يكون للجملة أيّ معنى.
+\end{warning}
+حسنا، فلنقم بتجربة صغيرة الآن. لاحظ أنني قد حذفت توجيهات المعالج القبلي (أعني تلك السطور التي تبدأ برمز
+\InlineCode{\#}
+)، أنا أفترض أنك تضعها في كلّ مرّة الآن :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+  int numberOfLives = 5, level = 1;
+
+  printf("You have %d lives and you are in the level n° %d", numberOfLives, level);
+
+  return 0;
+}
+\end{Csource}
+و هذا يعرض لكم :
+\begin{Console}
+You have 5 lives and you are in the level n° 1
+\end{Console}
