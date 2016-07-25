@@ -22,13 +22,12 @@
     - [x] <span dir='rtl'>قلت برمجة ؟</span>
     - [ ] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
     - [x] <span dir='rtl'>برنامجك الأوّل</span>
-    - [ ] <span dir='rtl'>عالم المتغيّرات</span>
+    - [x] <span dir='rtl'>عالم المتغيّرات</span>
     - [ ] <span dir='rtl'>حسابات سهلة</span>
     - [ ] <span dir='rtl'>الشروط</span>
     - [ ] <span dir='rtl'>الحلقات التكراريّة</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
     - [ ] <span dir='rtl'>الدوال</span>
-    - [ ] <span dir='rtl'></span>
 - [ ] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
     - [ ] <span dir='rtl'>البرمجة المجزأة</span>
     - [ ] <span dir='rtl'>المؤشّرات</span>
