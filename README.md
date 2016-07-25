@@ -17,7 +17,7 @@
 #### <div dir='rtl'> فصول الكتاب (الفصول المكتملة تم تعليمها) </div>
 
 - [x] <span dir='rtl'>مقدمة المترجمة</span>
-- [ ] <span dir='rtl'>مقدمة المؤلف</span>
+- [x] <span dir='rtl'>مقدمة المؤلف</span>
 - [ ] <span dir='rtl'>أساسيّات البرمحة بلغة الـC</span>
     - [x] <span dir='rtl'>قلت برمجة ؟</span>
     - [ ] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
