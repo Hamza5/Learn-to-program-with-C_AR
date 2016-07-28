@@ -45,7 +45,7 @@
 \let\oldpart\part
 \newcommand{\@partstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{part}{#1}{\color{orange}\oldpart*{#1}}}
 \newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
-\renewcommand{\part}{\@ifstar{\@partstar}{\@partnostar}}
+\renewcommand{\part}{\setcounter{chapter}{0}\@ifstar{\@partstar}{\@partnostar}}
 \let\oldsection\section
 \newcommand{\@sectionstar}[1]{\phantomsection\addcontentsline{toc}{section}{#1}{\color{orange}\oldsection*{#1}}}
 \newcommand{\@sectionnostar}[1]{{\color{orange}\oldsection{#1}}}
