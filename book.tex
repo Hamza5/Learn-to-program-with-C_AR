@@ -75,6 +75,7 @@
 \renewcommand{\thechapter}{\Alph{part}.\arabic{chapter}}
 \renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
 \renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
+\renewcommand{\thesubsubsection}{\Alph{part}.\arabic{subsubsection}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
 % Global settings for code and console
 \lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip}
 % C source code
@@ -82,8 +83,8 @@
         keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{Gray},
         numberstyle=\color{Gray}, stringstyle=\color{Crimson},
         directivestyle=\color{DarkOrange},
-        deletekeywords={return,if,else,switch,for,while,do,const},
-        morekeywords=[2]{return,if,else,switch,for,while,do,const}, keywordstyle=[2]\bfseries\color{Magenta},
+        deletekeywords={return,if,else,switch,for,while,do,const,static},
+        morekeywords=[2]{return,if,else,switch,for,while,do,const,static}, keywordstyle=[2]\bfseries\color{Magenta},
         morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan},
 }
 \lstnewenvironment{Csource}{\lstset{style=C}\setLTR}{\unsetLTR}

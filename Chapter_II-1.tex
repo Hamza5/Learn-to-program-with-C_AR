@@ -511,3 +511,126 @@ int triple(int number)
 \textbf{تذكّر جيّدا}
 : كل متغير تم التصريح عنه داخل دالة، لا يسرى مفعوله إلا في داخل هذه الدالة نفسها ! و نقول أن المتغير محلّي
 (\textenglish{local}).
+
+\subsection{المتغيرات الشاملة
+(\textenglish{global variables})
+: فلتتجنّبها}
+\subsubsection{متغير شامل قابل للوصول إليه من خلال كلّ الملفات}
+إنه من الممكن التصريح عن متغير يمكن الوصول إليه من خلال كل الدوال من ملفات المشروع.
+سأريك كيفية فعل ذلك كي تعرف بأنه أمر موجود، لكن عموما تجنب القيام بذلك.
+د يظهر أنها ستسهل لك التعامل مع الشفرة المصدرية لكن قد يؤدي بك هذا لوجود العديد من المتغيرات التي يمكننا الوصول إليها من كلّ مكان مما سيصعّب عليك عملية إدارتها.
+
+للتصريح عن متغير
+\underline{شامل}
+(\textenglish{global})،
+يجب أن تقوم بذلك خارج كلّ الدوال، يعني في أعلى الملف، و عموما بعد أسطر الـ
+\InlineCode{\#include}.
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+
+int result = 0; // Declaration of a global variable
+void triple(int number ); // Prototype of the function
+int main(int argc, char *argv[])
+{
+	triple(15); // We call the function triple which is going to modify the variable result
+	printf("The triple of 15 = %d\n", result); // We can access to the variable result
+	return 0;
+}
+
+void triple(int number)
+{
+	result = 3 * number;
+}
+\end{Csource}
+في هذا المثال، الدالة
+\InlineCode{triple}
+لا تُرجع أي شيء
+(\InlineCode{void}).
+إنها تقوم بتعديل قيمة المتغير الشامل
+\InlineCode{result}
+التي يمكن للدالة
+\InlineCode{main}
+أن تسترجعه.
+
+المتغير
+\InlineCode{result}
+يمكن الوصول إليه من خلال كل الملفات في المشروع و منه يمكننا مناداتها من خلال
+\underline{كلّ}
+دوال البرنامج.
+\begin{warning}
+  هذا شيء يجب ألا يتواجد في برامج الـ
+\textenglish{C}
+الخاصة بك. من المستحسن استعمال التعليمة
+\InlineCode{return}
+لإرجاع النتيجة بدل التعديل عليه كمتغير شامل.
+\end{warning}
+
+\subsubsection{متغير شامل قابل للوصول إليه من خلال ملف واحد}
+المتغير الشامل الذي أريتك إياه قبل قليل يمكن الوصول إليه من خلال كل الملفات الخاصة بالمشروع.\\
+يمكننا جعل متغيّر شامل مرئيا فقط في الملف الذي تتواجد به. و لكنه يبقى متغيرا شاملا على أية حال حتى و إن كنا نقول أنه ليس كذلك إلا على الدوال المتواجدة في ذات الملف و ليس على كل دوال البرنامج.
+
+لإنشاء متغير شامل مرئي في ملف واحد نستعمل الكلمة المفتاحية
+\InlineCode{static}
+قبله :
+\begin{Csource}
+static int result = 0;
+\end{Csource}
+
+\subsubsection{متغير ساكن
+(\textenglish{static})
+بالنسبة لدالة}
+حذار: الأمر حساس هنا قليلاً. إن استعملت الكلمة المفتاحية
+\InlineCode{static}
+عند التصريح عن متغير في داخل دالة، فهذا معنى آخر غير الخاص بالمتغيرات الشاملة.\\
+في هذه الحالة، لا يتم حذف المتغير الساكن مع نهاية الدالة، بل حينما نستدعي الدالة مرّة أخرى، سيحفظ المتغير قيمته مثلا :
+\begin{Csource}
+int triple(int number)
+{
+	static int result = 0; // The first time when the variable is created
+	result = 3 * number;
+	return result;
+} // when we exit the function, the variable is not destroyed
+\end{Csource}
+ماذا يعني هذا بالضبط ؟\\
+يعني أنه يمكننا استدعاء الدالة لاحقا و يبقى المتغير
+\InlineCode{result}
+محتفظا بنفس القيمة الاخيرة.
+
+و هذا مثال آخر للفهم أكثر :
+\begin{Csource}
+int increment();
+
+int main(int argc, char *argv[])
+{
+	printf("%d\n", increment());
+	printf("%d\n", increment());
+	printf("%d\n", increment());
+	printf("%d\n", increment());
+
+	return 0;
+}
+
+int increment()
+{
+	static int number= 0;
+
+	number++;
+	return number;
+}
+\end{Csource}
+\begin{Console}
+1
+2
+3
+4
+\end{Console}
+هنا، في المرة الأولى التي نطلب فيها الدالة
+\InlineCode{increment}،
+يتم انشاء المتغير
+\InlineCode{number}.
+ثم نقوم بزيادة 1 إلى قيمته. و ما إن تنتهي الدالة لا يمسح المتغير.
+
+عندما نطلب الدالة للمرة الثانية، يتم ببساطة قفز السطر الخاص بالتصريح بالمتغير، و لا نقوم بإعادة إنشاء المتغير بل فقط نعيد استعمال المتغير الذي أنشأناه سابقا. عندما يأخذ المتغير القيمة 1، تصبح قيمته 2 ثم 3 ثم 4 ... الخ.
+
+هذا النوع من المتغيرات ليس مستعملا بكثرة، لكن يمكنه مساعدتك في بعض الأحيان و لهذا ذكرته في الدرس.
