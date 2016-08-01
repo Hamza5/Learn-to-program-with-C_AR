@@ -466,3 +466,48 @@ void moveBox(int *firstBox, int *secondeBox);
 لاحقا سنتعلم كيف نستخدم المكتبات الرسومية التي نجدها أيضا في ملفات
 \InlineCode{.a}
 و تعطي للجهاز تعليمات خاصة بكيفية إظهار نافذة على الشاشة كمثال. لكن طبعا، لن ندرسها الآن ، كلّ شيء في وقته.
+
+\section{نطاق الدوال و المتغيرات}
+لننهي هذا الدرس، يجب أن أطلعكم عما يسمى بـ
+\textbf{نطاق}
+المتغيرات و الدوال، سنعرف إمكانية الوصول للدوال و المتغيرات، يعني متى يمكننا استدعاؤها.
+
+\subsection{المتغيرات الخاصة بدالة}
+عندما تصرّح عن متغير في داخل دالة يتم حذف هذا المتغير من الذاكرة مع نهاية الدالة.
+\begin{Csource}
+int triple(int number)
+{
+	int result = 0; // The variable result is created in the memory
+	result = 3 * number;
+	return result;
+} // The function finished, the variable result is destroyed
+\end{Csource}
+كلّ متغير تم التصريح عنه في دالة، لا يكون موجودا سوى حينما تكون الدالة في طور الإشتغال.\\
+لكن ماذا يعني هذا تحديدا ؟ أنه لا يمكن الوصول إليه من خلال  دالة اخرى !
+\begin{Csource}
+int triple(int number);
+int main(int argc, char *argv[])
+{
+	printf("The triple of 15 = %d\n", triple(15));
+	printf("The triple of 15 = %d",  result); // Error
+	return 0;
+}
+
+int triple(int number)
+{
+	int result = 0;
+	result = 3 * number;
+	return result;
+}
+\end{Csource}
+
+في الدالة الرئيسية أحاول الوصول إلى المتغير
+\InlineCode{result}
+و بما أن هذا المتغير تم التصريح عنه داخل الدالة
+\InlineCode{triple}
+فطبعا لا يمكنني الوصول إليه من خلال الدالة
+\InlineCode{main} !
+
+\textbf{تذكّر جيّدا}
+: كل متغير تم التصريح عنه داخل دالة، لا يسرى مفعوله إلا في داخل هذه الدالة نفسها ! و نقول أن المتغير محلّي
+(\textenglish{local}).
