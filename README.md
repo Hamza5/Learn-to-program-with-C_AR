@@ -29,7 +29,7 @@
     - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
     - [ ] <span dir='rtl'>الدوال</span>
 - [ ] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
-    - [ ] <span dir='rtl'>البرمجة المجزأة</span>
+    - [x] <span dir='rtl'>البرمجة المجزأة</span>
     - [ ] <span dir='rtl'>المؤشّرات</span>
     - [ ] <span dir='rtl'>الجداول</span>
     - [ ] <span dir='rtl'>السلاسل المحرفيّة</span>
