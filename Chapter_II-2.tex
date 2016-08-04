@@ -445,3 +445,87 @@ printf("%d, *PointerOnAge);
 كل هذه المعلومات مبدئية. يجب أن تعرفها و الأهمّ أن تتعلّمها عن ظهر قلب. لا تتردّد في قراءة و إعادة قراءة ما قدّمته لك. لا يمكنني أن أعاتبك إذا لم تفهم من المرّة الأولى، و هذا ليس أمرا مخجلا. عادة ما تحتاج لعدّة أيّام لكي تفهمها جيّدا و بضعة شهور لتفهم كلّ شيء.
 
 إذا كنت تشعر بأنك ضائع قليلاً، فكر في الأشخاص المحترفين في البرمجة:  لا أحد منهم فهم مبدأ عمل المؤشرات من المرّة الأولى. و إن كان هذا الشخص موجوداً، أطلب منك أن تقدّمه لي الآن.
+
+\section{إرسال مؤشّر إلى دالة}
+أهم فائدة للمؤشرات (لكنها ليست الوحيدة) هي أنه بامكاننا ارسالها إلى دالة كي تقوم بتعديل مباشر على قيمة متغير في الذاكرة لا لنسخة منها كما رأينا سابقاً.
+
+كيف يعمل هذا ؟ هناك الكثير من الطرق لفعل هذا. إليك مثالاً :
+\begin{Csource}
+void triplePointer(int *numberPointer);
+
+int main(int argc, char *argv[])
+{
+	int number = 5;
+
+	triplePointer(&number); // We send the address of number to the function
+	printf("%d", number); // We display the variable number. The function has directly modified its value because it knows the address of the variable
+
+	return 0;
+}
+
+void triplePointeur(int *numberPointer)
+{
+	*numberPointer *= 3; // We multiply by 3 the value of number
+}
+\end{Csource}
+\begin{Console}
+15
+\end{Console}
+الدالة
+\InlineCode{triplePointer}
+تأخذ معاملا من نوع
+\InlineCode{int*}
+(أي مؤشّر على
+\InlineCode{int}).\\
+إليك ما يحدث بالترتيب، إنطلاقاً من بداية الدالة
+\InlineCode{main} :
+\begin{enumerate}
+	\item يتم إنشاء متغير
+\InlineCode{number}
+في الدالة
+\InlineCode{main}،
+نُسنِد له القيمة 5، أنت تعرف هذا.
+	\item نستدعي الدالة
+\InlineCode{triplePointer}
+و نرسل لها كمعامل عنوان المتغير
+\InlineCode{number}.
+	\item تتلقّى الدالة
+\InlineCode{triplePointer}
+المتغير في المؤشر
+\InlineCode{numberPointer}.
+داخل الدالة
+\InlineCode{triplePointer}
+، لدينا إذن المؤشر
+\InlineCode{numberPointer}
+الذي يؤشر على المتغير
+\InlineCode{number}.
+	\item و الآن بما أنه لدينا مؤشر على المتغير
+\InlineCode{number}،
+يمكننا تغيير قيمة المتغير
+\InlineCode{number}
+مباشرة في الذاكرة ! يكفي استعمال
+\InlineCode{numberPointer*}
+للإشارة إلى المتغير
+\InlineCode{number} !
+كمثال، نقوم باختبار بسيط : نضرب المتغير في الرقم 3.
+	\item يالعودة إلى
+\InlineCode{main}،
+يحتوي المتغير
+\InlineCode{number}
+القيمة 15 لأن الدالة
+\InlineCode{triplePointer}
+قامت بتعديل قيمته مباشرة.
+\end{enumerate}
+بالطبع، كان بإمكاني استعمال
+\InlineCode{return}
+بسيط كما تعلمنا القيام بذلك في الدرس الخاص بالدوال. لكن الهدف هنا، هو أنه بهذه الطريقة، أي باستعمال المؤشرات، يمكننا تعديل قيم الكثير من المتغيرات في الذاكرة (يمكننا إذا "إرجاع" الكثير من القيم !). لسنا محدودين بقيمة واحدة يعد الآن !
+\begin{question}
+	ما الفائدة الآن من استعمال
+\InlineCode{return}
+في دالة إذا كان بإمكاننا استعمال المؤشرات لتعديل قيم المتغيرات ؟
+\end{question}
+هذا يعتمد عليك و على برنامجك.القرار لك. يجب أن تعرف أن تعليمة
+\InlineCode{return}
+مستعملة بكثرة في لغة الـ
+\textenglish{C}.
+غالباً نستعملها لإرجاع شفرة الخطأ : الدالة ترجع القيمة 1 (صحيح) إذا اشتغل كل شيء على ما يُرام، و 0 (خطأ) إذا حدث خطأ ما أثناء تشغيل البرنامج.
