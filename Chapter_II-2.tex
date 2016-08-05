@@ -529,3 +529,86 @@ void triplePointeur(int *numberPointer)
 مستعملة بكثرة في لغة الـ
 \textenglish{C}.
 غالباً نستعملها لإرجاع شفرة الخطأ : الدالة ترجع القيمة 1 (صحيح) إذا اشتغل كل شيء على ما يُرام، و 0 (خطأ) إذا حدث خطأ ما أثناء تشغيل البرنامج.
+
+\subsection{طريقة أخرى لإرسال مؤشر إلى دالة}
+في الشفرة المصدرية التي رأيناها، لم يكن هناك مؤشر في الدالة
+\InlineCode{main}،
+و إنما فقط متغير
+\InlineCode{number}.
+المؤشر الوحيد كان في الدالة
+\InlineCode{triplePointer}
+(من نوع
+\InlineCode{int*}).
+
+يجب ان تعرف أنه هناك طريقة أخرى لكتابة الشفرة المصدرية السابقة، وذلك بإضافة مؤشر في الدالة
+\InlineCode{main} :
+\begin{Csource}
+void triplePointer(int *numberPointer);
+
+int main(int argc, char *argv[])
+{
+	int number = 5;
+	int *pointer = &number; // pointer get the address of number
+	triplePointer(pointer); // We send pointer ( the address of number ) to the function
+	printf("%d", *pointeur);
+	return 0;
+}
+
+void triplePointer(int *numberPointer)
+{
+	*numberPointer *= 3; // We multiply by 3 the value of number
+}
+\end{Csource}
+قارن بين الشفرتين المصدريتين السابقتين، ستجد بأن هناك اختلافا بينهما، لكن النتيجة واحدة :
+\begin{Console}
+15
+\end{Console}
+ما يهم، هو بعث عنوان المتغير
+\InlineCode{number}
+إلى الدالة. لكن المؤشر يحمل عنوان المتغير
+\InlineCode{number}،
+فهذا جيد من هذه الناحية ! نحن فقط نقوم بالأمر بطريقة مختلفة بإنشاء المؤشر في الدالة
+\InlineCode{main}.\\
+في الدالة
+\InlineCode{printf}
+(فقط من أجل التمرين)، أُظهر محتوى المتغير
+\InlineCode{number}
+بكتابة
+\InlineCode{*pointer}.
+لاحظ أنه في مكان هذا، يمكنني كتابة
+\InlineCode{number}
+: ستكون النتيجة هي نفسها لأنّ
+\InlineCode{*pointer}
+و
+\InlineCode{number}
+يشيران إلى نفس الخانة بالذاكرة.
+
+في البرنامج "أكثر أو أقل"، استعملنا مؤشراً دون أن نعرف بذلك. كان ذلك عند استدعاء الدالة
+\InlineCode{scanf}.
+بالفعل، دور هذه الدالة هو قراءة ما كتبه المستعمل في لوحة المفاتيح و إرجاع النتيجة. لكي تتمكن الدالة من تغيير محتوى المتغير مباشرة أي تضع بها الكلمة أو الجملة التي تمت كتابتها في لوحة المفاتيح، احتاجت لعنوان المتغير :
+\begin{Csource}
+int number = 0;
+scanf("%d", &number);
+\end{Csource}
+تعمل الدالة بمؤشر على المتغير
+\InlineCode{number}
+و بهذا يمكنها تغيير قيمته مباشرة.\\
+كما رأينا الآن، يمكننا إنشاء مؤشر و نبعثه للدالة
+\InlineCode{scanf} :
+\begin{Csource}
+int number = 0;
+int *pointer = &number;
+scanf("%d", pointer);
+\end{Csource}
+إنتبه كي لا تضع الرمز
+\InlineCode{\&}
+امام اسم مؤشر في الدالة
+\InlineCode{scanf} !
+هنا
+\InlineCode{pointer}
+يحتوي هو نفسه عنوان المتغير
+\InlineCode{number}،
+لذا أنت لا تحتاج لوضع
+\InlineCode{\&} !
+إذا فعلت هذا فإنك ستبعث العنوان الذي يتواجد به المؤشر : و لكننا بحاجة لعنوان
+\InlineCode{number} !
