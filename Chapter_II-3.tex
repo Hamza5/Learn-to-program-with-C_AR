@@ -37,3 +37,83 @@
 \InlineCode{int}،
 و لا أي نوع آخر.
 \end{itemize}
+
+\section{تعريف جدول}
+كي نبدأ سننشئ جدولا من 4 أعداد من نوع
+\InlineCode{int} :
+\begin{Csource}
+int table[4];
+\end{Csource}
+هذا كلّ شيء. يكفي إذن أن تضيف قوسين مربعين
+(\InlineCode{[}
+و
+\InlineCode{]})
+عدد الخانات التي تريد أن يحجزها جدولك، و اعلموا أنه لا يوجد حدود (إلا إن تجاوزت الحدّ الذي تسمح به ذاكرة جهازك طبعا).
+
+و لكن الآن، كيف نصل لخانة ما في الجدول ؟
+هذا سهل، تكفي كتابة
+\InlineCode{table[cellNumber]}.
+\begin{critical}
+  إحذر : كل جدول يجب أن يبدأ بالفهرس رقم 0 ! جدولنا متكوّن من 4
+\InlineCode{int}
+إذن فالفهارس المتوفرة هي : 0، 1، 2 و 3. لا وجود للفهرس 4 في جدول من 4 خانات ! هذا مصدر أخطاء متداولة، فلا تغفل عنه !
+\end{critical}
+إذا كنت أريد أن أضع في جدولي نفس القيم التي في المخطط فبجب إذا أن أكتُب :
+\begin{Csource}
+int table[4];
+table[0] = 10;
+table[1] = 23;
+table[2] = 505;
+table[3] = 8;
+\end{Csource}
+\begin{question}
+  لازلت لا أرى العلاقة بين المؤشرات و الجداول ؟
+\end{question}
+في الواقع، لو تكتب فقط
+\InlineCode{table}
+فستحصل على مؤشر، و هو مؤشر على الخانة الأولى من الجدول، قم باختبار التالي :
+\begin{Csource}
+int table[4];
+printf("%d", table);
+\end{Csource}
+النتيجة ستظهر لك العنوان الذي يتواجد به
+\InlineCode{table} :
+\begin{Console}
+1600
+\end{Console}
+بينما إذا قمت بوضع فهرس الخانة بين قوسين مربعين، فستحصل على القيمة :
+\begin{Csource}
+int table[4];
+printf("%d", table[0]);
+\end{Csource}
+\begin{Console}
+10
+\end{Console}
+نفس الشيء بالنسبة للفهارس الأخرى. بما أن
+\InlineCode{table}
+هو مؤشر، يمكننا استعمال الرمز
+\InlineCode{*}
+للحصول على القيمة الأولى :
+\begin{Csource}
+int table[4];
+printf("%d", *table);
+\end{Csource}
+\begin{Console}
+10
+\end{Console}
+يمكن أيضا الحصول على قيمة الخانة الثانية بكتابة
+\InlineCode{*(table + 1)}
+(أي عنوان الجدول + 1). لذا فهذان السطران متماثلان :
+\begin{Csource}
+table[1] // Returns the value of the second cell (the first is 0)
+*(table + 1) // Same thing : returns the value of the second cell.
+\end{Csource}
+لذا فعند كتابة
+\InlineCode{table[0]}،
+فأنت تطلب قيمة الخانة التي تتواجد بعنوان الجدول + 0
+خانة، أي 1600.\\
+و إذا كتبت
+\InlineCode{table[1]}
+فإنك تطلب القيمة المتواجدة في عنوان الجدول + 1
+خانة، أي 1601.\\
+و هكذا من أجل الباقي.
