@@ -199,3 +199,31 @@ int main(int argc, char *argv[])
 \InlineCode{table[4]}
 فإمّا إن تحصل على قيمة عشوائية، أو سيظهر لك خطأ جميل، نظام التشغيل يوقف برنامجك فهو يحاول الوصول لعنوان لا ينتمي إليه.
 \end{critical}
+
+\subsection{تهيئة جدول}
+الآن و مادمنا قد عرفنا كيف نتصفح جدولا، يمكننا أن نضبط كل قيمه على 0 باستخدام حلقة !
+
+إن القيام بتصفح جدول لضبط كلّ قيمه على الصفر أمر يمكن القيام به بمستواك هذا :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	int table[4], i = 0;
+	// Initialization of the table
+	for (i = 0 ; i < 4 ; i++)
+	{
+    		table[i] = 0;
+	}
+	// Displaying the values of the table to check
+	for (i = 0 ; i < 4 ; i++)
+	{
+    		printf("%d\n", table[i]);
+	}
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+0
+0
+0
+0
+\end{Console}
