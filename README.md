@@ -31,7 +31,7 @@
 - [ ] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
     - [x] <span dir='rtl'>البرمجة المجزأة</span>
     - [x] <span dir='rtl'>المؤشّرات</span>
-    - [ ] <span dir='rtl'>الجداول</span>
+    - [x] <span dir='rtl'>الجداول</span>
     - [ ] <span dir='rtl'>السلاسل المحرفيّة</span>
     - [ ] <span dir='rtl'>المعالج القبلي</span>
     - [ ] <span dir='rtl'>انشئ أنواع متغيّرات خاصة بك</span>

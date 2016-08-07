@@ -324,3 +324,80 @@ void display(int table[], int tableSize)
 هذا يعني تماما نفس الشيء، و لكن وجود القوسين المربعين يُعلمان المبرمج بأن الدالة تأخذ جدولا و ليس مؤشرا عاديا و هذا يزيل الغموض.
 
 شخصيا أستعمل دائما القوسين المربعين في دوالي لكي أُظهر بان الدالة تنتظر جدولا. أنصحك باستعمال نفس الطريقة. ليس مهما وضع حجم الجدول بين القوسين المربعين هذه المرة.
+
+\subsection{بعض التمارين !}
+لدي أفكار متعددة عن تمارين متعلقة بالجداول ستساعدك على التدريب ! و فكرة التمارين هي إنشاء دوال تعمل على الجداول.
+
+و كتحدي، ستجد هنا نصوص  التمارين فقط و لن أعطي الإجابة كي أجبرك على الاجتهاد في إيجاد الحلول و إن لم تستطع فيمكنك زيارة المنتديات لطرح أسئلتك.
+\subsubsection{التمرين 1}
+أنشئ دالة
+\InlineCode{tableSum}
+ترجع مجموع القيم الموجودة في الجدول (استعمل
+\InlineCode{return}
+لإرجاع النتيجة) و  للمساعدة، هذا هو نموذج  الدالة :
+\begin{Csource}
+int tableSum(int table[], int tableSize);
+\end{Csource}
+\subsubsection{التمرين 2}
+أنشئ دالة
+\InlineCode{tableAverage}
+تحسب و تُرجع معدّل القيم الموجودة في الجدول. تفضل النموذج :
+\begin{Csource}
+double tableAverage(int table[], int tableSize);
+\end{Csource}
+الدالة ترجع
+\InlineCode{double}
+فالمعدّل عادة هو قيمة عشرية.
+\subsubsection{التمرين 3}
+أنشئ دالة
+\InlineCode{tableCopy}
+التي تأخذ كمعاملات جدولين، حيث تقوم بنسخ محتوى الجدول الأول في الجدول الثاني، تفضل النموذج :
+\begin{Csource}
+void tableCopy(int originalTable[], int copyTable[], int tableSize);
+\end{Csource}
+\subsubsection{التمرين 4}
+أنشئ دالّة
+\InlineCode{tableMaximum}
+دورها إسناد 0 لكلّ خانة جدول تحوي قيمة أكبر من قيمة العظمى. هذه الدالة تأخذ كمعاملات الجدول و العدد الأقصى المسموح به
+(\InlineCode{maxValue}).
+كلّ الخانات الّتي تملك عددا أكبر من
+\InlineCode{maxValue}
+يجب أن تعاد إلى 0. النموذج :
+\begin{Csource}
+void tableMaximum(int table[], int tableSize, int maxValue);
+\end{Csource}
+\subsubsection{التمرين 5}
+هذا أصعب. أنشئ دالة
+\InlineCode{sortTable}
+التي ترتب قيم جدول تصاعديا. كمثال جدول يتكوّن من القيم
+\InlineCode{\{15, 81, 22, 13\}}،
+بعد العملية يصبح :
+\InlineCode{\{13, 15, 22, 81\}} !
+\begin{Csource}
+void sortTable(int table[], int tableSize);
+\end{Csource}
+هذا التمرين صعب بقليل عن السابقين لكن القيام به ليس مستحيلا، سيشغلكم بعض الوقت، تفضل النموذج :
+\begin{information}
+أنشئ ملفا خاصا باسم
+\InlineCode{tables.c}
+(مع مرافقه الملف
+\InlineCode{tables.h}
+الذي يحتوي النماذج ! بالطبع) يحوي كلّ الدوال التي تقوم بعمليّات على الجداول.
+\end{information}
+إلى العمل !
+
+\section*{ملخّص}
+\begin{itemize}
+  \item \textbf{الجداول}
+هي عبارة عن مجموعة متغيرات لها نوع واحد مرتبة بجنب بعضها في الذاكرة.
+  \item يجب أن يكون حجم الجدول محدداً قبل ترجمة البرنامج، لا يمكن أن تعتمد على متغيّر.
+  \item الجدول ذو النوع
+\InlineCode{int}
+لا يحتوي سوى متغيرات من نوع
+\InlineCode{int}.
+  \item خانات الجدول مرقّمة عن طريق
+\textbf{الفهارس}
+ابتداءاً من 0 :
+\InlineCode{table[0]}، \InlineCode{table[1]}، \InlineCode{table[2]}،
+إلخ.
+\end{itemize}
