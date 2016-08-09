@@ -1,5 +1,5 @@
 \chapter{السلاسل المحرفيّة}
-السلاسل المحرفيّة هي اسم صحيح
+السلاسل المحرفيّة (\textenglish{Strings}) هي اسم صحيح
 \textit{برمجيّا}
 لتسمية ... النصّ، ببساطة !\\
 السلسلة المحرفيّة هي إذن نصّ يمكننا حفظه على شكل متغيّر في الذاكرة. بهذه الطريقة يمكننا تخزين اسم المستخدم.
@@ -65,3 +65,74 @@ int main(int argc, char *argv[])
 (ينطق "أسكي"). الموقع
 \href{http://www.asciitable.com/}{AsciiTable.com}
 مشهور لعرض هذا الجدول لكنّه ليس الوحيد، يمكننا أن نجده على ويكيبيديا و مواقع أخرى أيضا.
+
+\subsection{إظهار محرف}
+كما نعلم فلإظهار أي شيء على الشاشة نستعمل الدالة
+\InlineCode{printf}،
+هذه الدالة قادرة أيضا على إظهار محرف على الشاشة و ذلك باستعمال الرمز :
+\InlineCode{\%c}
+(\textenglish{c} تعني \textenglish{character})
+كالتالي :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char letter = 'A';
+	printf("%c\n", letter);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+A
+\end{Console}
+حسنا، لقد تعلّمنا كيف نظهر حرفا في الشاشة.
+
+يمكننا أيضا أن نطلب من المستعمل أن يقوم بإدخال حرف عن طريق لوحة المفاتيح، و ذلك بالإستعانة بالدالة
+\InlineCode{scanf}،
+و هذا بوضع الرمز
+\InlineCode{\%c}
+دائماً، كالتالي :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char letter = 0;
+	scanf("%c", &letter);
+	printf("%c\n", letter);
+	return 0;
+}
+\end{Csource}
+إن كتبت الحرف
+\textenglish{B}
+فسأتحصّل على :
+\begin{Console}
+B
+B
+\end{Console}
+أوّل
+\textenglish{B}
+هو الّذي كتبته، أمّا الثاني فهو المعروض من طرف
+\InlineCode{printf}.
+
+هذا تقريبا ما يجب عليك أن تتذكره بخصوص النوع \InlineCode{char}.
+تذكّر جيّدا :
+\begin{itemize}
+  \item  النوع
+\InlineCode{char}
+يخزّن الأعداد من
+$-128$
+إلى
+$127$،
+بينما النوع
+\InlineCode{unsigned char}
+يسمح بتخزين الأعداد من
+$0$
+إلى
+$255$.
+  \item يستخدم الحاسوب جدولا للتحويل بين الحروف و الأعداد، الجدول
+\textenglish{ASCII}.
+  \item يمكن استخدام
+\InlineCode{char}
+لتخزين حرف
+\underline{واحد}.
+  \item \InlineCode{'A'}
+يتمّ استبدالها أثناء الترجمة بالقيمة الموافقة (65 مثلا). نستخدم إذن علامات التنصيص للحصول على قيمة حرف.
+\end{itemize}
