@@ -175,7 +175,7 @@ char string[5];
 يقول : "توقّف، لا يوجد المزيد لقرائته!".
 
 لذلك، كي نخزن الكلمة
-\textenglish{'Hello'}
+'\textenglish{Hello}'
  لا نحتاج إلى جدول من 5
 \InlineCode{char}
 و إنما من 6 !\\
@@ -206,3 +206,89 @@ char string[5];
 الذي يمكننا أيضا كتابته على النحو
 \InlineCode{char[]}).
 بالنسبة للأنواع الأخرى من الجداول، عليك أن تحفظ حجم الجدول في مكان ما.
+
+\subsection{إنشاء و تهيئة سلسلة محرفيّة}
+إن أردنا إنشاء جدول
+\InlineCode{string}
+يحتوي النصّ
+'\textenglish{Hello}'،
+يمكننا استعمال الطريقة اليدويّة و لكنّها غير فعّالة :
+\begin{Csource}
+char string[6]; // A table of  6 chars used to store H-e-l-l-o + \0
+string[0] = 'H';
+string[1] = 'e';
+string[2] = 'l';
+string[3] = 'l';
+string[4] = 'o';
+string[5] = '\0';
+\end{Csource}
+هذه الطريقة تعمل. يمكننا التحقق من ذلك باستعمال
+\InlineCode{printf}.
+
+لاستخدام
+\InlineCode{printf}
+يجب أن نستعمل الرمز
+\InlineCode{\%s}
+(\textenglish{s}
+تعني
+\textenglish{string}،
+أي "سلسلة محارف" بالانجليزية). هذه هي الشفرة الكاملة التي تنشئ السلسلة
+'\textenglish{Hello}'
+في الذاكرة :
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+	char string[6]; // A table of 6 chars used to store H-e-l-l-o + \0
+	// Initializing the string (writing the letters one by one in the memory)
+	string[0] = 'H';
+	string[1] = 'e';
+	string[2] = 'l';
+	string[3] = 'l';
+	string[4] = 'o';
+	string[5] = '\0';
+	// Displaying the string thanks to the %s in the function printf
+	printf("%s", string);
+	return 0;
+}
+\end{Csource}
+النتيجة :
+\begin{Console}
+Hello
+\end{Console}
+تلاحظ أن القيام بتخزين النص حرفا بحرف في الجدول
+\InlineCode{string}
+أمر متعب للغاية. لتهيئة سلسلة محرفيّة توجد لحسن الحظ  طريقة أبسط بكثير :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string[] = "Hello"; // The table’s size is automatically calculated
+	printf("%s", string);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+Hello
+\end{Console}
+كما تلاحظ في السطر الأول ترى أنني أنشأت متغيّرا من نوع
+\InlineCode{char[]}،
+كان بإمكاني كتابة
+\InlineCode{char*}
+أيضاً، النتيجة ستكون نفسها.
+
+عندما تكتب بين علامتي اقتباس (" ") النص الذين تريد تخزينه في الجدول، يقوم الحاسوب بحساب الحجم اللازم. أي أنّه سيحسب عدد الحروف و يضيف 1 من أجل المحرف
+\InlineCode{\textbackslash 0}.
+يبدأ بعدها في تخزين حروف الكلمة
+'\textenglish{Hello}'
+واحدا واحدا في الذاكرة و في النهاية يضيف
+\InlineCode{\textbackslash 0}
+تماما كما فعلنا يديويّا منذ قليل.\\
+باختصار، هذا أمر عمليّ أكثر.
+
+و مع ذلك فهناك مشكل : هذا الأمر لا يعمل إلّا مع التهيئة ! لاحقا في الشفرة لا يمكنك كتابة :
+\begin{Csource}
+string = "Hello";
+\end{Csource}
+هذه التقنيّة محجوزة للتهيئة فقط. بعد هذا، يجب أن نقوم بالتعديل على المحارف يدويّا في الذاكرة واحداً واحداً كما فعلنا في البداية.
