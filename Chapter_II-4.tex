@@ -264,7 +264,7 @@ Hello
 \begin{Csource}
 int main(int argc, char *argv[])
 {
-	char string[] = "Hello"; // The table’s size is automatically calculated
+	char string[] = "Hello"; // The size of the table is automatically calculated
 	printf("%s", string);
 	return 0;
 }
@@ -292,3 +292,36 @@ Hello
 string = "Hello";
 \end{Csource}
 هذه التقنيّة محجوزة للتهيئة فقط. بعد هذا، يجب أن نقوم بالتعديل على المحارف يدويّا في الذاكرة واحداً واحداً كما فعلنا في البداية.
+
+\subsection{إدخال سلسلة محرفيّة عن طريق
+\texttt{scanf}}
+يمكننا حفظ سلسلة محرفّية مُدخَلة من طرف المستخدم عن طريق
+\InlineCode{scanf}،
+باستخدام الرمز
+\InlineCode{\%s}.\\
+مشكل وحيد : لا يمكنك معرفة كم محرفا سيقوم المستخدم بإدخاله. إن طلبت منه اسمه الأوّل، فيمكن أن يسمّى
+\textenglish{Luc}
+(3 محارف)، و لكن من الذي سيضمن أن اسمه لن يكون
+\textenglish{Jean-Edouard}
+(عدد أكبر بكثير من المحارف) ؟
+
+من أجل هذا، لا يوجد 36 حلّا. يجب إنشاء جدول من
+\InlineCode{char}
+كبير جدّا، كبير بما يكفي لتخزين الاسم. سنقوم إذن بإنشاء
+\InlineCode{char[100]}.
+قد تشعر بأنّ هذا إهدار للذاكرة، لكن تذكّر مرّة أخرى بأنّ المكان في الذاكرة ليس الشيء الذي ينقصنا
+(كما أنّه توجد برامج تهدر الذاكرة بطريقة أسوء بكثير من هذه !).
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char firstName[100];
+	printf("What’s your name ? ");
+	scanf("%s", firstName);
+	printf("Hello %s, nice to meet you !", firstName);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+What's your name ? Mateo21
+Hello Mateo21, nice to meet you !
+\end{Console}
