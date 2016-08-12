@@ -348,3 +348,103 @@ Hello Mateo21, nice to meet you !
 \end{Csource}
 إن لم تقم بهذا فإن المترجم لن يتعرف على الدوال التي سأعرضها لك لأنّه لا يملك نماذجها، و بالتالي فستتوقف الترجمة.\\
 باختصار، لا تنس تضمين هذه المكتبة في كلّ مرّة تستخدم فيها دوال التعامل مع النصوص.
+
+\subsection{\texttt{strlen} : حساب طول سلسلة محرفيّة}
+\InlineCode{strlen}
+تقوم بحساب طول السلسلى المحرفيّة (دون حساب المحرف
+\InlineCode{\textbackslash 0}).\\
+يحب أن تعطيها معاملا وحيدا : السلسلة المحرفيّة.هذه الدالة تُرجع طول السلسلة.
+
+الآن بما أنّك تعرف مالّذي يعنيه النموذج، سأعطيك نموذج الدوال الّتي أكلّمك عنها. المبرمجون يعتبرونه كـ"دليل استخدام" للدالّة.
+هذا نموذج الدالة :
+\begin{Csource}
+size_t strlen(const char* string);
+\end{Csource}
+\begin{information}
+\InlineCode{size\_t}
+هو نوع خاص يدلّ على أنّ الدالة تعيد عددا يمثّل طولا. هو ليس نوعاً قاعديا مثل
+\InlineCode{int}،\InlineCode{float}،\InlineCode{char}
+و إنما هو نوع  "مُختَرَع". سنتعلم نحن كيف نقوم بإنشاء أنواعنا الخاصة في فصول لاحقة. حاليّا، سنكتفي بتخزين النتيجة التي تعيدها
+\InlineCode{strlen}
+في متغيّر من نوع
+\InlineCode{int}
+(سيقوم الحاسوب بالتحويل تلقائيّا من
+\InlineCode{size\_t}
+إلى
+\InlineCode{int}).
+يفترض أننا نقوم بتخزين هذه القيمة في متغيّر من نوع
+\InlineCode{size\_t}،
+لكن عمليّا
+\InlineCode{int}
+كاف لهذا.
+\end{information}
+الدالّة تأخد معاملا من نوع
+\InlineCode{const char*}.
+الـ\InlineCode{const} (التي تعني ثابت، تذكّر) تعني أن الدالة "ستَمتَنِع" عن تغير السلسلة. عندما ترى
+\InlineCode{const}،
+فستعلم أن المتغيَر لا يتمّ تعديله من طرف الدالّة، بل قرائته فقط.
+
+فلنجرّب الدالّة \InlineCode{strlen}
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string[] = "Hello";
+	int stringLength= 0;
+	// We put the length of string in stringLength
+	 stringLength = strlen(string);
+	// We display the length of string
+	printf("The string %s contains %d characters", string, stringLength);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+The string Hello contains 5 characters
+\end{Console}
+هذه الدالة سهلة الكتابة، يكفي القيام بحلقة على جدول
+\InlineCode{char}
+حتى تصل إلى المحرف
+\InlineCode{\textbackslash 0}.
+عدّاد تتمّ زيادته في كل دورة من الحلقة، و هذا العدّاد يتمّ إعادته في النهاية.
+
+هذا جعلني أريد كتابة شفرة شبيهة بتلك الخاصّة بـ\InlineCode{strlen}. هذا سيمكّنك من أن تفهم جيّدا كيف تعمل هذه الدالّة :
+\begin{Csource}
+int stringLen(const char* string);
+int main(int argc, char *argv[])
+{
+	char string[] = "Hello";
+	int stringLength = 0;
+	// We put the length of string in stringLength
+	stringLength = stringLen(string);
+	// We display the length of string
+	printf("The string %s contains %d characters", string, stringLength);
+	return 0;
+}
+
+int stringLen(const char* string)
+{
+	int charactersCount = 0;
+	char currentCharacter = 0;
+	do
+	{
+    	 	currentCharacter = string[charactersCount];
+    	 	charactersCount++;
+	}
+	while(currentCharacter != '\0'); // We loop while we didn’t reach \0
+	charactersCount--; // We decrement by 1 in order to not count \0
+	return charactersCount;
+}
+\end{Csource}
+هذه الدالة
+\InlineCode{stringLen}
+تقوم بحلقة على الجدول
+\InlineCode{string}.
+تقوم في كل مرة بتخزين المحرف الحالي في محرف مُساعد سميناه
+\InlineCode{currentCharacter}،
+ما إن يكون الحرف الحالي هو
+\InlineCode{\textbackslash 0}،
+نخرج من الحلقة.
+
+في النهاية نقوم بإنقاص 1 من المجموع، لكي لا نحسب
+\InlineCode{\textbackslash 0}.
+ قبل نهاية الدالة، نقوم بإرجاع الطول الذي حسبناه أي
+\InlineCode{charactersCount}.
