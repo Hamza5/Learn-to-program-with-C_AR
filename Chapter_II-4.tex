@@ -448,3 +448,72 @@ int stringLen(const char* string)
 \InlineCode{\textbackslash 0}.
  قبل نهاية الدالة، نقوم بإرجاع الطول الذي حسبناه أي
 \InlineCode{charactersCount}.
+
+\subsection{\texttt{strcpy} : نسخ سلسلة محرفيّة في أخرى}
+الدالة
+\InlineCode{strcpy}
+(و الّتي تعني "\textenglish{string copy}")
+تسمح بنسخ سلسلة محرفيّة إلى داخل أخرى.\\
+نموذج الدالّة :
+\begin{Csource}
+char* strcpy(char* stringCopy, const char* stringToCopy);
+\end{Csource}
+الدالّة تأخذ معاملين :
+\begin{itemize}
+  \item \InlineCode{stringCopy} : مؤشّر نحو \InlineCode{char*} (جدول \InlineCode{char}). في هذا الجدول يتمّ لصق السلسلة.
+  \item \InlineCode{stringToCopy} : مؤشّر نحو جدول آخر من \InlineCode{char}. هذه السلسلة يتمّ نسخها إلى \InlineCode{stringCopy}.
+\end{itemize}
+الدالّة تعيد مؤشّرا نحو
+\InlineCode{stringCopy}،
+و هو غير مفيد جدّا. عادة، لا نحفظ ما تعيده هذه الدالّة. فلنجرّبها :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string[] = "Text", copy[100] = {0};
+	strcpy(copy, string); // We copy "string" in "copy"
+	// If everything is okay, the copy must contain the same thing as string
+	printf("string is : %s\n", string);
+	printf("copy  is : %s\n", copy);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+string is : Text
+copy is : Text
+\end{Console}
+نلاحظ أنّ قيمة
+\InlineCode{string}
+هي
+"\textenglish{Text}".
+حتّى الآن، الأمر عاديّ.\\
+بالمقابل، نرى أيضا أن المتغيّر
+\InlineCode{copy}،
+الذي كان فارغا في البداية، قد تمّ ملؤه بمحتوى
+\InlineCode{string}.
+لقد تمّ فعلا نسخ السلسلة في
+\InlineCode{copy}.
+\begin{warning}
+  تأكّد أن السلسلة
+  \InlineCode{copy}
+  كبيرة كفاية لاحتواء محتوى
+  \InlineCode{string}.
+  إن قمت في هذا المثال بتعريف
+  \InlineCode{copy[5]}
+  (و الذي هو غير كاف لأنه لن يبق مكان لـ
+  \InlineCode{\textbackslash 0})،
+  الدالّة
+  \InlineCode{strcpy}
+  "ستخرج عن الذاكرة" و ربّما ستوقف البرنامج عن العمل. تجنّب ذلك، إلّا إذا كنت تريد تعطيل برنامجك.
+\end{warning}
+النسخ يمكن تمثيله كالتالي :
+\Picture{Chapter_II-4_String-Copy}
+كلّ محرف من
+\InlineCode{string}
+يتمّ وضعه في
+\InlineCode{copy}.\\
+السلسلة المحرفيّة
+\InlineCode{copy}
+تحوي عددا كبيرا من المحارف غير المستعملة، قد لاحظت هذا. أعطيته الحجم 100 من باب الحماية، لكنّ الحجم 6 كان كافيا.
+الفائدة من إنشاء جدول أكبر هي أنّه بهذه الطريقة السلسلة المحرفيّة
+\InlineCode{string}
+تكون قادرة على احتواء سلاسل أخرى قد تكون أكبر في بقيّة البرنامج.
