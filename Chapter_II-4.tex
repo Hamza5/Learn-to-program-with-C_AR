@@ -657,3 +657,85 @@ The strings are identical
 كما فعلت.
 
 ليس لديّ ما أضيفه فيما يتعلّق بهذه الدالّة. هي بسيطة الاستخدام، لكنّ الشيء الوحيد الذي لا يجب نسيانه هو أنّ 0 يعني "متطابق" و أي قيمة أخرى تعني "مختلف". هذا هو مصدر الأخطاء الوحيد هنا.
+
+\subsection{\texttt{strchr} : البحث عن محرف}
+الدالّة
+\InlineCode{strchr}
+تبحث عن محرف في سلسلة محرفيّة. نموذجها :
+\begin{Csource}
+char* strchr(const char* string, int characterToFind);
+\end{Csource}
+الدالّة تأخذ معاملين :
+\begin{itemize}
+  \item \InlineCode{string} : السلسلة التي يتمّ البحث فيها.
+  \item \InlineCode{characterToFind} : المحرف الّذي نبحث عنه في السلسلة.
+\end{itemize}
+\begin{information}
+  تلاحظ أنّ
+  \InlineCode{characterToFind}
+  من نوع
+  \InlineCode{int}
+  و ليس من نوع
+  \InlineCode{char}.
+  هذا ليس مشكلا فعلا لأنّه في الواقع المحرف هو عدد. على الرغم من ذلك، نفضّل استخدام
+  \InlineCode{char}
+  على
+  \InlineCode{int}
+  لتخزين المحارف في الذاكرة.
+\end{information}
+الدالة تقوم بإرجاع مؤشر نحو أوّل ظهور للمحرف الذي وجدته في السلسلة، أي أنها ترجع عنوانه في الذاكرة. إن لم تجد شيئا فستعيد
+\InlineCode{NULL}.\\
+في المثال التالي، سأسترحع هذا المؤشّر في
+\InlineCode{restOfString}.
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string[] = "Test text", *restOfString = NULL;
+	restOfString = strchr(string, 's');
+	if (restOfString != NULL) // If we found something
+	{
+    		printf("This is the rest of the string after the first s:%s", restOfString);
+	 }
+  return 0;
+}
+\end{Csource}
+\begin{Console}
+This is the rest of the string after the first s: st text
+\end{Console}
+هل فهمت ما حصل ؟ إن الأمر استثنائيّ قليلا.\\
+في الحقيقة، إن
+\InlineCode{restOfString}
+هو مؤشر مثل
+\InlineCode{string}،
+إلّا أنّ
+\InlineCode{string}
+يؤشّر على المحرف الأوّل
+(أي \InlineCode{'T'})
+بينما
+\InlineCode{restOfString}
+يؤشّر على أوّل محرف
+\InlineCode{'s'}
+موجود في
+\InlineCode{string}.
+
+المخطّط التالي يوضّح أين يؤشّر كلّ مؤشّر :
+\Picture{Chapter_II-4_String-Search}
+
+عندما أقوم بـ\InlineCode{printf}
+لـ\InlineCode{restOfString}،
+فمن العاديّ أن يتمّ عرض
+"\textenglish{st Text}".
+الدالّة
+\InlineCode{printf}
+تعرض كلّ المحارف التي تلقاها
+(\textenglish{s}،\textenglish{t}،\textenglish{T}،\textenglish{e}،\textenglish{x}،\textenglish{t})
+حتّى الوصول إلى
+\InlineCode{\textbackslash 0}
+الذي يعلمها بنهاية السلسلة.
+\subsubsection{نسخة مختلفة}
+توجد دالّة
+\InlineCode{strrchr}
+مطابقة تماما لـ\InlineCode{strchr}
+باستثناء أنها تعيد مؤشّرا على
+\textbf{آخر ظهور للمحرف}
+الموجود في السلسلة بدلا من الأوّل.
