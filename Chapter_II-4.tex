@@ -517,3 +517,86 @@ copy is : Text
 الفائدة من إنشاء جدول أكبر هي أنّه بهذه الطريقة السلسلة المحرفيّة
 \InlineCode{string}
 تكون قادرة على احتواء سلاسل أخرى قد تكون أكبر في بقيّة البرنامج.
+
+\subsection{\texttt{strcat} : وصل سلسلتين محرفيّتين}
+هذه الدالة تضيف سلسلة محرفيّة إلى نهاية الأخرى. نسمّي هذه العملية بالوصل
+(\textenglish{concatenation}).\\
+فلنفرض أن لدينا المتغيّرات التالية :
+\begin{itemize}
+  \item \InlineCode{string1 = "Hello "}
+  \item \InlineCode{string2 = "Mateo21"}
+\end{itemize}
+إن وصلت
+\InlineCode{string1}
+في
+\InlineCode{string2}
+فـ\InlineCode{string2}
+ستصبح
+\InlineCode{"Hello Mateo21"}.
+أمّا بالنسبة لـ\InlineCode{string2}،
+فلن تتغيّر و ستكون دائما
+\InlineCode{"Mateo21"}.
+فقط
+\InlineCode{string1}
+التي تتغيّر.
+
+هذا تماما ما تفعله
+\InlineCode{strcat}، هذا هو نموذجها :
+\begin{Csource}
+char* strcat(char* string1, const char* string2);
+\end{Csource}
+كما يمكنك أن ترى،
+\InlineCode{string2}
+غير قابل للتعديل لأنّه تمّ التصريح عنه كثابت في نموذج الدالّة.\\
+الدالّى تعيد مؤشّرا نحو
+\InlineCode{string1}،
+و مثلما هو الحال مع
+\InlineCode{strcpy}،
+فهذا لا يصلح لشيء كبير في حالتنا هذه : يمكننا إذن تجاهل ما تعيده الدالّة.
+
+الدالّة تضيف إلى
+\InlineCode{string1}
+محتوى
+\InlineCode{string2}.
+فلنرى هذا عن قرب :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string1[100] = "Hello ", string2[] = "Mateo21";
+	strcat(string1, string2); // We concatenate string2 to string1
+	// If everything is okay, string1 is equal to "Hello Mateo21"
+	 printf("string1 is : %s\n", string1);
+	// string2 didn’t change :
+	printf("string2 is as always : %s\n", string2);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+string1 is : Hello Mateo21
+string2 is as always : Mateo21
+\end{Console}
+تأكّد دائما أنّ
+\InlineCode{string1}
+كبيرة بما فيه الكفاية لكي نستطيع إضافة محتوى
+\InlineCode{string2}
+إليها، و إلّا فستحدث خروجا عن الذاكرة و قد يتسبب في تعطّل البرنامج.\\
+لهذا السبب قمت بتعريف
+\InlineCode{string2}
+بحجم 100. بينما تركت الحاسوب يحسب حجم
+\InlineCode{string1}
+تلقائيّا (هذا يعني أنني لم أحدد الحجم) لأنّ هذه السلسلة لا يتمّ تعديلها، فلا حاجة إذن لجعلها أكبر من اللازم.
+
+المخطط التالي يلخّص عمليّة الوصل.
+\Picture{Chapter_II-4_String-Concatenation}
+الجدول
+\InlineCode{string2}
+تمّت إضافته إلى نهاية
+\InlineCode{string1}
+(الذي يحوي 100 خانة).
+الـ\InlineCode{\textbackslash 0}
+الخاص بـ\InlineCode{string1}
+تمّ حذفه (في الواقع تمّ استبداله بـ\textenglish{M} من \textenglish{Mateo21}). في الواقع، لا يجب ترك
+\InlineCode{\textbackslash 0}
+في وسط سلسلة محرفيّة، و إلّا فسيتمّ "قطعها" في المنتصف ! لا نضع
+\InlineCode{\textbackslash 0}
+إلّا في نهاية سلسلة محرفيّة، فقط عندما ننهيها.
