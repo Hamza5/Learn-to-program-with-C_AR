@@ -600,3 +600,60 @@ string2 is as always : Mateo21
 في وسط سلسلة محرفيّة، و إلّا فسيتمّ "قطعها" في المنتصف ! لا نضع
 \InlineCode{\textbackslash 0}
 إلّا في نهاية سلسلة محرفيّة، فقط عندما ننهيها.
+
+\subsection{\texttt{strcmp} : مقارنة سلسلتين محرفيّتين}
+\InlineCode{strcmp}
+تقارن سلسلتين فيما بينهما. هذا هو نموذجها :
+\begin{Csource}
+int strcmp(const char* string1, const char* string2);
+\end{Csource}
+المتغيّران
+\InlineCode{string1}
+و
+\InlineCode{string2}
+يتمّ مقارنتهما. كما تلاحظون، لا يتمّ تعديل أيّ منهما لأنّه تمّ التصريح عنهما كثوابت.
+
+إنه من الضروري أن نقوم باسترجاع ما تعيده إلينا الدالة. في الواقع، \InlineCode{strcmp} تعيد :
+\begin{itemize}
+  \item 0 إن كانت السلسلتان متطابقتين.
+  \item قيمة أخرى (موجبة أو سالبة) إن كانت السلسلتان مختلفتين.
+\end{itemize}
+\begin{information}
+أعلم أنّه كان من المنطقيّ أكثر أن تعيد الدالّة 1 إن كانت السلسلتين متطابقتين لكي نقول "صحيح" (تذكّر المتغيّرات المنطقيّة). السبب بسيط :
+الدالّة تقارن قيم المحارف من كلّ سلسلة واحدا واحدا. إن كانت كلّ المحارف متطابقة فستعيد 0. إن كانت محارف
+\InlineCode{string1}
+أكبر من محارف
+\InlineCode{string2}،
+فالدالّة تعيد عددا موجبا. في الحالة المعاكسة تعيد عددا سالبا. عمليّا، نستخدم
+\InlineCode{strcmp}
+كثيرا للتحقّق من أنّ سلسلتين متطابقتان أم لا.
+\end{information}
+هذه شفرة التجريب الخاصّة بي :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char string1[] = "Test text", string2[] = "Test text";
+	if (strcmp(string1, string2) == 0) // If the strings are equal
+	{
+    		printf("The strings are identical\n");
+ 	}
+	 else
+	{
+    		printf("The strings are different\n");
+	 }
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+The strings are identical
+\end{Console}
+بما أنّ السلاسل متطابقة، فالدالّة
+\InlineCode{strcmp}
+أعادت العدد 0.\\
+لاحظ أنّه كان بإمكاني تخزين ما أعادته الدالّة في متغيّر من نوع
+\InlineCode{int}.
+لكنّ ذلك ليس ضروريّا، فيمكننا وضعها مباشرة داخل
+\InlineCode{if}
+كما فعلت.
+
+ليس لديّ ما أضيفه فيما يتعلّق بهذه الدالّة. هي بسيطة الاستخدام، لكنّ الشيء الوحيد الذي لا يجب نسيانه هو أنّ 0 يعني "متطابق" و أي قيمة أخرى تعني "مختلف". هذا هو مصدر الأخطاء الوحيد هنا.
