@@ -739,3 +739,50 @@ This is the rest of the string after the first s: st text
 باستثناء أنها تعيد مؤشّرا على
 \textbf{آخر ظهور للمحرف}
 الموجود في السلسلة بدلا من الأوّل.
+
+\subsection{\texttt{strpbrk} : أوّل محرف في القائمة}
+هذه الدالّة تشبه كثيرا السابقة. هذه تبحث عن محرف من بين تلك التي تعطيها على شكل سلسلة محرفيّة، بخلاف
+\InlineCode{strchr}
+التي لا يمكنها البحث عن سوى محرف وحيد في المرّة.
+
+مثلا، إن أعطيناها السلسلة
+\InlineCode{"xes"}
+و بحثنا في
+\InlineCode{"Test text"}،
+فالدالّة تعيد مؤشرا نحو أول تكرار لأحد المحارف التي وجدتها.
+في هذه الحالة، أوّل محرف من
+\InlineCode{"xes"}
+الّتي ستجده في
+\InlineCode{"Test text"}،
+هو الـ\InlineCode{'e'}، إذن
+\InlineCode{strpbrk}
+تعيد مؤشّرا على
+\InlineCode{'e'}.
+
+النموذج :
+\begin{Csource}
+char* strpbrk(const char* string, const char* charactersToFind);
+\end{Csource}
+فلنجرّب الدالّة :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char *restOfString;
+	// We search for the 1st occurrence of x, e or s in "Test text"
+	restOfString= strpbrk("Test text", "xes");
+	if (restOfString != NULL)
+	 {
+    		printf("This is the rest of the string starting by the first occurrence of the characters found : %s", restOfString);
+	}
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+This is the rest of the string starting by the first occurrence of the characters found : est text
+\end{Console}
+في هذا المثال، القيم المراد ارسالها إلى الدالّة مباشرة (بين علامتي اقتباس). لسنا مجبرين على استخدام متغيّر في كلّ المرّات، يمكننا كتابة السلسلة مباشرة.\\
+يجب تذكّر هذه القاعدة البسيطة :
+\begin{itemize}
+  \item إذا استخدمت علامتي الاقتباس \InlineCode{" "}، فهذا يعني \textbf{سلسلة محرفيّة}.
+  \item إذا استخدمت علامتي التنصيص \InlineCode{' '}، فهذا يعني \textbf{محرفا}.
+\end{itemize}
