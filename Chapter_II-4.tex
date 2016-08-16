@@ -787,7 +787,7 @@ This is the rest of the string starting by the first occurrence of the character
   \item إذا استخدمت علامتي التنصيص \InlineCode{' '}، فهذا يعني \textbf{محرفا}.
 \end{itemize}
 
-\subsection{strstr : البحث عن سلسلة محرفيّة في أخرى}
+\subsection{\texttt{strstr} : البحث عن سلسلة محرفيّة في أخرى}
 هذه الدالّة تبحث عن أوّل ظهور لسلسلة محرفيّة داخل أخرى.\\
 نموذجها :
 \begin{Csource}
@@ -831,3 +831,73 @@ First occurrence of text in Test text : text
 
 حتّى الآن، أنا أقوم بعرض السلسلة عن طريق المؤشّر الّذي تعيده الدالّة. عمليّا، هذا غير مهمّ جدّا. يمكنك فقط القيام بـ\InlineCode{if (result != NULL)}
 لمعرفة إن مان البحث قد أعاد أيّ شيء، و تُظهر "النصّ الذي تبحث عنه قد تمّ العثور عليه".
+
+\subsection{\texttt{sprintf} : الكتابة في سلسلة محرفيّة}
+\begin{information}
+  هذه الدالّة موجودة في
+  \InlineCode{stdio.h}
+  بخلاف الدوال التي درسناها إلى حدّ الآن، و التي كانت في
+  \InlineCode{string.h}
+\end{information}
+هذا الاسم يذكّرك بشيء ما. هذه الدالّة مشابهة إلى حدّ كبير لـ\InlineCode{printf}
+التي تعرفها، و لكن بدل الكتابة على الشاشة،
+\InlineCode{printf}
+تكتب في... سلسلة محرفيّة ! و من هذا اسمها الذي يبدأ بـ"\textenglish{s}" من "\textenglish{string}" (سلسلة محرفيّة بالإنجليزيّة).
+
+إنّها دالّة عمليّة جدّا لتنسيق سلسلة محرفيّة. مثال صغير :
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+int main(int argc, char *argv[])
+{
+	char string[100];
+	int age = 15;
+	// We write "You have 15 years" in string
+	sprintf(string, "You have %d years !", age);
+	// We display string to check its content
+  printf("%s", string);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+You have 15 years !
+\end{Console}
+تُستخدم بنفس طريقة
+\InlineCode{printf}
+باستثناء أنّه يجب إعطائها كمعامل أوّل مؤشّرا نحو السلسلة التي يجب أن تستقبل النصّ.
+
+في هذا المثال، أكتب في
+\InlineCode{string}
+"\textenglish{You have \%d years}"،
+حيث يتمّ استبدال
+\InlineCode{\%d}
+بمحتوى المتغيّر
+\InlineCode{age}.
+كلّ قواعد
+\InlineCode{printf}
+تطبّق، يمكنك إذا أردت أم تضع
+\InlineCode{\%s}
+لادراج سلاسل أخرى داخل سلسلتك !
+
+كالعادة، تأكّد أن سلسلتك كبيرة كفاية لاحتواء النصّ الذي سترسله لها
+\InlineCode{sprintf}.
+و إلّا، فقد يحدث تجاوز في الذاكرة و بالتالّي تعطّل برنامجك.
+
+\section*{ملخّص}
+\begin{itemize}
+  \item الحاسوب لا يجيد التعامل مع النصوص، هو لا يعرف إلّا الأعداد. لإصلاح هذا المشكل، تمّ ربط كلّ حرف بعدد موافق له في جدول يسمّى
+  \textbf{جدول \textenglish{ASCII}}.
+  \item النوع \InlineCode{char} يستخدم لتخزين حرف واحد. يخزّن في الحقيقة عددا، لكنّ هذا العدد تتمّ ترجمته إلى حرف من طرف الحاسوب أثناء العرض.
+  \item لإنشاء كلمة أو جملة، علينا بناء
+  \textbf{سلسلة محرفيّة}.
+  من أجل هذا، نستخدم
+  \textbf{جدول \texttt{char}}.
+  \item كلّ سلسلة محرفيّة تنتهي بمحرف خاصّ يكتب
+  \InlineCode{\textbackslash 0}
+  يعني "نهاية السلسلة".
+  \item توجد الكثير من الدوال الجاهزة للتعامل مع السلاسل المحرفيّة في
+  \textbf{المكتبة \textenglish{string}}.
+  يجب تضمين
+  \InlineCode{string.h}
+  لاستخدامها.
+\end{itemize}
