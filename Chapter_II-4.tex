@@ -786,3 +786,48 @@ This is the rest of the string starting by the first occurrence of the character
   \item إذا استخدمت علامتي الاقتباس \InlineCode{" "}، فهذا يعني \textbf{سلسلة محرفيّة}.
   \item إذا استخدمت علامتي التنصيص \InlineCode{' '}، فهذا يعني \textbf{محرفا}.
 \end{itemize}
+
+\subsection{strstr : البحث عن سلسلة محرفيّة في أخرى}
+هذه الدالّة تبحث عن أوّل ظهور لسلسلة محرفيّة داخل أخرى.\\
+نموذجها :
+\begin{Csource}
+char* strstr(const char* string, const char* stringToFind);
+\end{Csource}
+النموذج مشابه لذلك الخاص بـ\InlineCode{strpbrk}،
+لكن احذر من الخلط :
+\InlineCode{strpbrk}
+تبحث عن
+\underline{واحد}
+من المحارف، بينما
+\InlineCode{strstr}
+تبحث عن كلّ السلسلة.
+
+مثال :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	char *restOfString;
+	// We search for the 1st occurrence of "text" in "Test text" :
+	restOfString = strstr("Test text", "text");
+	if (restOfString != NULL)
+	 {
+    		printf("First occurrence of text in Test text : %s\n", restOfString);
+	}
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+First occurrence of text in Test text : text
+\end{Console}
+الدالّة
+\InlineCode{strstr}
+تبحث عن السلسلة
+"\textenglish{text}"
+في
+"\textenglish{Test text}".\\
+كغيرها، تعيد مؤشّرا عندما تجد ما تبحث عنه. و تعيد
+\InlineCode{NULL}
+إن لم تجد شيئا.
+
+حتّى الآن، أنا أقوم بعرض السلسلة عن طريق المؤشّر الّذي تعيده الدالّة. عمليّا، هذا غير مهمّ جدّا. يمكنك فقط القيام بـ\InlineCode{if (result != NULL)}
+لمعرفة إن مان البحث قد أعاد أيّ شيء، و تُظهر "النصّ الذي تبحث عنه قد تمّ العثور عليه".
