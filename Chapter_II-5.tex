@@ -3,3 +3,130 @@
 
 هذا الفصل يتحدّث عن المعالج القبلي، هذا البرنامج الّذي يعمل مباشرة قبل الترجمة.\\
 لا تخطئ : المعلومات التي به ستكون مهمّة لك. لكنّها ستكون أقل تعقيداً من الّتي تعلّمتها مؤخّراً.
+
+\section{الـ\texttt{include}}
+كما شرحت لكم في الفصول الأولى من الكتاب، نجد في الشفرات المصدريّة سطورا خاصّة تسمّى بـ\textbf{توجيهات المعالج القبلي} (\textenglish{Preprocessor directives}).\\
+هذه السطور لديها الخاصيّة التالية : تبدأ دائما بالرمز
+\InlineCode{\#}.
+لذا فمن السهل التعرّف عليها.
+
+التوجيهة الوحيدة التي رأيناها لحدّ الآن هي
+\InlineCode{\#include}.\\
+هذه التوجيهة تسمح لنا بتضمين محتوى ملف في آخر. قلت لكم هذا من قبل.\\
+نحن نحتاجها في تضمين الملفات ذات الصيغة
+\InlineCode{.h}
+كملفات
+\InlineCode{.h}
+الخاصّة بالمكتبات
+(\InlineCode{stdlib.h}، \InlineCode{stdio.h}، \InlineCode{string.h}، \InlineCode{math.h}...)،
+و أيضاً ملفات
+\InlineCode{.h}
+الخاصّة بنا.
+
+لنضمّن ملفاً ذو صيغة
+\InlineCode{.h}
+موجوداً في نفس المجلّد الذي ثبتنا فيه الـ\textenglish{IDE}
+(أي البيئة التطويرية كالـ\textenglish{Code::Blocks}
+مثلا)، نستعمل علامات الترتيب
+\InlineCode{< >}
+كالتالي :
+\begin{Csource}
+#include <stdlib.h>
+\end{Csource}
+بينما لتضمين ملفّ
+\InlineCode{.h}
+موجود في المجلّد الذي به مشروعنا، فسنقوم يذلك باستخدام علامتي الترتيب كالتالي :
+\begin{Csource}
+#include "myfile.h"
+\end{Csource}
+في الحقيقة، المعالج القبلي يتمّ تشغيله قبل الترجمة. يبحث في كلّ ملفاتك عن توجيهات المعالج القبلي، تلك الأسطر المشهورة التي تبدأ بـ\InlineCode{\#}.\\
+عندما يجد التوجيهة
+\InlineCode{\#include}،
+يقوم بإدراج محتوى الملفّ في مكان وجود
+\InlineCode{\#include}.
+
+
+افترض أن لديّ ملفّا
+\InlineCode{file.c}
+يحتوي الشفرة الخاصة بالدوال التي كتبتها، و لدي ملف
+\InlineCode{file.h}
+يحتوي نماذج الدوال التي هي موجودة بالملف
+\InlineCode{file.c}،
+يمكن تلخيص ذلك بالمخطط التالي.
+\Picture{Chapter_II-5_file-c-file-h}
+كل محتوى الملف
+\InlineCode{file.h}
+سيتم وضعه داخل الملف
+\InlineCode{file.c}
+في مكان التوجيهة
+\InlineCode{\#include "file.h"}.
+
+تخيّل أن لدينا في الملف
+\InlineCode{file.c}
+التالي :
+\begin{Csource}
+#include "file.h"
+
+int myFunction(int something, double stupid)
+{
+  /* The code of the function */
+}
+void anotherFunction(int value)
+{
+  /* The code of the function */
+}
+\end{Csource}
+و في الملف
+\InlineCode{file.h} :
+\begin{Csource}
+int myFunction(int something, double stupid);
+void anotherFunction(int value);
+\end{Csource}
+عندما يمر المعالج القبلي بهذه الشفرة، قبل أن تتم ترجمة الملف
+\InlineCode{file.c}،
+سيضع كما قلت محتوى الملف
+\InlineCode{file.h}
+ في الملف
+\InlineCode{file.c}.
+في النهاية، يعني أن الملف
+\InlineCode{file.c}
+\textit{قُبَيْل}
+الترجمة سيحتوي التالي :
+\begin{Csource}
+int myFunction(int something, double stupid);
+void anotherFunction(int value);
+
+int myFunction(int something, double stupid)
+{
+  /* The code of the function */
+}
+void anotherFunction(int value)
+{
+  /* The code of the function */
+}
+\end{Csource}
+محتوى
+\InlineCode{.h}
+تمّ ادخاله مكان
+\InlineCode{\#include}.
+
+هذا ليس بالأمر المعقد لفهمه، و لعلّ بعض القراء يشكك في أن الأمر يحصل بهذه الطريقة.\\
+مع هذه الشروحات الإضافيّة، أتمنّى أنّ الجميع يوافقني.
+الـ\InlineCode{\#include}
+لا تفعل أي شيء سوى إحضار محتوى ملف و تضمينه في آخر، من المهمّ فهم هذا الأمر جيّدا.
+\begin{information}
+  إن كنّا قد قررنا وضع النماذج في ملفّات
+\InlineCode{.h}
+بدل ملفّات
+\InlineCode{.c}،
+فهذا من المبدأ.
+بالطبع، كان بإمكاننا وضع نماذج الدوال في أعلى الملفات
+\InlineCode{.c}
+بأنفسنا (قد نفعل هذا أحيانا في بعض البرامج الصغيرة)، لكن لأسباب تنظيميّة، من المنصوح به جدّا وضع النماذج في ملفّات
+\InlineCode{.h}.
+ عندما يكبر برنامجك و يصبح لديك الكثير من ملفّات
+\InlineCode{.c}
+يعتمدون على نفس
+\InlineCode{.h}،
+ستكون سعيدا لأنّك لن تظطرّ إلى نسخ و لصق النماذج الخاصّة بنفس الدوال عدّة مرّات !
+\end{information}
