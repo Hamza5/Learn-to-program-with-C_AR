@@ -282,3 +282,26 @@ int main(int argc, char *argv[])
 ضع دائما حساباتك بين قوسين كما أفعل من باب الاحتياط لكي تعزل العمليّة.
 
 يمكنك القيام بكل العمليات القاعدية التي تعرفها : جمع (+)، طرح (-)، ضرب (*)، قسمة (/)، ترديد (\%).
+
+\subsection{الثوابت مسبقة التعريف}
+بالإضافة إلى الثوابت التي أنت عرّفتها، فإنه توجد ثوابت معرّفة من قِبَل المعالج القبلي.
+
+كل من هذه الثوابت تبدأ و تنتهي برمزين
+\textenglish{underscore} \InlineCode{\_}
+(تجده في لوحة المفاتيح تحت الرقم 8 أعلى اللوحة بالنسبة للتخطيط
+\textenglish{AZERTY}).
+\begin{itemize}
+  \item \InlineCode{\_\_LINE\_\_} : يعطي رقم السطر الحالي من الشفرة.
+  \item \InlineCode{\_\_FILE\_\_} : يعطي إسم الملف الحالي.
+  \item \InlineCode{\_\_DATE\_\_} : يعطي تاريخ ترجمة الشفرة.
+  \item \InlineCode{\_\_TIME\_\_} : تعطي وقت ترجمة الشفرة.
+\end{itemize}
+قد تكون هذه الثوابت مفيدة للتحكم في الأخطاء، مثال :
+\begin{Csource}
+printf("Error in the line n° %d of the file %s\n", __LINE__, __FILE__);
+printf("This file has been compiled on %s at %s\n", __DATE__, __TIME__);
+\end{Csource}
+\begin{Console}
+Error in the line n° 9 of the file main.c
+This file has been compiled on 13 Jan 2006 at 19:21:10
+\end{Console}
