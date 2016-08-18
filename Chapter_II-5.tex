@@ -259,3 +259,26 @@ int main(int argc, char *argv[])
 إعادة الترجمة، و جداول
 \InlineCode{char}
 تأخذ القيمة الجديدة الّتي حددتها.
+
+\subsection{الحسابات في الـ\texttt{define}}
+من الممكن القيام بحسابات صغيرة في الـ\InlineCode{\#define}.\\
+مثلا، هذه الشفرة تنشئ ثابتا
+\InlineCode{WINDOW\_WIDTH}،
+و آخر
+\InlineCode{WINDOW\_HEIGHT}،
+ثمّ ثالثا
+\InlineCode{PIXELS\_NUMBER}،
+الذي يحوي عدد البيكسلز المعروضة داخل النافذة (الحساب بسيط : العرض $\times$ الطول).
+\begin{Csource}
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+#define PIXELS_NUMBER (WINDOW_WIDTH * WINDOW_HEIGHT)
+\end{Csource}
+قيمة
+\InlineCode{PIXELS\_NUMBER}
+يتمّ استبدالها قبل الترجمة بالشفرة التالية :
+\InlineCode{(WINDOW\_WIDTH * WINDOW\_HEIGHT)}،
+أي (800*600)، و تعطينا 480000.
+ضع دائما حساباتك بين قوسين كما أفعل من باب الاحتياط لكي تعزل العمليّة.
+
+يمكنك القيام بكل العمليات القاعدية التي تعرفها : جمع (+)، طرح (-)، ضرب (*)، قسمة (/)، ترديد (\%).
