@@ -305,3 +305,17 @@ printf("This file has been compiled on %s at %s\n", __DATE__, __TIME__);
 Error in the line n° 9 of the file main.c
 This file has been compiled on 13 Jan 2006 at 19:21:10
 \end{Console}
+
+\subsection{المعرّفات البسيطة}
+إنه من الممكن أن نكتب بكل بساطة :
+\begin{Csource}
+#define CONSTANT
+\end{Csource}
+دون إعطاء القيمة.\\
+هذا يعني للمعالج القبلي أنّ الكلمة
+\InlineCode{CONSTANT}
+معرّفة، بكلّ بساطة. ليست لها قيمة لكنّها "موجودة".
+\begin{question}
+  ما الفائدة من ذلك ؟
+\end{question}
+القائدة قد لا تبدو واضحة كما كان الأمر في السابق، لكن لهذا فائدة و سنكتشفها بسرعة.
