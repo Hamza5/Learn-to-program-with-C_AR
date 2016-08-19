@@ -337,3 +337,59 @@ This file has been compiled on 13 Jan 2006 at 19:21:10
 للبحث و استبدال كلمة بشفرة مصدرية نقول أننا أنشأنا
 \textbf{ماكرو
 (\textenglish{Macro})}.
+
+\subsection{ماكرو بدون معاملات}
+هذا مثال عن ماكرو بسيطة :
+\begin{Csource}
+#define COUCOU() printf("Coucou");
+\end{Csource}
+الشيء الذي تغيّر هو القوسين الذين أضفناهما بعد الكلمة المفتاحيّة (هنا
+\InlineCode{COUCOU()}).
+سنرى فائدتهما بعد قليل.
+
+فلنجرب الماكرو داخل الشفرة المصدرية:
+\begin{Csource}
+#define COUCOU() printf("Coucou");
+int main(int argc, char *argv[])
+{
+  COUCOU()
+  return 0;
+}
+\end{Csource}
+\begin{Console}
+Coucou
+\end{Console}
+أعلم أنّ هذا ليس شيئا جديدا حاليّا. لكنّ الّذي عليك فهمه، هو أن الماكرو عبارة عن بضعة أسطر من الشفرة التي يتم استبدالها مباشرة في الشفرة قبل الترجمة.\\
+الشفرة التي كتبناها تصبح هكذا قبل الترجمة :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	printf("Coucou");
+	return 0;
+}
+\end{Csource}
+إذا فهمت هذا فقد فهمت مبدأ عمل الماكرو.
+\begin{question}
+  لكن، هل يمكننا أن نضع سطراً واحدا فقط من الشفرة في كلّ ماكرو ؟
+\end{question}
+لا، لحسن الحظ يمكنك وضع عدّة أسطر من الشفرة في المرّة. يكفي وضع
+\InlineCode{\textbackslash}
+قبل كلّ سطر جديد، مثل هذا :
+\begin{Csource}
+#define TELL_YOUR_STORY() printf("Hello, my name is Brice\n"); \
+                          printf("I live at Nice\n"); \
+                          printf("I love rice\n");
+int main(int argc, char *argv[])
+{
+	TELL_YOUR_STORY()
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+Hello, my name is Brice
+I live at Nice
+I love rice
+\end{Console}
+كما تلاحظ في
+\InlineCode{main}،
+أنّ نداء الماكرو لا يوضع بعده فاصلة منقوطة في النهاية. في الواقع، لأنها توجيهة خاصة بالمعالج القبلي و لا تحتاج إلى  أن تنتهي بفاصلة منقوطة.
