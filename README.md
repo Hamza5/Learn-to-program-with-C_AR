@@ -33,7 +33,7 @@
     - [x] <span dir='rtl'>المؤشّرات</span>
     - [x] <span dir='rtl'>الجداول</span>
     - [x] <span dir='rtl'>السلاسل المحرفيّة</span>
-    - [ ] <span dir='rtl'>المعالج القبلي</span>
+    - [x] <span dir='rtl'>المعالج القبلي</span>
     - [ ] <span dir='rtl'>انشئ أنواع متغيّرات خاصة بك</span>
     - [ ] <span dir='rtl'>قراءة و كتابة الملفّات</span>
     - [ ] <span dir='rtl'>الحجز الحيّ للذاكرة</span>

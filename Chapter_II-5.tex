@@ -529,3 +529,144 @@ int main(int argc, char *argv[])
 \InlineCode{\#define LINUX}
 و تعيد الترجمة. هذه المرّة الجزء الخاصّ بـ\textenglish{Linux}
 الّذي ستتمّ ترجمته أمّا باقي الشروط فلن تكون محققة يعني أنه سيتم تجاهلها.
+
+\subsection{\texttt{\#ifndef} لتفادي التضمينات اللامنتهية}
+\InlineCode{\#ifndef}
+مهمّمة جدّا في الملفّات
+\InlineCode{.h}
+لتجنّب "التضمينات اللامنتهية".
+\begin{question}
+  ماذا يعني التضمين اللامنتهي ؟
+\end{question}
+هذا أمر بسيط، تخيل أن لدينا ملفأً
+\InlineCode{A.h}
+و ملفأً
+\InlineCode{B.h}،
+الملف
+\InlineCode{A.h}
+يحتوي
+\InlineCode{\#include}
+للملف
+\InlineCode{B.h}.
+إذا فالملف
+\InlineCode{B.h}
+مضمّن الآن بـ
+\InlineCode{A.h}.\\
+و هنا يبدأ المشكل، تخيّل أن الملف
+\InlineCode{B.h}
+يحتوي نفسه على
+\InlineCode{\#include}
+للملف
+\InlineCode{A.h} !
+هذا يحدث أحيانا في البرمجة ! يعني أن الملف الأول بحاجة إلى الثاني و الثاني بحاجة إلى الأول أيضا.
+
+إن فكّرنا قليلا، فسنعرف أنّ هذا ما سيحصل :
+\begin{itemize}
+  \item  الحاسوب يقرأ
+\InlineCode{A.h}
+و يجد بأن عليه تضمين
+\InlineCode{B.h}.
+  \item يقوم بقراءة
+\InlineCode{B.h}
+فيجد بان عليه تضمين
+\InlineCode{A.h}.
+  \item  يضمّن
+\InlineCode{A.h}
+في
+\InlineCode{B.h}،
+لكن داخل
+\InlineCode{A.h}
+يجد بأنّه يحتاج إلى تضمين
+\InlineCode{B.h} !
+  \item يكرّر، يرى أنّ
+\InlineCode{B.h}
+و يجد أنّه يجب عليه تضمين
+\InlineCode{A.h}.
+  \item إلخ.
+\end{itemize}
+قد تظنّ أنّ هذا الأمر لا نهاية له !\\
+في الحقيقة، من كثرة التضمينات، سيتوقّف المعالج القبلي قائلا "لقد سئمت من التضمينات !" و هذا ما يعطّل الترجمة.
+
+كيف السبيل لوقف هذا الكابوس المريع ؟ إليك الحيلة. أطلب منك فعل هذا في
+\textbf{كلّ ملفّات
+\InlineCode{.h}
+الخاصّة بك} بدون استثناء :
+\begin{Csource}
+#ifndef DEF_FILENAME // If the constant has not been defined, the file then has never been included
+#define DEF_FILENAME // We define the constant so the file will not be included the next time
+
+/* Content of your file .h (other #include, prototypes, #define...) */
+
+#endif
+\end{Csource}
+أي أننا نضع كل محتوى الملف
+\InlineCode{.h}
+(بما في ذلك
+\InlineCode{\#include}،
+النماذج،
+\InlineCode{\#define})
+بين الـ\InlineCode{\#ifndef}
+و الـ\InlineCode{\#endif}.
+
+هل فهمت كيف تعمل الشفرة ؟ أوّل مرّة رأيت هذه التقنيّة كنت مشوّشا كثيرا : سأحاول أن أشرح.
+
+تخيل أن الملف
+\InlineCode{.h}
+يتم تضمينه للمرة الأولى، سيقرأ الحاسوب الشرط "إذا كان الثابت
+\InlineCode{DEF\_FILENAME}
+لم يتم تعريفه". بما أنه يتمّ قرائة الملف للمرة الأولى، فإن الثابت لم يتم تعريفه بعد، فسيقوم المعالج القبلي بالدخول إلى داخل
+\InlineCode{if}.
+
+أوّل تعليمة سيجدها هي :
+\begin{Csource}
+#define DEF_FILENAME
+\end{Csource}
+الآن لقد تم تعريف الثابت. في المرّة القادمة التي يتم فيها تضمين الملف، لن يكون الشرط فيها صحيحا و لهذا لن نخاطر بإعادة تضمين الملف من جديد.
+
+يمكنك تسمية اسم الثابت كما تريد، أنا اعتدت على تسميته
+\InlineCode{DEF\_FILENAME}.
+
+الشيء الأهمّ، و الّذي أتمنّى أنّكم فهمتموه جيّدا، هو أن تغيّر اسم الثابت من ملف
+\InlineCode{.h}
+إلى آخر. يجب ألّا يكون نفس الثابت في كلّ ملفّات
+\InlineCode{.h}،
+و إلا فلن تتم قراءة سوى أول ملف
+\InlineCode{.h}
+و الباقي سيتم تجاهلها !\\
+إذا فلتغيّر
+\InlineCode{FILENAME}
+باسم الملف الحالي.
+\begin{information}
+أنصحك بإلقاء نظرة على
+\InlineCode{.h}
+الخاصّة بالمكتبات القياسيّة المتواجدة في حاسوبك، سترى بأنها
+كلها
+مكتوبة بنفس المبدأ
+(\InlineCode{\#ifndef}
+في البداية و
+\InlineCode{\#endif}
+في النهاية). هذا يضمن عدم إمكانيّة حصول تضمينات لامنتهية.
+\end{information}
+
+\section*{ملخّص}
+\begin{itemize}
+  \item المعالج القبلي هو برنامج يحلّل الشفرة المصدريّة، و يقوم بإجراء تغييرات علىها قبل الترجمة.
+  \item تعليمة المعالج القبلي
+\InlineCode{\#include}
+تسمح بإدراج محتوى ملف آخر.
+  \item تعليمة
+\InlineCode{\#define}
+تسمح بتعريف ثابت معالج قبلي. يتم استبدال كلمة مفتاحيّة بقيمة في الشفرة المصدريّة.
+  \item الماكرو هي مجموعة أسطر من الشفرة الجاهزة معرّفة بالـ\InlineCode{\#define}.
+يمكنها أن تقبل معاملات.
+  \item من الممكن كتابة شروط في لغة المعالج القبلي لاختيار ما يجب ترجمته، نستعمل عادة
+\InlineCode{\#if}،
+\InlineCode{\#elif}
+و
+\InlineCode{\#endif}.
+  \item لنتجنب أنّ ملف
+\InlineCode{.h}
+يتمّ تضمينه عددا لامنتهيا من المرّات، نحميه بمجموعة من ثوابت المعالج القبلي و الشروط. كلّ ملفّاتك
+\InlineCode{.h}
+المستقبليّة يجب حمايتها بهذه الطريقة.
+\end{itemize}
