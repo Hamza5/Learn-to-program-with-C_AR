@@ -458,3 +458,27 @@ int main(int argc, char *argv[])
 و الـ\textenglish{Qt}
 (مكتبات لإنشاء الواجهات الرسوميّة) تستعملان بكثرة الماكرو. لهذا من المستحسن أن تتعلّم كيف تعمل الأمور من الآن كي لا تضيع لاحقا.
 \end{information}
+
+\section{الشروط}
+أجل : يمكننا أن نستعمل الشروط في لغة المعالج القبلي ! لاحظ كيف تعمل :
+\begin{Csource}
+#if condition
+  /* Code to compile if the condition is true */
+#elif condition2
+  /* Else, compile this code if the condition2 is true */
+#endif
+\end{Csource}
+الكلمة المفتاحية
+\InlineCode{\#if}
+تسمح بإدراج شرط معالج قبلي،
+\InlineCode{\#elif}
+تعني
+\InlineCode{else if}.
+الأمر يتوقف عندما نضع
+\InlineCode{\#endif}،
+تلاحظ أنه لا توجد حاضنتان في لغة المعالج القبلي.
+
+الفائدة هي أننا سنتمكن من إجراء
+\textbf{ترجمة شرطية
+(\textenglish{Conditional compilation})}.\\
+في الواقع، إن كان الشرط محققا فإن الشفرة التالية ستتم ترجمتها، و إلّا فسيتم حذفه و لن يكون جزءً من البرنامج النهائي.
