@@ -482,3 +482,50 @@ int main(int argc, char *argv[])
 \textbf{ترجمة شرطية
 (\textenglish{Conditional compilation})}.\\
 في الواقع، إن كان الشرط محققا فإن الشفرة التالية ستتم ترجمتها، و إلّا فسيتم حذفه و لن يكون جزءً من البرنامج النهائي.
+
+\subsection{
+\texttt{\#ifdef}
+و
+\texttt{\#ifndef}
+}
+سنرى الآن الفائدة من استعمال
+\InlineCode{\#define}
+لتعريف ثابت دون إعطائه أيّ قيمة، مثلما علّمتك من قبل :
+\begin{Csource}
+#define CONSTANT
+\end{Csource}
+في الواقع، يمكننا استعمال الشرط
+\InlineCode{\#ifdef}
+لنقول "إن كان الثابت معرّفا".
+بالنسبة لـ\InlineCode{\#ifndef}،
+فهذا يعني "إن كان الثابت غير معرّف".
+
+يمكننا أن نتخيل هذا :
+\begin{Csource}
+#define WINDOWS
+#ifdef WINDOWS
+  /* Source code for Windows */
+#endif
+#ifdef LINUX
+  /* Source code for Linux */
+#endif
+#ifdef MAC
+  /* Source code for Mac */
+#endif
+\end{Csource}
+هذا مثال عن برنامج متعدد المنصات
+(\textenglish{multi-platform})
+للتلاؤم مع النظام مثلا.\\
+إذن ،يجب من أجل كلّ نظام إعادة ترجمة الشفرة (هذا ليس أمرا سحريّا).
+إن كنت في
+\textenglish{Windows}
+فستكتب
+\InlineCode{\#define WINDOWS}
+في الأعلى و تعيد الترجمة.\\
+إن أردت الترجمة لـ\textenglish{Linux}
+فسيكون عليك تغيير
+\InlineCode{\#define}
+لوضع
+\InlineCode{\#define LINUX}
+و تعيد الترجمة. هذه المرّة الجزء الخاصّ بـ\textenglish{Linux}
+الّذي ستتمّ ترجمته أمّا باقي الشروط فلن تكون محققة يعني أنه سيتم تجاهلها.
