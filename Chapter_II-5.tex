@@ -393,3 +393,68 @@ I love rice
 كما تلاحظ في
 \InlineCode{main}،
 أنّ نداء الماكرو لا يوضع بعده فاصلة منقوطة في النهاية. في الواقع، لأنها توجيهة خاصة بالمعالج القبلي و لا تحتاج إلى  أن تنتهي بفاصلة منقوطة.
+
+\subsection{ماكرو بالمعاملات}
+لحدّ الآن، رأينا كيف نقوم بإنشاء ماكرو بدون معاملات، أي بقوسين فارغين. الفائدة من هذا النوع من الماكرو أنّه يفيد في "اختصار" شفرة طويلة، خاصّة إذا كانت ستتكرّ كثيرا في شفرتك المصدريّة.
+
+لكن الماكرو تصبح مفيدة أكثر عندما نضع لها الأقواس. هذا يعمل تقريبا مثل الدوال :
+\begin{Csource}
+#define ADULT(age) if (age >= 18) \
+                    printf("You are adult\n");
+int main(int argc, char *argv[])
+{
+	ADULT(22)
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+You are adult
+\end{Console}
+\begin{information}
+يمكننا مثلا إضافة الـ\InlineCode{else}
+لكي نُظهر على الشاشة : أنت لست بالغاً
+"\textenglish{You are not adult}".
+حاول القيام بذلك، الأمر ليس صعبا.لا تنس وضع الشرطة الخلفيّة
+\InlineCode{\textbackslash}
+قبل السطر الجديد.
+\end{information}
+مبدأ الماكرو بسيط جدّا :
+\begin{Csource}
+#define ADULT(age) if (age >= 18) \
+                    printf("You are adult\n");
+\end{Csource}
+نقوم بوضع اسم "متغير" بين القوسين، و الّذي نسميه
+\InlineCode{age}.
+في كلّ شفرة الماكرو،
+\InlineCode{age}
+سيتم استبداله بالعدد المحدد عند النداء (هنا 22).
+
+أي أن الشفرة المصدريّة السابقة بعد مرور المعالج القبلي مباشرة تصبح هكذا :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	if (22 >= 18)
+		printf("You are adult\n");
+	return 0;
+}
+\end{Csource}
+تم استبدال السطر الذي ينادي الماكرو بالشفرة التي تحتويه الماكرو، و تم تعويض "المتغير"
+\InlineCode{age}
+بقيمته مباشرة في الشفرة المصدريّة للاستبدال.
+
+يمكننا انشاء ماكرو بعدة معاملات :
+\begin{Csource}
+#define ADULT(age, name) if (age >= 18)
+printf("You are adult %s\n", name);
+int main(int argc, char *argv[])
+{
+	ADULT(22, "Maxime")
+	return 0;
+}
+\end{Csource}
+هذا كلّ ما يمكننا أن نقوله حول الماكرو و المميزات التي تقدّمها لنا. يمكنك تذكّر أنّه مجرّد استبدال للشفرة المصدرية يمكنه استخدام المعاملات.
+\begin{information}
+في الواقع، أنت لست بحاجة أن تتعامل كثيراً مع الماكرو، لكن اعلم أن مكتبات معقدة كالـ\textenglish{wxWidgets}
+و الـ\textenglish{Qt}
+(مكتبات لإنشاء الواجهات الرسوميّة) تستعملان بكثرة الماكرو. لهذا من المستحسن أن تتعلّم كيف تعمل الأمور من الآن كي لا تضيع لاحقا.
+\end{information}
