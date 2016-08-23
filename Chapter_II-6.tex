@@ -126,3 +126,43 @@ struct Person
 المتغيران الأخيران يخزّنان عُمر و جنس الشخص. الجنس هو متغيّر منطقي، 1 = صحيح = ولد و 0 = خطأ = بنت.
 
 يمكن لهذا الهيكل أن يساعدنا في كتابة برنامج مذكّرة عناوين. يمكنك بالطبع إضافة القدر الذين تريد من المتغيرات داخل الهيكل من أجل إتمامها إذا أردت. لا يوجد حدّ لعدد المتغيّرات في هيكل.
+
+\section{إستعمال هيكل}
+و الآن، بما أن الهيكل معرّف في ملف
+\InlineCode{.h}،
+سنتمكّن من استعماله في دالة موجودة بملف
+\InlineCode{.c}.\\
+أنظر كيف نقوم بإنشاء متغير من نوع
+\InlineCode{Coordinates}
+(الهيكل الّذي عرّفناه سابقا) :
+\begin{Csource}
+#include "main.h" // Including the files that contains the prototypes and structures
+int main(int argc, char *argv[])
+{
+	struct Coordinates point; // Creating a variable "point" of type Coordinates
+	return 0;
+}
+\end{Csource}
+هكذا نكون قد أنشأنا متغيراً
+\InlineCode{point}
+من نوع
+\InlineCode{Coordinates} !
+هذا المتغير سيحمل داخله مركّبين (متغيرين داخليين) :
+\InlineCode{x}
+و
+\InlineCode{y}
+(فاصلته و ترتيبته).
+
+\begin{question}
+  هل من اللازم أن نضع الكلمة المفتاحية
+\InlineCode{struct}
+عند تعريف المتغير ؟
+\end{question}
+
+نعم، فهذا يسمح للحاسوب بأن يفرّق بين نوع عادي (مثل
+\InlineCode{int})
+و نوع شخصي.\\
+المبرمجون وجدوا أنه من المتعب جدّا أن يكتبوا في كلّ مرة الكلمة
+\InlineCode{struct}
+في كلّ تعريف لمتغيّر شخصي.
+لمعالجة هذا المشكل، اخترعوا تعليمة خاصّة : الـ\InlineCode{typedef}.
