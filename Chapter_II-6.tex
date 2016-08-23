@@ -166,3 +166,58 @@ int main(int argc, char *argv[])
 \InlineCode{struct}
 في كلّ تعريف لمتغيّر شخصي.
 لمعالجة هذا المشكل، اخترعوا تعليمة خاصّة : الـ\InlineCode{typedef}.
+
+\subsection{الـ\texttt{typedef}}
+لنعد إلى الملف
+\InlineCode{.h}
+الذي يحمل تعريف هيكلنا من نوع
+\InlineCode{Coordinates}.
+سنضيف تعليمة اسمها
+\InlineCode{typedef}
+و الّتي تفيد في إعطاء اسم مستعار
+(\textenglish{alias})
+لهيكل، أي كتابة شيء مكافئ لكتابة آخر.
+
+إذا، سنضيف سطرا يبدأ بـ\InlineCode{typedef}
+قبل تعريف الهيكل مباشرة :
+\begin{Csource}
+typedef struct Coordinates Coordinates;
+struct Coordinates
+{
+	int x;
+	int y;
+};
+\end{Csource}
+هذا السطر متكون من ثلاثة أجزاء :
+\begin{itemize}
+  \item \InlineCode{typedef} :
+  تعني أننا سنقوم بإنشاء اسم مستعار لهيكل.
+  \item \InlineCode{struct Coordinates} :
+  هو اسم الهيكل الذي سنقوم بانشاء اسم مستعار له (أي "مكافئ").
+  \item \InlineCode{Coordinates} :
+  هو اسم المكافئ.
+\end{itemize}
+ببساطة، هذا السطر يقول : "كتابة
+\InlineCode{Coordinates}
+مكافئ لكتابة
+\InlineCode{struct Coordinates}".
+بفعل هذا، لن يكون عليك كتابة الكلمة
+\InlineCode{struct}
+عند كلّ تعريف لمتغيّر من نوع
+\InlineCode{Coordinates}.
+يمكننا العودة إلى
+\InlineCode{main}
+و كتابة فقط :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	 Coordinates point; // The computer understands that we are talking about "struct Coordinates" thanks to typedef
+   return 0;
+}
+\end{Csource}
+أنصحك أن تستعمل الـ\InlineCode{typedef}
+مثلما فعلت أنا هنا من أجل
+\InlineCode{Coordinates}.
+أغلب المبرمجين يفعلون هذا. هذا يسمح لهم بعدم كتابة
+\InlineCode{struct}
+في كلّ مرّة. المبرمج الجيّد هو مبرمج كسول ! أي أنه يكتب أقل ما يمكن.
