@@ -221,3 +221,95 @@ int main(int argc, char *argv[])
 أغلب المبرمجين يفعلون هذا. هذا يسمح لهم بعدم كتابة
 \InlineCode{struct}
 في كلّ مرّة. المبرمج الجيّد هو مبرمج كسول ! أي أنه يكتب أقل ما يمكن.
+
+\subsection{تغيير مركّبات هيكل}
+و الآن بعدما قمنا بإنشاء متغيّرنا
+\InlineCode{point}،
+نريد أن نغيّر إحداثيّاته.\\
+كيف نصل إلى
+\InlineCode{x}
+و
+\InlineCode{y}
+الموجودة في المتغير
+\InlineCode{point}
+؟ هكذا :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	Coordinates point;
+	point.x = 10;
+	point.y = 20;
+	return 0;
+}
+\end{Csource}
+بهذا نكون قد غيّرنا قيمة
+\InlineCode{point}،
+بإعطائه الفاصلة 10 و الترتيبة 20. نقطتنا أصبحت في الوضعية (10؛20) (هذا هو الترميز الرياضياتي للإحداثيّات).
+
+لكي نتمكن من الوصول إلى مركّب في الهيكل، يجب كتابة :
+\begin{Csource}
+  variable.componentName
+\end{Csource}
+النقطة هي التي تفرّق بين المتغير و المركّب.
+
+إن أخذنا الهيكل
+\InlineCode{Person}
+الذي رأيناه منذ قليل و نطلب الاسم و اللقب فسنفعل هكذا :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	Person user;
+  printf("What's your last name ? ");
+	scanf("%s", user.lastName);
+	printf("What's your first name ? ");
+	scanf("%s", user.firstName);
+	printf("You are %s %s", user.firstName, user.lastName);
+	return 0;
+}
+\end{Csource}
+\begin{Console}
+What's your first name ? Dupont
+What's your last name ? Jean
+You are Jean Dupont
+\end{Console}
+نرسل المتغير
+\InlineCode{user.name}
+إلى الدالة
+\InlineCode{scanf}،
+و التي ستكتب مباشرة في
+\InlineCode{user}.\\
+نفعل نفس الشيء مع
+\InlineCode{firstName}،
+يمكننا فعل ذلك أيضا مع العنوان، العمر و الجنس، لكنّي لا أرغب بتكرار ذلك (يحب أن أكون مبرمجا !).
+
+يمكن فعل هذا بدون معرفة الهياكل، فقط بإنشاء متغيّر
+\InlineCode{name}
+و آخر
+\InlineCode{firstName}.\\
+لكن الفائدة هنا هي أنه بهذه الطريقة يمكننا أن ننشئ متغيرا آخر من نوع
+\InlineCode{Person}
+و يكون لديه هو أيضا اسمه الخاص، لقبه الخاص، إلخ. يمكننا إذن فعل هذا :
+\begin{Csource}
+Person player1, player2;
+\end{Csource}
+و هكذا نخزّن معلومات كلّ لاعب. كلّ لاعب سيكون لديه اسمه الخاص، لقبه الخاص، إلخ.
+
+يمكننا أن نفعل ما هو أفضل : يمكننا تعريف جدول من
+\InlineCode{Person} !\\
+القيام بهذا سهل :
+\begin{Csource}
+Person players[2];
+\end{Csource}
+و بعدها يمكننا الوصول إلى لقب اللاعب المتواجد بالخانة الأولى مثلا، هكذا :
+\begin{Console}
+players[0].name
+\end{Console}
+الفائدة من استعمال الجدول هنا، هو أنها بامكاننا استعمال حلقة لنقرأ المعلومات الخاصة باللاعب 1 و اللاعب 2 بدون الاضطرار إلى إعادة الشفرة مرّتين. يكفي تصفّح الجدول
+\InlineCode{players}
+و طلب كلّ مرّة اللقب، الاسم، العنوان...
+
+\paragraph{تمرين}
+قم بتعريف جدول من نوع
+\InlineCode{Person}،
+و اقرأ المعلومات الخاصة بكلّ لاعب باستخدام حلقة. إبدأ بجدول ذو خانتين، و إن كان ذلك ممتعا، حاول تكبير العدد لاحقا.\\
+في النهاية، عليك بإظهار المعلومات التي أخذتها من كلّ لاعب.
