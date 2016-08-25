@@ -480,3 +480,58 @@ void initializeCoordinates(Coordinates* point)
 \textenglish{C++}
 ليست سوى "تحسين خارق" للهياكل. كثير من الأشياء تبدأ من هذا و أحتاج إلى كتاب كامل لأتحدّث عنها (كلّ شيء في وقته).
 \end{information}
+
+\subsection{اختصار عمليّ و مستعمل بكثرة}
+سترى أننا سنستعمل كثيراً مؤشرات نحو هياكل. بصراحة، يجب أن أعترف لك بأنّه
+في لغة الـ\textenglish{C}
+نستخدم  المؤشرات نحو الهياكل أكثر من استعمال الهياكل وحدها. لهذا فعندما أقول لكم بأنّ المؤشرات ستظلّ تتبعكم حتّى إلى قبركم، فأنا لا أقولها تقريبا من أجل المزاح !
+
+بما أن المؤشرات نحو الهياكل مستعملة بكثرة، نجد أنفسنا نستعمل هذه الكتابة كثيرا :
+\begin{Csource}
+(*point).x = 0;
+\end{Csource}
+مرّة أخرى، المبرمجون وجدوا هذه الكتابة طويلة جدّا. الأقواس حول
+\InlineCode{*point}،
+يا لها من بلوى ! إذن، بما أن المبرمجين أشخاص كسالى (لقد قلت هذا سابقا على ما أعتقد)، فقد إخترعوا هذا الاختصار :
+\begin{Csource}
+point->x = 0;
+\end{Csource}
+هذا الاختصار يتمّ كتابته بمطّة
+\InlineCode{-}
+متبوعة بعلامة ترتيب
+\InlineCode{>}.
+
+كتابة
+\InlineCode{point->x}
+هو إذن مكافئ
+\underline{تماما}
+لكتابة
+\InlineCode{(*point).x}.
+\begin{warning}
+  لا تنس أننا لا نستطيع استعمال السهم إلا مع المؤشرات.\\
+إن كنت تعمل على المتغير مباشرة، يجب عليك استخدام النقطة كما رأينا في البداية.
+\end{warning}
+لنعد إلى دالتنا
+\InlineCode{initializeCoordinates}
+يمكننا كتابتها بالشكل التالي :
+\begin{Csource}
+void initializingCoordinates(Coordinates* point)
+{
+	point->x = 0;
+	point->y = 0;
+}
+\end{Csource}
+و تذكّر جيّدا اختصار السهم، سنستعمله كثيراً من الآن. و خاصّة لا نخلط بين السهم و "النقطة". السهم مخصّص للمؤشّرات، "النقطة" مخصّصة للمتغيّرات. استخدم هذا المثال الصغير للتذكّر :
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	Coordinates  myPoint;
+	Coordinates *pointer = &myPoint;
+	myPoint.x = 10; // We work on a variable, we use the "dot"
+	pointer->x = 10; // We work on a pointer, we use the arrow
+	return 0;
+}
+\end{Csource}
+نغيّر قيمة
+\InlineCode{x}
+إلى 10 بطريقتين مختلفتين، هنا : الطريقة الأولى هي بالعمل مباشرة على المتغير، و الطريقة الثانية باستعمال المؤشر.
