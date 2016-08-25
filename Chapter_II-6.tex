@@ -389,3 +389,94 @@ Coordinates *point = NULL;
 \begin{Csource}
 Coordinates *point1 = NULL, *point2 = NULL;
 \end{Csource}
+
+\subsection{إرسال هيكل إلى دالة}
+الشيء الذي يهمّنا هنا، هو كيفيّة إرسال مؤشر هيكل إلى دالة كي تقوم هذه الأخيرة بتعديل محتواه.
+
+هذا ما سنقوم به في هذا المثال، سنقوم بإنشاء متغير من نوع
+\InlineCode{Coordinates}
+في
+\InlineCode{main}،
+و نرسل عنوانه إلى
+\InlineCode{initializeCoordinates}.
+دور هذه الدالة هو إعطاء القيمة 0 لعناصر الهيكل.
+
+دالتنا
+\InlineCode{initializeCoordinates}
+ستأخذ معاملا واحدا : مؤشر نحو هيكل من نوع
+\InlineCode{Coordinates}
+(أي
+\InlineCode{*Coordinates}).
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	Coordinates myPoint;
+	initializeCoordinates(&myPoint);
+	 return 0;
+}
+void initializeCoordinates(Coordinates* point)
+{
+	// Initializing each member of the structure here
+}
+\end{Csource}
+متغيري
+\InlineCode{myPoint}
+تم انشاؤه في
+\InlineCode{main}.\\
+نقوم يارسال عنوانه إلى الدالة
+\InlineCode{initializeCoordinates}
+الّتي تسترجعه على شكل متغيّر يسمّى
+\InlineCode{point}
+(كان بإمكاننا تسميته كما شئنا، هذا الأمر ليس له أيّ تأثير).
+
+الآن بما أنّنا داخل الدالة
+\InlineCode{initializeCoordinates}،
+سنقوم يتهيئة قيم المتغير
+\InlineCode{point}
+واحدة بواحدة.\\
+يجب عدم نسيان وضع النجمة أمام اسم المؤشر للوصول إلى المتغير. إن لم تفعل، فأنت تخاطر بتغيير العنوان، و ليس هذا ما نريد فعله.
+
+و لكن هاهي مشكلة... لا يمكننا القيام مباشرة بهذا :
+\begin{Csource}
+void initializeCoordinates(Coordinates* point)
+{
+	*point.x = 0;
+	*point.y = 0;
+}
+\end{Csource}
+سيكون ذلك سهلا جدّا... لماذا لا يمكننا القيام بهذا ؟
+لأنّ النقطة تطبّق على
+\InlineCode{point}
+فقط و ليس على
+\InlineCode{*point}.
+لكنّ ما نريده هو الوصول إلى
+\InlineCode{*point}
+لتغيير قيمته.\\
+لحلّ هذا المشكل، يجب وضع الأقواس حول
+\InlineCode{*point}،
+هكذا ستطبّق النقطة على
+\InlineCode{*point}
+و ليس فقط
+\InlineCode{point} :
+\begin{Csource}
+void initializeCoordinates(Coordinates* point)
+{
+	(*point).x = 0;
+	(*point).y = 0;
+}
+\end{Csource}
+هذه الشفرة تعمل، يمكنك تجريبها. المتغير من نوع
+\InlineCode{Coordinates}
+تمّ إرساله إلى الدالة التي هيّأت
+\InlineCode{x}
+و
+\InlineCode{y}
+على 0.
+\begin{information}
+في لغة الـ\textenglish{C}،
+نهيّؤ عادة هياكلنا بالطريقة الّتي رأيناها سابقا. بالمقابل، في لغة الـ\textenglish{C++}،
+التهيئة تكون في الغالب داخل "دوال".
+إن لغة
+\textenglish{C++}
+ليست سوى "تحسين خارق" للهياكل. كثير من الأشياء تبدأ من هذا و أحتاج إلى كتاب كامل لأتحدّث عنها (كلّ شيء في وقته).
+\end{information}
