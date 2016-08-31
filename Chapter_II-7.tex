@@ -224,3 +224,118 @@ int main(int argc, char *argv[])
 \InlineCode{"r"}
 فأنت تضمن أنّ الملفّ لا يمكن تعديله، هذا نوع من الحماية.
 \end{information}
+
+إن كتبت دالةً
+\InlineCode{loadLevel}
+(لتحميل مستوى في لعبة مثلا)، الوضع
+\InlineCode{"r"}
+كافٍ، أما إن أردت أن كتابة دالةٍ
+\InlineCode{saveLevel}
+(لحفظ المستوى) فستستعمل الوضع
+\InlineCode{"w"}.
+
+الشفرة التالية ستفتح الملف
+\InlineCode{test.txt}
+في وضع
+\InlineCode{"r+"}
+(قراءة و كتابة) :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	FILE* file = NULL;
+	file = fopen("test.txt", "r+");
+	return 0;
+}
+\end{Csource}
+
+المؤشّر
+\InlineCode{file}
+يصبح إذن مؤشراً على الملف
+\InlineCode{test.txt}.
+
+\begin{question}
+  أين يجب أن يكون الملف
+\InlineCode{test.txt}
+؟
+\end{question}
+
+يجب أن يكون في نفس المجلّد الذي يتواجد به الملف التنفيذي
+(\InlineCode{.exe}).\\
+من أجل متطلّبات هذا الفصل، أطلب منك أن تقوم بإنشاء ملف
+\InlineCode{test.txt}
+في نفس المساؤ الذي به
+\InlineCode{.exe}،
+مثلما أفعل أنا (الشكل الموالي).
+
+\Picture{Chapter_II-7_Files}
+
+كما ترى فأنا أستعمل  حاليّا بيئة التطوير
+\textenglish{Code::Blocks}
+الأمر الذي يفسّر وجود ملف المشروع بصيغة
+\InlineCode{.cbp}
+(في مكان الصيغة
+\InlineCode{.sln}
+إن كنت تستعمل
+\InlineCode{Visual C++}
+مثلاً). باختصار، الأمر المهم هو أن برنامجي
+(\InlineCode{tests.exe})
+موجود في نفس مجلّد الملف الذي نريد قرائته أو كتابته
+(\InlineCode{test.txt}).
+
+\begin{question}
+  هل يجب أن يكون الملف بصيغة
+\InlineCode{.txt} ؟
+\end{question}
+
+لا، الأمر يعود إليك في اختيار صيغة الملف عندما تفتحه. أي أنه بإمكانك أن تخترع صيغتك الخاصّة
+\InlineCode{.level}
+لحفظ مستويات ألعابك مثلاً.
+
+\begin{question}
+  هل من الواجب أن يكون الملف الذي نريد فتحه في نفس دليل الملف التنفيذي ؟
+\end{question}
+
+لا أيضا. يمكنه أن يكون داخل مجلّد بذات الدليل :
+
+\begin{Csource}
+  file = fopen("directory/test.txt", "r+");
+\end{Csource}
+
+هنا، الملف
+\InlineCode{test.txt}
+في مجلّد  داخليّ اسمه
+\InlineCode{directory}.
+هذه الطريقة التي نسميها
+\textit{المسار النسبي}
+عمليّة أكثر. هكذا، يمكن للبرنامج أن يعمل أينما كان مثبّتا.
+
+من الممكن أيضا فتح ملفّ أينما كان في القرص الصلب. في هذه الحالة يجب كتابة المسار الكامل (ما نسميه
+\textit{المسار المطلق}) :
+
+\begin{Csource}
+  file = fopen("C:\\Program Files\\Notepad++\\readme.txt", "r+");
+\end{Csource}
+
+هذه الشفرة تفتح الملف
+\InlineCode{readme.txt}
+الموجود بـ\InlineCode{C:\textbackslash Program Files\textbackslash Notepad++}.
+
+\begin{warning}
+  تعمّدت استعمال شرطتبن خلفيّتين
+\InlineCode{\textbackslash}
+  كما تلاحظ. في الواقع، إن كتبت اشارة واحدة، سيعتقد الحاسوب أنني أريد أن استخدم رمزا خاصا (مثل الـ\InlineCode{\textbackslash n}
+أو الـ\InlineCode{\textbackslash t}).
+لكتابة شرطة خلفيّة في سلسلة، يجب كتابتها إذن مرّتين ! هكذا يمكن أن يفهم أنّك تريد استخدام الرمز
+\InlineCode{\textbackslash}.
+\end{warning}
+
+المشكل مع المسارات المطلقة، هو أنها لا تعمل إلا مع نظام معيّن، فهي ليست حلّا محمولا إذن. أي أنه لو كنت تعمل على
+\textenglish{GNU/Linux}
+لكان عليك كتابة مسار كهذا مثلا :
+
+\begin{Csource}
+  file = fopen("/home/mateo/directory/readme.txt", "r+");
+\end{Csource}
+
+لهذا فأنا أنصحك بكتابة مسارات نسبية. لا تستعمل المسارات المطلقة إلا في حالة كان البرنامج مخصص لنظام تشغيل معيّن، ليعدّل على ملف معيّن في القرص الصلب.
