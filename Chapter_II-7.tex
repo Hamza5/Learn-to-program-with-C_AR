@@ -584,3 +584,41 @@ int main(int argc, char *argv[])
 الشكل التالي يظهر الملف بعد التعديل عليه من طرف البرنامج :
 
 \Picture{Chapter_II-7_test-string}
+
+\subsubsection{\texttt{fprintf}}
+إليك نوعاً آخراً من الدالة
+\InlineCode{printf}.
+هذه تستخدم للكتابة في ملف. هذه الدالة تستعمل بنفس الطريقة التي نستعمل بها
+\InlineCode{printf}،
+إلا أنه يجب إعطاؤها المؤشر نحو
+\InlineCode{FILE}
+كمعامل أوّل.
+
+الشفرة التالية تطلب من المستخدم إدخال عمره، ثمّ تقوم بكتابته في الملف :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	FILE* file = NULL;
+	int age = 0;
+	file = fopen("test.txt", "w");
+	if (file != NULL)
+	{
+    		// Request the age
+    		printf("How old are you ? ");
+    		scanf("%d", &age);
+    		// Write the age on the file
+    		fprintf(file , "The mister who uses the PC has %d years", age);
+    		fclose(file);
+	}
+ 	return 0;
+ }
+\end{Csource}
+
+\Picture{Chapter_II-7_test-fprintf}
+
+يمكنك إذا إعادة استعمال ما تعرفه عن
+\InlineCode{printf}
+للكتابة في ملف ! لهذا السبب أنا غالبا ما استعمل
+\InlineCode{fprintf}
+للكتابة في الملفّات.
