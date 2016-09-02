@@ -528,3 +528,59 @@ int main(int argc, char *argv[])
 كما ترى في الشكل التالي :
 
 \Picture{Chapter_II-7_test-A}
+
+\subsubsection{\texttt{fputs}}
+هذه الدالة شبيهة جداً بالدالة
+\InlineCode{fputc}،
+إلا أنها تسمح بكتابة سلسلة محرفيّة كاملة، و هذا عادة أحسن من الكتابة حرفاً حرفاً.\\
+لكن
+\InlineCode{fputc}
+تبقى ضروريّة حينما نحتاج إلى الكتابة محرفا بمحرف، و هذا يحدث كثيرا.
+
+نموذج الدالة :
+
+\begin{Csource}
+char* fputs(const char* string, FILE* pointerOnFile);
+\end{Csource}
+
+المعاملان سهلا الفهم :
+\begin{itemize}
+  \item \InlineCode{string} :
+السلسلة الّتي نريد كتابتها. تلاحظ أن النوع هنا هو
+\InlineCode{const char*} :
+إضافة الكلمة
+\InlineCode{const}
+في النموذج تشير إلى أن السلسة الّتي سنعطيها للدالة تُفترض ثابتة. أي أنّ الدالة لن تقوم بتغييرها. هذا أمر منطقي عندما نفكّر فيه :
+\InlineCode{fputs}
+يجب أن تقرأ السلسلة بدون تعديلها. هذه إذن معلومة لكم (و حماية) أنّ سلسلتكم لن يتمّ إدخال أيّة تعديلات عليها.
+  \item \InlineCode{pointerOnFile} :
+ مثل
+،\InlineCode{fputc}
+ تحتاج هذه الدالة إلى مؤشر من نوع
+\InlineCode{FILE*}
+نحو الملف الّذي فتحته.
+\end{itemize}
+
+الدالّة تعيد القيمة
+،\InlineCode{EOF}
+في حالة وجود خطأ، و إلّا، فهذا يعني أنّها عملت على ما يرام. و هنا أيضا، لن أقوم عادة باختبار القيمة التي ترجعها الدالة.
+
+فلنجرب كتابة سلسلة في ملف :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	FILE* file = NULL;
+	file = fopen("test.txt", "w");
+	if (file != NULL)
+	{
+    	 	fputs("Hello my friends\nHow are you ?", file);
+    	 	fclose(file);
+	}
+	return 0;
+}
+\end{Csource}
+
+الشكل التالي يظهر الملف بعد التعديل عليه من طرف البرنامج :
+
+\Picture{Chapter_II-7_test-string}
