@@ -693,3 +693,131 @@ int main(int argc, char *argv[])
 \begin{Console}
 Hello, I'm the content of the file test.txt !
 \end{Console}
+
+\subsubsection{\texttt{fgets}}
+هذه الدالة تقوم بقراءة سلسلة من ملف. هذا يجنبك قراءة كلّ محارف الملف واحدا واحدا. الدالة
+\textbf{تقرأ على الأكثر سطراً واحداً}
+(تتوقف عند ملاقاة أول
+\InlineCode{\textbackslash n})،
+إن أردت قراءة العديد من الأسطر، فعليك استعمال حلقة.
+
+هذا نموذج الدالة :
+
+\begin{Csource}
+char* fgets(char* string, int nbOfCharsToRead, FILE* pointerOnFile);
+\end{Csource}
+
+هذه الدالة تتطلب معاملا خاصّا نوعاً ما، و لكنّه سيكون عمليّا جدّا : عدد المحارف التي نريد قراءتها. هذا ما يطلب من الدالة
+\InlineCode{fgets}
+التوقف عن قراءة السطر إذا كان يحوي أكثر من
+\textenglish{X}
+من المحارف.
+الفائدة : هذا يسمح لنا بضمان عدم حدوث تجاوز في الذاكرة ! في الواقع، إذا كان حجم السطر أكبر من أن تسعه السلسلة المحرفيّة، فمن الممكن أن تقرأ عددا من المحارف أكثر ممّا يسمح به المكان المتوفّر، و هذا قد يسبب تعطّل البرنامج.
+
+سنتعلّم كيف نقرأ سطراً واحداً باستخدام
+\InlineCode{fgets}،
+(ثم  بعدها سنرى كيفية قراءة ملف كامل).
+
+لهذا فسنقوم بتعريف سلسلة محرفيّة كبيرة كفاية لتخزين السطر المراد قراءته (على الأقل نتمنّى ذلك، لا يمكننا أن نكون متأكّدين
+100\%).
+سترى فائدة استخدام الـ\InlineCode{\#define}
+في تعريف حجم جدول :
+
+\begin{Csource}
+#define MAX_SIZE 1000 // A table of size 1000
+int main(int argc, char *argv[])
+{
+    FILE* file = NULL;
+    char string[MAX_SIZE] = ""; // Empty string of size MAX_SIZE
+    file = fopen("test.txt", "r");
+    if (file != NULL)
+    {
+        fgets(string, MAX_SIZE, file); // Read at maximum MAX_SIZE characters from the file, store them in  "string"
+        printf("%s", string); // Display the string
+        fclose(file);
+    }
+    return 0;
+}
+\end{Csource}
+
+النتيجة هي نفسها النتيجة السابقة، مع العلم أنّ المحتوى يُكتب في الكونسول :
+
+\begin{Console}
+Hello, I'm the content of the file test.txt !
+\end{Console}
+
+الفرق هو أننا هنا لم نستعمل حلقة تكرارية. نقوم بإسترجاع محتوى الملف كاملا في مرّة.
+
+أنت تلاحظ بكلّ تأكيد الآن فائدة استعمال
+\InlineCode{\#define}
+في شفرتك لتعريف الحجم الأقصى لجدول مثلاً. في الواقع،
+\InlineCode{MAX\_SIZE}
+مستعمل في مكانين مختلفين في الشفرة :
+\begin{itemize}
+  \item المرة الأولى لتعريف حجم الجدول الذي نريد إنشاءه.
+  \item مرّة اخرى في الـ\InlineCode{fgets}
+  لنقوم بتحديد عدد المحارف التي نقرؤها.
+\end{itemize}
+
+الفائدة هنا، هي أنّه في حال ما وجدت أن السلسلة المحرفيّة غير كبيرة كفاية لقراءة الملف، فلن يكون عليك سوى تعديل سطر الـ\InlineCode{\#define}
+و إعادة الترجمة. هذا سيجنّبك البحث عن كلّ مكان من الشفرة وضعت فيه حجم الجدول. المعالج القبلي سيقوم باستبدال كل تكرار لـ\InlineCode{MAX\_SIZE}
+بالقيمة الجديدة.
+
+كما قلت فإن
+\InlineCode{fgets}
+تقرأ على الأكثر سطراً واحدا في المرّة. تتوقف عن قراءة السطر عندما تتجاوز عدد المحارف الذي سمحت لها بقراءتها.
+
+نعم و لكن : حاليّا، نحن لا نجيد سوى قراءة سطر واحد باستخدام
+\InlineCode{fgets}.
+كيف لنا أن نقرأ كل الملف ؟ الجواب بسيط : بحلقة تكرارية !
+
+الدالة
+\InlineCode{fgets}
+تعيد
+\InlineCode{NULL}
+في حالة لم تستطع قراءة ما طلبته منها.\\
+أي أن الحلقة يجب أن تنتهي بمجرّد أن تعيد
+\InlineCode{fgets}
+القيمة
+\InlineCode{NULL}.
+
+ليس علينا سوى استعمال الحلقة
+\InlineCode{while}
+لكي نقوم بالتكرار ما دامت
+\InlineCode{fgets}
+لم ترجع
+\InlineCode{NULL} :
+
+\begin{Csource}
+#define MAX_SIZE 1000
+int main(int argc, char *argv[])
+{
+    FILE* file = NULL;
+    char string[MAX_SIZE] = "";
+    file = fopen("test.txt", "r");
+    if (file != NULL)
+    {
+        while (fgets(string, MAX_SIZE, file) != NULL) // Read the file while there's no error (NULL)
+        {
+            printf("%s", string); // Display the string that we've read
+        }
+        fclose(file);
+    }
+    return 0;
+}
+\end{Csource}
+
+هذه الشفرة تقوم بقراءة الملف سطراً سطراً و إظهار الأسطر.
+
+السطر الأكثر لفتاً للانتباه في الشفرة هو :
+
+\begin{Csource}
+while (fgets(string, MAX_SIZE, file) != NULL)
+\end{Csource}
+
+سطر الـ\InlineCode{while}
+يقوم بأمرين : قراءة سطر من الملف و التأكد أن
+\InlineCode{fgets}
+لم تُعِد
+\InlineCode{NULL}.
+يمكن ترجمة هذا كالتالي : "إقرأ سطراً جديداً ما دمنا لم نصل إلى نهاية الملف".
