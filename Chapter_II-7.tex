@@ -635,3 +635,61 @@ int main(int argc, char *argv[])
 \end{itemize}
 
 سأسرع قليلاً في شرح هذه الدوال : إذا كنت قد فهمت ما كتبته من قبل، فلن تجد أي صعوبة مع هذه الدوال.
+
+\subsubsection{\texttt{fgetc}}
+أولاً، النموذج :
+
+\begin{Csource}
+int fgetc(FILE* pointerOnFile);
+\end{Csource}
+
+هذه الدالة تقوم بإرجاع
+\InlineCode{int} :
+إنه المحرف الذي تمّت قراءته.
+إذا لم تقرأ أيّ محرف، فستعيد القيمة
+\InlineCode{EOF}.
+
+\begin{question}
+لكن كيف لنا أن نعرف المحرف الذي نقرؤه ؟ ماذا لو أردنا قراءة المحرف الثالث و أيضا العاشر، كيف نفعل هذا ؟
+\end{question}
+
+في الواقع، في كلّ مرة تقرأ فيها ملفّا، فهناك "مؤشر" (مثل المؤشّر الذي يغمز في محرر النصوص) يتحرّك في كلّ مرة. و هذا المؤشّر افتراضي طبعاً، لن تتمكن من رؤيته على الشاشة. و هو يشير إلى أين وصلنا في قراءة الملف.
+
+سنتعلم لاحقاً كيف نعرف الوضعية التي وصل إليها المؤشّر بالضبط و أيضا كيف نحرّكه من مكانه (و ذلك لكي نقوم بتحريكه إلى بداية الملف مثلا، أو إلى مكان محرف محدّد، كالمحرف العاشر).
+
+\InlineCode{fgetc}
+تقوم بتحريك المؤشر بمحرف واحد في كلّ مرة تقرؤ فيها واحدا. أي أنك إن استدعيت
+\InlineCode{fgetc}
+مرة ثانية، فستقرأ المحرف الثاني، ثم الثالث و هكذا. و بهذا يمكنك استعمال حلقة تكرارية لقراءة محارف الملف واحدا واحدا.
+
+سنقوم بكتابة شفرة تقرأ كلّ محارف الملف واحدا واحدا و في كلّ مرّة تكتبها على الشاشة. الحلقة ستتوقف حينما تعيد
+\InlineCode{fgetc}
+القيمة
+\InlineCode{EOF}
+(و الّتي تعني
+"\textenglish{End Of File}"
+أي "نهاية الملف").
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	FILE* file = NULL;
+	int currentCharacter = 0;
+	file = fopen("test.txt", "r");
+	if (file != NULL)
+	{
+  		// A loop to read the characters one by one
+  		do
+  		{
+    			currentCharacter = fgetc(file); // Read the character
+    			printf("%c", currentCharacter); // Display it
+  		} while (currentCharacter != EOF); // Continue while fgets didn't return EOF (End Of File)
+  		fclose(file);
+	}
+	return 0;
+}
+\end{Csource}
+الكونسول ستقوم بإظهار محتوى الملف كاملاً، مثلا :
+\begin{Console}
+Hello, I'm the content of the file test.txt !
+\end{Console}
