@@ -821,3 +821,55 @@ while (fgets(string, MAX_SIZE, file) != NULL)
 لم تُعِد
 \InlineCode{NULL}.
 يمكن ترجمة هذا كالتالي : "إقرأ سطراً جديداً ما دمنا لم نصل إلى نهاية الملف".
+
+\subsubsection{\texttt{fscanf}}
+مبدأ هذه الدالة مشابه تماماً لمبدأ نظيرتها
+\InlineCode{scanf}،
+هنا أيضا.\\
+هذه الدالّة تقوم بقراءة ملفّ تمت كتابته بشكل محدّد.
+
+لنفترض أن الملف يحتوي على ثلاثة أعداد مفصولة بفراغ، و هي مثلا أكبر ثلاثة نقاط تم التحصل عليها في لعبتك :
+\InlineCode{15 20 30}.
+
+أنت تريد أن تسترجع كلّ واحد من هذه الأعداد في متغير من نوع
+\InlineCode{int}.\\
+الدالة
+\InlineCode{fscanf}
+ستسمح لك بالقيام بهذا بشكل سريع.
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+  FILE* file = NULL;
+  int score[3] = {0}; // Table of the 3 best scores
+  file = fopen("test.txt", "r");
+  if (file != NULL)
+  {
+    fscanf(file, "%d %d %d", &score[0], &score[1],&score[2]);
+    printf("The best scores are : %d, %d and %d", score[0], score[1], score[2]);
+    fclose(file);
+  }
+  return 0;
+}
+\end{Csource}
+
+\begin{Console}
+The best scores are : 15, 20 and 30
+\end{Console}
+
+كما ترى، فالدالة
+\InlineCode{fscanf}
+تنتظر ثلاث أعداد مفصولة بفراغ
+(\InlineCode{"\%d \%d \%d"}).
+ستقوم بتخزينهم في جدولنا ذو الخانات الثلاث.
+
+نقوم لاحقاً بإظهار كلّ القيم المسترجعة.
+
+\begin{information}
+حتّى الآن، لم استعمل سوى رمز
+\InlineCode{\%d}
+واحد في الدالة
+\InlineCode{scanf}.
+
+اليوم اكتشفتَ بأنه بإمكانك أن تستعمل العديد منها. إذا كان الملف مكتوبا بطريقة محدّدة جيّدا، فهذا يسمح لك بالإسراع لاسترجاع كلّ واحدة من هذه القيم.
+\end{information}
