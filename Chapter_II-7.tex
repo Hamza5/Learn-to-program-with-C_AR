@@ -897,3 +897,13 @@ The best scores are : 15, 20 and 30
   \InlineCode{fseek}
   أن تموضع المؤشّر في البداية).
 \end{itemize}
+
+\subsection{\texttt{ftell} : الموضع في الملف}
+هذه الدالة بسيطة الاستعمال جدّا. تعيد الموضع الذي يتواجد به المؤشّر حاليا بنوع
+\InlineCode{long} :
+
+\begin{Csource}
+long ftell(FILE* pointerOnFile);
+\end{Csource}
+
+العدد الّذي يتم ارجاعه يدلّ على موضع المؤشر في الملف.
