@@ -998,3 +998,54 @@ void rewind(FILE* pointerOnFile);
 \end{Csource}
 
 طريقة الاستعمال بسيطة كالنموذج. أنت لست بحاجة إلى شرح إضافيّ.
+
+\section{إعادة تسميه و حذف ملف}
+ننهي هذا الفصل بنُعُومة عن طريق دراسة دالتين بسيطتين للغاية :
+\begin{itemize}
+  \item \InlineCode{rename} :
+  إعادة تسمية ملف.
+  \item \InlineCode{remove} :
+  حذف ملف.
+\end{itemize}
+
+الشيء الخاصّ في هاتين الدالتين هو أنهما لا تحتاجان مؤشراً نحو الملف لكي تعملا. يكفيهما فقط اسم الملف المراد حذفه أو تغيير اسمه.
+
+\subsection{\texttt{rename} : إعادة تسمية ملف}
+إليك نموذج هذه الدالة :
+
+\begin{Csource}
+int rename(const char* oldName, const char* newName);
+\end{Csource}
+
+الدالة تعيد 0 إذا نجحت في اعادة التسمية،  و إلّا فستعيد قيمة مختلفة عن 0. هل من اللازم أن أعطيك مثالا ؟ إليك واحدا :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+    rename("test.txt", "test_rename.txt");
+    return 0;
+}
+\end{Csource}
+
+\subsection{\texttt{remove} : حذف ملف}
+هذه الدالة تقوم بحذف ملف دون ترك أي أثر :
+
+\begin{Csource}
+int remove(const char* fileToDelete);
+\end{Csource}
+
+\begin{critical}
+  كن حذرا جداً عند استعمالك لهذه الدالة ! هي تحذف الملف بدون أن تطلب منك أيّ تأكيد ! الملف لن يوضع في سلة المحذوفات، بل يسحذف حرفيّا من القرص الصلب. لن يمكنك استعادة ملفّ محذوف بهذه الطريقة (إلّا باستعمال أدوات خاصّة باسترجاع الملفّات، لكنّ هذه العملية قد تكون طويلة، معقّدة و قد لا تنجح).
+\end{critical}
+
+هذه الدالة مناسبة لإنهاء الفصل، فلم أعد في حاجة إلى الملف
+\InlineCode{test.txt}،
+يمكنني الآن حذفه :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+    remove("test.txt");
+    return 0;
+}
+\end{Csource}

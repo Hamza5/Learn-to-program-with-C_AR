@@ -35,7 +35,7 @@
     - [x] <span dir='rtl'>السلاسل المحرفيّة</span>
     - [x] <span dir='rtl'>المعالج القبلي</span>
     - [x] <span dir='rtl'>انشئ أنواع متغيّرات خاصة بك</span>
-    - [ ] <span dir='rtl'>قراءة و كتابة الملفّات</span>
+    - [x] <span dir='rtl'>قراءة و كتابة الملفّات</span>
     - [ ] <span dir='rtl'>الحجز الحيّ للذاكرة</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: لعبة الـPendu</span>
     - [ ] <span dir='rtl'>ادخال نص بشكل أكثر أمانا</span>
