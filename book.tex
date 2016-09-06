@@ -83,9 +83,10 @@
         keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{Gray},
         numberstyle=\color{Gray}, stringstyle=\color{Crimson},
         directivestyle=\color{DarkOrange},
-        deletekeywords={return,if,else,switch,for,while,do,const,static},
-        morekeywords=[2]{return,if,else,switch,for,while,do,const,static}, keywordstyle=[2]\bfseries\color{Magenta},
-        morekeywords=[3]{printf,scanf}, keywordstyle=[3]\color{Cyan},
+        deletekeywords={return,if,else,switch,for,while,do,const,static,sizeof},
+        morekeywords=[2]{return,if,else,switch,for,while,do,const,static,sizeof}, keywordstyle=[2]\bfseries\color{Magenta},
+        morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind},
+        keywordstyle=[3]\color{Cyan},
 }
 \lstnewenvironment{Csource}{\lstset{style=C}\setLTR}{\unsetLTR}
 % Console
