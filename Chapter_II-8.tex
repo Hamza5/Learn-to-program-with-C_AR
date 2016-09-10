@@ -466,3 +466,134 @@ You are 31 years old
 \end{question}
 
 أكثر تعقيدا... بالتأكيد. لكن بدون فائدة، لا ! أحيانا نكون مجبرين على حجز الذاكرة يدويّا كما سنرى الآن.
+
+\section{الحجز الحيّ لجدول}
+لحد الآن استعملنا الحجز الحي لإنشاء متغيّر صغير. عادة لا نستخدم الحجز الحيّ في هذا. نستخدم الطريقة التلقائيّة الّتي هي أبسط.
+
+متى نحتاج للحجز الحيّ، تتسائلون ؟ أكثر شيء، نستخدمه لإنشاء جدول لا نعرف حجمه قبل تشغيل البرنامج.
+
+لنتخيل مثلا برنامجاً يقوم بتخزين أعمار أصدقاء المستخدم في جدول، يمكنك فعل ذلك هكذا :
+
+\begin{Csource}
+int friendsAge[15];
+\end{Csource}
+
+لكن من قال أنه لديه 15 صديق ؟ ربما لديه أكثر من هذا !
+عندما تكتب الشفرة المصدريّة، لا يمكنك معرفة حجم الجدول قبل التشغيل، عندما تطلب من المستعمل إدخال عدد الأصدقاء.
+
+فائدة الحجز الحيّ موجودة هنا : تطلب من المستخدم إدخال عدد الأصدقاء، ثم تنشئ جدولا لديه تماما الحجم اللازم (لا أصغر و لا أكبر). إن كان للمستخدم 15 صديقا، فسننشئ جدولا من 15
+\InlineCode{int}،
+إن كان لديه 28، فسننشئ جدولا من 28
+\InlineCode{int}،
+إلخ.
+
+كما علّمتكم، من الممنوع في لغة الـ\textenglish{C}
+إنشاء جدول بتحديد حجمه باستخدام متغيّر :
+
+\begin{Csource}
+int friends[friendsNumber];
+\end{Csource}
+
+\begin{information}
+هذه الشفرة قد تعمل في بعض المترجمات لكن في حالات معيّنة، من المنصوح به عدم استخدامها !
+\end{information}
+
+فائدة الحجز الحيّ، هي أنّه يمكننا من إنشاء جدول حجمه تماما المتغيّر
+\InlineCode{friendsNumber}.
+و هذا بفضل شفرة تعمل في كلّ مكان !
+
+سنطلب من
+\InlineCode{malloc}
+حجز
+\InlineCode{friendsNumber * sizeof(int)}
+بايت في الذاكرة :
+
+\begin{Csource}
+friends = malloc(friendsNumber * sizeof(int));
+\end{Csource}
+
+هذه الشفرة تسمح بإنشاء جدول من نوع
+\InlineCode{int}
+حجمه بوافق تماما عدد الأصدقاء !
+
+هذا ما يقوم به البرنامج بالترتيب :
+\begin{enumerate}
+  \item نطلب من المستخدم كم من صديق لديه.
+  \item إنشاء جدول من
+\InlineCode{int}
+ذو حجم يساوي عدد أصدقائه (باستخدام
+\InlineCode{malloc}).
+  \item نطلب كم عمر كلّ واحد من أصدقائه واحدا واحدا، و نقوم بتخزينها في الجدول.
+  \item نظهر أعمار الأصدقاء محتوى الجدول لنتأكد بأننا خزّننا كلّ شيء.
+  \item في النهاية، و بما أننا لسنا بحاجة إلى الجدول الذي يحوي أعمار الأصدقاء، نقوم بتحرير بالدالة
+\InlineCode{free}.
+\end{enumerate}
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+  int friendsNumber = 0, i = 0;
+  int* friendsAge = NULL; // We use it after calling malloc
+  // Request for friends number
+  printf("How many friends do you have ? ");
+  scanf("%d", &friendsNumber);
+  if (friendsNumber > 0) // The user must have at least one friend (or i will be upset :p)
+  {
+    friendsAge = malloc(friendsNumber * sizeof(int)); // Allocate the memory for the table
+    if (friendsAge == NULL) // Verify the allocation
+    {
+      exit(0); // Stop everything
+    }
+    // Request for the ages one by one
+    for (i = 0 ; i < friendsNumber ; i++)
+    {
+      printf("How old is the friend number %d ? ", i + 1);
+      scanf("%d", &friendsAge[i]);
+    }
+    // Display the stored ages
+    printf("\n\nYour friends have the next ages :\n");
+    for (i = 0 ; i < friendsNumber ; i++)
+    {
+      printf("%d years\n", friendsAge[i]);
+    }
+    // Free the memory
+    free(friendsAge);
+  }
+  return 0;
+}
+\end{Csource}
+
+\begin{Console}
+How many friends do you have ? 5
+How old is the friend number 1 ? 16
+How old is the friend number 2 ? 18
+How old is the friend number 3 ? 20
+How old is the friend number 4 ? 26
+How old is the friend number 5 ? 27
+Your friends have the next ages :
+16 years
+18 years
+20 years
+26 years
+27 years
+\end{Console}
+
+هذا البرنامج عديم الفائدة : يطلب الأعمار ثمّ يعرضها بعد ذلك. لقد اخنرن فعل هذا لأنّه مثال "بسيط" (هذا إن فهمت
+\InlineCode{malloc}).
+
+أؤكّد لك : في بقيّة هذا الكتاب ستكون لنا فرص لاستخدام
+\InlineCode{malloc}
+في أمور أكثر إفادة من تخزين أعمار الأصدقاء !
+
+\section*{ملخّص}
+\begin{itemize}
+  \item كل متغير يحجز مكانا مختلفا في الذاكرة و هذا حسب نوعه.
+  \item يمكننا معرفة عدد البايتات التي يشغلها كل نوع باستعمال العامل \InlineCode{sizeof()}.
+  \item الحجز الحيّ هو عبارة عن حجز يدوي لمكان في الذاكرة من أجل متغير أو من جدول.
+  \item الحجز الحيّ يتم باستعمال الدالة
+\InlineCode{malloc()}
+و يجب خاصّة عدم نسيان تحرير الذاكرة باستعمال
+\InlineCode{free()}
+بمجرّد الانهاء من الاستخدام.
+  \item الحجز الحيّ يسمح بشكل أساسيّ بتعريف جدول حجمه يتمّ تعيينه بمتغيّر في حين تشغيل البرنامج.
+\end{itemize}
