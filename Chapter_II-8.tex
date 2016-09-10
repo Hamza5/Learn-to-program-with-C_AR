@@ -358,3 +358,111 @@ int main(int argc, char *argv[])
 إذا كان المؤشر مختلفا عن
 \InlineCode{NULL}،
 يمكن للبرنامج أن يواصل العمل، و إلا فيجب إظهار رسالة خطأ أو حتّى إنهاء البرنامج لأنّه لن يتمكّن من الاستمرار بشكل صحيح إن لّم يكن هناك مكان في الذاكرة.
+
+\subsection{\texttt{free} :
+تحرير الذاكرة}
+مثلما استعملنا الدالة
+\InlineCode{fclose}
+لنغلق ملفاً لم نعد في حاجة إليه، سنستعمل الدالة
+\InlineCode{free}
+من أجل تحرير الذاكرة التي لم نعد بحاجة إليها.
+
+\begin{Csource}
+void free(void* pointer);
+\end{Csource}
+
+الدالة
+\InlineCode{free}
+بحاجة فقط إلى عنوان الذاكرة المراد تحريرها. سنرسل لها إذن مؤشّرنا، أي
+\InlineCode{allocatedMemory}
+في مثالنا.\\
+إليكم المخطط الكامل و النهائي، مشابه بشكل كبير لما رأينا في الفصل الخاص بالملفات :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	int* allocatedMemory = NULL;
+	allocatedMemory = malloc(sizeof(int));
+	if (allocatedMemory == NULL) // Verify if the memory has been allocated
+	{
+		exit(0); // Error: Stop everything !
+	}
+	// We can use the memory here
+	free(allocatedMemory); // No need for the memory anymore, free it.
+	return 0;
+}
+\end{Csource}
+
+\subsubsection{مثال استخدام واقعي}
+سنبرمج شيئا درسناه منذ زمن طويل : الطلب من المستخدم تزويدنا بعُمره ثمّ عرضه له. الشيء المختلف عمّا كنّا نفعله سابقا هو أن المتغيّر هنا سيتمّ حجزه يدويا (نقول أيضا حيويّا) و ليس تلقائيّا كالسابق. إذن نعم، في المرّة الأولى، الشفرة أصعب قليلا. لكن قم بالمجهود اللازم لفهمها جيّدا، هذا ضروريّ :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	int* allocatedMemory = NULL;
+	allocatedMemory = malloc(sizeof(int)); // Allocation of the memory
+	if (allocatedMemory == NULL)
+	{
+		exit(0);
+	}
+	// Using the memory
+	printf("How old are you ? ");
+	scanf("%d", allocatedMemory);
+	printf("You are %d years old\n", *allocatedMemory);
+	free(allocatedMemory); // Freeing the memory
+	 return 0;
+}
+\end{Csource}
+
+\begin{Console}
+How old are you  ? 31
+You are 31 years old
+\end{Console}
+
+\begin{warning}
+حذار : بما أن
+\InlineCode{allocatedMemory}
+هو مؤشّر، فلا نستعمله بنفس الطريقة التي نستعمل بها متغيّرا حقيقيّا. للحصول على قيمة المتغير يجب وضع نجمة أمامه :
+\InlineCode{*allocatedMemory}
+(لاحظ
+\InlineCode{printf}).
+بينما للحصول على العنوان، يكفي فقط أن كتابة اسم المؤشّر
+\InlineCode{allocatedMemory}
+(لاحظ
+\InlineCode{scanf}).\\
+كلّ هذا تم شرحه في فصل المؤشّرات. رغم ذلك، أعرف أن هذا سيأخذ وقتا و من الممكن أن تخلط بينهما. إن كانت هذه حالتك، فعليك بإعادة قراءة فصل المؤشّرات، فهو أساسي.
+\end{warning}
+
+لنعد إلى الشفرة. لقد قمنا بحجز حيّ لمتغيّر من نوع
+\InlineCode{int}.
+في النهاية، ما كتبناه يعود تماما لاستخدام الطريقة
+"التلقائيّة" الّتي نعرفها الآن جيّدا :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	int myVariable = 0; // Allocation of the memory (automatically)
+  // Using the memory
+	printf("How old are you ? ");
+	scanf("%d", &myVariable);
+	printf("You are %d years old\n", myVariable);
+	return 0;
+} // Freeing the memory (automatically at the end of the function)
+\end{Csource}
+
+\begin{Console}
+How old are you ? 31
+You are 31 years old
+\end{Console}
+
+كملخص، لدينا طريقتان لإنشاء متغير، أي لحجز الذاكرة. إمّا أن نقوم بذلك :
+\begin{itemize}
+  \item تلقائيّا : هي الطريقة الّتي تعرفها و التي استعملناها لغاية الآن.
+  \item يدويا (حيويّا) : هي الطريقة الّتي أعلّمكم إيّاها في هذا الفصل.
+\end{itemize}
+
+\begin{question}
+أنا أجد أن الطريقة الحيّة معقّدة و بلا فائدة !
+\end{question}
+
+أكثر تعقيدا... بالتأكيد. لكن بدون فائدة، لا ! أحيانا نكون مجبرين على حجز الذاكرة يدويّا كما سنرى الآن.
