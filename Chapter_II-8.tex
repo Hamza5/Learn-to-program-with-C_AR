@@ -317,3 +317,44 @@ allocatedMemory = malloc(sizeof(int)); // The function malloc puts the allocated
 هو مؤشّر يحتوي على عنوان حجزه نظام التشغيل لك، لنقل مثلا القيمة
 $1600$
 للاكمال من مخططاتي السابقة.
+
+\subsubsection{اختبار المؤشّر}
+الدالة
+\InlineCode{malloc}
+أعادت في المتغير
+\InlineCode{allocatedMemory}
+عنوان الخانة التي تم حجزها بالذاكرة. هناك احتمالان :
+\begin{itemize}
+  \item إذا نجح الحجز، فالمؤشّر سيحتوي عنوانا.
+  \item إذا فشل الحجز، فالمؤشّر سيحتوي العنوان
+\InlineCode{NULL}.
+\end{itemize}
+
+إنه من النادر أن تفشل عملية حجز الذاكرة، لكن هذا ممكن. تخيّل أنك تطلب حجز 34
+\textenglish{Go}
+من الذاكرة العشوائية، في هذه الحالة، ستفشل عملية الحجز على أغلب الظن.
+
+من المستحسن دائماً أن نختبر ما إن تمت العملية بنجاح. سنفعل هذا : إن فشل الحجز، فهذا يعني أن المساحة الحرّة من الذاكرة العشوائية لم تكن كافية (هذه حالة حرجة). في حالة كهذه، يجب إيقاف البرنامج فورا لأنّه، على أية حال، لن يكون قادراً على الاستمرار بشكل عاديّ.
+
+سنستعمل دالة قياسيّة لم يسبق لنا رؤيتها حتّى الآن :
+\InlineCode{exit()}.
+هذه الأخيرة توقف البرنامج فورا. إنّها تأخذ معاملا : القيمة الّتي يجب إعادتها من طرف البرنامج (هذا في الحقيقة يوافق الـ\InlineCode{return}
+الخاص بالـ\InlineCode{main}).
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	int* allocatedMemory = NULL;
+	allocatedMemory = malloc(sizeof(int));
+	if (allocatedMemory == NULL) // If the allocation has failed
+	{
+    exit(0); // Stop the program
+	}
+	// Else, we can continue the program normally.
+	return 0;
+}
+\end{Csource}
+
+إذا كان المؤشر مختلفا عن
+\InlineCode{NULL}،
+يمكن للبرنامج أن يواصل العمل، و إلا فيجب إظهار رسالة خطأ أو حتّى إنهاء البرنامج لأنّه لن يتمكّن من الاستمرار بشكل صحيح إن لّم يكن هناك مكان في الذاكرة.
