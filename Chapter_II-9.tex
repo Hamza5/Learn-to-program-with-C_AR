@@ -17,3 +17,242 @@
 الـ\textenglish{Pendu}،
 أليس كذلك ؟ هيّا، تذكير صغير لا يمكن أن يحدث ضررا : هدف الـ\textenglish{Pendu}
 هو إيجاد الكلمة المخبّأة في أقلّ من عشر محاولات (يمكنك تغيير العدد الأقصى لتغيير صعوبة اللعبة، بالطبع !).
+
+\subsection{سريان الجولة}
+فلنفترض أن الكلمة المخبّأة هي \textenglish{RED}.\\
+ستقوم باقتراح حرف على الحاسوب، مثلا الحرف
+\textenglish{A}.
+سيتأكّد الحاسوب ما إن كان هذا الحرف موجوداً في الكلمة المخفيّة.
+
+\begin{information}
+تذكّر : هناك دالة جاهزة في
+\InlineCode{string.h}
+تقوم بالبحث عن حرف في كلمة ! و بالطبع أنت لست مجبراً على استخدامها (شخصيّا، أنا لم أفعل).
+\end{information}
+
+إنطلاقاً من هنا، يوجد احتمالان :
+\begin{itemize}
+  \item الحرف موجود بالفعل في الكلمة : سنكشف مكان الحرف في الكلمة.
+  \item الحرف غير موجود في الكلمة (هذا هو الحال هنا، لأن
+\textenglish{A}
+ليس موجوداً في الكلمة
+\textenglish{RED}) :
+سنخبر اللاعب بأن الحرف هذا غير موجود في الكلمة، و سننقص عدد المحاولات المتبقّية. عندما لا تتبق أية محاولة (0 محاولة)، ستنتهي اللعبة و سنخسر.
+\end{itemize}
+
+\begin{information}
+في لعبة
+\textenglish{Pendu}
+"حقيقة"، يفترض وجود شخص يتأسّف في كلّ مرّه نخطئ فيها. في الكونسول، سيكون من الصعب كثيرا رسم شخص يتأسّف بواسطة لاشيء غير النص،  لذا سنكتفي بعرض جملة بسيطة مثل "بقي لك
+\textenglish{X}
+محاولات قبل الموت الأكيد".
+\end{information}
+
+فلنفرض الآن أن اللاعب أدخل الحرف
+\textenglish{D}.
+هذا الحرف موجود في الكلمة المخفيّة، لهذا لن نقوم بإنقاص عدد المحاولات المتبقّية للاعب. سنقوم بإظهار الكلمة مع الحروف الّتي تم إيجادها، أي شيء كهذا :
+
+\begin{Console}
+Secret word : **D
+\end{Console}
+
+إذا أدخل اللاعب فيما بعد الحرف
+\textenglish{R}،
+و بما أنّه موجود في الكلمة، سنضيف الحرف إلى قائمة الحروف التي تم إيجادها و يتم إظهار الكلمة مع الحروف الّتي تمّ اكتشافها :
+
+\begin{Console}
+Secret word : R*D
+\end{Console}
+
+\subsubsection{حالة وجود حرف مكرر}
+في بعض الكلمات، يمكن أن نجد حرفاً مكرراً مرتين أو ثلاث، أو ربّما أكثر !\\
+مثلا : يوجد إثنان من
+\textenglish{Z}
+في كلمة
+\textenglish{PUZZLE}،
+و كذلك يوجد ثلاثة
+\textenglish{E}
+في كلمة
+\textenglish{ELEMENT}.
+
+ماذا علينا أن نفعل في حالة كهذه ؟ قواعد
+\textenglish{Pendu}
+واضحة : إذا أدخل اللاعب الحرف
+\textenglish{E}،
+كلّ حروف
+\textenglish{E}
+في كلمة
+\textenglish{ELEMENT}
+يجب أن تظهر دفعة واحدة :
+
+\begin{Console}
+Secret word : E*E*E**
+\end{Console}
+
+يعني أنه ليس على اللاعب أن يدخل 3 مرات الحرف
+\textenglish{E}
+ليتم إكتشاف كل تكرار له في الكلمة.
+
+\subsubsection{مثال عن جولة كاملة}
+هذا ما ستبدو عليه جولة كاملة في الكونسول عند انتهاء البرنامج :
+
+\begin{Console}
+Welcome !
+You have 10 remaining tries
+What's the secret word ? ****
+Suggest a letter : B
+You have 9 remaining tries
+What's the secret word ? ****
+Suggest a letter : F
+You have 9 remaining tries
+What's the secret word ? F***
+Suggest a letter : D
+You have 9 remaining tries
+What's the secret word ? F**D
+Suggest a letter : O
+You win ! The secret word is  : FOOD
+\end{Console}
+
+\subsubsection{قراءة حرف من الكونسول}
+قراءة حرف من الكونسول هي أكثر تعقيداً ممّا تبدو.\\
+بديهيّا، لاسترجاع محرف، يفترض أنّك تفكّر في :
+
+\begin{Csource}
+scanf("%c", &myLetter);
+\end{Csource}
+
+و تماما، هذا جيّد.
+\InlineCode{\%c}
+تعني أننا ننتظر محرفاً، و الذي سنقوم بتخزينه في
+\InlineCode{myLetter}
+(متغيّر من نوع
+\InlineCode{char}).
+
+
+كل شيء يعمل جيداً... ما دمنا لم نقم بـ\InlineCode{scanf}
+مرّة اخرى. يمكنك تجريب الشفرة التالية :
+
+\begin{Csource}
+int main(int argc, char* argv[])
+{
+ 	char myLetter = 0;
+ 	scanf("%c", &myLetter);
+ 	printf("%c", myLetter);
+ 	scanf("%c", &myLetter);
+ 	printf("%c", myLetter);
+ 	return 0;
+}
+\end{Csource}
+
+يفترض بهذه الشفرة أن تطلب حرفاً و تظهره، و ذلك لمرّتين.\\
+جرّب. ما الذي يحصل ؟ تدخل حرفا، نعم، و لكن... البرنامج يتوقّف مباشرة بعدها، فهو لا يطلب منك المحرف الثاني ! و كأنه تم تجاهل
+\InlineCode{scanf}
+الثانية.
+
+\begin{question}
+ما الذي حصل ؟
+\end{question}
+
+في الواقع، حينما تدخل نصاً في الكونسول، فإن كل ما قمت بإدخاله يتمّ تخزينه في الذاكرة، بما في ذلك الزر
+\texttt{Enter}
+(\InlineCode{\textbackslash n}).
+
+لذلك، في أوّل مرّة تدخل فيها حرفا
+(\textenglish{A}
+مثلاً) ثمّ تضغط على
+\textit{\textenglish{Enter}}
+فإن الحرف
+\textenglish{A}
+هو من يتم إعادته من طرف
+\InlineCode{scanf}.
+بينما في المرّة الثانية،
+\InlineCode{scanf}
+سيعيد
+\InlineCode{\textbackslash n}
+الموافق لـ\textit{\textenglish{Enter}}
+الّذي أدخلته سابقا !
+
+لتجنب هذا، من الأحسن أن نكتب بأنفسنا دالتنا الخاصّة الصغيرة
+\InlineCode{readCharacter()} :
+
+\begin{Csource}
+char readCharacter()
+{
+  char character = 0;
+  character = getchar(); // Read the first character
+  character = toupper(character); // Convert the character to uppercase
+  // Read other characters until reaching \n (to erase them)
+  while (getchar() != '\n') ;
+  return character; // Return the first character that have been read
+}
+\end{Csource}
+
+هذه الدالة تستخدم
+\InlineCode{getchar()}
+الّتي هي دالة من
+\InlineCode{stdio}
+و هذا يعود تماماً إلى كتابة\\
+\InlineCode{scanf("\%c", \&letter);}.
+الدالة
+\InlineCode{getchar()}
+تقوم بإرجاع المحرف الذي قام اللاعب بإدخاله.
+
+بعد ذلك، أستعمل أيضاً الدالة القياسيّة التي لم تسنح لنا فرصة تعلّمها في كتابنا :
+\InlineCode{toupper()}.
+هذه الدالّة تحوّل الحرف المعطى إلى كبير
+(\textenglish{Uppercase}).
+هكّذا، اللعبة ستعمل حتى إن أدخل اللاعب حروفاً صغيرة. يجب تضمين
+\InlineCode{ctype.h}
+لتستطيع استخدام هذه الدالة (لا تنس ذلك !).
+
+تأتي بعد ذلك المرحلة الأكثر أهمية : و هي أن نقوم بمسح المحارف التي يمكن أن نكون قد أدخلناها. في الواقع، بإعادة استدعاء
+\InlineCode{getchar}
+نحصل على المحرف الثاني الّذي تمّ إدخاله (مثلا
+\InlineCode{\textbackslash n}).\\
+ما أقوم به بسيط و يأخذ سطرا واحدا : أستدعي الدالة
+\InlineCode{getchar}
+في حلقة تكرارية حتى الوصول إلى
+\InlineCode{\textbackslash n}.
+تتوقف الحلقة إذن، و هذا يعني أننا "قرأنا" كلّ المحارف الأخرى، سيتمّ إذن إفراغها من الذاكرة. نقول أنّنا
+\textbf{نفرغ المتغير المؤقت
+(\textenglish{Buffer})}.
+
+\begin{question}
+لماذا توجد فاصلة منقوطة في نهاية الـ\InlineCode{while}
+و لماذا لا نرى أية حاضنة ؟
+\end{question}
+
+في الواقع، استعملت حلقة تكرارية لا تحتوي على تعليمات (التعليمة الوحيدة، هي
+\InlineCode{getchar}
+داخل القوسين). الحاضنتان ليستا ضروريّتين نظرا لأنه ليس لدينا ما نفعله غير
+\InlineCode{getchar}.
+لهذا أضع فاصلة منقوطة لتعويض الحاضنتين. هذه الفاصلة المنقوطة تعني "لا تفعل شيئاً في كلّ دورة للحلقة". هذا أمر غريب قليلا، لكنها تقنيّة يجب معرفتها، تقنيّة يستعملها المبرمجون لانشاء حلقات بسيطة و قصيرة.
+
+اعلم أنّ الـ\InlineCode{while}
+كان بالإمكان كتابتها هكذا :
+
+\begin{Csource}
+while (getchar() != '\n')
+{
+
+}
+\end{Csource}
+
+لا يوجد شيء داخل الحاضنتين، إنّها تطوّعيّة، نظرا لأنّه ليس هناك شيء آخر لفعله. تقنيّتي الّتي تقتضي وضع فاصلة منقوطة فقط أبسط من تلك الخاصّة بالحاضنتين.
+
+أخيرا، تقوم الدالة
+\InlineCode{readCharacter}
+بإرجاع المحرف الأوّل الذي قمنا بقراءته : المتغيّر
+\InlineCode{character}.
+
+خلاصة القول، في شفرتك، لا تستعمل :
+
+\begin{Csource}
+scanf("%c", &myLetter);
+\end{Csource}
+
+و إنما استعمل بدل ذلك دالّتنا الرائعة :
+
+\begin{Csource}
+myLetter = readCharacter();
+\end{Csource}
