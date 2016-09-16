@@ -348,3 +348,260 @@ AIRPLANE
 بالطبع، يمكنني أن أريك الشفرة دفعة واحدة و لكن... سيكون هذا كثيرا في مرّة واحدة، و البعض لن تكون لديه الشجاعة لمحاولة فهم الشفرة.
 
 سأحاول أن أشرح لك خطوة بخطوة طريقة عملي. تذكّر أنّ ما يهم، ليس النتيجة، و إنّما طريقة التفكير.
+
+\subsection{تحليل الدالة
+\texttt{main}}
+مثلما يعلم الجميع، كلّ شيء يبدأ بـ\InlineCode{main}.
+بجب ألا ننسى تضمين المكتبات
+\InlineCode{stdio}،
+\InlineCode{stdlib}
+و
+\InlineCode{ctype}
+(من أجل الدالة
+\InlineCode{toupper})
+الّتي سنحتاج إليها أيضا :
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int main(int argc, char* argv[])
+{
+  return 0;
+}
+\end{Csource}
+
+حسنا، لحدّ الآن يجب على الجميع أن يتابعوا.\\
+الدالة
+\InlineCode{main}
+ستشكّل معظم اللعبة و ستقوم باستدعاء بعض الدوال حينما تحتاج إليها.
+
+فلنبدأ بتعريف المتغيرات الضروريّة. كن متأكّدا، لم أفكّر في كلّ هذه المتغيرات من الوهلة الأولى، و لقد كان هناك أقلّ من هذا العدد في أوّل مرّة كتبت فيها الشفرة !
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+int main(int argc, char* argv[])
+{
+  char letter = 0; // Stores the letter suggested by the user
+  char secretWord[] = "YELLOW"; // The word that the user must find
+  int foundLetter[3] = {0}; // Boolean table. Each cell corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
+  int remainingTries = 10; // Counting the remaining tries (0 = dead)
+  int i = 0; // A little variable to browse the table
+  return 0;
+}
+\end{Csource}
+
+لقد كتبت بمحض إرادتي تصريح كلّ متغير على سطر و وضعت كثيرا من التعليقات لشرح دور كل متغير. عمليّا، لست مضطرّا على وضع كلّ هذه التعليقات كما وضع الكثير من التصريحات في نفس السطر.
+
+أعتقد أن أغلب المتغيرات تبدوا منطقية : المتغير
+\InlineCode{letter}
+يخزّن الحرف الذي يدخله المستخدم في كلّ مرة،
+\InlineCode{secretWord}
+يحوي الكلمة الواجب اكتشافها.
+\InlineCode{remainingTries}
+يحتوي عدد المحاولات المتبقّية، إلخ. المتغيّر
+\InlineCode{i}
+هو متغير صغير استعمله كي أتصفّح الجدول مستعملا الحلقة
+\InlineCode{for}.
+فهو ليس مهمّا جدّا لكنّه ضروريّ إذا أردنا القيام بحلقات.
+
+و أخيراً المتغير الّذي يجب التفكير فيه، و الذي سيُمثّل الفرق، إنّه عبارة عن جدول من القيم المنطقية
+\InlineCode{foundLetter}.
+ستلاحظ بأنّي جعلت حجم الجدول يساوي عدد حروف الكلمة السريّة (6). هذا ليس أمراً عشوائياً : إذ أن كلّ خانة من جدول القيم المنطقية  تمثّل حرفاً من الكلمة السرية. هكذا، الخانة الأولى تمثّل الحرف الأوّل، الثانية الحرف الثاني، إلخ.\\
+كلّ خانات الجدول مهيّئة في البداية على 0، و التي تعني "الحرف لم يتم إيجاده بعد". بتقدّم اللعبة، الجدول سيتمّ تعديله. من أجل كلّ حرف تمّ إيجاده من الكلمة، الخانة التي توافقها من
+\InlineCode{foundLetter}
+ستأخذ 1.
+
+مثلا، إذا كان في مرحلة من الجولة، لدينا العرض
+\textenglish{Y*LL*W}،
+فإن جدول الـ\InlineCode{int}
+سيحوي القيم : 101101 (1 لكل حرف تمّ إيجاده).\\
+هذه الطريقة تسهّل علينا معرفة متى يربح اللاعب : يكفي التحقّق من أن جميع خانات الجدول لا تحوي سوى 1.\\
+في الحالة الأخرى، سيخسر اللاعب إذا وصل العدّاد
+\InlineCode{remainingTries}
+إلى 0.
+
+فلننتقل إلى التالي :
+
+\begin{Csource}
+printf("Welcome !\n\n");
+\end{Csource}
+
+هذه رسالة ترحيب، لا يوجد أي شيء مثير فيها. بالمقابل، الحلقة الرئيسيّة هي  الأكثر أهميّة :
+
+\begin{Csource}
+while (remainingTries  > 0 && !win(foundLetter))
+{
+\end{Csource}
+
+اللعبة تستمرّ مادام قد بقي بعض المحاولات
+(\InlineCode{remainingTries > 0})
+و اللاعب لم يربح.\\
+إذا لم تبق له أية محاولة، فهذا يعني أنه فشل. إن ربح، فهذا يعني... أنّه ربح.في كلتا الحالتين، يجب إيقاف اللعبة، أي إيقاف الحلقة التي تطلب قراءة حرف في كلّ مرة.
+
+\InlineCode{win}
+هي دالة تقوم بتحليل الجدول
+\InlineCode{foundLetter}.
+تقوم بإعادة "صحيح" (1) إذا كان اللاعب قد ربح (أي أن الجدول
+\InlineCode{foundLetter}
+لا يحمل سوى 1)، "خطأ" (0) إن كان لم يربح بعد.
+لن أشرح لك الآن عمل الدالة بشكل مفصل، سنرى ذلك لاحقاً. حاليّا، يجب عليك فقط معرفة ما تفعله.
+
+باقي الشفرة :
+
+\begin{Csource}
+printf("\n\nYou have %d remaining tries", remainingTries);
+printf("\nWhat's the secret word ? ");
+for (i = 0 ; i < 3 ; i++)
+{
+  if (foundLetter[i]) // If the letter n° i has been found
+    printf("%c", secretWord[i]); // Display it
+  else
+    printf("*"); // Else, display * for the letters that are not found
+}
+\end{Csource}
+
+نقوم في كل مرة بإظهار عدد المحاولات المتبقّية و كذا الكلمة السريّة (مخفيّة بـ* بالنسبة للحروف التي لم يتمّ إيجادها).\\
+يتم إظهار الكلمة السريّة المخفيّة بـ* بفضل حلقة
+\InlineCode{for}
+حيث أننا نحلّل كلّ حرف لنرى إن تمّ إيجاده
+(\InlineCode{if(foundLetter[i])}).
+إن كان الشرط محققاً، سنظهر الحرف، و إلا سنظهر * لإخفاءه.
+
+الآن بعدما أظهرنا ما يجب، سنطلب من اللاعب أن يدخل حرفاً جديداً :
+
+\begin{Csource}
+printf("\nSuggest a letter : ");
+letter = readCharacter();
+\end{Csource}
+
+أستدعي دالتنا
+\InlineCode{readCharacter()}.
+هذه الدالة تقرأ الحرف الأول الذي تمّ إدخاله، تجعله  كبيراً ثم تفرّغ المتغير المؤقّت، أي أنّها تمسح بقيّة الحروف التي يمكن أن تبقى في الذاكرة.
+
+\begin{Csource}
+// if it's NOT the right letter
+if (!findLetter(letter, secretWord, foundLetter))
+  {
+    remainingTries--; // Decrement the remaining tries
+  }
+}
+\end{Csource}
+
+نختبر ما إن كان الحرف الذي تمّ إدخاله موجودا في
+\InlineCode{secretWord}.
+نستدعي لأجل هذا دالّة أنشأناها تسمّى
+\InlineCode{findLetter}.
+سنرى بعد قليل شفرة هذه الدالّة.\\
+حاليّا، كلّ ما يجب أن تعرفه، هو أنّ هذه الدالّة تعيد "صحيح" إن كان الحرف موجودا في الكلمة، "خطأ" إن لم تجده.
+
+كما تلاحظ فالـ\InlineCode{if}
+يبدأ بعلامة تعجّب ! و التي تعني "لا". الشرط يُقرأ إذن بهذه الطريقة : "إذا لم يتم إيجاد الحرف".\\
+ماذا نفعل في حالة عدم إيجاد الحرف ؟ نقوم بتقليل عدد المحاولات المتبقية.
+
+\begin{information}
+لاحظ أيضاً أن الدالة
+\InlineCode{findLetter}
+تقوم بتحديث قيم الجدول
+\InlineCode{foundLetter}.
+تقوم بوضع 1 في الخانات الموافقة للحروف التي تمّ إيجادها.
+\end{information}
+
+الحلقة الرئيسية في اللعبة تتوقف هنا. لهذا فسنعيد من بداية الحلقة و نختبر ما إن كان قد بقي شيء من المحاولات للعب و اللاعب لم بربح بعد.
+
+عند الخروج من الحلقة الرئيسيّة، لا يبقى سوى إظهار إن كان اللاعب قد نجح في اللعبة أو خسر قبل إنهاء البرنامج :
+
+\begin{Csource}
+if (win(foundLetter))
+	printf("\n\nYou win! the secret word is : %s", secretWord );
+else
+	printf("\n\nYou lose ! the secret word is : %s", secretWord );
+return 0;
+}
+\end{Csource}
+
+سنستدعي الدالة
+\InlineCode{win}
+لنرى ما إن كان اللاعب قد ربح. إن كانت هذه هي الحالة، نقوم بإظهار الرسالة "ربح !"، و إلّا، فقد انتهت فرص اللعب، فقد خسر.
+
+\subsection{تحليل الدالة
+\texttt{win}}
+فلنرى الآن الشفرة الخاصة بالدالة
+\InlineCode{win} :
+
+\begin{Csource}
+int win(int foundLetter[])
+{
+  int i = 0;
+  int playerWins = 1;
+  for (i = 0 ; i < 3 ; i++)
+  {
+    if (foundLetter[i] == 0)
+    playerWins = 0;
+  }
+  return playerWins;
+}
+\end{Csource}
+
+هذه الدالة تأخذ جدول القيم المنطقيّة
+\InlineCode{foundLetter}
+كمعامل. تعيد قيمة منطقية : "صحيح" إذا ربح اللاعب و "خطأ" إذا خسِر.
+
+الشفرة الخاصة بهذه الدالة بسيطة، بفترض بك فهمها. نتصفّح
+\InlineCode{foundLetter}
+و نختبر ما إن كانت
+\underline{إحدى}
+خانات الجدول تحوي "خطأ" (0). إن كان هناك حرف واحد لم يتمّ إيجاده فلقد خسر اللاعب : سيتم وضع "خطأ" (0) في المتغير المنطقي
+\InlineCode{playerWins}.
+و إلّا، إن تمّ إيجاد كل الحروف، فالمتغيّر المنطقي سيكون "صحيح" (1) و الدالة تعيد "صحيح".
+
+\subsection{تحليل الدالة
+\texttt{findLetter}}
+لهذه الدالة مهمّتان :
+\begin{itemize}
+  \item إرجاع متغير منطقي يشير ما إن كان الحرف موجوداً في الكلمة السرية.
+  \item تحديث (على 1) خانات الجدول
+\InlineCode{foundLetter}
+في المواضع الموافقة للحرف الذي تمّ إيجاده.
+\end{itemize}
+
+\begin{Csource}
+int findLetter(char letter, char secretWord[], int foundLetter[])
+{
+  int i = 0;
+  int rightLetter = 0;
+  // Search for the letter in the table foundLetter
+  for (i = 0 ; secretWord[i] != '\0' ; i++)
+  {
+    if (letter == secretWord[i]) // If it exists
+    {
+      rightLetter = 1; // Memorize that it was the right one
+      foundLetter[i] = 1; // Put the correspondent value to 1 in the table
+    }
+  }
+  return rightLetter ;
+}
+\end{Csource}
+
+نتصفّح إذن السلسلة المحرفيّة
+\InlineCode{secretWord}
+محرفاً محرفاً. في كلّ مرّة، نختبر ما إن كان الحرف الذي اقترحه اللاعب حرف من الكلمة، سيتم القيام بأمرين :
+\begin{itemize}
+  \item تعديل المتغير المنطقي
+\InlineCode{rightLetter}،
+إلى  1، لكي تعيد الدالّة 1 لأن الحرف متواجد بالفعل في
+\InlineCode{secretWord}.
+  \item تحديث الجدول
+\InlineCode{foundLetter}
+على الموضع الحالي للإشارة إلى أنّ هذا الحرف قد تمّ إيجاده.
+\end{itemize}
+
+الشيء الجيّد في هذه الطريقة، هو أننا سنتصفّح كلّ الجدول (لا نتوقف عند أول حرف تم إيجاده). هذا سيسمح لنا بتحديث الجدول
+\InlineCode{foundLetter}
+بشكل صحيح، في الحالة التي تحتوي فيها الكلمة حرفاً مكرراً عدّة مرّات، مثل حالة
+\textenglish{L}
+في
+\textenglish{YELLOW}.
