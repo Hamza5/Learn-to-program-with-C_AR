@@ -631,3 +631,41 @@ ZERO
 ما إن أنتهي من كتابة البرنامج، سأعود بالطبع إلى هذا القاموس و أملؤه بالكثير من الكلمات الغريبة كـ\textenglish{XYLOPHONE}
 و المطوّلة كـ\textenglish{ANTIDISESTABLISHMENTARIANISM}.
 لكن حاليّا، لنعد إلى كتابة التعليمات.
+
+\subsection{تحضير الملفات الجديدة}
+
+قراءة
+"\textenglish{dico}"
+سيأخذ الكثير من الأسطر (على الأقل، لديّ إحساس قبليّ بذلك). لهذا فسآخذ الاحتياطات بإضافة ملف آخر إلى مشروعي
+\InlineCode{dico.c}
+(الذي سيتكفّل بقراءة
+\textenglish{dico}).
+كما سنَقُوم بإنشاء
+\InlineCode{dico.h}
+الّذي يحوي نماذج الدوال الموجودة في
+\InlineCode{dico.c}.
+
+في
+\InlineCode{dico.c}
+سأبدأ بتضمين  المكتبات الّتي أنا في حاجة إليها بالإضافة إلى
+\InlineCode{dico.h}.
+أوّلا، كالعادة، سأحتاج إلى
+\InlineCode{stdio.h}
+و
+\InlineCode{stdlib.h}
+هنا. بالإضافة إلى هذا، يجب عليّ أن أقوم بسحب عشوائي لعدد من القاموس، سأقوم إذن بتضمين
+\InlineCode{time.h}
+مثلما فعلنا سابقاً من أجل العمل التطبيقي الأول "أكثر أو أقل".سأحتاج أيضا إلى تضمين
+\InlineCode{string.h}
+من أجل استعمال
+\InlineCode{strlen}
+في نهاية الدالّة.
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+#include "dico.h"
+\end{Csource}
