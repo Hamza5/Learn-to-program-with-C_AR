@@ -669,3 +669,174 @@ ZERO
 
 #include "dico.h"
 \end{Csource}
+
+\subsection{الدالة
+\texttt{findWord}}
+هذه الدالة تأخذ معاملا واحدا : مؤشراً نحو الذاكرة حيث يمكن كتابة الكلمة. هذا المؤشّر يتم تزويدنا به عن طريق
+\InlineCode{main}.\\
+الدالة ستعيد
+\InlineCode{int}
+و سيكون قيمة منطقية : 1 = تمّ كلّ شيء على مايرام، 0 = كان هناك خطأ ما.
+
+هذه بداية الدالة :
+
+\begin{Csource}
+int findWord(char *chosenWord)
+{
+  FILE* dico = NULL; // The pointer of the file
+  int wordsNumber = 0, chosenWordNumber = 0, i = 0;
+  int readCharacter = 0;
+\end{Csource}
+
+أعرّف بعض المتغيرات الّتي ستكون ضرورية لي. مثل الـ\InlineCode{main}،
+لم يخطر ببالي وضعها كلّها من البداية، يوجد بالتأكيد من قمت بإضافتها لاحقا حينما عرفت أنني بحاجة إليها.
+
+أسماء الكلمات تعبّر عن نفسها. لدينا المؤشّر على القاموس
+\InlineCode{dico}
+و الذي سيمكننا من قراءة
+\InlineCode{dico.txt}،
+متغيرات مؤقّتة ستخزّن المحارف، إلخ.
+لاحظ أنني هنا استعملت
+\InlineCode{int}
+لتخزين محرف
+(\InlineCode{characterRead})
+لأنّ الدالة
+\InlineCode{fgetc}
+الّتي سأستخدمها تعيد
+\InlineCode{int}.
+فمن الأفضل إذن تخزين النتيجة في
+\InlineCode{int}.
+
+فلنمر إلى التالي :
+
+\begin{Csource}
+dico = fopen("dico.txt", "r"); // Open the dictionary in read mode only
+// Check if it's open without a problem
+if (dico == NULL) // If there's a problem
+{
+  printf("\nImpossible to load words dictionary");
+  return 0; // Return a zero to say that the function failed
+  // The function stops after reading the instruction return
+}
+\end{Csource}
+
+ليس لديّ الكثير لأضيفه هنا. أفتح الملف
+\InlineCode{dico.txt}
+بوضع قراءة فقط
+(\InlineCode{"r"})
+و تأكّد إن نجحت عن طريق إختبار إذا كان
+\InlineCode{dico}
+يحمل القيمة
+\InlineCode{NULL}
+فإن عملية فتح الملف قد فشلت (ملفّ غير موجود أو مفتوح من طرف برنامج آخر). في هذه الحالة سنظهر رسالة خطأ و نقوم بـ\InlineCode{return 0}.
+
+لماذا تضع
+\InlineCode{return}
+هنا ؟ في الحقيقة، التعليمة
+\InlineCode{return}
+تضع نهاية للدالة. إذا لم يتم فتح القاموس، فستتوقف الدالة و لن يذهب الحاسوب إلى أبعد من ذلك. إعادة 0 تشير للـ\InlineCode{main}
+أنّ الدالّة قد فشلت.
+
+في ما يلي من الدالّة نفترض أن فتح الملف نجح.
+
+\begin{Csource}
+// Count the number of words in the file (Just counting the \n signs)
+do
+{
+  characterRead = fgetc(dico);
+  if (characterRead == '\n')
+    wordsNumber++;
+} while(characterRead != EOF);
+\end{Csource}
+
+هنا، نتصفّح كلّ الملف دفعة واحدة باستعمال
+\InlineCode{fgetc}
+(محرفا بمحرف). نعدّ الـ\InlineCode{\textbackslash n}
+التي نجدها. أي أنه في كلّ مرة نلتقي بـ\InlineCode{\textbackslash n}
+نزيد قيمة المتغير
+\InlineCode{wordsNumber}.\\
+بفضل هذه الشفرة سنتحصل في المتغير
+\InlineCode{wordsNumber}
+على عدد الكلمات الموجودة في الملف. تذكّر بأن الملف يحتوي على كلمة في كل سطر.
+
+\begin{Csource}
+chosenWordNumber = aleatoryNumber(wordsNumber); // Take a word by hazard
+\end{Csource}
+
+هنا أستدعي دالّة من إنشائي تختار لي عددا عشوائيا بين 1 و
+\InlineCode{wordsNumber}
+(المعامل الذي ترسله للدالة).\\
+إنها دالة بسيطة وضعتها أيضاً في الملف
+\InlineCode{dico.c}
+(سأشرحها بشكل موسّع لاحقاً). باختصار، تقوم بإرجاع عدد (يوافق رقم سطر الكلمة في الملف) عشوائيّ يتم تخزينه في
+\InlineCode{chosenWordNumber}.
+
+\begin{Csource}
+// Start reading the file from the beginning and stop when finding the right word
+rewind(dico);
+while (chosenWordNumber   > 0)
+{
+	characterRead = fgetc(dico);
+	if (characterRead == '\n')
+    	 chosenWordNumber --;
+}
+\end{Csource}
+
+و الآن و نحن نملك رقم الكلمة التي سنختارها، سنعود إلى بداية الملف باستدعاء
+\InlineCode{rewind()}،
+و سنتصفّح الملف محرفا بمحرف لنحسب عدد
+\InlineCode{\textbackslash n}.
+هذه المرّة، سنقوم بانقاص قيمة
+\InlineCode{chosenWordNumber}.
+إن اخترنا مثلا الكلمة رقم 5، في كلّ ادخال سيتمّ إنقاص المتغير
+\InlineCode{chosenWordNumber}
+بواحد.\\
+سيأخذ إذن القيم 4 ثم 3 ثم 2 ثم 1 ثم 0. \\
+عندما يصل المتغير إلى 0، نخرج من الـ\InlineCode{while}،
+لأن الشرط
+\InlineCode{chosenWordNumber > 0}
+لم يعد محققا.
+
+هذا الجزء من الشفرة، و الذي يجب عليك فهمه حتما، سيريك كيفية تصفّح الملف للوصول إلى المكان المراد. الأمر ليس معقّدا و لكنه ليس "بديهيا" أيضاً. كن متأكّدا من فهم ما أقوم بفعله هنا.
+
+الآن، يفترض أن نملك مؤشّرا متموضعا تماماً قبل الكلمة السريّة الّتي يجب إيجادها.
+سنقوم بتخزينها في
+\InlineCode{chosenWordNumber}
+(المعامل الذي تستقبله الدالة) بفضل
+\InlineCode{fgets}
+بسيط يقوم بقراءة الكلمة :
+
+\begin{Csource}
+/* The cursor of the file is placed in the best place.
+Nothing is needed more than an fgets that will read the line */
+fgets(chosenWord, 100, dico);
+// We erase the \n at the end of the word
+chosenWord[strlen(chosenWord) - 1] = '\0';
+\end{Csource}
+
+نحن نطلب من
+\InlineCode{fgets}
+ألا تقرأ أكثر من 100 محرف (هذا هو حجم الجدول
+\InlineCode{chosenWord}،
+الذي قمنا بتعريفه في الـ\InlineCode{main}).
+تذكّر أنّ
+\InlineCode{fgets}
+تقرأ سطرا كاملا، بما في ذلك
+\InlineCode{\textbackslash n}.
+بما أننا لا نريد إبقاء الـ\InlineCode{\textbackslash n}
+في الكلمة النهائية، نحذفها باستبدالها بـ\InlineCode{\textbackslash 0}.
+لهذا تأثير القيام بقطع الكلمة قبل
+\InlineCode{\textbackslash n}.
+
+و ها نحن ذا ! لقد خزّنا الكلمة السرية في الذاكرة عند عنوان
+\InlineCode{chosenWord}.
+
+لم يتبقّ سوى غلق الملف، و إعادة القيمة 1 لتتوقف الدالة و تشير إلى أن كل شيء على ما يُرام :
+
+\begin{Csource}
+  fclose(dico);
+  return 1; // Everything is okay, return 1
+}
+\end{Csource}
+انتهينا من الدالة
+\InlineCode{findWord} !
