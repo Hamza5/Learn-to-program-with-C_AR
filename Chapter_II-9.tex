@@ -840,3 +840,370 @@ chosenWord[strlen(chosenWord) - 1] = '\0';
 \end{Csource}
 انتهينا من الدالة
 \InlineCode{findWord} !
+
+\subsection{الدالة
+\texttt{aleatoryNumber}}
+هذه الدالة التي وعدتكم بشرحها سابقاً. نختار عدداً عشوائيا و نعيده :
+
+\begin{Csource}
+int aleatoryNumber(int maxNumber)
+{
+    srand(time(NULL));
+    return (rand() % maxNumber);
+}
+\end{Csource}
+
+السطر الأوّل يهيّؤ مولّد القيم العشوائية، مثلما تعلّمنا فعل ذلك في العمل التطبيقي الأوّل "أكثر أو أقل". أما السطر الثاني فيقوم باختيار عدد عشوائي بين 0
+و
+\InlineCode{maxNumber}
+و يعيده. يمكنك ملاحظة أنني قمت بكلّ ذلك في سطر واحد، هذا ممكن بكلّ تأكيد، رغم أنّه قد يبدو أحيانا أقل قابليّة للقراءة.
+
+\subsection{الملف
+\texttt{dico.h}}
+يحتوي نماذج الدوال فقط.يمكنك أن تلاحظ "الحماية" التي تقدّمها
+\InlineCode{\#ifndef}
+التي كنت قد طلبت منك تضمينها في كلّ ملفاتك ذات الإمتداد
+\InlineCode{.h}
+(راجع درس توجيهات المعالج في حالة الحاجة) :
+
+\begin{Csource}
+#ifndef DEF_DICO
+#define DEF_DICO
+int findWord(char *chosenWord);
+int aleatoryNumber(int maxNumber);
+#endif
+\end{Csource}
+
+\subsection{الملف
+\texttt{dico.c}}
+هذا هو الملف
+\InlineCode{dico.c}
+كاملا :
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include "dico.h"
+int findWord(char *chosenWord)
+{
+    FILE* dico = NULL; // The pointer on the file
+    int wordsNumber = 0, chosenWordNumber = 0, i = 0;
+    int characterRead = 0;
+    dico = fopen("dico.txt", "r"); // Open the dictionary in read mode only
+    // Check if it’s open without a problem
+    if (dico == NULL) // If there's a problem
+    {
+        printf("\nImpossible to load words dictionary");
+        return 0; // Return a zero to say that the function failed
+        // The function stops after reading the instruction return
+    }
+    // Count the number of words in the file (just count the \n characters)
+    do
+    {
+        characterRead = fgetc(dico);
+        if (characterRead == '\n')
+            wordsNumber++;
+    }
+    chosenWordNumber = aleatoryNumber(wordsNumber); // Take a word by hazard
+    // Start reading the file from the beginning and stop after finding the right word
+    rewind(dico);
+    while (chosenWordNumber > 0)
+    {
+        characterRead = fgetc(dico);
+        if (characterRead == '\n')
+            chosenWordNumber --;
+    }
+    fgets(chosenWord, 100, dico);
+    // Erase the \n at the end of the word
+    chosenWord[strlen(chosenWord) - 1] = '\0';
+    fclose(dico);
+     return 1; // Everything is okay, return 1
+}
+int aleatoryNumber(int maxNumber)
+{
+    srand(time(NULL));
+    return (rand() % maxNumber);
+}
+\end{Csource}
+
+\subsection{يجب إذن تعديل الـ\texttt{main}
+!}
+
+و الآن بما أن الملف
+\InlineCode{dico.c}
+جاهز، سنعود للدالة
+\InlineCode{main}
+كي نقوم بتحديثها على حسب التغييرات التي قمنا بإجرائها.
+
+سنبدؤ أوّلا بتضمين
+\InlineCode{dico.h}
+إذا أردنا استدعاء دوال الملف
+\InlineCode{dico.c}.
+بالإضافة إلى ذلك، سنقوم أيضاً بتضمين
+\InlineCode{string.h}
+لأننا سنستعمل الدالة
+\InlineCode{strlen} :
+
+\begin{Csource}
+#include <string.h>
+#include "dico.h"
+\end{Csource}
+
+للبدأ، سيتم تغيير كيفية تعريف المتغيرات، فنحن مثلاُ لن نهيّئ قيمة المتغير
+\InlineCode{secretWord}،
+سننشئ فقط جدول محارف من
+\InlineCode{char}
+(100 خانة).
+
+بالنسبة للجدول
+\InlineCode{foundLetter}
+فحجمه سيعتمد على طول الكلمة التي سنختارها من القاموس، و بما أننا لازلنا لا نعرف هذا الطول، سنكتفي بتعريف مؤشّر. لاحقاً سنستعمل الدالة
+\InlineCode{malloc}
+و جعل هذا المؤشّر يـُؤشّر على الخانة التي سيتم حجزها.\\
+و هذا مثال يعبّر تماما عن حاجتنا الماسة لاستعمال الحجز الحيّ : نحن لا نعرف حجم الجدول قبل ترجمة الشفرة، أي أننا مجبرون على تعريف مؤشّر و استدعاء
+\InlineCode{malloc}.
+
+لا يجب أن ننسى تحرير الذاكرة حين لا نحتاج إلى الخانة التي تم حجزها، و لهذا سيتم استعمال الدالة
+\InlineCode{free}
+في نهاية الـ\InlineCode{main}.
+
+نحتاج أيضاً إلى متغير
+\InlineCode{wordSize}
+ و الذي سيحتوي
+\dots
+حجم الكلمة السرية. في الواقع، لو نلاحظ الـ\InlineCode{main}
+كما كان في الشفرة السابقة، فسنرى أنه كلّما احتجنا حجم الكلمة استعملنا العدد 3 (لأن الكلمة كانت
+\textenglish{RED}
+ذات 3أحرف). لكن حاليّا، بما أن الكلمة ستتغير، فيجب على البرنامج أن يتلائم مع كل الكلمات.
+
+إليك إذن التعريفات النهائية للمتغيّرات في الدالة
+\InlineCode{main}
+:
+
+\begin{Csource}
+  int main(int argc, char* argv[])
+  {
+  	char letter = 0; // Stores the letter suggested by the user
+  	char secretWord[100] = {0}; // The word that the user must find
+  	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
+  	int remainingTries= 10; // Counting the remaining tries  (0 = dead)
+  	int i = 0; // A little variable to browse the table
+  	int wordSize= 0;
+\end{Csource}
+
+ستتغير بداية الدالة
+\InlineCode{main}،
+فلنلاحظ هذا :
+
+\begin{Csource}
+  if (!findWord(chosenWord))
+  	 exit(0);
+\end{Csource}
+
+نحن نستدعي أولا الدالة
+\InlineCode{findWord}،
+و ذلك يتم مباشرة داخل الشرط
+\InlineCode{if}.
+الدالة
+\InlineCode{findWord}
+ستقوم بوضع الكلمة التي اختارتها من القاموس في المتغير
+\InlineCode{secretWord}.
+كما أنها ستقوم بإرجاع متغير منطقي لنا لتخبرنا ما إن كانت العملية ناجحة أم لا، أي أننا نقرؤ الشرط كالتالي : إذا لم يعمل الأمر فسنوقف البرنامج
+(\InlineCode{exit(0)}).
+
+\begin{Csource}
+wordSize = strlen(secretWord);
+\end{Csource}
+
+نقوم بتخزين طول
+\InlineCode{secretWord}
+في المتغير
+\InlineCode{wordSize}
+كما شرحتُ سابقاً.
+
+\begin{Csource}
+foundLetter = malloc(wordSize  * sizeof(int)); // We allocate dynamically the table foundLetter ( that we don’t know its size in the beginning )
+if (foundLetter  == NULL)
+	 exit(0);
+\end{Csource}
+
+و الآن سنحجز مكاناً في الذاكرة للجدول
+\InlineCode{foundLetter}.
+سنقدّم له حجم الكلمة
+\InlineCode{wordSize}.
+سنختبر بعد ذلك ما إن كان المؤشّر يساوي
+\InlineCode{NULL}.
+إذا كان كذلك، فالحجز قد فشل. في هذه الحالة سنوقف البرنامج حالا (باستعمال
+\InlineCode{exit}).
+
+إذا تمّت قراءة الأسطر السابقة، فكلّ شيء قد عمل تماما.
+
+هذه هي أهم التعديلات على الـ
+\InlineCode{main}،
+يبقّى أن تقوم باستبدال كل تكرار للرقم 3 بالمتغير
+\InlineCode{wordSize}.
+مثال :
+
+\begin{Csource}
+  for (i = 0 ; i < wordSize ; i++)
+  	foundLetter[i] = 0;
+\end{Csource}
+
+هذه الشفرة تقوم بوضع القيمة 0 في كل خانة من الجدول
+\InlineCode{foundLetter}.
+
+كان يفترض أن أضع نموذج الدالة
+\InlineCode{win}
+لأضيف المتغير
+\InlineCode{wordSize}.
+فبدون هذا لا يمكن للدالة معرفة متى توقف الحلقة التكرارية.
+
+هذه هو الملف
+\InlineCode{main.c}
+كاملا:
+
+\begin{Csource}
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <ctype.h>
+  #include <string.h>
+  #include "dico.h"
+  int win(int foundLetter[], int wordSize);
+  int findLetter(char letter, char secretWord[], int foundLetter[])
+  char readCharacter();
+  int main(int argc, char* argv[])
+  {
+  	char letter = 0; // Stores the letter suggested by the user
+  	char secretWord[100] = {0}; // The word that the user must find
+  	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
+  	int remainingTries = 10; // Counting the remaining tries  (0 = dead)
+  	int i = 0; // A little variable to browse the table
+  	int wordSize = 0;
+  	printf("Welcome !\n\n");
+  	if (!findWord(chosenWord))
+  	 	exit(0);
+  	wordSize = strlen(secretWord);
+  	foundLetter = malloc(wordSize  * sizeof(int)); // We allocate dynamically the table foundLetter ( that we don’t know its size in the beginning )
+
+  	if (foundLetter  == NULL)
+  		 exit(0);
+  	for (i = 0 ; i < wordSize; i++)
+      		 foundLetter [i] = 0;
+  	while (remainingTries > 0 && !win(foundLetter , wordSize))
+  	{
+      		printf("\n\nYou have %ld remaining tries", remainingTries);
+      		printf("\nWhat’s the secret word? ");
+      		for (i = 0 ; i < wordSize; i++)
+      		{
+          			if (foundLetter [i]) // If we have found the letter n° i
+  		      		printf("%c", secretWord[i]); // We display it
+  		        	else
+  		            	printf("*"); // Else, we display a * for the letters that are not found
+      		}
+      		 printf("\nSuggest a letter : ");
+  	    	letter = readCharacter();
+  	    	// If it’s not the right letter
+  	    	if (!findLetter(letter , secretWord, foundLetter ))
+  	    	{
+  		        	 remainingTries--; // We decrement by 1 the remaining tries
+      		}
+  	}
+  	if (win(foundLetter , wordSize))
+  	    	printf("\n\nYou win ! The secret word is : %s",secretWord);
+  	else
+  	    	printf("\n\nTou lose ! The secret word is : %s", secretWord);
+  	free(foundLetter ); // We free the allocated memory
+      	return 0;
+  }
+  char readCharacter()
+  {
+  	char character = 0;
+  	 character = getchar(); // We read the first character
+  	character = toupper(character); // We uppercase the character
+  	// We read other characters until we reach  \n ( to erase them )
+  	while (getchar() != '\n') ;
+  	return character; // We return the first character that we read
+  }
+  int win(int foundLetter[], int wordSize)
+  {
+  	int i = 0;
+  	int playerWins= 1;
+  	for (i = 0 ; i < wordSize ; i++)
+  	{
+      		if (foundLetter[i] == 0)
+          			playerWins= 0;
+  	}
+  	return playerWins;
+  }
+  int findLetter(char letter, char secretWord[], int foundLetter[])
+  {
+  	int i = 0;
+  	int rightLetter = 0;
+  	// We search for the letter in the table foundLetter
+  	for (i = 0 ; secretWord[i] != '\0' ; i++)
+  	{
+      		if (letter == secretWord[i]) // If it exists
+      		{
+          			rightLetter = 1; // We memorize that it was the right one
+          			 foundLetter[i] = 1; // We put the correspondent value to 1 in the table
+      		}
+  	}
+  	return rightLetter ;
+  }
+\end{Csource}
+
+\section{أفكار للتحسين}
+
+\subsection{تنزيل المشروع}
+
+للبدأ، أدعوكم لتنزيل المشروع عبر الرابط التالي:
+
+\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/pendu_siteduzero.zip} \textenglish{(10 Ko)}
+
+إذا كنت تعمل على الماك أو اللينكس، قم بحذف الملف
+\InlineCode{dico.txt}
+و أنشئ واحداً جديداً. على أي حال فالملفات يتم حفظها بشكل مختلف على الويندوز : لهذا فقد تظهر لك بعض المشاكل لو استعملت المشروع كما هو. تأكّد من وجود كل كلمة في سطر وحدها، و ارجع إلى السطر بعد كتابة الكلمة الأخيرة في الملف (ليتم حسابها في الشفرة).
+
+هذا سيساعدك في تجريب كيف يعمل المشروع و ربما إضافة بعض التعديلات و التحسينات عليه، إلخ. من المستحسن أن تكون قد قمت بنفسك برمجة اللعبة دون الحاجة إلى تحميل مشروعي كما كتبته أنا، مع ذلك أؤمن بأن هذا العمل كان صعبا بالنسبة للبعض من القراء.
+
+ستجد في هذا الملف
+\InlineCode{.zip}
+ملفات من
+\InlineCode{.h}
+ و
+\InlineCode{.c}
+كما تجد الملف
+\InlineCode{.cbp}
+الخاص بالمشروع. إنه مشروع تم إنشاؤه بالبيئة التطويرية
+\textenglish{Code::Blocks}.\\
+إن كنت تستعمل بيئة تطويرية أخرى، فلا داعي للقلق، قم بإنشاء مشروع بنفسك، و ضع فيه يدويا الملفات
+\InlineCode{.h}
+و
+\InlineCode{.c}
+المتواجدة في الملف
+\InlineCode{.zip}.
+ستجد أيضاً الملف التنفيذي
+(\InlineCode{.exe})
+و القاموس
+(\InlineCode{dico.txt}).
+
+\subsection{تحسين الـ\textenglish{Pendu}}
+
+إن مستوى شفرة اللعبة هذه، لابأس به، لدينا الآن لعبة تفتح ملفا و تأخذ منه كلمة عشوائية.
+
+و لكن مع ذلك سأعطيك بعض الأفكار التي يمكنك إدراجها للعبة بهدف تحسينها :
+
+\begin{itemize}
+  \item لحد الآن اللعبة تقترح علينا جولة واحدة، فسيكون من الأحسن لو نستعمل حلقة تكرارية تسمح بلعب جولة ثانية إذا كان اللاعب يريد ذلك !
+  \item يمكنك أيضاً أن تجعل اللعبة تسمح بلعب لاعبين، الأول يدخل الكلمة السرية و الثاني يحاول تخمينها !
+  \item هل ستتمكن من رسم رجل ( باستعمال الـ\InlineCode{printf}
+ فقط، نحن في الكونسول، تذكر ) يقوم بالتفاعل مع اللاعب ؟ كأن يتأسف في حال ما إن أخطأ اللاعب في إيجاد الكلمة ؟
+  \item يمكنك أن تطلب من اللاعب أن يختار صعوبة اللعبة، و حسب الصعوبة تغيّر في عدد المحاولات المسموحة له.
+\end{itemize}
+
+حاول الاستفادة من هذا العمل التطبيقي جيداً، و أعد الكرّة حتى لو قرأت الشفرة الخاصة بي، حاول تطويرها و تحسينها، أريد منك أن تستطيع لاحقاً برمجة لعبة الـ\textenglish{Pendu}
+و عيناك مغمضتان !
+
+هيّا، بالتوفيق !
