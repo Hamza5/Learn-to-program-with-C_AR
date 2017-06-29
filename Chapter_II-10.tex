@@ -139,3 +139,382 @@ Ah ! Your name is Patrice !
 بالطبع كان بإمكاننا تعريف جدول كبير للغاية ( 10.000 خانة ) لكن هذا لا يحلّ المشكل فالشخص الذي يريد الوصول إلى الذاكرة ما عليه سوى إدخال سلسلة يتجاوز طولها 10.000 محرف و سيعمل هجومه كما يريد.
 
 الشيء المحزن هو أن معظم المبرمجين لا ينتبهون دائما لهذه الأخطاء، و لو أنهم قاموا بكتابة الشفرة من المرة الأولى بشكل نظيف و صحيح، لما ظهرت كثير من الثغرات من التي نتحدّث عنها اليوم.
+
+\section{استرجاع سلسلة محارف}
+
+توجد العديد من الدوال القياسيّة في لغة
+\textenglish{C}
+التي تسمح باسترجاع سلسلة نصّيّة. إضافة إلى الدالة
+\InlineCode{scanf}،
+و التي من الصعب دراستها هنا، لدينا :
+
+\begin{itemize}
+  \item \InlineCode{gets}:
+دالة تقرأ سلسلة محرفيّة كاملة لكنها خطيرة جدّا لأنها لا تعالج مشكل الـ\textenglish{buffer overflow}.
+  \item \InlineCode{fgets} :
+ تشبه الدالة
+\InlineCode{gets}
+لكنها تحمي البرنامج و ذلك بالتحكم في عدد المحارف المكتوبة في الذاكرة.
+\end{itemize}
+
+أعتقد أن الأمر مفهوم : على الرغم من أنها دالّة قياسيّة في الـ\textenglish{C}،
+\InlineCode{gets}
+هي دالّة خطيرة  جدّا. كل البرامج الّتي تستخدمها عرضة لأن يكونوا ضحايا الـ\textenglish{buffer overflow}.
+
+سنرى كيف تعمل الدالة
+\InlineCode{fgets}،
+و كيف نستعملها في برامجنا الخاصّة في مكان الدالة
+\InlineCode{scanf}.
+
+\subsection{الدالّة \texttt{fgets}}
+
+نموذج هذه الدالة، المتواجد في المكتبة
+\InlineCode{stdio.h}
+هو :
+
+\begin{Csource}
+char *fgets( char *str, int num, FILE *stream );
+\end{Csource}
+
+من المهم أن نفهم هذا النموذج. معاملات الدالة هي التالية.
+
+\begin{itemize}
+  \item \InlineCode{str} :
+مؤشّر نحو جدول في الذاكرة، أين ستتمكن الدالة من كتابة النص المدخل من طرف المستخدم.
+  \item \InlineCode{num} :
+حجم الجدول
+\InlineCode{str}
+المرسل كمعامل أوّل.
+
+لاحظ أنه لو قمت بحجز جدول من
+\InlineCode{char}،
+فإن الدالة
+\InlineCode{fgets}
+ستقرأ 9 محارف على الأكثر ( آخر خانة محجوزة للمحرف
+\InlineCode{\textbackslash 0}
+المشير إلى نهاية السلسلة ).
+  \item \InlineCode{stream} :
+مؤشّر نحو الملف الذي سنقرأ منه. في حالتنا "الملف المراد قراءته" هو الإدخال القياسي
+( \textenglish{standard input} )،
+أي لوحة المفاتيح. لطلب قراءة الإدخال القياسي نرسل المؤشّر
+\InlineCode{stdin}
+المعرّف تلقائيّا في الملفات الرأسيّة للمكتبة القياسيّة للـ\textenglish{C}
+ليشير إلى لوحة المفاتيح. مع ذلك، يمكن استخدام
+\InlineCode{fgets}
+لقراءة الملفّات، كما رأينا في الفصل الخاص بالملفّات.
+\end{itemize}
+
+الدالة ستقوم بإرجاع نفس المؤشّر
+\InlineCode{str}
+للإشارة إلى إن كانت القراءة قد تمت بشكل صحيح أم لا. يكفي إذا أن نختبر ما إن كانت قيمة هذا المؤشّر تساوي
+\InlineCode{NULL}،
+فإن كانت كذلك، فهناك خطأ.
+
+فلنجرّب !
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+int main(int argc, char *argv[])
+{
+	char name[10];
+	printf("What's your name ? ");
+	fgets(name, 10, stdin);
+	printf("Ah ! Your name is %s !\n\n", name);
+	return 0;
+}
+\end{Csource}
+
+\begin{Console}
+What's your name ? NEBRA
+Ah ! Your name is NEBRA
+!
+\end{Console}
+
+الدالة تعمل بشكل جيد، مع تفصيل بسيط : عندما تضغط على زر الإدخال، تقوم
+\InlineCode{fgets}
+بالاحتفاظ بـ\InlineCode{\textbackslash n}
+الموافق، هذا ما يفسّر الرجوع إلى السطر بعد الكلمة
+"\textenglish{NEBRA}"
+كما يظهر في الكونسول.
+
+لا يمكننا أن نمنع هذه الدالة من كتابة المحرف
+\InlineCode{\textbackslash n}
+لأن الدالة تعمل هكذا. بالمقابل، هذا لا يمنع كتابتنا لدالة خاصّة بالإدخال تقوم نفسها باستدعاء
+\InlineCode{fgets}
+و حذف ذلك المحرف !
+
+\subsection{كتابة دالتك الخاصّة بالإدخال باستخدام \texttt{fgets}}
+
+ليس صعباً جدّا أن نقوم بكتابة دالة خاصة بك تقوم ببعض التصحيحات من أجلك في كلّ مرّة.
+
+سنسمّي هذه الدالّة
+\InlineCode{read}.
+ستقوم بإرجاع القيمة 0 إن كان هناك خطأ و 1 إن لم يكن.
+
+\subsubsection{حذف الرجوع إلى السطر \texttt{\textbackslash n}}
+
+الدالة
+\InlineCode{read}
+تستدعي
+\InlineCode{fgets}،
+إذا تمّ كلّ شيء على ما يرام، ستبحث عن المحرف
+\InlineCode{\textbackslash n}
+بمساعدة الدالة
+\InlineCode{strchr}
+الّتي يفترض بك معرفتها. إذا تمّ العثور على
+\InlineCode{\textbackslash n}،
+فستستبدله بـ\InlineCode{\textbackslash 0}
+( نهاية السلسلة ) لتجنّب الاحتفاظ بـ"علامة الإدخال".
+
+هاهي الشفرة علّقت عليها خطوة بخطوة :
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // Think to include string.h for strchr()
+int read(char *string, int length)
+{
+	char *inputPosition = NULL;
+	// We read the text
+	if (fgets(string, length, stdin) != NULL)  // No error ?
+	{
+    		inputPosition = strchr(string, '\n'); // We search for the "input"
+    		if (inputPosition != NULL) // If we find the \n
+    		{
+        			*inputPosition = '\0'; // We replace the character by \0
+    		}
+    		return 1; // We return 1 if there's no error
+	}
+	else
+	 {
+    		return 0; // We return 0 if there's error
+	 }
+}
+\end{Csource}
+
+ستلاحظ أنه بالإمكان استدعاء الدالة
+\InlineCode{fgets}
+مباشرة داخل
+\InlineCode{if}.
+هذا اختصار كتابي، كي لا استعمل مؤشّرا يستقبل القيمة المُرجعة من الدالة ثم اختبر قيمته إن كانت
+\InlineCode{NULL}
+أم لا.
+
+إنطلاقا من
+\InlineCode{if}
+الأول، أعرف هل
+\InlineCode{fgets}
+عملت على ما يرام أم حدث مشكل ما ( قام المستخدم بادخال محارف أكبر من العدد المسموح به ).
+
+إذا تم كل شيء بشكل جيد، سأذهب للبحث عن الـ\InlineCode{\textbackslash n}
+باستعمال الدالة
+\InlineCode{strchr}
+ثم استبداله بالمحرف
+\InlineCode{\textbackslash 0}
+كما في الشكل التالي.
+
+\Picture{Chapter_II-10_string}
+
+هذا المخطط يبيّن أن السلسلة الّتي تمت قراءتها من طرف الدالة
+\InlineCode{fgets}
+هي
+"\InlineCode{NEBRA\textbackslash n\textbackslash 0}"،
+ثم قمنا باستبدال الـ\InlineCode{\textbackslash n}
+بـ\InlineCode{\textbackslash 0}
+و هذا ما أعطانا
+"\InlineCode{NEBRA\textbackslash 0\textbackslash 0}"،.\\
+ليس مشكلا أن توجد علامتا
+\InlineCode{\textbackslash 0}
+متتابعتان. الحاسوب سيتوقف عند الإشارة الأولى و يعتبرها نهاية السلسلة.
+
+و النتيجة ؟ حسنا، لقد عملت بشكل جيّد.
+
+\begin{Csource}
+  int main(int argc, char *argv[])
+  {
+  	char name[10];
+  	printf("What's your name ? ");
+  	read(name, 10);
+  	printf("Ah ! Your name is %s !\n\n", name);
+  	return 0;
+  }
+\end{Csource}
+
+\begin{Console}
+What's your name ? NEBRA
+Ah ! Your name is NEBRA !
+\end{Console}
+
+\subsubsection{تفريغ المتغيّر المؤقّت}
+
+لم نصل بعد إلى نهاية الأمور المزعجة.\\
+نحن لم نقم بتحليل الحالة التي يقوم فيها المستعمل بإدخال محارف أكثر من ما هو مسموح به !
+
+\begin{Console}
+What's your name ? Jean Edouard Albert 1er
+Ah ! Your name is Jean Edou !
+\end{Console}
+
+بما أن الدالة
+\InlineCode{fgets}
+تدعم الحماية، فهي توقفت عند الحرف التاسع الذي قام المستعمل بإدخاله لأنّنا حجزنا جدولا من 10 محارف ( يجب عدم نسيان أنّ العاشر محجوز لإشارة نهاية السلسلة ).
+المشكل هو أن بقيّة السلسلة الّتي لم تتم قراءتها.
+"\textenglish{ard Albert 1er}"
+لم تختف ! و إنّما لازالت موجودة في المتغير المؤقّت. هذا المتغير المؤقت هو مكان في الذاكرة يعمل كوسيط بين لوحة المفاتيح و الجدول الّذي سيتم تخزين السلسلة فيه. في الـ\textenglish{C}،
+لدينا مؤشّر نحو المتغير المؤقت، و هو
+\InlineCode{stdin}
+الذي تكلمنا عنه قبل قليل.
+
+أعتقد أن مخططا صغيرا سيساعد على توضيح الأمور.
+
+\Picture{Chapter_II-10_buffer}
+
+حينما يقوم المستعمل بإدخال نص بلوحة المفاتيح، فإن نظام التشغيل ( ويندوز مثلا ) يقوم بنسخ النص مباشرة في المتغير المؤقّت
+\InlineCode{stdin}.
+
+مهمة الدالة
+\InlineCode{fgets}
+هي إحضار المحارف الموجودة في المتغير المؤقت ووضعها في الذاكرة التي قمت أنت بتحديدها ( الجدول
+\InlineCode{string} ).\\
+بعد القيام بعملها، تمسح ما قامت بنسخه من المتغير المؤقّت.
+
+إذا عمل كل شيء على ما يرام، فالدالة
+\InlineCode{fgets}
+ستقوم بإفراغ كل محتوى المتغير المؤقّت، أي أن هذا الأخير سيكون فارغاً بعد استدعاء الدالة. لكن في الحالة التي يقوم المستخدم بإدخال كثير من المحارف لا يمكن أن يسعها المكان المحجوز لها، فإنه يتم مسح الحروف التي تمت قراءتها فقط، و بالتالي بعد استدعاء الدالة
+\InlineCode{fgets}
+فإن المتغير المؤقّت يحتوي دائما المحارف المتبقّية !
+
+فلنجرّب مع سلسلة كبيرة :
+
+\begin{Csource}
+  int main(int argc, char *argv[])
+  {
+  	char name[10];
+  	printf("What's your name ? ");
+  	read(name, 10);
+  	printf("Ah ! Your name is %s !\n\n", name);
+  	return 0;
+  }
+\end{Csource}
+
+\begin{Console}
+  What's your name ? Jean Edouard Albert 1er
+  Ah ! Your name is Jean Edou !
+\end{Console}
+
+الدالة
+\InlineCode{fgets}
+قامت بنسخ المحارف التسعة الأولى كما كان متوقّعا. المشكل هو أن المحارف المتبقية لازالت في المتغير المؤقت !
+
+\Picture{Chapter_II-10_buffer_rest}
+
+هذا يعني أنه لو استدعينا الدالة
+\InlineCode{fgets}
+مرة أخرى فإنها ستقوم بقراءة ما كان متبقّيا في المتغير المؤقت !
+
+فلنجرّب هذه الشفرة :
+
+\begin{Csource}
+  int main(int argc, char *argv[])
+  {
+  	char name[10];
+  	printf("What's your name ? ");
+  	read(name, 10);
+  	printf("Ah ! Your name is %s !\n\n", name);
+  	read(name, 10);
+  	printf("Ah ! Your name is %s !\n\n", name);
+  	return 0;
+  }
+\end{Csource}
+
+نحن نقوم باستدعاء الدالة
+\InlineCode{read}
+مرّتين لكنك ستلاحظ أنّه لن يتم السماح لك بإدخال اسمك مرتين، وذلك لأن الدالة
+\InlineCode{fgets}
+لن تطلب من المستخدم إدخال أيّ نصّ في المرّة الثانية لأنّها ستجده في المتغير المؤقت !
+
+\begin{Console}
+  What's your name ? Jean Edouard Albert 1er
+  Ah ! Your name is Jean Edou !
+  Ah ! Your name is ard Alber !
+\end{Console}
+
+إذا قام المستعمل بإدخال محارف كثيرة، فإن الدالة
+\InlineCode{fgets}
+ستحمي البرنامج من مشكل تجاوز الذاكرة، لكن يبقى دائما آثار النصّ في المتغير المؤقت. لذا يجب تفريغ هذا الأخير.
+
+سنقوم إذا بتحسين عمل الدالة
+\InlineCode{read}،
+و سنقوم في الحالات التي تتطلب ذلك باستدعاء دالة نسميها
+\InlineCode{clearBuffer}،
+لكي نتأكد من تفريغ المتغير المؤقت في حال ما احتوى على محارف زائدة :
+
+\begin{Csource}
+  void clearBuffer()
+  {
+  	int c = 0;
+  	while (c != '\n' && c != EOF)
+  	{
+      		c = getchar();
+  	}
+  }
+  int read(char *string, int length)
+  {
+  	char *inputPosition = NULL;
+  	if (fgets(string, length, stdin) != NULL)
+  	{
+      		inputPosition = strchr(string, '\n');
+      		if (inputPosition != NULL)
+      		 {
+          			*inputPosition = '\0';
+      		}
+      		else
+      		 {
+          			clearBuffer();
+      		}
+      		return 1;
+  	 }
+  	else
+  	{
+      		clearBuffer();
+      		return 0;
+  	 }
+  }
+\end{Csource}
+
+الدالة
+\InlineCode{read}
+تستدعي الدالة
+\InlineCode{clearBuffer}
+في حالتين :
+
+\begin{itemize}
+  \item السلسلة المدخلة طويلة جداً ( يمكننا أن نعرف ذلك بعدم وجود الإشارة
+\InlineCode{\textbackslash 0}
+في السلسلة المنسوخة )
+  \item إذا حدث أي خطأ مهما كان، يجب تفريغ محتوى المتغير المؤقت لأسباب حماية لكي لا يبقى شيء هناك.
+\end{itemize}
+
+الدالة
+\InlineCode{clearBuffer}
+قصيرة لكنها عميقة. فهي تقرأ المتغير المؤقت محرفاً محرفاً باستعمال الدالة
+\InlineCode{getchar}.
+هذه الدالة تقوم بإرجاع
+\InlineCode{int}
+( و ليس
+\InlineCode{char}،
+سوف تعرف السبب لاحقا، أيّا يكن ).\\
+سنكتفي نحن باسترجاع القيمة في متغير
+\InlineCode{c}
+من نوع
+\InlineCode{int}.
+نقوم بحلقة تكرارية مادمنا لم نقرأ بعد المحرف
+\InlineCode{\textbackslash 0}
+ أو الرمز
+\InlineCode{EOF}
+( نهاية الملف ) و هما يعنيان : لقد وصلت إلى نهاية المتغير المؤقت. سنتوقّف عند الوصول إلى أحد هذين المحرفين.
+
+يبدو عمل الدالة
+\InlineCode{clearBuffer}
+صعباً قليلاً لكنها تقوم بعملها. لا تتردد في تكرار قراءة الشرح عدة مرات من أجل الفهم الجيد.
