@@ -518,3 +518,168 @@ Ah ! Your name is Jean Edou !
 يبدو عمل الدالة
 \InlineCode{clearBuffer}
 صعباً قليلاً لكنها تقوم بعملها. لا تتردد في تكرار قراءة الشرح عدة مرات من أجل الفهم الجيد.
+
+\section{تحويل سلسلة محرفيّة إلى عدد}
+
+دالتنا
+\InlineCode{read}
+هي فعالة و قويّة الآن، لكنها تجيد قراءة النصوص فقط. ستتساءل حتما : "لكن كيف نقوم باسترجاع عدد ؟"
+
+الحقيقة أن الدالة
+\InlineCode{fgets}
+هي دالة مبدئية. مع
+\InlineCode{fgets}
+لا يمكن قراءة سوى النصوص، و لكن توجد دوال أخرى تقوم بتحويل النص إلى عدد.
+
+\subsection{\texttt{strtol} : تحويل سلسلة محرفيّة إلى \texttt{long}}
+
+نموذج هذه الدالة خاص نوعاً ما :
+
+\begin{Csource}
+  long strtol( const char *start, char **end, int base );
+\end{Csource}
+
+الدالة ستقوم بقراءة السلسلة المحرفيّة المرسلة إليها
+( \InlineCode{start} )
+و ستحاول تحويلها إلى
+\InlineCode{long}
+باستعمال الأساس
+(\InlineCode{base})
+المحدد ( غالباً ما نستعمل الأساس 10، لأننا نستعمل الأرقام من 0 إلى 9، و لهذا ضع مكانه العدد 10 ). ستقوم بإرجاع العدد الذي نجحت في قراءته.\\
+بالنسبة لمؤشر المؤشر
+\InlineCode{end}،
+فالدالة ستقوم استغلاله لإرجاع أول محرف صادفته و لم يكن رقماً. لكننا لسنا بحاجة إليه، فلنكتفي بوضع
+\InlineCode{NULL}
+مكانه لنقول أننا لا نريد استرجاعه.
+
+على السلسلة المحرفيّة أن تبدأ برقم، فبعد العدد كل شيء يتم تجاهله. يمكن أن تكون مسبوقة بفراغات.\\
+هذه أمثلة للفهم الجيد :
+
+\begin{Csource}
+  long i;
+  i = strtol( "148", NULL, 10 ); // i = 148
+  i = strtol( "148.215", NULL, 10 ); // i = 148
+  i = strtol( " 148.215", NULL, 10 ); // i = 148
+  i = strtol( " 148+34", NULL, 10 ); // i = 148
+  i = strtol( " 148 dead leaves", NULL, 10 ); // i = 148
+  i = strtol( " There are 148 dead leaves", NULL, 10 ); // i = 0 (error : The string doesn’t start with a number)
+\end{Csource}
+
+كل السلاسل التي تبدأ برقم ( أو ربما بفراغات قبله ) سيتم تحويلها إلى
+\InlineCode{long}
+حتى الوصول إلى محرف غير مقبول ( نقطة، فاصلة، علامة استفهام، زائد، الخ ).
+
+بالنسبة لسلسلة لا تبدأ بأرقام و أو بفراغات تليها أرقام، فلا يمكن تحويلها و بالتالي تقوم الدالة بإرجاع القيمة~0.
+
+يمكننا كتابة الدالة
+\InlineCode{readLong}،
+و التي تقوم باستدعاء الدالة
+\InlineCode{read}
+( لقراءة النص )، و بعد ذلك تحويل النص إلى عدد :
+
+\begin{Csource}
+  long readLong()
+  {
+  	char textNumber[100] = {0}; // 100 boxes are sufficient
+  	if (read(textNumber, 100))
+  	{
+      		// If we read the text without problems, we convert textNumber to long and we return it
+      		 return strtol(textNumber, NULL, 10);
+  	}
+  	else
+  	{
+      		 // If there’s a problem, we return 0
+      		return 0;
+  	 }
+  }
+\end{Csource}
+
+يمكنك تجريب الشفرة داخل
+\InlineCode{main}
+بسيط.
+
+\begin{Csource}
+  int main(int argc, char *argv[])
+  {
+  	long age = 0;
+  	printf("How old are you ? ");
+  	age = readLong();
+  	printf("Ah ! You are %d years old !\n\n", age);
+  	return 0;
+  }
+\end{Csource}
+
+\begin{Console}
+How old are you ? 18
+Ah ! You are 18 years old!
+\end{Console}
+
+\subsection{\texttt{strtod} تحويل سلسلة محرفيّة إلى \texttt{double}}
+
+الدالة
+\InlineCode{strtod}
+مطابقة للدالة
+\InlineCode{strtol}،
+الفرق الوحيد هو أنها ستحاول قراءة عدد عشريّ و إرجاع
+\InlineCode{double}.
+
+\begin{Csource}
+double strtod( const char *start, char **end );
+\end{Csource}
+
+تجد أن المعامل الثالث
+\InlineCode{base}
+اختفى هنا، بينما يبقى مؤشّر المؤشّر
+\InlineCode{end}
+الّذي لا يفيدنا في شيء.
+
+على خلاف الدالة السابقة، فإن هذه الدالة ستأخذ في الحسبان "النقطة" العشرية. عندما أقول نقطة يعني أن الدالة لا تقبل الفاصلة
+"\textenglish{,}"
+( يبدو أنّها مبرمجة من طرف ناطقين بالإنجليزية ).
+
+فلتقم بكتابة الدالة
+\InlineCode{readDouble}
+بنفسك. إن كتابتها مماثلة للدالة
+\InlineCode{readLong}،
+الاختلاف الوحيد هو أنها ستستدعي الدالة
+\InlineCode{strtod}
+ثم ستقوم بإرجاع قيمة
+\InlineCode{double}.
+
+يعني أنك ستكتب التالي في الكونسول :
+
+\begin{Console}
+  What's your weight ? 67.4
+  Ah ! Your weight is 67.400000 kg !
+\end{Console}
+
+
+حاول بعد ذلك تعديل الدالة
+\InlineCode{readDouble}
+لتقبل الفاصلة أيضاً كفاصل عشري. إن الأمر بسيط : فقط قم باستبدال كل تكرار للمحرف
+"\InlineCode{,}"
+بالمحرف
+"\InlineCode{.}"
+( بالاستعانة بالدالة
+\InlineCode{strchr} )،
+ثم قم ببعث النص الجديد إلى الدالة
+\InlineCode{strtod}.
+
+\section{ملخّص}
+
+\begin{itemize}
+  \item الدالة
+\InlineCode{scanf}
+بالرغم من أنها تبدو سهلة و طبيعية إلا انها معقّدة و تفرض علينا بعض الحدود. فمثلاً، هي لا تقبل قراءة نص يحتوي فراغات.
+  \item نقول أننا تسببنا في الـ\textenglish{buffer overflow}
+إذا تجاوزنا المساحة المخصصة في الذاكرة، فمثلاً لو قام المستخدم بإدخال 10 محارف و نحن قد حجزنا 5 خانات فقط.
+  \item الحل الأمثل هو استدعاء الدالة
+\InlineCode{fgets}
+لتقوم باسترجاع النص الذي يُدخله المستعمل.
+  \item يجب أن تتجنب استعمال الدالة
+\InlineCode{gets}
+بأي ثمن لأنّها لا تحمي من الـ\textenglish{buffer overflow}.
+  \item يمكنك كتابة دالة خاصة بك، تقوم باستدعاء الدالة
+\InlineCode{fgets}
+كما فعلنا لكيّ تحسّن عملها.
+\end{itemize}

@@ -32,7 +32,7 @@
     - [ ] <span dir='rtl'>الحلقات التكراريّة</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
     - [ ] <span dir='rtl'>الدوال</span>
-- [ ] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
+- [x] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
     - [x] <span dir='rtl'>البرمجة المجزأة</span>
     - [x] <span dir='rtl'>المؤشّرات</span>
     - [x] <span dir='rtl'>الجداول</span>
@@ -42,7 +42,7 @@
     - [x] <span dir='rtl'>قراءة و كتابة الملفّات</span>
     - [x] <span dir='rtl'>الحجز الحيّ للذاكرة</span>
     - [x] <span dir='rtl'>عمل تطبيقي: لعبة الـPendu</span>
-    - [ ] <span dir='rtl'>ادخال نص بشكل أكثر أمانا</span>
+    - [x] <span dir='rtl'>ادخال نص بشكل أكثر أمانا</span>
 - [ ] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
     - [ ] <span dir='rtl'>تثبيت SDL</span>
     - [ ] <span dir='rtl'>انشاء نافذة و مساحات</span>
