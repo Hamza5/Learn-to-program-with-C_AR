@@ -288,3 +288,179 @@
 لكي تظهر قائمة الملفات في المشروع. سيكون لديك على الأقل ملف يسمّى
 \InlineCode{main.c}.
 هذا هو كلّ شيء !
+
+\section{\textenglish{Visual C++} (\textenglish{Windows} فقط)}
+
+بعض التذكيرات حول
+Visual C++ :
+
+\begin{itemize}
+  \item إنها البيئة التطويرية الخاصة بـ\textenglish{Microsoft}.
+  \item برنامج مدفوع في الأصل، لكن توجد نسخة مجّانية منه تسمّى \textenglish{Visual C++ Express}.
+  \item تمكّن من البرمجة باستخدام كلتا اللغتين
+\textenglish{C}
+و
+\textenglish{C++}
+(و ليس فقط
+\textenglish{C++}
+كما يوحي الاسم).
+\end{itemize}
+
+طبعا ستقوم بتحميل النسخة المجانية
+\textenglish{Visual C++ Express}
+(احذر، هو غير متوافق مع
+\textenglish{Windows 7}
+إلّا بداية من النسخة 2010) :
+
+\Picture{Chapter_I-2_Visual-Cpp}
+
+\begin{question}
+ما الفرق بين هذه النسخة و النسخة "الحقيقيّة" ؟
+\end{question}
+
+لا تحتوي على محرّر موارد يسمح لك برسم الصور، الأيقونات أو النوافذ. هذا لا يهمّنا لأنّنا لن نحتاج إلى هذه الوظائف في هذا الكتاب. وجود هذه الوظائف أمر مستحسن لكنّه ليس لازما.
+
+للتنزيل، زر موقع
+\textenglish{Visual C++}.
+
+\url{https://msdn.microsoft.com/fr-fr/express/aa975050.aspx}
+
+و اختر تنزيل
+\textenglish{Community 2015}
+و اختر لغتك المفضّلة.
+
+\subsection{التثبيت}
+
+التثبيت سهل. سوف يقوم البرنامج بتحميل آخر نسخة من الأنترنت تلقائيا.\\
+أنصحك بترك الخيارات كما هي.
+
+بعد ذلك سيطلب منك التسجيل في غضون 30 يوما. لا تقلق، إنه سريع و مجاني لكن يجب القيام بذلك.
+
+اضغط على الرابط المُعطى لك، ستدخل موقع
+\textenglish{Microsoft}.
+سجّل دخولك باستخدام
+\textenglish{Windows Live ID}
+(المكافئ لحساب
+\textenglish{Hotmail}
+أو
+\textenglish{MSN})
+أو قم بإنشاء واحد إذا لم يكن لديك، ثم أجب بعد ذلك على الأسئلة.
+
+سيتم إعطاؤك في النهاية مفتاح تفعيل. انسخ هذا المفتاح في القائمة
+\InlineCode{?}
+ثم
+"تسجيل المنتج".
+
+\subsection{انشاء مشروع جديد}
+
+لإنشاء مشروع جديد، إذهب إلى قائمة
+"ملف"
+(\InlineCode{File})
+ثمّ
+"جديد"
+(\InlineCode{New})
+ثم
+"مشروع"
+(\InlineCode{Project}).
+اختر
+\InlineCode{Win32}
+في العمود الأيسر ثمّ
+\InlineCode{Win32 Console Application}.
+ثمّ اَدْخِل اسم مشروعك.
+
+\Picture{Chapter_I-2_Visual-Cpp-New-project}
+
+وافق، ستظهر لك نافذة جديدة
+
+\Picture{Chapter_I-2_Visual-Cpp-Welcome}
+
+هذه النافذة لا تحوي أيّ شيء مهمّ، تابع فقط.
+
+\Picture{Chapter_I-2_Visual-Cpp-Parameters}
+
+اختر
+\InlineCode{Console application}
+و تأكّد من إنشاء مشروع فارغ عن طريق تحديد
+\InlineCode{Empty project}،
+ثم اضغط على
+"إنهاء"
+(\InlineCode{Finish}).
+
+\subsection{إضافة ملف مصدري جديد}
+
+مشروعك فارغ لحدّ الآن. لإضافة ملف مصدري، إضغط باليمين على
+"الملفات المصدرية"
+(\InlineCode{Source files})
+الموجود على اليسار، ثمّ اختر
+"إضافة"
+(\InlineCode{Add})
+ثمّ
+"عنصر جديد"
+(\InlineCode{New element}).
+
+\Picture{Chapter_I-2_Visual-Cpp-New-source}
+
+اختر
+\InlineCode{Visual C++}
+على اليسار ثمّ
+\InlineCode{C++ File}
+(أعلمُ أنّنا لا ندرس
+\textenglish{C++}
+و لكن ليس لهذا أهميّة هنا). اَدْخِل اسم الملف :
+\InlineCode{main.c}
+
+\Picture{Chapter_I-2_Visual-Cpp-New-file}
+
+ثم اضغط على
+"إضافة"
+(\InlineCode{َAdd}).
+سيتم انشاء ملفّ فارغ. أنصحك بحفظه بسرعة باسم
+\InlineCode{main.c}.
+
+إنتهى، يمكنك الآن أن تبدأ في كتابة الشفرة.
+
+\subsection{النافذة الرئيسيّة}
+
+لنرى ما هي أهمّ أقسام النافذة الرئيسيّة في
+\textenglish{Visual C++ Express}.
+
+\Picture{Chapter_I-2_Visual-Cpp-main}
+
+هذه النافذة تشبه مثيلتها في
+\textenglish{Code::Blocks}.
+و لكن رغم ذلك سوف نعيد رؤية معنى كلّ جزء.
+
+\begin{enumerate}
+  \item شريط الأدوات : فيه أزرار اعتيادية. لكن كما ترى لا يوجد أيّ زرّ للترجمة. يمكنك إضافته عن طريق النقر باليمين على هذا الشريط و اختيار
+"تنقيح"
+(\InlineCode{Debug})
+و
+"توليد"
+(\InlineCode{Generate})
+من القائمة.
+
+كلّ هذه الأزرار لديها ما يكافئها في القوائم
+\InlineCode{Debug}
+و
+\InlineCode{Generate}.
+استخدام
+\InlineCode{Generate}
+ينشئ الملف التنفيذي (أي أنها تعني الترجمة). إذا استخدمت
+\InlineCode{Debug / Execute}
+فسوف يقترح عليك الترجمة قبل التشغيل. إختصارات لوحة المفاتيح :
+\InlineCode{F7}
+لتوليد المشروع و
+\InlineCode{F5}
+لتشغيله.
+  \item هذه المساحة جدّ مهمّة، إذ أنها تحتوي على الملفات الخاصة بمشروعك. أنقر على
+"مستكشف الحلول"
+(\InlineCode{Solution explorer})
+في الأسفل إن لم يكن فُعِل من قبل. سوف ترى أنّه قد تمّ إنشاء مجلّدات لفصل أنواع الملفّات المختلفة (مصدريّة، رأسيّة و موارد). سنتعرف لاحقا على مختلف أنواع الملفات التي تكوّن المشروع.
+  \item المساحة الرئيسية : التي نعدّل فيها الملفّات المصدريّة.
+\end{enumerate}
+
+أكملنا جولتنا في
+\InlineCode{Visual C++}.
+يمكنك القاء نظرة على
+الخيارات
+إن أردت لكن لا تأخذ من وقتك ثلاث ساعات هناك ! لأنه يوجد كثير منها.
