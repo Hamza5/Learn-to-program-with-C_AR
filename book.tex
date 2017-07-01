@@ -47,7 +47,7 @@
 \newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
 \renewcommand{\part}{\setcounter{chapter}{0}\@ifstar{\@partstar}{\@partnostar}}
 \let\oldsection\section
-\newcommand{\@sectionstar}[1]{\phantomsection\addcontentsline{toc}{section}{#1}{\color{orange}\oldsection*{#1}}}
+\newcommand{\@sectionstar}[1]{\phantomsection\addcontentsline{toc}{section}{#1}{\color{orange}\oldsection*{#1}}\sectionmark{#1}}
 \newcommand{\@sectionnostar}[1]{{\color{orange}\oldsection{#1}}}
 \renewcommand\section{\@ifstar{\@sectionstar}{\@sectionnostar}}
 \makeatother
@@ -60,15 +60,15 @@
   \end{center}
 }
 % Paragraphs settings
-\setlength{\parskip}{5mm plus2mm minus2mm} % Spacing between paragraphs (+/-)
+\setlength{\parskip}{4mm plus 2mm minus 2mm} % Spacing between paragraphs (+/-)
 % Page header and footer settings
 \setlength{\headheight}{15pt}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{ \markboth{{\thechapter\ #1}}{} }
-\renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1} }
+\renewcommand{\chaptermark}[1]{ \markboth{{\chaptername~\thechapter\ #1}}{} }
+\renewcommand{\sectionmark}[1]{ \markright{#1} }
 \fancyhead{}
-\fancyhead[OR,EL]{\rightmark}
-\fancyhead[ER,OL]{\leftmark}
+\fancyhead[OL]{\rightmark}
+\fancyhead[ER]{\leftmark}
 \setlength{\footskip}{1.5cm}
 % Fixing the issues of the numbering
 \renewcommand{\thepart}{\Alph{part}}
@@ -76,6 +76,7 @@
 \renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
 \renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
 \renewcommand{\thesubsubsection}{\Alph{part}.\arabic{subsubsection}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
+\setcounter{secnumdepth}{1}
 % Global settings for code and console
 \lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip}
 % C source code
@@ -127,6 +128,7 @@
   \include{Chapter_I-2}
   \include{Chapter_I-3}
   \include{Chapter_I-4}
+  \include{Chapter_I-5}
   \part{تقنيات متقدّمة في لغة الـ\textenglish{C}}
   \include{Chapter_II-1}
   \include{Chapter_II-2}
