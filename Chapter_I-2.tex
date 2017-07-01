@@ -292,7 +292,7 @@
 \section{\textenglish{Visual C++} (\textenglish{Windows} فقط)}
 
 بعض التذكيرات حول
-Visual C++ :
+\textenglish{Visual C++} :
 
 \begin{itemize}
   \item إنها البيئة التطويرية الخاصة بـ\textenglish{Microsoft}.
@@ -460,7 +460,138 @@ Visual C++ :
 \end{enumerate}
 
 أكملنا جولتنا في
-\InlineCode{Visual C++}.
+\textenglish{Visual C++}.
 يمكنك القاء نظرة على
 الخيارات
 إن أردت لكن لا تأخذ من وقتك ثلاث ساعات هناك ! لأنه يوجد كثير منها.
+
+\section{\textenglish{Xcode} (\textenglish{Mac OS X} فقط)}
+
+هناك الكثير من البيئات التطويرية المتوافقة مع
+\textenglish{Mac}
+على غرار
+\textenglish{Code::Blocks}
+طبعا.\\
+سأقدم لك البيئة الأكثر شهرة في الماك و هي
+\textenglish{Xcode}.
+
+\subsection{\textenglish{Xcode}،
+ أين أنت ؟}
+
+أغلب مستخدمي
+\textenglish{Mac OS X}
+ليسوا مبرمجين. لقد فهمت
+\textenglish{Apple}
+هذا، لذلك لم تثبّته افتراضيا مع النظام.\\
+لحسن الحظ، لكلّ من يريد أن يبرمج، كلّ شيء جاهز.
+\textenglish{Xcode}
+متوفّر على
+\textenglish{MacAppStore}.
+ابدأ بأخذه من هناك.
+
+أنصحك أيضا بإلقاء نظرة على الموقع الخاص بالمطوّرين لـ\textenglish{Apple}.
+
+\url{https://developer.apple.com/}
+
+سوف تجد هناك كمّا هائلا من من المعلومات المهمّة للتطوير على
+\textenglish{Mac}.
+يمكنك منه تحميل العديد من البرامج للتطوير.\\
+لا تتردّد في التسجيل في
+\textenglish{ADC} (\textenglish{Apple Development Connection})،
+إنه مجاني و يساعدك على تتبع كل ما هو جديد.
+
+\subsection{تشغيل \textenglish{Xcode}}
+
+أوّل شيء يمكننا فعله هو إنشاء مشروع جديد، فلنبدأ بهذا. إذهب إلى
+"ملف "
+(\InlineCode{File})
+ثمّ
+"مشروع جديد"
+(\InlineCode{New Project}).
+ستفتح لك نافذة اختيار المشروع.
+
+\Picture{Chapter_I-2_Xcode-New-project}
+
+اختر
+\InlineCode{Application}
+من اليسار ثمّ
+\InlineCode{Command Line Tool}.
+اضغط بعدها على
+\InlineCode{Next}.
+سوف يُطلب منكم بعدها حفظ مشروعك (كلّ مشروع يجب أن يحفظ منذ البداية) و اسمه. ضعه في المجلّد الّذي تريد.
+
+بمجرّد إنشائه، سيتّم عرض مشروعك على شكل مجلّد يحتوي على العديد من الملفّات في الـ\InlineCode{Finder}.
+الملف الّذي يملك الامتداد
+\InlineCode{.xcodeproj}
+يوافق ملف المشروع. إنه الملف الذي عليك اختياره في المرة القادمة لفتح مشروعك.
+
+\subsection{نافذة التطوير}
+
+في
+\textenglish{Xcode}،
+عندما تختار
+\InlineCode{main.c}
+تظهر لك نافذة شبيهة بهذه :
+
+\Picture{Chapter_I-2_Xcode-main}
+
+الواجهة مقسمة إلى أربعة أقسام، مرقمة هنا من 1 إلى 4 :
+
+\begin{enumerate}
+  \item الجزء الأوّل هو شريط الأزرار في الأعلى. أهمّ زرّ فيه هو
+"تشغيل"
+(\InlineCode{Run})
+وظيفته تشغيل البرنامج.
+  \item الجزء اليسار مخصص للتمثيل الشُجيري لمشروعك الخاص. بعض الأقسام تحتوي على الأخطاء، التحذيرات، الخ. يقوم
+\InlineCode{Xcode}
+تلقائيّا بنقلك إلى القسم المهم. و هو الذي يحمل إسم المشروع.
+  \item الجزء الثالث تتغيّر وظيفته حسب ما قمت بتحديده في الجزء الأيسر. و هنا يعرض محتوى الملف
+\InlineCode{main.c}.
+  \item أخيرا، الجزء الرابع يُظهر نتائج تشغيل البرنامج على الشاشة عندما تقوم بتشغيل البرنامج.
+\end{enumerate}
+
+\subsection{إضافة ملفّ جديد}
+
+في البداية، لن تملك سوى ملف مصدري واحد و هو
+\InlineCode{main.c}،
+و لكن لاحقا عندما نتقدم في الدروس سأطلب منك إنشاء ملفات مصدريّة بنفسك، عندما تصبح برامجنا أكبر.
+
+لإنشاء ملفّ جديد، اذهب إلى قائمة
+\InlineCode{File}
+ثمّ
+\InlineCode{New File}.
+سيطلب منك ادخال نوع الملف الذي تريد إنشاءه. توجّه الى قائمة
+\InlineCode{Mac OS X}
+و اختر
+\InlineCode{C and C++}
+ثمّ
+\InlineCode{C File}.
+لاحظ هذه الصورة.
+
+\Picture{Chapter_I-2_Xcode-C}
+
+يجب عليك إعطاء اسم لملفّك الجديد. امتداده يجب أن يبقى
+\InlineCode{.c}.
+أحيانا -كما سنرى لاحقا- يجب عليك أيضا إنشاء ملفّات بامتداد
+\InlineCode{.h}.
+الخانة
+\InlineCode{Also create file.h}
+مخصّصة لهذا الغرض. حاليّا هذا الخيار لا يهمّنا.
+
+انقر بعدها على
+\InlineCode{Finish}.
+انتهى ! أصبح في مشروعك ملفٌ آخر غير الملف
+\InlineCode{main.c}،
+هنيئا لك فقد أصبحت الآن جاهزاً للبرمجة على الـ\InlineCode{Mac}.
+
+\section*{ملخّص}
+
+\begin{itemize}
+  \item المبرمجون يحتاجون إلى ثلاثة أدوات : محرّر نصوص، مترجم و منقّح.
+  \item من الممكن تثبيت هذه الأدوات منفصلة، لكنّه من المعتاد البوم الحصول على حُزمةٍ ثلاثة-في-واحد نسميها بيئة التطوير المتكاملة.
+  \item \textenglish{Code::Blocks}،
+\textenglish{Visual C++}،
+و
+\textenglish{Xcode}
+تعدّ من بين بيئات التطوير الأكثر شهرة.
+\end{itemize}

@@ -24,7 +24,7 @@
 - [x] <span dir='rtl'>مقدمة المؤلف</span>
 - [ ] <span dir='rtl'>أساسيّات البرمحة بلغة الـC</span>
     - [x] <span dir='rtl'>قلت برمجة ؟</span>
-    - [ ] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
+    - [x] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
     - [x] <span dir='rtl'>برنامجك الأوّل</span>
     - [x] <span dir='rtl'>عالم المتغيّرات</span>
     - [ ] <span dir='rtl'>حسابات سهلة</span>
