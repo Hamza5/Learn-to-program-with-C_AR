@@ -27,7 +27,7 @@
     - [x] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
     - [x] <span dir='rtl'>برنامجك الأوّل</span>
     - [x] <span dir='rtl'>عالم المتغيّرات</span>
-    - [ ] <span dir='rtl'>حسابات سهلة</span>
+    - [x] <span dir='rtl'>حسابات سهلة</span>
     - [ ] <span dir='rtl'>الشروط</span>
     - [ ] <span dir='rtl'>الحلقات التكراريّة</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
