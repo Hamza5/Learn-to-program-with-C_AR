@@ -518,3 +518,216 @@ if (major && boy)
 \InlineCode{if (variable == 1)}.\\
 بالمقابل،إذا كان المتغيّر منطقياّ، (أي إمّا 0 أو 1 لقول صحيح أو خطأ)، قم باختبار من الشكل
 \InlineCode{if (variable)}.
+
+\section{الشرط \texttt{switch}}
+
+الشرط
+\InlineCode{if \dots else}
+الّذي رأيناه، هو أكثر أنواع الشروط استخداما.\\
+في الواقع، لا يوجد 36 طريقة لكتابة شرط في الـ\textenglish{C}.
+الـ\InlineCode{if \dots else}
+يُمكّن من التعامل مع كلّ الحالات.
+
+مع ذلك،
+\InlineCode{if \dots else}
+يبدو قليلا \dots تكراريّا. فلنر هذا المثال :
+
+\begin{Csource}
+if (age == 2)
+{
+	printf("Hello baby !");
+}
+else if (age == 6)
+{
+	printf("Hello kid !");
+}
+else if (age == 12)
+{
+	printf("Hello young !");
+}
+else if (age == 16)
+{
+	printf("Hello teenager !");
+}
+else if (age == 18)
+{
+	printf("Hello adult !");
+}
+else if (age == 68)
+{
+	printf("Hello grandpa !");
+}
+else
+{
+	printf("I have no words ready for your age");
+}
+\end{Csource}
+
+\subsection{بناء \texttt{switch}}
+
+المبرمجون يكرهون الأشياء التكراريّة، لقد رأينا ذلك من قبل.
+
+إذن، من أجل تجنّب التكرار في اختبار قيمة متغيّر وحيد، فقد اخترعوا تعليمة مثل
+\InlineCode{if \dots else}.
+هذه التعليمة الخاصّة تدعى
+\InlineCode{switch}.
+إليكم مثالا نقوم فيه باستعمال
+\InlineCode{switch}.
+على المثال السابق :
+
+\begin{Csource}
+switch (age)
+{
+	case 2 :
+	printf("Hello baby !");
+	break;
+	
+	case 6 :
+	printf("Hello kid !");
+	break;
+	
+	case 12 :
+	printf("Hello young !");
+	break;
+	
+	case 16 :
+	printf("Hello teenager !");
+	break;
+	
+	case 18 :
+	printf("Hello adult !");
+	break;
+	
+	case 68 :
+	printf("Hello grandpa !");
+	break;
+	
+	default :
+	printf("I have no words ready for your age");
+}
+\end{Csource}
+
+
+استلهم من مثالي لإنشاء
+\InlineCode{switch}
+الخاصة بك. نستخدمها نادرا، لكنّها عمليّة كثيرا لأنّها تجعلنا نكتب قدرا أقل (قليلا) من الشفرة.
+
+الفكرة هي أن نكتب 
+\InlineCode{switch (myVariable)}
+ لكي نقول : سنقوم باختبار حول قيمة المتغير
+\InlineCode{myVariable}.
+ثم نقوم بفتح حاضنتين نغلقهما في الأسفل.
+
+بعد ذلك، في داخل الحاضنتين، تتعامل مع كل الحالات :
+\InlineCode{case 2}، \InlineCode{case 4}، \InlineCode{case 5}، \InlineCode{case 45}، \dots
+
+يجب عليك في نهاية كل حالة، أن تضع التعليمة 
+\InlineCode{break;}.
+إن لم تفعل فإن الحاسوب سينتقل لقراءة التعليمات الموالية التي هي  من المفروض محجوزة للحالات الأخرى ! أي أن التعليمة 
+\InlineCode{break;}
+تجبر الحاسوب على الخروج من الحاضنتين.
+
+في النهاية،
+\InlineCode{default}
+هي مثابة الـ\InlineCode{else}
+الذي تعرفه جيداً الآن. أي أنه إن لم يساوي المتغير أي من الحالات المذكورة فإن الحاسوب يقوم بتشغيل الحالة
+\InlineCode{default}.
+
+\subsection{التحكم بـقائمة بواسطة الـ\texttt{switch}}
+
+الـ\InlineCode{switch}
+يُستخدم بكثرة لإنشاء قوائم في الكونسول.\\
+أعتقد أنّه الوقت المناسب لبعض التطبيق !
+
+\subsubsection{إلى العمل !}
+
+نريد أن نظهر في الكونسول قائمة للمستعمل، نستخدم
+\InlineCode{printf}
+لعرض مختلف الخيارات المتوفّرة. كل اختيار يرافقه رقم، و على المستعمل أن يدخل رقم الاختيار الذي يريد.\\
+هذا على سبيل المثال ما يجب أن يظهر :
+
+\begin{Console}
+=== Menu ===
+1. Royal Cheese
+2. Mc Deluxe
+3. Mc Bacon
+4. Big Mac
+Your choice ?
+\end{Console}
+
+\paragraph{مهمّتك (إن قبلتها)}
+ستقوم بإظهار القائمة بالإستعانة بـ\InlineCode{printf} 
+و ستستعمل 
+\InlineCode{scanf}
+لاسترجاع اختيار المستعمل  في متغيّر
+\InlineCode{choice}
+و من ثمّ تستعمل
+\InlineCode{switch}
+لتختبر الإختيار الذي قام به المستعمل. و في النهاية حسب الحالة ستقول للمستعمل ماذا اختار، هل اختار
+"\textenglish{Big Mac}"
+أو
+"\textenglish{Mc Bacon}"
+مثلا.
+
+هيّا، إلى العمل !
+
+\subsubsection{تصحيح}
+
+هذا هو التصحيح (أتمنّى أنّك قد وجدته بنفسك !) :
+
+\begin{Csource}
+#include <stdio.h>
+#include <stdlib.h>
+int main(int argc, char *argv[])
+{
+	int choiceMenu;
+	
+	printf("=== Menu ===\n\n");
+	printf("1. Royal Cheese\n");
+	printf("2. Mc Deluxe\n");
+	printf("3. Mc Bacon\n");
+	printf("4. Big Mac\n");
+	printf("\nYour choice ? ");
+	scanf("%d", &choiceMenu);
+	
+	printf("\n");
+	
+	switch (choiceMenu)
+	{
+		case 1:
+		printf("You have chosen the Royal Cheese. Good choice !");
+		break;
+		case 2:
+		printf("You have chosen the Mc Deluxe. Berk, too much sauce...");
+		break;
+		case 3:
+		printf("You have chosen the Mc Bacon. Well, it goes ;o)");
+		break;
+		case 4:
+		printf("You have chosen the Big Mac. You must be very hungry!");
+		break;
+		default:
+		printf("You haven't specified a correct number. You shall not eat anything!");
+		break;
+	}
+	
+	printf("\n\n");
+	
+	return 0;
+}
+\end{Csource}
+و هذا هو العمل !
+
+أتمنى أنك لم تنس الـ\InlineCode{default}
+ في نهاية الـ\InlineCode{switch} !
+في الواقع، عندما تبرمج يجب عليك التفكير في كلّ الحالات،  فحتّى لو طلبت عددا بين 1 و 4، فسيأتيك دائما أحمق ليكتب 10 أو حتّى "مرحبا"،  و هذا ليس ما كنت تنتظره. 
+
+باختصار، عليك دائما أن تكون حذرا و لا تثق في المستخدم، لأنّه يمكنه إدخال أيّ شيء. يجب عليك اختبار حالة
+\InlineCode{default}
+أيضاً أو 
+\InlineCode{else}
+في الشروط التي تنشؤها بالـ\InlineCode{if}.
+
+\begin{information}
+أنصحك أن تألف عمل القوائم في الكونسول، لأنّنا سننشئ عادة برامج فيها و ستحتاجها حتما.
+\end{information}
