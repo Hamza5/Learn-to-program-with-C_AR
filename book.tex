@@ -64,8 +64,8 @@
 % Page header and footer settings
 \setlength{\headheight}{15pt}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{ \markboth{{\chaptername~\thechapter\ #1}}{} }
-\renewcommand{\sectionmark}[1]{ \markright{#1} }
+\renewcommand{\chaptermark}[1]{ \markboth{{\chaptername~\thechapter.~#1}}{} }
+\renewcommand{\sectionmark}[1]{ \markright{\arabic{section}.~#1} }
 \fancyhead{}
 \fancyhead[OL]{\rightmark}
 \fancyhead[ER]{\leftmark}
@@ -86,7 +86,7 @@
         directivestyle=\color{DarkOrange},
         deletekeywords={return,if,else,switch,for,while,do,const,static,sizeof},
         morekeywords=[2]{return,if,else,switch,for,while,do,const,static,sizeof}, keywordstyle=[2]\bfseries\color{Magenta},
-        morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind},
+        morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind,srand,rand,time},
         keywordstyle=[3]\color{Cyan},
 }
 \lstnewenvironment{Csource}{\lstset{style=C}\setLTR}{\unsetLTR}
