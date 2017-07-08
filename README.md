@@ -30,7 +30,7 @@
     - [x] <span dir='rtl'>حسابات سهلة</span>
     - [x] <span dir='rtl'>الشروط</span>
     - [x] <span dir='rtl'>الحلقات التكراريّة</span>
-    - [ ] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
+    - [x] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
     - [ ] <span dir='rtl'>الدوال</span>
 - [x] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
     - [x] <span dir='rtl'>البرمجة المجزأة</span>
