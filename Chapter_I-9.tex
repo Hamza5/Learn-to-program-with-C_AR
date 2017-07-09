@@ -466,3 +466,241 @@ int main(int argc, char *argv[])
 \textenglish{Lego}.
 
 في النهاية، سيبقى الشيء الأصعب هو كتابة الدوال. ما إن تكتبها، لن يبق عليك سوى استدعائها دون أن تلقي بالا على العمليات التي تجري بداخلها. هذا سيسمح لك بتبسيط كتابة برامجك بشكل كبير. و صدّقني ستحتاج إلى هذه المبادئ كثيراً !
+
+\section{أمثلة للفهم الجيّد}
+
+كان عليك أن تلاحظ شيئاً : أنا شخص يلحّ كثيراً على الأمثلة.\\
+المفاهيم النظرية مهمّة، لكنها لا تكفي لتذكّر كلّ شيء، كما أنك لن تفهم في أي شيء يمكنك استغلالها لاحقاً. و هذا سيكون أمرا مؤسفا.
+
+سأريك إذا الآن عدة استعمالات للدوال لكي تأخذ فكرة عن أهميّتها. سأقدّم الكثير من الأمثلة المتخلفة محاولاً أن أعطيك لمحة عن كلّ أنواع الدوال التي يمكن أن توجد.
+
+لن أعلّمك أي شيء جديد، لكنّه قد حان الوقت لرؤية أمثلة تطبيقية. إذا كنت قد فهمت ما سبق فهذا أمر جيّد و لن يعيقك أي مثال مما سيأتي.
+
+\subsection{التحويل من الأورو الى الفرنك}
+
+سنبدأ بدالة مشابهة كثيراً للدالة
+\InlineCode{triple}،
+لكنها تحمل أهمية لابأس بها هذه المرة : دالة تحوّل من الأورو إلى لفرنك. لمن لا يعرف فإن 1 أورو = 6,55957 فرنك.
+
+سننشئ دالة نسميها 
+\InlineCode{conversion}.\\
+هذه الدالة تأخذ متغيرا كإدخال من نوع 
+\InlineCode{double}
+لأننا سنتعامل بالضرورة مع أعداد عشرية. إقرأها بتمعّن :
+
+\begin{Csource}
+double conversion(double euros)
+{
+	double francs=0;
+	francs = 6.55957*euros;
+	return francs;
+}
+int main(int argc, char * argv[])
+{
+	printf("10 euros = %fF\n", conversion(10)); 
+	printf("50 euros = %fF\n", conversion(50));
+	printf("100 euros = %fF\n", conversion(100));
+	printf("200 euros = %fF\n", conversion(200));
+	return 0;
+}
+\end{Csource}
+
+\begin{Console}
+10 euros = 65.595700F
+50 euros = 327.978500F
+100 euros = 655.957000F
+200 euros = 1311.914000F
+\end{Console}
+
+لا يوجد اختلاف كبير مقارنة بالدالة 
+\InlineCode{triple}،
+لقد أخبرتك بذلك مسبّقاً. الدالة 
+\InlineCode{conversion}
+طويلة قليلاً و يمكن أن يتم اختصارها في سطر واحد، سأترك لك عناء فعل ذلك بنفس الطريقة التي شرحتها لك مسبقاً.
+
+في الدالة
+\InlineCode{main}،
+تعمّدت وضع الكثير من
+\InlineCode{printf}
+لأريك الهدف من استعمال الدوال. لكي أحصل على قيمة 50 أورو، ليس علي سوى استدعاء الدالة 
+\InlineCode{conversion}
+بإعطائها 50 كقيمة إدخال. و إذا أردت تحويل 100 أورو إلى الفرنك، كل ما أحتاج إلى فعله هو تغيير المعامل المرسل إلى الدالة (وضع القيمة 100 في مكان القيمة 50).
+
+\paragraph{حان دورك !}
+اكتب دالة ثانية (دائماً قبل الدالة 
+\InlineCode{main})
+تقوم بالعملية العكسية أي تحول من الفرنك إلى الأورو. لن يكون الأمر صعباً. هناك إشارة عملية تتغير ليس إلا.
+
+\subsection{العقوبة}
+
+سنهتم الآن بدالة لا تقوم بإرجاع أي شيء (لا وجود للإخراج).\\
+هي دالة تقوم بإظهار نفس النص على الشاشة بالقدر الذي نحن نريد. هذه الدالة تأخذ كإدخال : عدد المرات التي نريد أن يظهر بها نص العقوبة على الشاشة.
+
+\begin{Csource}
+void punishment(int numberOfLines)
+{
+	int i;
+	for (i=0; i<numberOfLines; i++){
+		printf("I won't misbehave in class again\n");
+	}
+}
+int main(int argc, char * argv[])
+{
+	punishment(10);
+	return 0;
+}
+\end{Csource}
+
+\begin{Console}
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+I won't misbehave in class again
+\end{Console}
+
+هنا نتكلم عن دالة لا تُرجع أية قيمة. تكتفي هذه الدالة بالقيام بمهمة (هنا، إظهار النص على الشاشة).\\
+الدالة التي لا ترجع أيه قيمة هي دالة من نوع 
+\InlineCode{void}،
+غير هذا لا يوجد شيء مختلف.
+
+سيكون من الممتع أن نكتب دالة 
+\InlineCode{punishment}
+تتلائم مع أيّ عقوبة، فتقوم بإظهار النص الذي نريده نحن على الشاشة. نبعث لها معاملين : النص الذي نريد و عدد المرات التي نريد أن يتم إظهاره. المشكل هو أننا لا نجيد بعد التعامل مع النصوص في الـ\textenglish{C}
+(إذا كنت لم تنتبه فأذكرك أنه لحدّ الآن لم نتعامل سوى مع متغيرات تحمل قيما عدديّة داخلها منذ بداية الكتاب !). و بهذا الصدد، أخبرك أننا لن نتأخر حتى نتعلّم كيفية التعامل مع النصوص. فعل ذلك معقّد قليلاً و لا يصلح أن نبدأ به في أول الكتاب !
+
+\subsection{مساحة مستطيل}
+
+من السهل حساب مساحة المستطيل : العرض $\times$ الطول.\\
+الدالة التي سنكتبها
+\InlineCode{rectangleSurface}
+تأخذ معاملين : الطول و العرض. و تقوم بإرجاع المساحة.
+
+\begin{Csource}
+double rectangleSurface(double width, double height)
+{
+	return width*height;
+}
+int main(int argc, char * argv[])
+{
+	printf("Width = 5 and height = 10. Surface = %f\n", rectangleSurface(5,10));
+	printf("Width = 2.5 and height = 3.5. Surface = %f\n", rectangleSurface(2.5,3.5));
+	printf("Width = 4.2 and height = 9.7. Surface = %f\n", rectangleSurface(4.2,9.7));
+	return 0;
+}
+\end{Csource}
+
+\begin{Console}
+Width = 5 and height = 10. Surface = 50.000000
+Width = 2.5 and height = 3.5. Surface = 8.750000
+Width = 4.2 and height = 9.7. Surface = 40.740000
+\end{Console}
+
+\begin{question}
+هل يمكننا أن نظهر مباشرة طول، عرض و مساحة المستطيل داخل الدالة ؟
+\end{question}
+
+بالطبع ! في هذه الحالة لن ترجع الدالة أي شيء. ستكتفي بإظهار ما حسبته :
+
+\begin{Csource}
+void rectangleSurface(double width, double height)
+{
+	double surface;
+	surface = width*height;
+	printf("Width = %f and height = %f. Surface = %f\n", width, height, surface);
+}
+int main(int argc, char * argv[])
+{
+	rectangleSurface(5,10);
+	rectangleSurface(2.5,3.5);
+	rectangleSurface(4.2,9.7);
+	return 0;
+}
+\end{Csource}
+
+كما ترى، الـ\InlineCode{printf}
+في
+\textit{داخل}
+الدالة
+\InlineCode{rectangleSurface}
+يعرض نفس الرسالة السابقة. هذه فقط طريقة مختلفة لفعل نفس الشيء.
+
+\subsection{القائمة}
+
+هذه الشفرة أكثر أهمية و واقعيّة. سننشئ دالة 
+\InlineCode{menu}
+لا تأخذ أي معامل كإدخال. تكتفي هذه الدالة بإظهار قائمة و تطلب من المستعمل اختيار ما يريد. الدالة تقوم بإرجاع اختيار المستعمل.
+
+\begin{Csource}
+int menu()
+{
+	int choice = 0;
+	
+	while (choice < 1 || choice > 4)
+	{
+		printf("Menu :\n");
+		printf("1 : Royal Fried Rise\n");
+		printf("2 : Noodle Basil \n");
+		printf("3 : Pattaya Paradise \n");
+		printf("4 : Spice Nitan Spicy...\n");
+		printf("Your choice? ");
+		scanf("%d", &choice);
+	}   
+	
+	return choice;
+}
+int main(int argc, char * argv[])
+{   
+	switch (menu())
+	{
+		case 1:
+		printf("You have chosen Royal Fried Rise\n");
+		break;
+		case 2:
+		printf("You have chosen Noodle Basil \n");
+		break;
+		case 3:
+		printf("You have chosen Pattaya Paradise \n");
+		break;
+		case 4:
+		printf("You have chosen Spice Nitan Spicy\n");
+		break;   
+	}
+	return 0;
+}
+\end{Csource}
+
+اغتنمت الفرصة لتحسين القائمة (مقارنة بما نفعله عادة) : تقوم الدالة 
+\InlineCode{menu}
+بإظهار القائمة طالما لم يقم المستعمل بإدخال رقم محصور بين 1 و 4. فهكذا، لا يمكن أن تقوم الدالة بإرجاع قيمة لا تظهر على القائمة !
+
+في الـ\InlineCode{main}،
+تلاحظ أننا استعملنا 
+\InlineCode{switch(menu())}.
+بمجرّد أن تنتهي
+\InlineCode{menu}،
+فإنّها ستعيد خيار المستخدم مباشرة في
+\InlineCode{switch}.
+إنها طريقة سريعة و عمليّة.
+
+\paragraph{حان دورك !}
+يمكنك تحسين الشفرة المصدرية أكثر : يمكنك أن تظهر رسالة خطأ في حالة أخطأ المستعمل في الإختيار بدل أن تقوم بإعادة إظهار القائمة على الشاشة مرّة أخرى.
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item يمكن لدالة أن تستدعي دالة أخرى. و لهذا فالـ\InlineCode{main}
+	يمكنها استدعاء دوال جاهزة كـ\InlineCode{printf}
+	و 
+	\InlineCode{scanf}
+	و كذلك دوالا ننشؤها بأنفسنا.
+	\item تتلقّى الدالة كإدخال متغيّرات نسميها
+	\textbf{معاملات}.
+	\item تقوم الدالة ببعض العمليّات على هذه المعاملات و نُرجع عادة قيمة بالاستعانة بالتعليمة
+	\InlineCode{return}.
+\end{itemize}

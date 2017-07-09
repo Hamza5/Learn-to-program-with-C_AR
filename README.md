@@ -22,7 +22,7 @@
 
 - [x] <span dir='rtl'>مقدمة المترجمة</span>
 - [x] <span dir='rtl'>مقدمة المؤلف</span>
-- [ ] <span dir='rtl'>أساسيّات البرمحة بلغة الـC</span>
+- [x] <span dir='rtl'>أساسيّات البرمحة بلغة الـC</span>
     - [x] <span dir='rtl'>قلت برمجة ؟</span>
     - [x] <span dir='rtl'>الحصول على الأدوات اللازمة</span>
     - [x] <span dir='rtl'>برنامجك الأوّل</span>
@@ -31,7 +31,7 @@
     - [x] <span dir='rtl'>الشروط</span>
     - [x] <span dir='rtl'>الحلقات التكراريّة</span>
     - [x] <span dir='rtl'>عمل تطبيقي: "أكثر أو أقل"، لعبتك الأولى</span>
-    - [ ] <span dir='rtl'>الدوال</span>
+    - [x] <span dir='rtl'>الدوال</span>
 - [x] <span dir='rtl'>تقنيات متقدّمة في لغة الـC</span>
     - [x] <span dir='rtl'>البرمجة المجزأة</span>
     - [x] <span dir='rtl'>المؤشّرات</span>
