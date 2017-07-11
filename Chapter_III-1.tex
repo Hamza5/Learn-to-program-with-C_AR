@@ -288,3 +288,313 @@
 ثم انشاء اختصار إلى الفهرس
 \InlineCode{index.html}.
 و الهدف من هذا هو الوصول إلى هذه الملفات بشكل أسرع حينما تحتاج إليها.
+
+\section{إنشاء مشروع \textenglish{SDL} : \textenglish{Windows}}
+
+تثبيت مكتبة قد يكون أكثر صعوبة قليلاً على ما تعوّد عليه الجميع. هنا لا يوجد تثبيت تلقائيّ يطلب منك أن تنقر "التالي"، "التالي"، "التالي"، "إنتهى".
+
+الحقيقة أن تثبيت مكتبة أمر صعب على المبتدئين. لكن لأقوم برفع المعنويات فإن تسطيب مكتبة 
+\textenglish{SDL}
+أمر سهل جداً مقارنة بتسطيب مكتبات أخرى أتيحت ليّ فرصة استخدامها من قبل (هناك من يتم إعطاؤك منها الشفرة المصدرية فقط، بينما انت تتولى أمر الترجمة !).
+
+و الحقيقة أن كلمة "تثبيت" ليست الملائمة هنا. لن نقوم بتثبيت أي شيء، فقط نريد أن نصل إلى الكيفية التي ننشئ فيها مشروع 
+\textenglish{SDL}
+في البيئة التطويرية الخاصة بنا.\\
+ستختلف كيفية التعامل حسب البيئة التطويرية التي تستعملها. سأقوم بتقديم الطريقة الخاصة بكلّ بيئة من بيئات التطوير التي قدّتمها في بداية الكتاب، و هكذا كي يستطيع الجميع المتابعة.
+
+سأعرض الآن كيف ننشئ مشروع
+\textenglish{SDL}
+في كلّ واحد من البيئات الثلاث السابقة.
+
+\subsection{تسطيب الـ\textenglish{SDL} في \textenglish{Code::Blocks}}
+
+\subsubsection{استخراج ملفات الـ\textenglish{SDL}}
+
+افتح الملف المضغوط
+"\textenglish{Development Libraries}"
+الذي قمت بتنزيله.\\
+هذا الملف هو بامتداد
+\InlineCode{.zip}
+بالنسبة للـ\textenglish{Visual}
+و 
+\InlineCode{.tar.gz}
+بالنسبة للـ\InlineCode{mingw32}
+(يلزمك برنامج مثل 
+\textenglish{Winrar}
+او
+\textenglish{7-Zip}
+لكي تقوم بفك الضغط عن الملفات ذات الصيغة 
+\InlineCode{.tar.gz}).
+
+الملف المضغوط يحتوي العديد من المجلّدات الداخلية، و هذه هي الملفات التي تهمّنا :
+
+\begin{itemize}
+	\item \InlineCode{bin} :
+	يحتوي الملف 
+	\InlineCode{.dll}
+	الخاص بالـ\textenglish{SDL}.
+	\item \InlineCode{docs} :
+	يحتوي الملفات التوثيقيّة الخاصة بالـ\textenglish{SDL}.
+	\item \InlineCode{include} :
+	يحتوي الملفات الرأسية
+	\InlineCode{.h}
+	(\textenglish{headers}).
+	\item \InlineCode{lib} :
+	يحتوي الملفات 
+	\InlineCode{.lib}
+	(أو
+	\InlineCode{.a}
+	بالنسبة لـ\textenglish{Code::Blocks})
+\end{itemize}
+
+يجب عليك استخراج كل الملفات و المجلّدات الداخلية ووضعها في مكان ما بالقرص الصلب لحاسوبك، يمكنك مثلا وضعها في مجلد خاص بـ\textenglish{SDL}
+داخل مجلّد الـ\textenglish{Code::Blocks}.
+
+\Picture{Chapter_III-1_SDL-folder}
+
+بالنسبة لي فإن المسار هو التالي :
+
+\InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13}
+
+احفظ المسار الذي به البرنامج، ستحتاج إليه عندما تريد تعديل إعدادات 
+\textenglish{Code::Blocks}
+لاحقا.
+
+و الآن، علينا بالقيام بخطوة بسيطة، لتسهيل الأمور علينا، توجّه إلى المسار
+\InlineCode{include/SDL}
+(في حالتي، هو متواجد بـ\InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash include\textbackslash SDL})،
+قم بنسخ الملفات الرأسية
+\InlineCode{.h}
+ في المجلّد الأب، (أي في :\\ 
+\InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash include}).
+
+\Picture{Chapter_III-1_SDL-h-copy}
+\Picture{Chapter_III-1_SDL-h-past}
+
+ها قد تم تسطيب المكتبة، فلنقم الآن بتعديل إعدادات
+\textenglish{Code::Blocks}.
+
+\subsubsection{إنشاء مشروع \textenglish{SDL}}
+
+افتح
+\textenglish{Code::Blocks}
+و قم بانشاء مشروع جديد.
+
+\Picture{Chapter_III-1_CodeBlocks-New-Project}
+
+عوض أن تقوم باختيار 
+\textenglish{Console Application}
+كما جرت العادة، اختر 
+\textenglish{SDL project}.
+
+\Picture{Chapter_III-1_SDL-Project}
+
+النافذة الأولى لا جدوى منها، قم بتجاوزها بالضغط على "التالي"
+
+(\textenglish{Next}).
+
+\Picture{Chapter_III-1_SDL-Project-Welcome}
+
+سيُطلب منك أن تقوم بإدخال اسم المشروع، قم بذلك كالعادة :
+
+\Picture{Chapter_III-1_SDL-Project-path}
+
+الآن يجب اختيار المسار الذي ثبتنا فيه المكتبة :
+
+\Picture{Chapter_III-1_SDL-path}
+
+إظغط على الزر الذي يأخذ شكل مربّع به ثلاث نقاط، ستظهر لك النافذة التالية :
+
+\Picture{Chapter_III-1_SDL-path-select}
+
+قم باختيار المسار (بالنسبة لي هو
+\InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13}).
+
+قد تظهر لك في مكان النافذة السابقة هذه النافذة :
+
+\Picture{Chapter_III-1_SDL-path-select-2}
+
+إملأ الحقل
+
+بنفس الطريقة السابقة، ثمّ اضغط على زر الخروج، و ستلاحظ أن المسار قد تم تسجيله كالتالي :
+
+\Picture{Chapter_III-1_SDL-path-filled}
+
+إضغط على
+\textenglish{Next}،
+ ستظهر لك نافذة اختيار المترجم، قم باختيار الأوضاع
+\textenglish{Realease}
+أو
+\textenglish{Debug}
+(هذا لا يهم).
+
+أخيرا إضغط على "إنهاء"
+(\textenglish{Finish}).
+ سيتم إنشاء المشروع التجريبي :
+ 
+\Picture{Chapter_III-1_SDL-test-project}
+
+يحتوي المشروع على ملفين 
+\InlineCode{main.cpp}
+و ملف
+\InlineCode{.bmp}
+قبل أن تحاول القيام بالترجمة. يجب القيام بخطوة أخيرة (عليك القيام بها دائما)، و هي نسخ الملف 
+\InlineCode{SDL.dll}
+من ملفات المكتبة (الّذي يفترض أن يكون في المسار 
+\InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash bin\textbackslash SDL.dll})
+و ضعه في المجلّد الخاص بالمشروع.
+
+\Picture{Chapter_III-1_SDL-DLL-copy}
+\Picture{Chapter_III-1_SDL-DLL-past}
+
+أخرج من 
+\textenglish{Code::Blocks}
+و أعد الدخول إليه، ثم قم بترجمة البرنامج المُقترح مسبقاً. يفترض أن تظهر النافذة التالية :
+
+\Picture{Chapter_III-1_SDL-test-window}
+
+إذا ظهرت لك النافذة السابقة، فهنيئا لك، المكتبة مثبتة بشكل جيد !
+
+\begin{information}
+إن ظهرت لك الرسالة 
+"\textenglish{The application can't start because the file SDL.dll is missing}"
+أي أنه لا يمكن تشغيل البرنامج، لأن ملف 
+\InlineCode{SDL.dll}
+غير موجود، فهذا يعني أنك لم تقم بنسخ الملف الأخير في ملفات المشروع كما طلبت منك !\\
+و كما قلت، إن كنت تريد تسليم المشروع إلى أصدقائك، عليك بارفاق الملف التنفيذي 
+\InlineCode{.exe}
+بالملف 
+\InlineCode{SDL.dll}،
+بينما أنت لست بحاجة إلى إعطائهم الملفات 
+\InlineCode{.h}
+و
+\InlineCode{.a}
+الّتي لا تهم أحدا سواكم.
+\end{information}
+
+% TODO: Can I trust Eden from here ?!
+إن لم يشتغل البرنامج و لازال المترجم يشير دائما إلى عدم وجود الملف 
+\InlineCode{SDL.dll}،
+فجرب نسخ هذا الأخير و لصقه في المجلدين 
+\textenglish{Debug}
+و 
+\textenglish{Release}
+من مجلّد المشروع، أي في نفس المكان الذي يتواجد به الملف التنفيذي.
+
+أريد أن أنوّهك بأن المشروع الذي تم انشاؤه هو خاص باللغة 
+\textenglish{C++}
+( لأنها اللغة التي يتم اختيارها تلقائيا من بيئة التطوير، كون أن هذه الأخيرة تم تطويرها للعمل بلغة الـ\textenglish{C++})،
+سنقوم إذا بتحويل هذا المشروع من
+\textenglish{C++}
+إلى 
+\textenglish{C}
+ببساطة.\\
+توجّه إلى ملفات المشروع، ستجد الملف
+\InlineCode{main.cpp}
+قم بتغيير امتداده إلى
+\InlineCode{main.c}.
+
+\Picture{Chapter_III-1_SDL-rename}
+
+أدخل الآن إلى
+\textenglish{Code::Blocks}،
+ستظهر لك على الأرجح النافذة التالية :
+
+\Picture{Chapter_III-1_SDL-keep-open}
+
+إظغط على الزر "لا"
+(\textenglish{No}).
+
+توجه إلى القائمة اليسارية، و قم بالنقر باليمين على الملف
+\InlineCode{main.cpp}
+و اختر حذفه من المشروع :
+
+\Picture{Chapter_III-1_SDL-remove-cpp}
+
+اضغط على اسم المشروع، و اطلب إضافة ملف جديد :
+
+\Picture{Chapter_III-1_SDL-add}
+
+اختر الملف
+\InlineCode{main.c}
+من ملفات المشروع :
+
+\Picture{Chapter_III-1_SDL-mainc}
+
+ستظهر لك نافذة أخرى، قم باختيار
+\textenglish{Next}،
+ ثم انقر على "موافق"
+(\textenglish{OK}).
+
+\Picture{Chapter_III-1_SDL-selection}
+
+أنقر باليمين مجددا على الملف 
+\InlineCode{main.c}
+و اختر "خصائص" 
+(\textenglish{Properties}) :
+
+\Picture{Chapter_III-1_SDL-file-properties}
+
+توجه إلى القائمة
+\textenglish{Advanced}،
+ستجد
+\textenglish{Compiler variable}،
+غيّرها من
+\textenglish{CPP}
+إلى
+\textenglish{CC}
+كالتالي :
+
+\Picture{Chapter_III-1_SDL-file-properties-advanced}
+
+إضغط بعد ذلك على
+\textenglish{OK}
+هذا ما سيبدو عليه المشروع الجديد :
+\Picture{Chapter_III-1_SDL-new-file}
+
+ضع الشفرة التالية بدل الشفرة السابقة :
+
+\begin{Csource}
+#include <stdlib.h> 
+#include <stdio.h> 
+#include <SDL/SDL.h>
+int main(int argc, char *argv[]) 
+{ 
+	SDL_Init(SDL_INIT_VIDEO); 
+	SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE); 
+	return EXIT_SUCCESS; 
+}
+\end{Csource}
+
+و أخيراً، من القائمة العلوية، اختر هدف البناء 
+\InlineCode{Release}.
+
+\Picture{Chapter_III-1_SDL-build-target}
+
+يمكنك ترجمة البرنامج، ستظهر لك نافذة و تختفي فجأة، لا تقلق، سنعالج ذلك لاحقاً، أنا أهنّئك، كل شيء يعمل بشكل جيد جدا.
+
+يمكنك مسح الملف 
+\InlineCode{.bmp}
+لأننا لسنا بحاجة إليه. بالنسبة للملف 
+\InlineCode{main.c}، 
+يمكنك الآن استبدال محتواه بالشفرة التالية :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+int main(int argc, char *argv[])
+{
+	return 0;
+}
+\end{Csource}
+إنها شفرة مبدئية، تشبه الشفرات التي تعوّدنا عليها (تضمين
+\InlineCode{stdlib.h}
+و
+\InlineCode{stdio.h}
+ثم 
+\InlineCode{main}).
+الشيء الوحيد الذي تغيّر هو تضمين الملف
+\InlineCode{SDL.h}.
+إنّه ملف رأسيّ يستكلف نفسه بتضمين كل الملفات الرأسية الخاصة بالمكتبة 
+\textenglish{SDL}.
