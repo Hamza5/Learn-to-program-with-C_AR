@@ -483,7 +483,7 @@
 
 أريد أن أنوّهك بأن المشروع الذي تم انشاؤه هو خاص باللغة 
 \textenglish{C++}
-( لأنها اللغة التي يتم اختيارها تلقائيا من بيئة التطوير، كون أن هذه الأخيرة تم تطويرها للعمل بلغة الـ\textenglish{C++})،
+(لأنها اللغة التي يتم اختيارها تلقائيا من بيئة التطوير، كون أن هذه الأخيرة تم تطويرها للعمل بلغة الـ\textenglish{C++})،
 سنقوم إذا بتحويل هذا المشروع من
 \textenglish{C++}
 إلى 
@@ -598,3 +598,160 @@ int main(int argc, char *argv[])
 \InlineCode{SDL.h}.
 إنّه ملف رأسيّ يستكلف نفسه بتضمين كل الملفات الرأسية الخاصة بالمكتبة 
 \textenglish{SDL}.
+
+\subsection{إنشاء مشروع \textenglish{SDL} في \textenglish{Visual C++}}
+
+\subsubsection{استخراج ملفات الـ\textenglish{SDL}}
+
+من الموقع الرسمي، قم بتنزيل آخر نسخة من المكتبة من قسم
+"\textenglish{Development Libraries}"
+و اختر نسخة
+\textenglish{Visual C++ 2005 Service Pack 1}.
+
+إفتح الملف
+\InlineCode{.zip}.\\
+إنه يحتوي  على التوثيق (في المجلد
+\InlineCode{docs})،
+ الملفات
+\InlineCode{.h}
+(في المجلد
+\InlineCode{include})، 
+و الملفات
+\InlineCode{.lib}
+(في المجّلد
+\InlineCode{lib})
+المكافئة للملفات
+\InlineCode{.a}
+بالنسبة لمترجم
+\textenglish{Visual}.
+ستجد أيضاً الملف 
+\InlineCode{SDL.dll}
+في المجلّد
+\InlineCode{lib}.
+
+\begin{itemize}
+	\item انسخ الملف
+	\InlineCode{SDL.dll}
+	إلى مجلّد المشروع.
+	\item انسخ الملفات
+	\InlineCode{.lib}
+	إلى المجلّد 
+	\InlineCode{lib}
+	الخاص بـ\textenglish{Visual C++}.
+	بالنسبة لي، أنا أتكلم عن المجلّد
+	
+	\InlineCode{C:\textbackslash Program Files (x86)\textbackslash Microsoft Visual Studio 8\textbackslash VC\textbackslash lib}.
+	
+	\item انسخ الملفات
+	\InlineCode{.h}
+	إلى المجلّد
+	\InlineCode{includes}
+	الخاص بـ\textenglish{Visual C++}.
+	أنشئ مجلّدا
+	\InlineCode{SDL}
+	في المجلد
+	\InlineCode{includes}
+	لجمع الملفات
+	\InlineCode{.h}
+	الخاصة بالـ\textenglish{SDL}
+	فيه. بالنسبة لي، سأضع تلك الملفات في المجلد :
+	
+	\InlineCode{C:\textbackslash Program Files (x86)\textbackslash Microsoft Visual Studio 8\textbackslash VC\textbackslash include\textbackslash SDL}.
+
+\end{itemize}
+
+\subsubsection{إنشاء \textenglish{SDL} مشروع جديد}
+
+في الـ
+\textenglish{Visual C++}
+أنشئ مشروعاً من نوع 
+\textenglish{Application console Win32}.
+سمّيه مثلاً
+\InlineCode{testsdl}
+ثم اضغط على "موافق".
+
+ستفتح نافذة مساعدة. توجه إلى 
+\textenglish{Application parameters}
+و تأكد من أن الخانة
+\InlineCode{Empty project}
+مختارة.
+
+\Picture{Chapter_III-1_VisualCpp-Assistant}
+
+لقد تمّ إنشاء المشروع إذا. إنّه فارغ. أضف إليه ملفاً جديداً و ذلك بالنقر على
+\InlineCode{Source files}
+ثم
+\InlineCode{Add}
+ثم
+\InlineCode{New element} :
+
+\Picture{Chapter_III-1_VisualCpp-Add}
+
+حينما تفتح نافذة جديدة، أطلب إنشاء ملف جديد من نوع
+\InlineCode{C++ File (.cpp)}،
+قم بتسميته
+\InlineCode{main.c}.
+بوضعك للامتداد
+\InlineCode{.c}
+فإن الـ\textenglish{Visual}
+سيقوم بانشاء ملف
+\textenglish{C}
+و ليس
+\textenglish{C++}.
+
+أكتب (أو انسخ/ألصِق) الشفرة المبدئية الذي وضعتها أعلاه، في الملف الجديد الذي أنشأته.
+
+\subsubsection{تخصيص مشروع \textenglish{SDL} في \textenglish{Visual C++}}
+
+التعديل على المشروع أصعب قليلاً مما هو الحال مع الـ\textenglish{Code::Blocks}،
+لكن بقليل من التركيز، ستتمكن من فعله. توجّه إلى خصائص المشروع من
+\InlineCode{Project} / \InlineCode{testsdl properties}.
+
+\begin{itemize}
+	\item في القسم
+	\InlineCode{C / C++} / \InlineCode{Code generation}
+	عدّل قيمة الـ\InlineCode{Runtime Libraries}
+	إلى\\
+	\InlineCode{DLL multithread (/MD)}.
+	\item في القسم 
+	\InlineCode{C / C++} / \InlineCode{Advanced}
+	اختر
+	\InlineCode{Compilation as}
+	و ضع القيمة\\
+	\InlineCode{Compile as C code (/TC)}
+	(و إلا فإن
+	\textenglish{Visual}
+	سيترجم البرنامج كأنه ملف
+	\textenglish{C++}
+	و ليس كملف
+	\textenglish{C}).
+	\item في القسم  
+	\InlineCode{Link editor} / \InlineCode{Input}
+	عدّل قيمة الـ\InlineCode{Additional dependencies}
+	لكي تضيف
+	\InlineCode{SDL.lib}
+	و
+	\InlineCode{SDLmain.lib}.
+	\item في القسم
+	\InlineCode{Link editor} / \InlineCode{System}
+	عدّل قيمة الـ\InlineCode{Sub-System}
+	إلى الـ\InlineCode{Windows}.
+\end{itemize}
+
+\Picture{Chapter_III-1_VisualCpp-project-properties}
+
+قم بالضغط على "موافق" لحفظ التغييرات.\\
+يمكنك الآن الترجمة و ذلك بالذهاب إلى
+\InlineCode{Generate}
+ثم
+\InlineCode{Generate solution}.
+
+ستجد الملف التنفيذي الذي يتواجد بمجلد المشروع (أو بمجلد داخلي يسمى
+\InlineCode{Debug})
+و لا تنس أنه على الملف
+\InlineCode{SDL.dll}
+أن يتواجد في نفس المجلّد الذي يتواجد به الملف التنفيذي. أنقر مرّتين على
+\InlineCode{.exe}،
+ إذا سار كلّ شيء على ما يرام، فلن يحصل أيّ شيء، و إلّا فسيحدث خطأ إذا لم يكن الملف
+\InlineCode{SDL.dll}
+في نفس المجلّد.
