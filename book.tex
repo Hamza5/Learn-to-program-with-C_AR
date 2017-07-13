@@ -81,13 +81,14 @@
 \lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip}
 % C source code
 \lstdefinestyle{C}{language=C, showstringspaces=false, numbers=left,
-        keywordstyle=\bfseries\color{Cyan}, commentstyle=\itshape\color{Gray},
+        keywordstyle=\bfseries\color{RoyalBlue}, commentstyle=\itshape\color{Gray},
         numberstyle=\color{Gray}, stringstyle=\color{Crimson},
         directivestyle=\color{DarkOrange},
         deletekeywords={return,if,else,switch,for,while,do,const,static,sizeof},
         morekeywords=[2]{return,if,else,switch,for,while,do,const,static,sizeof}, keywordstyle=[2]\bfseries\color{Magenta},
-        morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind,srand,rand,time},
-        keywordstyle=[3]\color{Cyan},
+        morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind,srand,rand,time,
+        SDL_Init,SDL_Quit},
+        keywordstyle=[3]\color{RoyalBlue},
 }
 \lstnewenvironment{Csource}{\lstset{style=C}\setLTR}{\unsetLTR}
 % Console

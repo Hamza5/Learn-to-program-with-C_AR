@@ -11,3 +11,266 @@
 كيف يتم فتح نافذة بالأبعاد التي نريد ؟ كيف نرسم داخل النافذة ؟
 
 لدينا أمور كثيرة لنعرفها، فهيّا بنا !
+
+\section{تحميل و إيقاف الـ\textenglish{SDL}}
+
+العديد من المكتبات المكتوبة بلغة الـ\textenglish{C}،
+تستلزم أن يتم تحميلها ثم غلقها حين ننتهي منها، و ذلك لاستعمال دوال محددة. المكتبة
+\textenglish{SDL}
+من بين هذه المكتبات. 
+
+بالفعل، فالمكتبة تحتاج أن يتم تحميل عدد معيّن من المعلومات إلى الذاكرة العشوائية لتستطيع أن تشتغل بشكل صحيح. يتم هذا التحميل بشكل حيّ باستعمال الدالة 
+\InlineCode{malloc}
+(إنّها مهمّة جدّا هنا !). و كما تعلم فإن قلت
+\InlineCode{malloc}،
+سأقول كذلك
+\InlineCode{free} !\\
+يجب عليك تحرير الذاكرة التي حجزتها و لم تعد بحاجة إليها. إن لم تفعل، فالبرنامج يمكن أن يأخذ حيّزاً كبيراً من الذاكرة بدون فائدة، و يمكن لذلك أحيانا أن يدرّ بنتائج كارثية. تخيّل القيام بحلقة غير منتهية من
+\InlineCode{malloc}
+دون قصد، في بضع ثوان ستسدّ كلّ الذاكرة !
+
+هاهما الدالتان الأولتان الخاصّتان بالـ\InlineCode{SDL}
+اللتان يجب عليك أن تعرفهما :
+\begin{itemize}
+	\item \InlineCode{SDL\_Init} :
+	تحميل المكتبة في الذاكرة العشوائية (باستخدام الـ\InlineCode{malloc}).
+	\item \InlineCode{SDL\_Quit} :
+	تحرير المكتبة من الذاكرة (باستعمال الـ\InlineCode{free}).
+\end{itemize}
+
+أي أن أوّل شيء يجب أن تقوم به في البرنامج هو استدعاء
+\InlineCode{SDL\_Init}،
+و آخر شيء هو استدعاء
+\InlineCode{SDL\_Quit}.
+
+\subsection{\texttt{SDL\_Init} : تحميل المكتبة \textenglish{SDL}}
+
+الدالة
+\InlineCode{SDL\_Init}
+تستقبل معاملا. إذ يجب أن يتم تحديد أي جزء من المكتبة نريد تحميله.
+
+\begin{question}
+آه حقّا ! هل الـ\textenglish{SDL}
+تتكون من كثير من الأجزاء ؟
+\end{question}
+
+نعم بالطبع ! فهناك جزء من المكتبة يتعامل مع الشاشة، و آخر يتعامل مع الصوت، إلخ.
+
+توفّر لنا المكتبة عدداً من الثوابت التي تسمح لنا بتحديد اسم الجزء الذي نريد تحميله من المكتبة.
+
+\begin{Table}{2}
+الثابت & الشرح \\
+\texttt{SDL\_INIT\_VIDEO} &
+تحميل الجزء الخاص بالعرض (الفيديو)، إنه الجزء الذي نحمله غالباً.\\
+\texttt{SDL\_INIT\_AUDIO} &
+تحميل الجزء الخاص بالصوت، هذا ما يسمح لك مثلا بتشغيل الموسيقى مثلا.\\
+\texttt{SDL\_INIT\_CDROM} &
+تحميل الجزء الخاص بقارئ القرص المضغوط، و ذلك للتحكم به.\\
+\texttt{SDL\_INIT\_JOYSTICK} &
+تحميل الجزء الخاص بجهاز التحكم 
+\textenglish{Joystick}.\\
+\texttt{SDL\_INIT\_EVERYTHING} &
+تحميل كل الأجزاء التي ذكرتها سابقا.\\
+\end{Table}
+
+إذا استدعيت الدالة بهذا الشكل
+
+\begin{Csource}
+SDL_Init(SDL_INIT_VIDEO);
+\end{Csource}
+
+فإن نظام العرض سيتم تحميله في الذاكرة، فيمكنك أن تفتح نافذة و ترسم فيها، إلخ.\\
+كل ما قمنا به هو إعطاء عدد إلى الدالة 
+\InlineCode{SDL\_Init}
+بالاستعانة بثابت. أنت لا تعرف أي عدد هو، و هذا أمر جيد. إذ أنك غير مجبر على حفظ العدد، بل التعبير عنه باسم الثابت فقط. 
+
+الدالة 
+\InlineCode{SDL\_Init}
+تقرأ العدد و هكذا تحدد الأنظمة الواجب تحميلها.
+
+الآن لو تكتب :
+
+\begin{Csource}
+SDL_Init(SDL_INIT_EVERYTHING);
+\end{Csource}
+
+ستقوم بتحميل كل أنظمة الـ\textenglish{SDL}،
+لا تقم بهذا إلا في حالة كنت بالفعل تحتاج إلى كلّ شيء، ليس جيداً إثقال الحاسوب بوحدات لا فائدة منها.
+
+\begin{question}
+ماذا لو أردت تحميل الصوت و الفيديو فقط. هل يجدر بي استخدام
+\InlineCode{SDL\_INIT\_EVERYTHING} ؟
+\end{question}
+
+لن تستعمل
+\InlineCode{SDL\_INIT\_EVERYTHING}،
+من أجل تحميل وحدتين، هذا جنون ! لحسن الحظ، يمكننا تجميع الخيارات بواسطة الرمز
+\InlineCode{|}.
+
+\begin{Csource}
+// Loading the video and the audio
+SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+\end{Csource}
+
+كما يمكنك وضع ثلاثة دون مشاكل :
+
+\begin{Csource}
+// Loading the video, the audio and the timer
+SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
+\end{Csource}
+
+\begin{information}
+هذه "الخيارات" التي نبعثها للدالة 
+\InlineCode{SDL\_Init}
+نسميها بـ\textit{الأعلام}
+(\textenglish{flags}).
+هذه الكلمة نستعملها كثيراً في علوم الحاسوب.\\
+تذكّر إذا أن الإشارة
+\InlineCode{|}
+خاصة بدمج الخيارات. إنها تشبه الإضافة إلى حدّ ما.
+\end{information}
+
+\subsection{\texttt{SDL\_Quit} : إيقاف المكتبة \textenglish{SDL}}
+
+هذه الدالة سهلة الاستعمال لأنها لا تحتاج إلى أي معامل :
+
+\begin{Csource}
+SDL_Quit();
+\end{Csource}
+
+كل الأنظمة سيتم إيقافها و يتم تحرير الذاكرة.\\
+باختصار، هذه الدالة أداة للخروج من المكتبة بشكل نظيف، و لنقل للخروج من برنامجك.
+
+\subsection{نموذج عن برنامج \textenglish{SDL}}
+باختصار، هذا ما يبدو عليه برنامج
+\textenglish{SDL}
+في نسخته الأبسط :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+int main(int argc, char *argv[])
+{
+	SDL_Init(SDL_INIT_VIDEO); // Starting the SDL (Here we load the video system)
+	SDL_Quit(); // Stopping the SDL (Freeing the memory).
+	return 0;
+}
+\end{Csource}
+
+هذا نموذج عن برنامج بسيط، عبارة عن مخطط لبرامج
+\textenglish{SDL}
+التي نكتبها. في الواقع، البرنامج الحقيقي يكون ممتلأ كثيرا إذ يحتوي عدّة استدعاءات لدوال، تقوم بدورها بمزيد من الاستدعاءات.\\
+الأمر المهمّ في النهاية، هو أنّ
+\textenglish{SDL}
+يجب أن تُحمّل في البداية و تُغلق عندما لا تصبح بحاجة إليها.
+
+\subsection{معالجة الأخطاء}
+
+الدالة 
+\InlineCode{SDL\_Init}
+تقوم بإرجاع قيمة :
+
+\begin{itemize}
+	\item -1 : في حال وجود خطأ.
+	\item 0 : في حالة عدم وجود أي خطأ.
+\end{itemize}
+
+لست مجبراً، لكن يمكنك اختبار القيمة المُرجعة. قد تكون طريقة جيّدة لمعالجة الأخطاء في برنامجك، و هذا ما سيساعدك على حلّها.
+
+\begin{question}
+لكن كيف أقوم بإظهار الخطأ الحادث ؟
+\end{question}
+
+سؤال وجيه ! ليس لدينا كونسول الآن، كيف نخزّن و نعرض رسائل الخطأ ؟
+
+هناك حلّان :
+\begin{itemize}
+	\item يمكننا التعديل على خاصيات المشروع، لكي نسمح له باستعمال الكونسول أيضاً. سنتمكّن في هذه الحالة من استخدام الدالة 
+	\InlineCode{printf})،
+	\item أو نكتب الأخطاء في ملف. تستخدم الدالة
+	\InlineCode{fprintf}.
+\end{itemize}
+
+لقد اخترت أن نكتب في ملف. و بهذا فإن العمل على ملف يحتاج إلى فتح هذا الأخير بـ\InlineCode{fopen}
+و غلقه بـ\InlineCode{fclose}،
+و الأمر أقلّ سهولة من استعمال الـ\InlineCode{printf}.\\
+لحسن الحظ، هناك طريقة أسهل و هي استعمال مخرج الأخطاء القياسي.
+
+يوجد متغير 
+\InlineCode{stderr}
+معرّف في 
+\InlineCode{stdio.h}
+يقوم بالتأشير نحو المنطقة التي يُمكن أن يُكتب فيها الخطأ. غالبا في الويندوز، هذه المنطقة عبارة عن ملف يحمل الاسم 
+\InlineCode{stderr.txt}.
+بينما في اللينكس فإن الأخطاء غالباً ما يتم إظهارها على الكونسول. هذا المتغير يتم إنشاؤه تلقائيّا في بداية البرنامج و يتم حذفه في نهايته، أي أنك لست مجبراً على استعمال 
+\InlineCode{fopen}
+و
+\InlineCode{fclose}.\\
+يمكنك استعمال الدالة
+\InlineCode{fprintf}
+على 
+\InlineCode{stderr}
+بدون استعمال  
+\InlineCode{fopen}
+و 
+\InlineCode{fclose} :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+int main(int argc, char *argv[])
+{
+	if (SDL_Init(SDL_INIT_VIDEO) == -1) // Starting the SDL, if there's an error :
+	{
+		fprintf(stderr, "Error while initializing SDL : %s\n",
+		SDL_GetError()); // Writing the error
+		exit(EXIT_FAILURE); // We exit the program
+	}
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+ما الجديد في هذه الشفرة المصدرية ؟
+
+\begin{itemize}
+	\item لقد كتبنا الخطأ الذي وجدناه في
+	\InlineCode{stderr}.
+	الرمز 
+	\InlineCode{\%s}
+	يسمح للـ\textenglish{SDL} 
+	بالإشارة إلى تفاصيل الخطأ : الدالة 
+	\InlineCode{SDL\_GetError}
+	في الحقيقة تقوم بإرجاع آخر خطأ
+	\textenglish{SDL}.
+	\item نخرج باستعمال الـ\InlineCode{exit()}.
+	لحدّ الآن لا يوجد شيء جديد مقارنة بما جرت العادة، ستلاحظ أنني استعمل الثابت 
+	\InlineCode{EXIT\_FAILURE}
+	كقيمة يقوم البرنامج الرئيسي بإرجاعها، بينما استعملت في النهاية الثابت 
+	\InlineCode{EXIT\_SUCCESS}
+	في مكان الـ0.\\
+	ما الذي قمت به ؟ لقد قمت بتحسين الطريقة التي تعودنا أن نكتب بها الشفرة. لقد استخدمت اسم الثابت الّذي يعني "خطأ" و الذي هو نفسه بالنسبة لجميع أنظمة التشغيل. بينما الأعداد تختلف من نظام إلى آخر.\\
+	لهذا فإن الملف
+	\InlineCode{stdlib.h}
+	تسمح باستعمال ثابتتين (معرّفي 
+	\InlineCode{\#define}) :
+	
+	\begin{itemize}
+		\item \InlineCode{EXIT\_FAILURE} :
+		قيمة يتم إرجاعها في حالة وجود خطأ ما في البرنامج.
+		\item \InlineCode{EXIT\_SUCCESS} :
+		قيمة يتم إرجاعها في حالة عدم وجود أي خطأ.
+	\end{itemize}
+	
+	باستعمال أسماء الثوابت بدلاً من قيمها، ستضمن بأنك قد بعثت القيمة الصحيحة.\\
+	لماذا ؟ لأن الملف
+	\InlineCode{stdlib.h}
+	يتغيّر حسب نظام التشغيل الّذي أنت عليه، لذا فقيم الثوابت ستتأقلم مع النظام من دون أنّ نحتاج إلى تغيير شيء !  و هذا ما يجعل لغة الـ\textenglish{C}
+	متوافقة مع كلّ أنظمة التشغيل (بافتراض أنّك تبرمج بالطريقة الصحيحة باستخدام الأدوات المتوفّرة، كما فعلنا هنا).
+
+\begin{information}
+	استعمال أسماء الثوابت لا يعود علينا بكثير من النفع الآن، لكن من الأحسن استعمالها. سنقوم بذلك انطلاقاً من الآن.
+\end{information}
+\end{itemize}
