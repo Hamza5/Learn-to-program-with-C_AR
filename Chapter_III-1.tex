@@ -977,3 +977,53 @@ int main(int argc, char *argv[])
 ثم
 "\textenglish{Next}".
 قم بتسمية الملف و هاقد أكملت.
+
+\section{إنشاء مشروع \textenglish{SDL} : (\textenglish{GNU/Linux})}
+
+لمن يستعملون بيئة تطويرية من أجل الترجمة، فعليهم بتغيير خواص المشروع (فالعملية مشابهة لما كنت قد شرحت). بالنسبة لمن يستعملون 
+\textenglish{Code::Blocks}،
+فالطريقة هي نفسها التي شرحتها سابقاً.
+
+\begin{question}
+ ماذا عن الذين يقومون بترجمة الشفرات يدويا ؟
+\end{question}
+
+قد يوجد بين القراء من اعتاد على ترجمة الشفرات يدويا بالاستعانة بـ\textenglish{Makefile}
+(ملف يساعد على عملية الترجمة).\\
+إذا كانت هذه حالتك، فأدعوك لتحميل
+\textenglish{Makefile}
+الّذي يُمكن أن يُستخدم لترجمة مشاريع الـ\textenglish{SDL}.
+
+\url{http://www.siteduzero.com/uploads/fr/ftp/mateo21/makefile_sdl}
+
+الشيء الوحيد المختلف، هو إضافة المكتبة
+\textenglish{SDL}
+إلى محرّر الروابط
+(\InlineCode{LDFLAGS}).
+يجدر بك أن تكون قد نزّلت المكتبة و ثبّتها في مجلّد ملفات المترجم، بنفس طريقة الويندوز (المجلدان
+\InlineCode{include/SDL}
+و 
+\InlineCode{lib}).
+
+بعد ذلك يجب عليك أن تكتب الأوامر التالية في الكونسول :
+
+\begin{Console}
+make      	# To compile the project
+make clean	# To delete compilation files (useless .o files)
+make mrproper # To delete all files except source ones
+\end{Console}
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item الـ\textenglish{SDL}
+	مكتبة منخفضة المستوى، تسمح بإنشاء نوافذ و التعامل مع الرسوميات
+	\textenglish{2D}.
+	\item المكتبة ليست مسطّبة تلقائيا في الحاسوب، يجب عليك أن تنزّلها بنفسك و تقوم بتخصيص البيئة التطويرية لتعمل معها.
+	\item المكتبة حرة و مجّانية، مما يسمح باستعمالها السريع و الدائم.
+	\item توجد آلاف المكتبات الأخرى، و كثير منها ذو جودة عالية جداً. و قد تم اختيار المكتبة 
+	\textenglish{SDL}
+	لبقيّة هذا الدرس لأجل سهولتها. لمن يريد بناء واجهات رسومية بنوافذ، أزرار و قوائم، فأنا أنصحه بالمكتبة 
+	\textenglish{GTK+}
+	مثلا.
+\end{itemize}
