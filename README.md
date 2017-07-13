@@ -44,7 +44,7 @@
     - [x] <span dir='rtl'>عمل تطبيقي: لعبة الـPendu</span>
     - [x] <span dir='rtl'>ادخال نص بشكل أكثر أمانا</span>
 - [ ] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
-    - [ ] <span dir='rtl'>تثبيت SDL</span>
+    - [x] <span dir='rtl'>تثبيت SDL</span>
     - [ ] <span dir='rtl'>انشاء نافذة و مساحات</span>
     - [ ] <span dir='rtl'>اظهار صور</span>
     - [ ] <span dir='rtl'>التحكّم في الاحداث</span>
