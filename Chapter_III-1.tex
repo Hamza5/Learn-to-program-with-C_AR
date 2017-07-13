@@ -758,3 +758,222 @@ int main(int argc, char *argv[])
  إذا سار كلّ شيء على ما يرام، فلن يحصل أيّ شيء، و إلّا فسيحدث خطأ إذا لم يكن الملف
 \InlineCode{SDL.dll}
 في نفس المجلّد.
+
+\section{إنشاء مشروع \textenglish{SDL} : \textenglish{Mac OS} (\textenglish{Xcode})}
+
+فلتقم بتحميل النسخة 1.2 من الـ\textenglish{SDL}،
+و ذلك من خلال الجزء
+"\textenglish{Download}"
+أسفل يسار الموقع، كالتالي :
+\Picture{Chapter_III-1_SDL-Mac-Download}
+
+في أسفل الصفحة ستجد قسماً يدعى 
+"\textenglish{Runtime Libraries}".
+نزّل الملف الذي يتناسب مع هندسة معالج جهازك
+(\textenglish{Intel} أو \textenglish{PowerPC})،
+ هذا ما ستوضحه الصورة الموالية. إن كنت تريد معرفة هندسة المعالج، يمكنك الذهاب إلى القائمة 
+"\textenglish{Apple}"
+في أعلى اليسار، و النقر على 
+"\textenglish{About this Mac}".
+في السطر 
+"\textenglish{Processor}"
+ستجد إما
+\textenglish{Intel} أو \textenglish{PowerPC}.
+
+\Picture{Chapter_III-1_SDL-Mac-Download-version}
+
+حينما يتم تحميل الملف، انقر عليه مرتين، يفترض أن يفتح لوحده. ستجد بهذا المجلّد مجلّدا
+\InlineCode{SDL.framework}
+قم بنسخه و لصقه في المجلد 
+\InlineCode{/Library/Frameworks}.
+
+إنتهى، المكتبة مسطّبة الآن !\\
+ستجد مجلّدا آخر اسمه 
+\InlineCode{devel-lite}
+أتركه مفتوحا، سنعود إليه لاحقاً.
+
+الآن قم بانشاء مشروع جديد
+"\textenglish{Cocoa Application}"،
+إضغط على 
+"\textenglish{Next}".
+في 
+\InlineCode{Product Name}
+قم بتسمية المشروع (كـ"\textenglish{SDL}"
+مثلاً). و في 
+\InlineCode{Company Identifier}،
+ضع ما تريد (كاسم مستعار لك مثلا). أترك الباقي كما هو ثم اضغط على 
+"\textenglish{Next}".
+اختر أين تريد وضع المشروع. سيتم انشاء مجلّد بطريقة تلقائية و ليس عليك إنشاء واحد بنفسك ووضع ملفات المشروع بداخله.
+
+ما إن يتم إنشاء المشروع، قم بالتخلص من الملفات التي لا تحتاجها :
+\InlineCode{AppDelegate.h}، \InlineCode{AppDelegate.m}، \InlineCode{MainMenu.xib}، \InlineCode{InfoPlist.strings}، \InlineCode{main.m} و \InlineCode{Credits.rtf} :
+
+\Picture{Chapter_III-1_SDL-project-unused-files}
+
+اختر المشروع من التفرع الشجري اليساري (القسم
+\InlineCode{Install SDL}
+من الصورة الموالية) في الشجرة الثانية اختر اسم مشروعك من قسم 
+\InlineCode{PROJECT}
+و ليس من
+\InlineCode{TARGETS} :
+
+\Picture{Chapter_III-1_Xcode-SDL-project}
+
+يمكنك أيضاً تغيير الـ\textenglish{localisation}
+من 
+\InlineCode{English}
+إلى 
+\InlineCode{French}.
+اختر 
+\InlineCode{English}،
+أنقر على
+\InlineCode{-}
+للمسح و على 
+\InlineCode{+}
+لإضافة 
+\InlineCode{French}،
+هذا يعود إليك و لست مضطراً للقيام بذلك.
+
+سنقوم الآن بتخصيص المشروع على نظام
+\textenglish{32 bits}
+( لأن المكتبة لا تشتغل على أنظمة
+\textenglish{64 bits})،
+و سنقوم بإضافة المسارات من أجل الـ\textenglish{frameworks}،
+و للملفات الرأسية أيضاً. إضغط على 
+\InlineCode{Build Settings}
+ثم 
+\InlineCode{All}
+ثم في 
+\InlineCode{Architectures}
+انقر على
+\InlineCode{64-bit Intel}
+ و اختر
+\InlineCode{32-bit Intel} :
+
+\Picture{Chapter_III-1_Xcode-SDL-build-setting}
+
+ما إن تفعل ذلك، اختر
+\InlineCode{LLVM GCC 4.2}
+من السطر
+\InlineCode{Compiler for C/C++/Objective-C}.
+
+\Picture{Chapter_III-1_Xcode-gcc}
+
+اذهب إلى منطقة البحث في أعلى اليمين، و اكتب
+"\textenglish{search paths}"،
+يجدر بك أن تجد سطرين مهمّين بالنسبة لنا و هما
+\InlineCode{Header search paths}
+و 
+\InlineCode{Framework search paths}.
+انقر مرتين على الجهة اليمنى للسطر 
+\InlineCode{Framework search paths}
+أنقر على علامة
+\InlineCode{+}
+ و أضف المسار
+\InlineCode{/Library/Frameworks}.
+بالنسبة للسطر 
+\InlineCode{Header Search paths}
+أضف المسار\\
+\InlineCode{/Library/Frameworks/SDL.framework/Headers}.
+
+\Picture{Chapter_III-1_Xcode-SDL-framework}
+
+إختر الآن "هدفك"، و هذه المرة من قسم 
+\InlineCode{TARGETS} :
+
+\Picture{Chapter_III-1_Xcode-SDL-target}
+
+توجه إلى 
+\InlineCode{Summary}،
+في المنطقة
+\InlineCode{Application Category}
+يمكنك وضع ما تشاء، لن يغير هذا شيئا كبيراً، لأنه ينفع من أجل الـ\textenglish{AppStore}
+فقط. عدّل السطر 
+\InlineCode{Main Interface}
+و ضع 
+"\textenglish{SDLMain}".
+بالنسبة للـ\InlineCode{App Icon}
+فاسمه يدل عليه، فهو يسمح لك بتحديد أيقونة لبرنامجك. يكفي سحب ثم تحرير الصورة المُراد استعمالها كأيقونة. بالنسبة للمنطقة 
+\InlineCode{Linked Frameworks and Libraries}
+سنقوم بإضافة الـ\textenglish{framework}
+الخاص بنا
+\InlineCode{SDL.framework}،
+أنقر على
+\InlineCode{+}
+في منطقة البحث ، أكتب 
+"\textenglish{SDL}"،
+حين تجده في القائمة، أنقر على 
+\InlineCode{Add}،
+إن لم تجده فهذا يعني أنك لم تقم بوضعه في المجلّد المناسب 
+(\InlineCode{/Library/Frameworks}).
+
+\begin{information}
+الأيقونات في
+\textenglish{Mac OS}
+هي بصيغة
+\InlineCode{.icns}.
+إن استعملت صيغة أخرى فستلاحظ أن الأيقونة لا تظهر. إن أردت تحويل صيغة صورة عادية إلى أيقونة استعمل برنامج 
+\textbf{\textenglish{Icon Composer}}.
+المتواجد في المجلد
+\InlineCode{/Developer/Applications/Utilities}،
+يكفي أن تسحب الأيقونة إلى المربع المخصص لها ثم تحفظها.
+\end{information}
+
+في المنطقة 
+\InlineCode{Info}
+يمكننا أن نشير إلى العديد من المعلومات في البرنامج، يمكنك الإطلاع عليها أكثر من خلال قراءة الملفات التوثيقية الخاصة بـ\textenglish{Apple}.
+الشيء الوحيد الذي يمكنك التعديل عليه هو 
+\InlineCode{Localization}
+من 
+\InlineCode{en}
+إلى 
+\InlineCode{fr}،
+كما يمكنك تعديل الـ\InlineCode{Copyright}
+و وضع ما تريد.
+
+توجّه الآن إلى 
+\InlineCode{Build Phases}
+و انقر على 
+\InlineCode{Add Build Phase} / \InlineCode{Copy Files}
+في أسفل يمين النافذة، اضغط على 
+\InlineCode{Copy Files}
+و غيّره إلى 
+\InlineCode{Copy frameworks into app}.
+في 
+\InlineCode{Destination}
+اختار
+\InlineCode{Frameworks}
+لتضيف الخاصة بك، قم بسحبها من التفرع الشجري اليساري و افلاتها في المنطقة
+\InlineCode{Build phase}،
+كما يظهر بالصورة  :
+
+\Picture{Chapter_III-1_Xcode-drop-framework}
+
+أنصحك بترتيب كل الـ\textenglish{frameworks}
+الخاص بك في مجلد 
+\InlineCode{Framework}
+و هذا لكي يسهل عليك إيجادها.\\
+و أيضاً بالنسبة للشفرات المصدرية، أنصحك بترتيبها في مجلدات ليسهل الوصول إليها. لإنشاء مجلد انقر باليمين على الشجرة اليسارية و اختر
+\InlineCode{New Group}
+ثم اسحب الملفات إلى داخلها.
+
+سنقوم الآن بإضافة الملفات
+\InlineCode{SDLMain.h}
+و 
+\InlineCode{SDLMain.m}،
+توجه إلى المجلد 
+\InlineCode{devel-lite}
+المفتوح مسبقا و قم بإضافة الملفين إلى المشروع. إذا ظهرت لك نافذة تحديد خصائص النسخ، قم باختيار\\
+\InlineCode{Copy items into destination group's folder (if needed)}.
+
+آخر شيء : أنشئ ملفا
+\InlineCode{main.c}.
+توجه إلى القائمة 
+\InlineCode{File} / \InlineCode{New} / \InlineCode{New File}
+ثم إلى 
+\InlineCode{C and C++}، 
+اختار 
+\InlineCode{C File}
+ثم
+"\textenglish{Next}".
+قم بتسمية الملف و هاقد أكملت.
