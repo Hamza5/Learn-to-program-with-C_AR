@@ -1067,3 +1067,191 @@ position.y = (480 / 2) - (180 / 2);
 النتيجة : المستطيل الأبيض يتمركز بشكل جيد في الشاشة.
 
 \Picture{Chapter_III-2_Window-color-centered}
+
+\section{تمرين : إنشاء تدرّج لونيّ}
+
+سننهي الفصل بتمرين صغير (مصحّح) متبوع بسلسلة تمارين أخرى (غير مصححة من أجل حثّك على التدريب).
+
+التمرين المصحح ليس صعباً حقّا : ما نريد إنشاءه هو نافذة متدرّجة الألوان عموديا من الأسود إلى الأبيض.\\
+سيكون عليك إنشاء 255 مساحة بارتفاع 1 بيكسل. كل مساحة لها لون مختلف أكثر فأكثر سوادا.
+
+هذا ما يجب عليك الحصول عليه في النهاية، صورة مشابهة لهذه :
+
+\Picture{Chapter_III-2_Window-gradient}
+
+ إنه أمر جميل، أليس كذلك ؟ الشيء الأجمل هو أن بعض الحلقات التكرارية كافية من أجل تحقيق المطلوب.
+ 
+لفعل ذلك يجب إنشاء 256 مساحة (أي 256 سطر) تحتوي مركبات الألوان (أحمر، أخضر، أزرق) التالية~:
+
+\begin{Csource}
+0, 0, 0) // Black
+(1, 1, 1) // Gray that is so so close from black
+(2, 2, 2) // Gray that is so close from black
+...
+(128, 128, 128) // Medium gray (to 50 %)
+...
+(253, 253, 253) // Gray that is so  close from white
+(254, 254, 254) // Gray that is so so close from white
+(255, 255, 255) // White
+\end{Csource}
+
+يجب على الجميع أن يعرف أنّه بحاجة إلى حلقة تكراريّة للقيام بهذا (لن تسعد بتكرار 256 سطرا !). و لهذا سنقوم بإنشاء جدول من نوع 
+\InlineCode{SDL\_Surface*}
+من 256 خانة.
+
+إلى العمل. لديك 5 دقائق !
+
+\subsection{تصحيح !}
+ 
+يجب أولا أن نقوم بتعريف جدول من 256
+\InlineCode{SDL\_Surface*}.
+سنهيّؤه على
+\InlineCode{NULL} :
+
+\begin{Csource}
+SDL_Surface *lines[256] = {NULL};
+\end{Csource}
+
+سنعرف متغيراً
+\InlineCode{i}
+من أجل الحلقات 
+\InlineCode{for}.
+
+سنغيّر أيضاً ارتفاع النافذة لكي تكون مناسبة للعمل. إذ سنعطيها 256 بيكسلز كارتفاع، و ذلك من أجل عرض كل سطر من بين 256 سطرا.
+
+سنستعمل بعد ذلك حلقة تكرارية
+\InlineCode{for}
+من أجل حجز مكان لـ256 مساحة الّتي تم إنشاؤها. الجدول سيستقبل 256 مؤشّرا إلى كلّ واحد من المساحات المنشأة :
+
+\begin{Csource}
+for (i = 0 ; i <= 255 ; i++)
+	lines[i] = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 1, 32, 0,0, 0, 0);
+\end{Csource}
+
+بعد ذلك نقوم بملء و لصق كل مساحة في الشاشة واحدة بواحدة.
+
+\begin{Csource}
+for (i = 0 ; i <= 255 ; i++)
+{
+	position.x = 0; // The lines are to the left (0 abscissa)
+	position.y = i; // The vertical position depends on the line's number
+	SDL_FillRect(lines[i], NULL, SDL_MapRGB(screen->format, i, i, i)); // Drawing
+	SDL_BlitSurface(lines[i], NULL, screen, &position); // Sticking
+}
+\end{Csource}
+
+ لاحظ أنني استعمل كل الوقت المتغير 
+\InlineCode{position}.
+إذ ليس لازما أن ننشئ 256 واحدا، لأننا لن نقوم إلا ببعث المتغير إلى الدالة 
+\InlineCode{SDL\_BlitSurface}.
+يمكننا إذن إعادة استخدامه دون مشاكل.\\
+في كلّ مرة أقوم بالتعديل على الترتيبة
+(\InlineCode{y})،
+لتسوية المساحة على الارتفاع الصحيح. اللون يعتمد في كلّ مرة على قيمة المتغير
+\InlineCode{i}
+(ستكون
+$0, 0, 0$
+في أوّل مرّة و $255, 255, 255$ في آخر مرّة).
+
+\begin{question}
+لكن لماذا قيمة 
+\InlineCode{x}
+هي 0 دائماً ؟\\
+كيف يمكن للمساحة أن تتلون كليا إذا كانت قيمة الـ\InlineCode{x}
+دائما 0 ؟
+\end{question}
+
+المتغير
+\InlineCode{position}
+يشير إلى أي مكان تتواجد فيه المنطقة أعلى اليسار (هنا نتكلم عن السطر). هي لا تحدد عرض المساحة و إنما فقط أين تتواجد المركّبة على الشاشة.\\
+بما أن كل الأسطر تبدأ في أقصى يسار النافذة، فستكون الفاصلة مساوية لـ0. حاول وضع فاصلة تساوي 50 لترى ماذا سيعطيك : كل الأسطر ستتنحي إلى اليمين.\\
+بما أن المساحة تأخذ 640 بيكسل كطول ، فإن الـ\textenglish{SDL}
+تقوم بإنشاء 640 بيكسلا في اتجاه اليمين (من نفس اللون) إنطلاقاً من المركبات التي يشير إليها المتغير 
+\InlineCode{position}.
+
+في المخطط التالي أريك مركبات النقطة المتواجدة أعلى يسار الشاشة (وضعية أول سطر) ومركبات النقطة المتواجدة أسفل يسار الشاشة (وضعية آخر سطر).
+
+\Picture{Chapter_III-2_Window-gradient-coordinates}
+
+كما ترى، من الأعلى إلى الأسفل، المحور لا يتغير 
+(\InlineCode{x}
+يبقى مساويا لـ0) بينما 
+\InlineCode{y}
+وحده يتغير من أجل كل سطر جديد، و بهذا 
+\InlineCode{position.y = i;}.
+
+أخيراً لا تنس أنه يجب تحرير الذاكرة من أجل كل مساحة من الـ256 مساحة المنشأة، بمساعدة حلقة بالطبع.
+
+\begin{Csource}
+for (i = 0 ; i <= 255 ; i++) // Don't forget to free the 256 surfaces
+	SDL_FreeSurface(lines[i]);
+\end{Csource}
+
+\subsubsection{ملخّص \texttt{main}}
+
+هذه هي الدالة
+\InlineCode{main}
+كاملة :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *lines[256] = {NULL};
+	SDL_Rect position;
+	int i = 0;
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 256, 32, SDL_HWSURFACE);
+	for (i = 0 ; i <= 255 ; i++)
+		lines[i] = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 1, 32,0, 0, 0, 0);
+	SDL_WM_SetCaption("My SDL gradient !", NULL);
+	SDL_FillRect(screen , NULL, SDL_MapRGB(screen ->format, 0, 0, 0));
+	for (i = 0 ; i <= 255 ; i++)
+	{
+		position.x = 0; // The lines are to the left
+		position.y = i; // The vertical position depends on the line's number
+		SDL_FillRect(lines[i], NULL, SDL_MapRGB(screen->format, i, i, i));
+		SDL_BlitSurface(lines[i], NULL, screen, &position);
+	}
+	SDL_Flip(screen);
+	pause();
+	for (i = 0 ; i <= 255 ; i++) // Don't forget to free the 256 surfaces
+		SDL_FreeSurface(lines[i]);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+{\large"أريد تمارين للتدريب !"}
+
+لا مشكلة، مولّد التمارين مُشَغّل !
+
+\begin{itemize}
+	\item قم بإنشاء تدرج عكسي للألوان، أي من الأبيض للأسود. هذا الأمر لن يكون صعبا للبدأ !
+	\item يمكنك أيضاً وضع كلى التدرّجين، من الأبيض للأسود ثم من الأسود للأبيض (ستأخذ النافذة ضعف الارتفاع الحالي).
+	\item أكثر صعوبة قليلا، يمكنك وضع تدرج أفقي بدل التدرج العمودي.
+	\item حاول إنشاء تدرج ألوان مختلفة عن الأسود و الأبيض. جرب مثلا من الأحمر إلى الأسود، من الأخضر إلى الأسود، و من الأزرق إلى الأسود، ثمّ من الأحمر إلى الأبيض، إلخ.
+\end{itemize}
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item يتم تحميل الـ\InlineCode{SDL}
+	بواسطة الـ\InlineCode{SDL\_Init}
+	في بداية البرنامج، و يتم إيقافها باستعمال
+	\InlineCode{SDL\_Quit}
+	في النهاية.
+	\item الأعلام هي ثوابت يمكن جمعها فيما بينها باستعمال الرمز 
+	\InlineCode{|}،
+	 و هي تلعب دور الخواص.
+	\item تقوم الـ\textenglish{SDL}
+	بالتعامل مع المساحات و التي هي عبارة عن مستطيلات من نوع 
+	\InlineCode{SDL\_Surface}.
+	الرسم على النافذة يتم بالاستعانة بهذه المساحات.
+	\item توجد دائما على الأقل مساحة واحدة و التي تحجز كلّ النافذة، و نسميها في أغلب الأحيان الشاشة 
+	(\InlineCode{screen}).
+	\item ملء مساحة يتم باستعمال
+	\InlineCode{SDL\_FillRect}،
+	ولصقها في الشاشة يتم باستعمال
+	\InlineCode{SDL\_BlitSurface}.
+	\item الألوان معرّفة بمزيج من الأحمر، الأزرق و الأخضر.	
+\end{itemize}
