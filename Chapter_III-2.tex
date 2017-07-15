@@ -559,3 +559,511 @@ int main(int argc, char *argv[])
 للنافذة الآن عنوان.
 
 \Picture{Chapter_III-2_Window-title}
+
+\section{التعامل مع المساحات}
+
+لحد الآن تمكّنا من فتح نافذة ذات خلفيّة سوداء. ما نريد الآن هو أن نملأها ببعض الأشياء، أي أن "نرسم" فيها.
+
+كما قلت لك في الفصل السابق، فإن المكتبة
+\textenglish{SDL}
+هي مكتبة منخفضة المستوى، أي أنها لا توفّر لنا سوى دوال قاعدية، بسيطة جداً.\\
+الصراحة هي أن الشكل الوحيد الذي تسمح لنا الـ\textenglish{SDL}
+برسمه هو المستطيل ! كلّ ما سنقوم به هو جمع بعض المستطيلات في نافذة. نسمّي هذه المستطيلات بـ\textbf{المساحات}
+(\textenglish{Surfaces})،
+المساحة هي الوحدة الرسومية القاعدية في الـ\textenglish{SDL}.
+
+\begin{information}
+إنه من الممكن أن نرسم أشياء أخرى، مثل الدوائر و المثلثات، إلخ. و لكن لكي نفعل ذلك، يجب أن نكتب بأنفسنا الدوال الّتي تمكّن من فعل ذلك، برسم تلك الأشكال بيكسلا ببيكسل، و إما أن نستعمل مكتبة أخرى إلى جانب الـ\textenglish{SDL}.
+الأمر معقّد نوعاً ما، لكن لا تقلق، ستجد بأننا لسنا بحاجة إلى كلّ هذا في التطبيق.
+\end{information}
+
+\subsection{مساحتك الأولى : الشاشة}
+
+في كل برامج الـ\textenglish{SDL}،
+توجد على الأقل مساحة عمل واحدة و هي ما نسميه بالشاشة 
+(\textenglish{Screen})،
+و هي مساحة توافق كل النافذة، أي كلّ المساحة السوداء التي تظهر بالنافذة.
+
+في الشفرة المصدرية، كل مساحة يتم تخزينها في متغير من نوع
+\InlineCode{SDL\_Surface}.
+نعم، إنه نوع بيانات تم انشاؤه من طرف الـ\textenglish{SDL}
+(هذا المتغير عبارة عن هيكل).
+
+بما أن أول مساحة ننشئها هي الشاشة، فهيا بنا :
+
+\begin{Csource}
+SDL_Surface *screen = NULL;
+\end{Csource}
+
+تلاحظ أنني قمت بإنشاء مؤشّر. لماذا أفعل هذا ؟ لأن الـ\textenglish{SDL}
+هي من ستقوم بحجز مكان في الذاكرة من أجل مساحتنا. المساحة بالفعل ليس لها بالضرورة دائما نفس الحجم و لهذا فعلى الـ\textenglish{SDL}
+أن تقوم بحجز حيّ من أجلنا (هنا، هذا يعتمد على حجم النافذة التي فتحناها).
+
+لم أقل لك هذا من قبل، لكن الدالة
+\InlineCode{SDL\_SetVideoMode}
+تقوم بإرجاع قيمة ! ستقوم بإرجاع مؤشّر نحو المكان بالذاكرة المخصص لمساحة الشاشة.\\
+ممتاز، يمكننا إذا استرجاع المؤشّر في المتغير 
+\InlineCode{screen} :
+
+\begin{Csource}
+screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
+\end{Csource}
+
+المؤشّر يمكن الآن أن يساوي قيمتين :
+
+\begin{itemize}
+	\item \InlineCode{NULL} :
+	المتغير 
+	\InlineCode{screen}
+	سيساوي
+	\InlineCode{NULL}
+	إذا فشلت الدالة
+	\InlineCode{SDL\_SetVideoMode}
+	في تحميل أسلوب العرض الذي تم طلبه. و هذا يحصل حينما يتم اختيار دقة جد عالية أو عدد كبير جداً من الألوان، أكبر من أقصى عدد يتحمله جهازك.
+	\item قيمة أخرى : إذا كانت القيمة مختلفة عن 
+	\InlineCode{NULL}،
+	فهذا يعني أن الـ\textenglish{SDL}
+	قامت بحجز المكان، كل شيء على ما يرام !
+\end{itemize}
+
+إنه من المستحسن هنا أن تتم معالجة الأخطاء، تماما مثلما فعلنا حينما أردنا تحميل الـ\textenglish{SDL}،
+هاهي إذا الدالة
+
+الكاملة بإضافة معالجة الأخطاء للـ\InlineCode{SDL\_SetVideoMode}.
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL; // The pointer which stores the surface of the screen
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE); // We try to open the window
+	if (screen  == NULL) // If we can't, we note it and we exit.
+	{
+		fprintf(stderr, "Impossible to load video mode :%s\n", SDL_GetError());
+		exit(EXIT_FAILURE);
+	}
+	SDL_WM_SetCaption("My super SDL window !", NULL);
+	pause();
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+الرسالة التي تتركها لنا الدالة
+\InlineCode{SDL\_GetError}،
+مفيدة من أجل معرفة ما الّذي لم يعمل.
+
+\begin{information}
+حكاية صغيرة : مرة أخطأت بينما أريد أن أفتح نافذة بأسلوب الشاشة الكاملة 
+(\textenglish{Full screen})،
+في عوض أن أطلب الدقة
+$1024 \times 768$
+كتبت بالخطأ 
+$10244 \times 768$،
+لم أفهم لماذا لم يتم التحميل، لأنّي لم أنتبه إلى أنني كتبت 4 مرّتين (ربما كنت متعباً). و لحل المشكل ألقيتُ نظرة على الملف 
+\InlineCode{stderr.txt}،
+توجهت إلى رسالة الخطأ و اكتشفت بأن الدقة التي طلبتها مرفوضة (شيء يثير الفضول أليس كذلك ؟).
+\end{information}
+
+\subsection{تلوين مساحة}
+
+لا توجد 36 طريقة لملء مساحة، الحقيقة أنه توجد طريقتان :
+
+\begin{itemize}
+	\item إما أن يتم تلوين المساحة بلون موحّد.
+	\item إما أن يتم ملؤها عن طريق تحميل صورة.
+\end{itemize}
+
+\begin{information}
+يمكنك في الحقيقة الرسم في المساحة بيكسلا ببيكسل، لكن هذه الطريقة معقّدة، لن نراها هنا.
+\end{information}
+
+سنرى أولا كيف نقوم بتلوين مساحة بلون موحّد. في الفصل القادم سنتعلّم كيف نقوم بتحميل صورة.
+
+الدالة التي تسمح بتلوين النافذة بلون موحّد هي
+\InlineCode{SDL\_FillRect}
+(العبارة 
+\InlineCode{FillRect}
+تعني ملء مستطيل بالإنجليزيّة). هذه الدالة تستقبل 3 معاملات و هي :
+
+\begin{itemize}
+	\item مؤشّر نحو المساحة التي نريد التلوين عليها (مثلا
+	\InlineCode{screen}).
+	\item الجزء من المساحة الذي نريد تلوينه، إذا أردت تلوين كل المساحة (و هذا الّذي نريده) فلتكن قيمة المؤشر 
+	\InlineCode{NULL}.
+	\item اللون الذي نريد أن نلوّن به المساحة.
+\end{itemize}
+
+كملخّص :
+
+\begin{Csource}
+SDL_FillRect(surface, NULL, color);
+\end{Csource}
+
+\subsubsection{التحكم في الألوان بالـ\textenglish{SDL}}
+
+في الـ\InlineCode{SDL}
+كل لون مخزن في عدد من نوع
+\InlineCode{Uint32}.
+
+\begin{question}
+إذا كان عدداً، لماذا إذا لم نستعمل ببساطة النوع
+\InlineCode{int}
+أو النوع
+\InlineCode{long} ؟
+\end{question}
+
+الـ\InlineCode{SDL}
+هي مكتبة متعددة المنصات، و كما تعلم فحجم الـ\InlineCode{int}
+يتغير من نظام تشغيل إلى آخر. لهذا فإن الـ\InlineCode{SDL}
+تقوم باستخدام أعداد من أنواع جديدة، هذه الأنواع الجديدة تحجز نفس المكان بالذاكرة في كل أنظمة التشغيل.\\
+
+هناك مثلاً :
+
+\begin{itemize}
+	\item \InlineCode{Uint32} :
+عدد صحيح بحجم
+\textenglish{32 bits}
+أي
+\textenglish{4 octets}
+(للتذكير :
+\textenglish{1 octet = 8 bits}).
+	\item \InlineCode{Uint16} :
+عدد صحيح مشفر على
+\textenglish{16 bits} (\textenglish{2 octets}).
+	\item \InlineCode{Uint8} :
+عدد طبيعي مشفر على
+\textenglish{8 bits} (\textenglish{1 octet}).
+\end{itemize}
+لن تستعمل المكتبة سوى
+\InlineCode{typedef}
+لتقوم بتغيير قيمة العدد على حسب نظام التشغيل. إذا كنت فضولياً، فألق نظرة على الملف
+\InlineCode{SDL\_types.h}.
+
+لن نتأخر في التعامل مع كل هذا، فالتفاصيل لا تهم حالياً. كل ما عليك تذكره هو أن النوع
+\InlineCode{Uint32}
+لا يخزن إلا عددا صحيحاً ليس إلا، مثل
+\InlineCode{int}.
+
+\begin{question}
+لكن كيف أعرف أي عدد يوافق اللون الّذي أريد ؟
+\end{question}
+
+هناك بالفعل دالة من أجل ذلك :
+\InlineCode{SDL\_MapRGB}،
+هذه الأخيرة تستقبل 4 معاملات :
+
+\begin{itemize}
+	\item صيغة الألوان : هذه الصيغة تعتمد على عدد
+	\textenglish{bits/pixel}
+	التي قد طلبتها بالـ\InlineCode{SDL\_SetVideoMode}.
+	يمكنك استرجاع القيمة فهي موجودة في المتغير الداخلي
+	\InlineCode{screen->format}.
+	\item كمية الأحمر في اللون.
+	\item كمية الأخضر في اللون.
+	\item كمية الأزرق في اللون.
+\end{itemize}
+
+قد لا يعرف البعض بأن كل الألوان يتم تشكيلها عن طريق خلط الألوان : أزرق، أحمر و أخضر.\\
+كل كمية تتدرج من العدد 0 (لا يوجد لون) إلى العدد 255 (كل اللون موجود). أي أننا لو كتبنا :
+
+\begin{Csource}
+SDL_MapRGB(screen->format, 255, 0, 0)
+\end{Csource}
+
+فاللون المتشكل سيكون أحمرا. لا وجود للأخضر و لا للأزرق، أما لو نكتب :
+\begin{Csource}
+SDL_MapRGB(screen->format, 0, 0, 255)
+\end{Csource}
+اللون سيكون أزرقا، بينما لو نكتب :
+\begin{Csource}
+SDL_MapRGB(screen->format, 255, 255, 255)
+\end{Csource}
+
+اللون سيكون أبيض لأننا دمجنا كل الألوان، لو أنك تريد تشكيل اللون الأسود، فلتجعل كل القيم على 0.
+
+\begin{question}
+ألا يمكننا استعمال لون آخر غير هذه الألوان ؟
+\end{question}
+
+كلّا، يمكنك ذلك لو أنك تقوم بمزج الألوان بشكل ذكي. للمساعدة في ذلك، توجه إلى برنامج
+\textenglish{Paint}
+ثم إلى
+\InlineCode{Colors} / \InlineCode{Modify the colors}،
+انقر على
+\InlineCode{Define the colors}
+ثم
+\InlineCode{Custom}.\\
+هنا، اختر اللون الّذي يلائمك. أنظر إلى الصورة التالية :
+
+\Picture{Chapter_III-2_Colors}
+
+مركّبات اللون متواجدة في أسفل يمين النافذة. كما ترى فقد اخترت لونا أخضر مزرقّا، و هو يتكوّن من 17 من الأحمر، 206 من الأخضر، و 112 من الأزرق.
+\subsubsection{تلوين الشاشة}
+
+الدالة
+\InlineCode{SDL\_MapRGB}
+تقوم بإرجاع عدد من نوع
+\InlineCode{Uint32}
+يوافق اللّون المختار.\\
+يمكننا إذا تعريف متغير باسم
+\InlineCode{blueGreen}
+يحوي الشفرة الخاصة لاسترجاع هذا اللون :
+
+\begin{Csource}
+Uint32 blueGreen = SDL_MapRGB(screen->format, 17, 206, 112);
+\end{Csource}
+
+ليس من الضروري المرور دائما على متغير لتخزين اللون المراد استعماله (إلا إن كنت تحتاجه فعلا في برنامجك).\\
+يمكنك مباشرة إعطاء القيمة التي تم ارجاعها من طرف الدالة
+\InlineCode{SDL\_MapRGB}
+إلى الدالة
+\InlineCode{SDL\_FillRect}.
+
+لو نريد أن نملئ الشاشة باللون الأخضر المزرق، يمكننا كتابة :
+
+\begin{Csource}
+SDL_FillRect(screen , NULL, SDL_MapRGB(screen->format, 17, 206, 112));
+\end{Csource}
+
+لقد قمنا باستدعاء دالة خلال استدعاء دالة أخرى، أعتقد أنك تعرف بأن الأمر ممكن و لا يسبب أيّ مشاكل في لغة
+\textenglish{C}.
+
+\subsubsection{تحديث الشاشة}
+
+لقد اقتربنا من تحقيق الهدف.\\
+لقد نسينا أمراً بسيطاً : و هو الأمر بتحديث الشاشة. بالفعل، فالأمر 
+\InlineCode{SDL\_FillRect}
+يقوم بتلوين الشاشة، لكن هذا لا يحصل إلا في الذاكرة، إذ يجب أن نطلب من الحاسوب تحديث الشاشة لاستعمال البيانات الجديدة.
+
+من أجل هذا سنستعمل الدالة 
+\InlineCode{SDL\_Flip}،
+سنتكلم بشكل مفصل عن هذه الدالة لاحقا.\\
+الدالة تستقبل معاملا واحدا و هو الشاشة
+\InlineCode{screen}.
+
+\subsubsection{فلنلخّص كل شيء !}
+
+هذه دالة
+\InlineCode{main}
+تقوم بفتح نافذة ملونة باللون الأخضر المزرق :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL;
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("My super SDL window!", NULL);
+	// We colorize the screen with blue-green color
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206, 112));
+	SDL_Flip(screen); 
+	pause();
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+هاهي النتيجة :
+
+\Picture{Chapter_III-2_Window-color}
+
+\subsection{رسم مساحة أخرى في الشاشة}
+
+النتيجة السابقة جيدة، لكننا لن نتوقف هنا. لحد الآن ليست لدينا سوى مساحة واحدة و هي الشاشة. نحن نريد أن نقوم بالرسم عليها، أي "نلصق" مساحات أخرى عليها بألوان مختلفة.
+
+لهذا يجب علينا إنشاء متغير من نوع
+\InlineCode{SDL\_Surface}
+للمساحة الجديدة :
+
+\begin{Csource}
+SDL_Surface *rectangle = NULL;
+\end{Csource}
+
+سنطلب إذا من الـ\InlineCode{SDL}
+أن تقوم بحجز مكان في الذاكرة من أجل المساحة الجديدة.\\
+من أجل الشاشة كنا قد استعملنا
+\InlineCode{SDL\_SetVideoMode}.
+لكن هذه الأخيرة لا تعمل إلا على  الشاشة (المساحة الرئيسية)، لا نريد أن نقوم بإنشاء نافذة من أجل كل مستطيل نريد إنشاءه !
+
+توجد إذا دالة أخرى من أجل إنشاء مساحة : 
+\InlineCode{SDL\_CreateRGBSurface}.
+هذه هي التي سنقوم باستعمالها في كل مرة نريد أن ننشئ مساحة جديدة.
+
+هذه الدالة تستقبل العديد من المعاملات (ثمانية !). لكنني لن أتطرّق إلا للمعاملات التي تهمّنا لحدّ الآن.\\
+بما أن لغة 
+\textenglish{C}
+تُلزمنا بإدخال قيم لكل المعاملات، فإننا سنقوم بوضع القيمة 0 في مكان كل معامل لا يهمّنا.
+
+فلنتأمل قليلا في المعاملات الأربع الأولى (يجدر بها أن تذكّرنا بإنشاء الشاشة).
+
+\begin{itemize}
+	\item قائمة الأعلام (الخيارات). لديك الاختيار بين :
+	\begin{itemize}
+		\item \InlineCode{SDL\_HWSURFACE} :
+		المساحة يتم تحميلها في الذاكرة الرسوميّة. و هي تحتوي على مكان أقل مقارنة بالذاكرة الخاصة بالنظام (حقيقة، مع بطاقات الـ\textenglish{3D}
+		في أيامنا هذه، قد لا يكون لهذا تأثير)، لكنها ذاكرات سريعة و فعّالة.
+		\item \InlineCode{SDL\_SWSURFACE} :
+		يتم تحميل المساحة في الذاكرة الخاصة بالنظام، أين يوجد الكثير من المكان، لكن هذا الاختيار سيجبر المعالج على القيام بحسابات أكثر. لو أنك حمّلت المساحة على الذاكرة الرسوميّة، فإن البطاقة 
+		\textenglish{3D}
+		هي المسؤولة عن القيام بأغلب الحسابات.
+	\end{itemize}
+	\item عرض المساحة (\textenglish{pixels}).
+	\item ارتفاع المساحة (\textenglish{pixels}).
+	\item عدد الألوان (\textenglish{bits/pixel}).
+\end{itemize}
+
+هكذا إذا نقوم بحجز مكان للمساحة الجديدة في الذاكرة :
+
+\begin{Csource}
+rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 220, 180, 32, 0, 0, 0, 0);
+\end{Csource}
+
+الأربع معاملات الأخيرة تساوي 0، كما قلت لك، لأننا لا نهتم بأمرها حالياً. 
+
+بما أننا قمنا بالحجز اليدوي للذاكرة، فيجب علينا تحريرها باستعمال الدالة 
+\InlineCode{SDL\_FreeSurface}
+و التي نستعملها قبل 
+\InlineCode{SDL\_Quit} :
+
+\begin{Csource}
+SDL_FreeSurface(rectangle);
+SDL_Quit();
+\end{Csource}
+
+\begin{information}
+ليس هناك من داعي إلى تحرير المساحة
+\InlineCode{screen}
+باستعمال
+\InlineCode{SDL\_FreeSurface}
+لأنه يتم تحريرها تلقائياً عند استدعاء
+\InlineCode{SDL\_Quit}.
+\end{information}
+
+يمكننا الآن تلوين المساحة الجديدة باللون الأبيض مثلا :
+
+\begin{Csource}
+SDL_FillRect(rectangle, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+\end{Csource}
+
+\subsubsection{لصق المساحة بالشاشة}
+
+اقتربنا من النهاية، هيا بعض الشجاعة ! المساحة جاهزة، لكن لو تحاول تجريب البرنامج، ستلاحظ أنها لن تظهر على الشاشة، بالفعل إذ أن المساحة
+\InlineCode{screen}
+هي وحدها التي تم إظهارها. لكي نستطيع رؤية مساحتنا الجديدة يجب أن نقوم بـ\textbf{تسوية}
+المساحة، أي لصقها على الشاشة، سنستعمل لأجل هذا الدالة 
+\InlineCode{SDL\_BlitSurface}.
+ هذه الدالة تنتظر :
+ 
+\begin{itemize}
+	\item المساحة التي نريد لصقها (هنا 
+	\InlineCode{rectangle}).
+	\item معلومة حول الجزء من تلك المساحة الذي نريد لصقه (اختياري). لن يهمنا الأمر الآن فنحن نريد لصق كل المساحة و لهذا فستكون القيمة
+	\InlineCode{NULL}.
+	\item المساحة التي نريد أن نلصق عليها المساحة الجديدة (في حالتنا هذه نتكلم عن الشاشة 
+	\InlineCode{screen}).
+	\item مؤشّر نحو متغير يحتوي الإحداثيّات. هذه الإحداثيات تشير إلى المكان الذي نريد أن نلصق عليه المساحة، أي موقعه.
+	
+للإشارة إلى الإحداثيّات، نحتاج إلى استعمال متغير من نوع 
+\InlineCode{SDL\_Rect}.\\
+إنّه هيكل يحتوي العديد من المركّبات، إثنتان منها تهمّنا :
+	\begin{itemize}
+		\item \InlineCode{x} : 
+الفاصلة.
+		\item \InlineCode{y} : 
+الترتيبة. 
+	\end{itemize}	
+\end{itemize}
+
+يجب أن تعرف ان الإحداثيّة 
+\InlineCode{(0, 0)}
+توافق اقصى نقطة في يسار أعلى الشاشة.\\
+أما الإحداثيّة 
+\InlineCode{(640, 480)}
+فهي توافق النقطة الموجودة في أقصى يمين أسفل الشاشة، و هذا إن كنت قد فتحت نافذة بحجم
+$640 \times 480$
+مثلي.
+
+هذا المخطط سيساعدك في الفهم  :
+
+\Picture{Chapter_III-2_Window-coordinates}
+
+إذا كنت قد درست الرياضيات من قبل، فعلى الأرجح لن تضيع بينما تحاول  فهم كيفية العمل. فلننشئ إذا متغيرا 
+\InlineCode{position}.
+سنعطي القيمة 0 لكل من الفاصلة و الترتيبة و ذلك ليتم لصق مساحتنا (المستطيل) في أعلى يسار النافذة :
+
+\begin{Csource}
+SDL_Rect position;
+position.x = 0;
+position.y = 0;
+\end{Csource}
+
+و الآن بما أننا حددنا موقعنا في النافذة، يمكننا تسوية المساحة الجديدة على الشاشة :
+
+\begin{Csource}
+SDL_BlitSurface(rectangle, NULL, screen, &position);
+\end{Csource}
+ 
+لاحظ أنني استعملت الرمز
+\InlineCode{\&}
+و ذلك لأنه يجب علينا إرسال عنوان المتغير
+\InlineCode{position}.
+
+\subsubsection{تلخيص الشفرة المصدرية}
+
+أعتقد أن وضع الشفرة المصدرية الّتي تلخص ما شرحته لن يكون مضراً :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *rectangle = NULL;
+	SDL_Rect position;
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
+	// Surface allocation
+	rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 220, 180, 32, 0,0, 0, 0);
+	SDL_WM_SetCaption("My super SDL window !", NULL);
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206,112));
+	position.x = 0; // The coordinates of the surface will be (0, 0)
+	position.y = 0;
+	// Filling the surface with white color
+	SDL_FillRect(rectangle, NULL, SDL_MapRGB(screen->format, 255,255, 255));
+	SDL_BlitSurface(rectangle, NULL, screen, &position); // Sticking the surface on the screen 
+	SDL_Flip(screen); // Updating the screen
+	pause();
+	SDL_FreeSurface(rectangle); // Freeing the surface
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+شاهد النتيجة :
+
+\Picture{Chapter_III-2_Colors-paste}
+
+\subsubsection{مركزةُ المساحة في الشاشة}
+
+نحن نجيد إظهار المساحة في أعلى اليسار. يسهل أيضا موقعتها أسفل يمين الشاشة. ستكون الإحداثيات
+\mbox{($640 - 220, 480 - 180$)}،
+لأنه يجب إنقاص حجم المستطيل ليتم إظهاره كاملا. 
+
+لكن كيف تتم مركزةُ المستطيل الأبيض ؟ لو تفكّر قليلاً ستجد بأن الحساب
+\textit{رياضياتيّ}.
+فهنا نعرف الهدف من الرياضيات و الحساب الهندسي !\\
+كلّ هذا الأمر بمستوى سهل هنا :
+
+\begin{Csource}
+position.x = (640 / 2) - (220 / 2);
+position.y = (480 / 2) - (180 / 2);
+\end{Csource}
+
+فاصلة المستطيل هي نصف عرض الشاشة
+($640 / 2$).
+و لكن، بالإضافة إلى هذا، يجب أن يتم إنقاص نصف طول المستطيل أيضاً 
+($220 / 2$)،
+لأنك إن لم تنقص هذا الحجم، سيكون تمركز المستطيل خاطئاً (جرّب عدم فعل ذلك و ستفهم ما الّذي أعنيه).\\
+كذلك بالنسبة للترتيبة مع ارتفاع الشاشة و المستطيل.
+
+النتيجة : المستطيل الأبيض يتمركز بشكل جيد في الشاشة.
+
+\Picture{Chapter_III-2_Window-color-centered}
