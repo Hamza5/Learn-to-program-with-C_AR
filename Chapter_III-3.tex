@@ -13,3 +13,220 @@
 التحكم في الصور أمر مهم للغاية لأنه بتجميع الصور (نسميها أيضاً 
 "\textenglish{sprites}")
 نضع اللبنات الأولى في بناء لعبة فيديو.
+
+\section{تحميل صورة \textenglish{BMP}}
+
+الـ\textenglish{SDL}
+هي مكتبة بسيطة جداً. فهي لا تستطيع أساسا تحميل سوى صور من نوع
+"\textenglish{bitmap}"
+(ذات امتداد
+\InlineCode{.bmp}).
+لا تقلق، فبفضل إضافة خاصّة بالـ\textenglish{SDL}
+(المكتبة
+\InlineCode{SDL\_Image})،
+ سنرى بأنه بإمكاننا أيضاً تحميل صور من صيغ أخرى.
+ 
+ للبدأ، سنكتفي الآن بما تسمح لنا به الـ\textenglish{SDL}
+ بشكل قاعدي. سنقوم بدراسة تحميل صور
+\textenglish{BMP}.
+
+\subsection{الصيغة \textenglish{BMP}}
+
+الصيغة
+\textenglish{BMP}
+(إختصار لـ\textenglish{bitmap})
+هي صيغة صور.\\
+الصور الّتي نجدها في الحاسوب مخزّنة في ملفات. يوجد العديد من صيغ الصور، أي العديد من الطرق لتخزين صورة في ملف. على حسب الصيغة، يمكن للصورة أخذ الكثير أو القليل من مساحة القرص الصلب، و تملك جودة أحسن أو أسوء.
+
+الـ\textenglish{Bitmap}
+هي صيغة غير مضغوطة (على عكس الـ\textenglish{JPG}، \textenglish{PNG}، \textenglish{GIF}،
+إلخ).
+فعليّا، هذا يعني الأمور التالية~:
+
+\begin{itemize}
+	\item يكون الملف سريعاً جداً من ناحية قراءته، على عكس الصيغ المضغوطة التي يجب أن يتم فك الضغط عنها، مما يكلّفنا بعض الوقت.
+	\item جودة الصورة مثالية. بعض الصيغ المضغوطة (أفكّر في الـ\textenglish{JPG}
+	خصوصا، لأن الـ\textenglish{PNG}
+	و الـ\textenglish{GIF}
+	لا يغيّرون في الصورة) تقوم بتخريب جودة الصورة، و هذا ليس هو الحال بالنسبة للـ\textenglish{BMP}.
+	\item لكنّ الملف سيكون ضخماً بما أنه ليس مضغوطاً !
+\end{itemize}
+
+توجد هناك إذا مزايا و مساوئ.\\
+بالنسبة للـ\textenglish{SDL}،
+الشيء الجيد هو أن نوع الملف سيكون بسيطا و سهل القراءة. إذا كان عليك تحميل الصور دائما في نفس وقت تشغيل برنامجك، من المستحسن استعمال صور بصيغة 
+\textenglish{BMP}.
+سيكون حجم الملف ضخما حتما، لكنه يـُحمّل بشكل أسرع من الـ\textenglish{GIF}
+مثلاً. سيكون الأمر مهّما إذا كان على برنامجك تحميل الكثير من الصور في وقت قليل.
+
+\subsection{تحميل صورة \textenglish{Bitmap}}
+
+\subsubsection{تنزيل حزمة الصور}
+
+في هذا الفصل سنقوم بالعمل على كثير من الصور. إذا أردت القيام بتجريب الشفرات بينما أنت تقرأ (و هذا ما يجدر بك فعله !)، فأنصحك بتنزيل حزمة الصور التي تحتوي كل الصور التي نحتاج إليها.
+
+\textenglish{\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/pack_images_sdz.zip} (1 Mo)}
+
+بالطبع، يمكنك استعمال صورك الخاصة. يجب عليك فقط أن تعدّل مقاييس النافذة على حسب مقاييس الصورة.
+
+قم بوضع كل الصور في مجلّد المشروع. سنبدأ أولاّ بالعمل على الصورة 
+\InlineCode{lac\_en\_montagne.bmp}.
+هي عبارة عن لقطة تم استخلاصها من مشهد ثلاثي الأبعاد مأخوذ من البرنامج الممتاز الخاص بنمذجة المناظر الطبيعية
+\textenglish{Vue d'Espri 4}،
+و الذي تم إيقاف تسويقه. منذ ذلك، تمّ تغيير اسم البرنامج إلى
+\textenglish{Vue}
+و تم تطويره كثيراً. لمن يريد معرفة المزيد عنه، يمكنه زيارة الموقع :
+\url{http://www.e-onsoftware.com/}.
+
+\subsubsection{تحميل صورة في مساحة}
+
+سنقوم باستعمال دالة تقوم بتحميل صورة ذات صيغة
+\textenglish{BMP}
+و لصقها في مساحة.\\
+هذه الدالة تدعى 
+\InlineCode{SDL\_LoadBMP}
+و سترى أن استعمالها سهل للغاية :
+
+\begin{Csource}
+mySurface = SDL_LoadBMP("image.bmp");
+\end{Csource}
+
+الدالة
+\InlineCode{SDL\_LoadBMP}
+تقوم بتعويض دالتين تعرفهما :
+
+\begin{itemize}
+	\item \InlineCode{SDL\_CreateRGBSurface} :
+	تقوم بحجز مكان في الذاكرة من أجل تخزين مساحة ذات الحجم المطلوب (تكافئ دالة 
+	\InlineCode{malloc}).
+	\item \InlineCode{SDL\_FillRect} :
+	تقوم بملئ الهيكل بلون موحّد.
+\end{itemize}
+لماذا تقوم الدالة بتعويض هذين الدالتين ؟ الأمر بسيط :
+\begin{itemize}
+	\item الحجم الذي نقوم بحجزه في الذاكرة  من أجل المساحة يعتمد على حجم الصورة : اذا كان حجم الصورة هو 
+	$250 \times 300$
+	فستأخذ المساحة نفس الحجم.
+	\item من جهة أخرى، يتم ملئ المساحة بيكسلا ببيكسل بمحتوى الصورة 
+	\textenglish{BMP}.
+\end{itemize}
+
+فلنكتب الشفرة دون أي تأخير :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *backgroundImage = NULL;
+	SDL_Rect backgroundPosition;
+	backgroundPosition.x = 0;
+	backgroundPosition.y = 0;
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("Loading the images on SDL", NULL);
+	/* Loading a Bitmap image in a surface */	
+	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
+	/* We blit on the screen */
+	SDL_BlitSurface(backgroundImage, NULL, ecran, &backgroundPosition);
+	SDL_Flip(screen);
+	pause();
+	SDL_FreeSurface(backgroundImage); // We free the surface
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+و بهذا أكون قد أنشأت مؤشّراً نحو مساحة
+(\InlineCode{backgroundImage})
+و نحو كل المركّبات الموافقة لها
+(\InlineCode{backgroundPosition}).\\
+تم إنشاء المساحة في الذاكرة و ملؤها من طرف الدالة 
+\InlineCode{SDL\_LoadBMP}.\\
+نقوم بتسويتها على المساحة 
+\InlineCode{screen}
+و هذا كلّ شيء ! الصورة التالية توضّح النتيجة :
+
+\Picture{Chapter_III-2_Window-Image}
+
+كما ترى، لم يكن الأمر صعباً !
+
+\subsubsection{إرفاق أيقونة بالتطبيق}
+
+بما أننا الآن نجيد تحميل الصور، يمكننا اكتشاف كيفية إرفاق أيقونة بالبرنامج. سيتم إظهار الأيقونة في أعلى يسار النافذة (و أيضاً في شريط المهام). لحدّ الآن نحن لا نملك إلاّ أيقونة افتراضيّة.
+
+\begin{question}
+لكن ألا يجدر بأيقونات البرامج أن تكون ذات الامتداد
+\InlineCode{.ico} ؟
+\end{question}
+
+كلّا، ليس شرطاً ! على كلّ فالامتداد
+\InlineCode{.ico}
+لا يوجد إلا في نظام الويندوز. الـ\textenglish{SDL}
+تتعامل مع كلّ أنظمة التشغيل باستعمالها نظاما خاصا بها : المساحة !\\
+نعم، أيقونة برنامج 
+\textenglish{SDL}
+ماهي إلا مساحة بسيطة.
+
+\begin{warning}
+يجدر بالأيقونة أن تكون ذات حجم 
+$16 \times 16$
+بيكسلز. بينما في الويندوز يجب أن تكون بحجم
+$32 \times 32$
+بيكسلز و إلا فستسوء جودتها. لا تقلق إذ يمكن للـ\textenglish{SDL}
+"تصغير" أبعاد الصورة لتتمكن من الدخول في 
+$16 \times 16$
+بيكسلز.
+\end{warning}
+
+لإضافة الأيقونة إلى النافذة، نستعمل الدالة 
+\InlineCode{SDL\_WM\_SetIcon}.\\
+هذه الدالة تأخذ معاملين : المساحة التي تحتوي الصورة التي نريد إظهارها كما أنها تستقبل معلومات حول الشفافية (القيمة 
+\InlineCode{NULL}
+تعني أننا لا نريد أية شفافية). التحكّم في الشفافية الخاصة بأيقونة معقّد قليلاً (يجب تحديد البيكسلز الشفافة واحدة بواحدة)، لن ندرس ذلك إذا.
+
+سنقوم باستدعاء دالة في استدعاء لأخرى :
+
+\begin{Csource}
+SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
+\end{Csource}
+ 
+تم تحميل الصورة في الذاكرة بواسطة
+\InlineCode{SDL\_LoadBMP}
+و تم بعث عنوان المساحة مباشرة إلى
+\InlineCode{SDL\_WM\_SetIcon}.
+
+\begin{critical}
+يجب أن يتم استدعاء الدالة
+\InlineCode{SDL\_WM\_SetIcon}
+قبل أن يتم فتح النافذة، أي أنه يجدر بها التواجد قبل
+\InlineCode{SDL\_SetVideoMode}
+في الشفرة المصدرية.
+\end{critical}
+
+هذه هي الشفرة المصدرية الكاملة. ستلاحظ أنني أضفت
+\InlineCode{SDL\_WM\_SetIcon}
+مقارنة بالشفرة السابقة.
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *backgroundImage = NULL;
+	SDL_Rect backgroundPosition;
+	backgroundPosition.x = 0;
+	backgroundPosition.y = 0;
+	SDL_Init(SDL_INIT_VIDEO);
+	/* Loading the icon before SDL_SetVideoMode*/
+	SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
+	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
+	SDL_BlitSurface(backgroundImage, NULL, screen, &backgroundPosition);
+	SDL_Flip(screen);
+	pause();
+	SDL_FreeSurface(backgroundImage);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+النتيجة : تم تحميل الصورة و عرضها أعلى يسار النافذة.
+\Picture{Chapter_III-2_Window-icon}
