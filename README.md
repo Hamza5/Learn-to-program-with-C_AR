@@ -46,8 +46,8 @@
 - [ ] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
     - [x] <span dir='rtl'>تثبيت SDL</span>
     - [x] <span dir='rtl'>إنشاء نافذة و مساحات</span>
-    - [ ] <span dir='rtl'>إظهار صور</span>
-    - [ ] <span dir='rtl'>التحكّم في الأحداث</span>
+    - [x] <span dir='rtl'>إظهار صور</span>
+    - [ ] <span dir='rtl'>معالجة الأحداث</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: Mario Sokoban</span>
     - [ ] <span dir='rtl'>تحكّم في الوقت</span>
     - [ ] <span dir='rtl'>كتابة نصوص باستخدام SDL_ttf</span>

@@ -23,7 +23,7 @@
 \InlineCode{.bmp}).
 لا تقلق، فبفضل إضافة خاصّة بالـ\textenglish{SDL}
 (المكتبة
-\InlineCode{SDL\_Image})،
+\textenglish{SDL\_Image})،
  سنرى بأنه بإمكاننا أيضاً تحميل صور من صيغ أخرى.
  
  للبدأ، سنكتفي الآن بما تسمح لنا به الـ\textenglish{SDL}
@@ -460,3 +460,303 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 \textenglish{Alpha}
 بشكل كبير في برامجك.
 \end{information}
+
+\section{تحميل صيغ صور أخرى باستعمال الـ\textenglish{SDL\_Image}}
+
+الـ\textenglish{SDL}
+لا تتعامل إلا مع الـ\textenglish{bitmap}
+(الصيغة
+\textenglish{BMP})
+كما رأينا.\\
+و لكن هذا ليس بمشكل لأن قراءة الصور ذات الصيغة 
+\textenglish{BMP}
+أسرع بالنسبة للـ\textenglish{SDL}،
+و لكن يجب معرفة أنه في أيامنا هذه يتم استعمال صيغ أخرى للصور. بالتحديد الصيغ "المضغوطة" كالـ\textenglish{PNG}،
+الـ\textenglish{GIF}
+و الـ\textenglish{JPEG}.
+لهذا الغرض توجد مكتبة تسمى
+\textenglish{SDL\_Image}
+و تقوم بالتعامل مع كل صيغ الصور التالية :
+
+\begin{itemize}
+	\item \textenglish{TGA}،
+	\item \textenglish{BMP}،
+	\item \textenglish{PNM}،
+	\item \textenglish{XPM}،
+	\item \textenglish{XCF}،
+	\item \textenglish{PCX}،
+	\item \textenglish{GIF}،
+	\item \textenglish{JPG}،
+	\item \textenglish{TIF}،
+	\item \textenglish{LBM}،
+	\item \textenglish{PNG}.
+\end{itemize}
+
+بالمناسبة فإنه بالإمكان أن تتم إضافة صيغ أخرى للـ\textenglish{SDL}.
+و هي المكتبات التي تحتاج إلى الـ\textenglish{SDL}
+لكي تعمل. يمكننا تسمية هذا الأمر بالـ\textenglish{add-ons}
+(بمعنى "إضافات").
+\textenglish{SDL\_Image}
+هي واحدة من بين هذه المكتبات .
+
+\subsection{تثبيت الـ\textenglish{SDL\_Image} على \textenglish{Windows}}
+
+\subsubsection{التنزيل}
+
+توجد صفحة خاصة من موقع الـ\textenglish{SDL}
+تشير إلى المكتبات التي تستعملها الـ\textenglish{SDL}.
+هذه الصفحة تحمل عنوان
+"\textenglish{Libraries}".
+ستجد رابطاً في القائمة اليسارية.\\
+ستلاحظ أن هناك الكثير من المكتبات و أغلبها ليس من طرف المبرمجين الأصليين للـ\textenglish{SDL}.
+بل هم مبرمجون عاديون يستعملون الـ\textenglish{SDL}
+و يقومون باقتراح مكتباتهم الخاصة لتحسين هذه الأخيرة.
+
+بعض هذه المكتبات مفيد جداً و يستحق إلقاء النظر عليه، و بعضها أقلّ جودة بل ربّما فيه أخطاء. لهذا يجب ترتيب هذه المكتبات حسب أهميتها.
+
+حاول إيجاد
+\textenglish{SDL\_Image}
+في القائمة، ستدخل إلى الصفحة المخصصة لهذه المكتبة :
+
+\url{https://www.libsdl.org/projects/SDL_image}
+
+حمّل النسخة التي تناسبك من القسم
+"\textenglish{Binary}"
+(لا تحمّل الملفات المصدرية، لن نحتاجها !).\\
+إذا كنت تعمل على الويندوز، حمّل الملف
+\InlineCode{SDL\_image-devel-1.2.10-VC.zip}،
+و هذا حتى و إن لم تكن تستعمل البيئة التطويرية 
+\textenglish{Visual C++} !
+
+\subsubsection{التثبيت}
+
+في الملف
+\InlineCode{.zip}
+هذا، ستجد :
+
+\begin{itemize}
+	\item \InlineCode{SDL\_image.h} :
+	 الملف الرأسي الوحيد الذي تحتاجه الـ\textenglish{SDL\_Image}،
+	 قم بلصقه في المسار
+	 
+	 \InlineCode{C:\textbackslash Program Files\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash include}
+	 
+	 بمعنى آخر، إلى جانب الملفات الرأسية للـ\textenglish{SDL}.
+	\item \InlineCode{SDL\_image.lib} :
+	قم بلصقه في المسار
+	
+	\InlineCode{C:\textbackslash Program Files\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash lib}.
+	
+	أعرف أنك ستخبرني بأن الملفات ذات الامتداد
+	\InlineCode{.lib}
+	هي محجوزة للبيئة التطويرية
+	\textenglish{Visual C++}،
+	لكن هذه حالة استثنائية، فالملف 
+	\InlineCode{.lib}
+	يعمل حتى مع المترجم 
+	\textenglish{mingw}.
+	\item الكثير من الملفات
+	\textenglish{DLL} : 
+	قم بوضعها كلها في المجلّد الخاص بالمشروع (أي بجانب الملف 
+	\InlineCode{SDL.dll}).
+\end{itemize}
+
+بعد ذلك، يجدر بك تغيير خواص المشروع من أجل محرّر الروابط
+(\textenglish{Linker})
+للملف
+\InlineCode{SDL\_image.lib}.
+
+إذا كنت تعمل بالـ\textenglish{Code::Blocks}
+مثلاً، توجّه إلى القائمة
+\InlineCode{Projects} / \InlineCode{Build options}،
+في الفرع
+\InlineCode{Linker}
+أنقر على الزر 
+\InlineCode{Add}
+و اختر المسار الذي يتواجد به الملف
+\InlineCode{SDL\_image.lib}،
+لاحظ الصورة :
+
+\Picture{Chapter_III-3_CodeBlocks-Linker}
+
+إذا ظهرت لك رسالة تحمل سؤال : 
+"\textit{\textenglish{Keep as a relative path ?}}"،
+فلتجب بما أردت لأنه لن يغير شيئاً في الوقت الحالي. أنصحك بالإجابة بالسلب، شخصيّا.
+
+بعد ذلك، ما عليك سوى تضمين الملف الرأسي
+\InlineCode{SDL\_image.h}
+في الشفرة المصدرية. على حسب المكان الذي وضعت فيه الملف
+\InlineCode{SDL\_image.h}
+سيكون عليك استعمال هذه الشفرة :
+
+\begin{Csource}
+#include <SDL/SDL_image.h>
+\end{Csource}
+
+أو هذه
+
+\begin{Csource}
+#include <SDL_image.h>
+\end{Csource}
+
+جرّبهما كليهما، يجدر بأحداهما أن تعمل.
+
+\begin{information}
+إذا كنت تعمل بالـ\textenglish{Visual Studio}
+فستكون العمليّة نفسها. لأنه إن تمكنت من تثبيت الـ\textenglish{SDL}
+لن يصعب عليك تثبيت الـ\textenglish{SDL\_Image}.
+\end{information}
+
+\subsection{تثبيت الـ\textenglish{SDL\_Image} على \textenglish{Mac OS X}}
+
+
+إن كنت تستعمل
+\textenglish{Mac OS X}،
+نزّل الملف ذو الامتداد
+\InlineCode{.dmg}
+من موقع الـ\textenglish{SDL}
+و ضعه في المجلد\\
+\InlineCode{Library/Frameworks}.
+
+اكتب بعد ذلك
+"\textenglish{search paths}"
+ في حقل البحث الخاص بـ\textenglish{Xcode}.
+ اعثر على السطر\\
+\InlineCode{Header search paths}،
+ انقر مرتين على السطر من اليمين و أضف\\
+\InlineCode{/Library/Frameworks/SDL\_image.framework/Headers}.
+
+لم يبق لك سوى اضافة إطار العمل إلى المشروع. الصورة التالية توضح لك كيف يظهر\\
+الـ\InlineCode{Header search paths}
+بعد تثبيت الـ\textenglish{SDL\_image}.
+
+\Picture{Chapter_III-3_Xcode-frameworks}
+
+و بهذا يجب عليك تضمين الملف الرأسي في بداية الكود كالتالي :
+\begin{Csource}
+#include "SDL_image.h"
+\end{Csource}
+في عوض استعمال الإشارتين
+\InlineCode{< >}
+ قم باستعمال الكتابة السابقة فيما سأعطيك لاحقا.
+
+\subsection{تحميل الصور}
+
+الحقيقة أن تثبيت الـ\textenglish{SDL\_image}
+أصعب بمئة مرة من استعمالها ! إنه عليك أنت تحديد صعوبة العمل بالمكتبة~! 
+
+توجد دالة وحيدة عليك معرفتها : 
+\InlineCode{IMG\_Load}.\\
+و هي تستقبل معاملا واحدا : اسم الملف الذي نريد فتحه.
+
+و هذا أمر عملي لأن هذه الدالة تتمكن من تحميل أي نوع من الملفات التي تتعامل معهاالـ\textenglish{SDL\_image}
+(\textenglish{JPG}، \textenglish{PNG}، \textenglish{GIF}
+و حتى الـ\textenglish{TIF}،
+إلخ). إذ تقوم وحدها بتحديد نوع الملف من خلال امتداده.
+\begin{question}
+بما أن الـ\textenglish{SDL\_Image}
+تستطيع أيضاً فتح الصور 
+\textenglish{BMP}،
+فيمكنك الآن نسيان أمر استعمال الدالة 
+\InlineCode{SDL\_LoadBMP}
+و استعمال الدالة 
+\InlineCode{IMG\_Load}
+لتحميل كل أنواع الصور.
+\end{question}
+
+شيء جيد آخر : إذا كانت الصورة التي تحمّلها تملك الشفافية (كما هو حال الصور 
+\textenglish{PNG}
+و
+\textenglish{GIF})
+ فإنّ
+\textenglish{SDL\_Image}
+تفعّل تلقائيّا الشفافية من أجل هذه الصورة ! مما يعني عدم وجود داعٍ لاستدعاء الدالة 
+\InlineCode{SDL\_SetColorKey}.
+
+سأٌقدّم لك الشفرة المصدرية التي تقوم بتحميل الصورة 
+\InlineCode{sapin.png}
+و إظهارها.\\
+لاحظ جيدا أنني قمت بتضمين
+\InlineCode{SDL/SDL\_image.h}
+كما أنني لا استدعي الدالة 
+\InlineCode{SDL\_SetColorKey}
+لأن الصورة
+\textenglish{PNG}
+التي استعملها شفافة طبيعيّا.\\
+سترى أنني أستعمل الدالة 
+\InlineCode{IMG\_Load}
+في كلّ مكان بالشفرة و ذلك بتعويض الدالة 
+\InlineCode{SDL\_LoadBMP}.
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+/* including the header of SDL_image (adapt your directory) */
+#include <SDL/SDL_image.h> 
+void pause();
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *backgoundImage = NULL, *sapin = NULL;
+	SDL_Rect backgoundPosition, sapinPosition;
+	backgoundPosition.x = 0;
+	backgoundPosition.y = 0;
+	sapinPosition.x = 500;
+	sapinPosition.y = 260;
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_WM_SetIcon(IMG_Load("sdl_icone.bmp"), NULL);
+	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	backgoundImage = IMG_Load("lac_en_montagne.bmp");
+	SDL_BlitSurface(backgoundImage, NULL, screen, &backgoundPosition);
+	/* Loading a PNG image with IMG_Load
+	We won't have any problem because the PNG image contains the transparency information inside */
+	sapin = IMG_Load("sapin.png");
+	SDL_BlitSurface(sapin, NULL, screen, &sapinPosition); 
+	SDL_Flip(screen);
+	pause();
+	SDL_FreeSurface(backgroundImage);
+	SDL_FreeSurface(sapin);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+} 
+void pause()
+{
+	int cont = 1;
+	SDL_Event event;
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+		}
+	}
+}
+\end{Csource}
+
+كما يمكننا الملاحظة، فقد تم دمج الصورة مع الخلفية بشكل ممتاز :
+
+\Picture{Chapter_III-3_Window-Image-Sapin}
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item تسمح الـ\textenglish{SDL}
+	بتحميل صور على مساحات. افتراضيّا، هي تسمح بالتعامل مع الصور ذات الصيغة
+	\textenglish{BMP}
+	باستعمال الدالة
+	\InlineCode{SDL\_LoadBMP}.
+	\item يمكننا تعريف لون شفاف باستعمال الدالة
+	\InlineCode{SDL\_SetColorKey}.
+	\item يمكننا جعل الصورة أكثر أو أقل شفافية و ذلك باستعمال الدالة 
+	\InlineCode{SDL\_SetAlpha}.
+	\item المكتبة
+	\textenglish{SDL\_image}
+	تسمح بإدخال صور من أيّة صيغة كانت
+	(\textenglish{JPG}، \textenglish{PNG}، \dots)
+	باستعمال الدالة
+	\InlineCode{IMG\_Load}.
+	لكن علينا تسطيب هذه المكتبة بالإضافة إلى الـ\textenglish{SDL}.
+\end{itemize}
