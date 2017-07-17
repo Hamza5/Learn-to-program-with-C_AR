@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
 \InlineCode{screen}
 و هذا كلّ شيء ! الصورة التالية توضّح النتيجة :
 
-\Picture{Chapter_III-2_Window-Image}
+\Picture{Chapter_III-3_Window-Image}
 
 كما ترى، لم يكن الأمر صعباً !
 
@@ -229,4 +229,234 @@ int main(int argc, char *argv[])
 \end{Csource}
 
 النتيجة : تم تحميل الصورة و عرضها أعلى يسار النافذة.
-\Picture{Chapter_III-2_Window-icon}
+\Picture{Chapter_III-3_Window-icon}
+
+\section{التحكم في الشفافية}
+
+\subsection{مشكل الشفافية}
+
+لقد قمنا قبل قليل بتحميل صورة 
+\textenglish{bitmap}
+في النافذة.\\
+لنفرض أننا نريد لصق صورة فوقها. و هذا ما يحصل كثيراً في الألعاب. غالبا اللاعب الذي يتحرّك في الخريطة هو عبارة عن صورة 
+\textenglish{bitmap}
+تتحرك فوق صورة خلفية.
+
+سنقوم بلصق صورة
+\textenglish{Zozor}
+(لمن لا يعرفه، فهو شعار
+\textenglish{Site du Zéro}
+سلف الموقع 
+\textenglish{OpenClassrooms}
+حاليّا) في المشهد :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *backgroundImage = NULL, *zozor = NULL;
+	SDL_Rect backgroundPosition, zozorPosition;
+	backgroundPosition.x = 0;
+	backgroundPosition.y = 0;
+	zozorPosition.x = 500;
+	zozorPosition.y = 260;
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
+	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
+	SDL_BlitSurface(backgroundImage, NULL, ecran, &backgroundPosition);
+	//Loading and blitting Zozor on the screen
+	zozor = SDL_LoadBMP("zozor.bmp");
+	SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
+	SDL_Flip(screen);
+	pause();
+	SDL_FreeSurface(backgroundImage);
+	SDL_FreeSurface(zozor);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+لقد قمنا فقط بإضافة مساحة لنخزّن فيها 
+\textenglish{Zozor}،
+و التي نقوم بلصقها في مكان معيّن من المشهد :
+
+\Picture{Chapter_III-3_Window-Image-Zozor}
+
+يبدو المشهد سيّئا، أليس كذلك ؟
+
+\begin{question}
+بالطبع يعود ذلك إلى الخلفية الزرقاء التي هي خلف 
+\textenglish{Zozor} !
+\end{question}
+
+لأنك تعتقد أنه بوجود خلفية سوداء أو بنّيّة، ربما سيكون المظهر لائقاً أكثر ؟ لا بالطبع، المشكل هنا هو أنه من اللازم أن يكون شكل الصورة عبارة عن مستطيل، أي أنه إذا قمنا بلصقها على المشهد، سنرى خلفيتها، مما يشوّه المظهر.
+
+من حسن الحظّ أن الـ\textenglish{SDL}
+تتحكم في الشفافية !
+
+\subsection{جعل صورة شفافة}
+
+\subsubsection{الخطوة 1 : تحضير الصورة}
+
+كبداية، يجب تحضير الصورة التي نريد تسويتها على المشهد.\\
+الصيغة 
+\textenglish{BMP}
+لا تتحكم في الشفافية، على عكس الصيغتين 
+\textenglish{GIF}
+و 
+\textenglish{PNG}.
+لهذا يحب علينا أن نجد حلاً آخر. 
+
+يجب استعمال نفس اللون للخلفية على الصورة. هذه الأخيرة ستكون شفافة من طرف الـ\textenglish{SDL}
+في وقت التسوية. لاحظ كيف تبدو الصورة
+\InlineCode{zozor.bmp}
+من ناحية أقرب :
+
+\Picture{Chapter_III-3_Zozor}
+
+الخلفية الزرقاء إذا مـُختارة. لاحظ أنني اخترت اللون الأزرق بشكل عشوائي، كان بإمكاني استعمال اللون الأحمر أو الأصفر مثلاً. الشيء المهم هو أنه يجب على اللون أن يكون وحيداً و موحّدا. لقد اخترت اللون الأزرق لأنه ليس متواجدا في صورة 
+\textenglish{Zozor}
+لأنني لو اخترت اللون الأخضر، سأخاطر بجعل العشب الذي يتناوله الحمار (أسفل يسار الصورة) شفافاً. 
+
+استعمل إذا أي برنامج كان 
+(\textenglish{Paint}، \textenglish{Photoshop}، \textenglish{The Gimp}، \dots
+لكلّ واحد منّا ذوقه) لإعطاء خلفية موحّدة للصورة.
+
+\subsubsection{الخطوة 2 : تحديد اللون الشفاف}
+
+لكي نقوم بتحديد اللون الذي يجب أن تجعله
+\textenglish{SDL}
+شفافاً، يجب أن نستعمل الدالة 
+\InlineCode{SDL\_SetColorKey}.
+يجب استدعاء هذه الدالة قبل تسوية الصورة.\\
+هكذا نقوم بتحويل اللون الذي خلف
+\textenglish{Zozor}
+إلى الشفاف :
+
+\begin{Csource}
+SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+\end{Csource}
+
+هناك ثلاثة معاملات :
+
+\begin{itemize}
+	\item المساحة التي يجب أن نقوم بتحويلها إلى اللون الشفاف (هنا نتكلم عن 
+	\InlineCode{zozor}).
+	\item قائمة الأعلام : استعمل 
+	\InlineCode{SDL\_SRCCOLORKEY}
+	لتفعيل الشفافية، 0 من أجل تعطيلها.
+	\item حدد بعد ذلك اللون الذي يجب أن يتم تحويله إلى الشفاف. لقد استعملت
+	\InlineCode{SDL\_MapRGB}
+	لإنشاء اللون بصيغة عدد
+	(\InlineCode{Uint32})
+	كما فعلنا بالسابق. كما ترى إنه اللون الأزرق 
+	($0, 0, 255$)
+	 الّذي سيتم تحويله إلى الشفاف.
+	
+\end{itemize}
+
+كملخص، نقوم أولا بتحميل الصورة باستعمال
+\InlineCode{SDL\_LoadBMP}،
+ثمّ نحدد اللون الشفاف باستعمال
+\InlineCode{SDL\_SetColorKey}
+ثم نقوم بتسوية المساحة باستعمال
+\InlineCode{SDL\_BlitSurface}.
+
+\begin{Csource}
+zozor = SDL_LoadBMP("zozor.bmp");
+SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
+\end{Csource}
+
+النتيجة : تم دمج صورة
+\textenglish{Zozor}
+بشكل ممتاز في المشهد :
+
+\Picture{Chapter_III-3_Window-Image-Zozor-transparent}
+
+هذه هي التقنية المبدئية التي ستعيد استعمالها كل الوقت في برامجك. تعلّم كيف تتحكم جيداً بالشفافية لأنها من أساسيات صنع لعبة تملك الحدّ الأدنى من الواقعية.
+
+\subsection{الشفافية \textenglish{Alpha}}
+
+هو نوع آخر من الشفافية.\\
+لحدّ الآن قمنا بتعريف لون 
+\underline{واحد}
+شفاف (الأزرق مثلا). هذا اللون لا يظهر في الصورة المُلصقة. 
+
+الشفافية 
+\textenglish{Alpha}
+توافق شيئاً آخر، إنها تسمح بعمل "مزج" بين صورة و خلفية. هذا نوع من التلاشي.
+
+يمكن تفعيل الشفافية
+\textenglish{Alpha}
+لمساحة عن طريق الدالة
+\InlineCode{SDL\_SetAlpha} :
+
+\begin{Csource}
+SDL_SetAlpha(zozor, SDL_SRCALPHA, 128);
+\end{Csource}
+
+يوجد هنا ثلاثة معاملات كذلك :
+
+\begin{itemize}
+	\item المساحة التي نتكلم عنها (\InlineCode{zozor}).
+	\item قائمة الأعلام : ضع
+	\InlineCode{SDL\_SRCALPHA}
+من أجل تفعيل الشفافية، 0 من أجل تعطيلها.
+	\item مهم جدا : قيمة الشفافية 
+\textenglish{Alpha}
+هي عدد يتراوح بين 0 (صورة شفافة تماماً أي غير مرئية) و 255 (صورة ظاهرة كلياً، و كأن الشفافية
+\textenglish{Alpha}
+لم تكن موجودة).
+\end{itemize}
+
+كلما كان العدد
+\textenglish{Alpha}
+صغيراً كلما زادت شفافية الصورة و تلاشيها في الخلفية.
+
+هذا مثال عن شفرة تقوم بتطبيق شفافية بقيمة 128 على الصورة
+\textenglish{Zozor} :
+
+\begin{Csource}
+zozor = SDL_LoadBMP("zozor.bmp");
+SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+/* Average Alpha transparency (128) : */
+SDL_SetAlpha(zozor, SDL_SRCALPHA, 128);
+SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
+\end{Csource}
+
+تلاحظ أنني حافظت على شفافية 
+\InlineCode{SDL\_SetColorKey}.
+يمكن دمج النوعين الاثنين للشفافية معاً.
+
+الجدول التالي يوضّح لك كيف يبدو
+\textenglish{Zozor}
+باختلاف قيم
+\textenglish{Alpha}.
+
+\begin{Table}{2}
+\textenglish{Alpha} & النتيجة\\
+255 (مرئيّة بالكامل) &
+\includegraphics[width=0.25\textwidth]{Chapter_III-3_Window-Image-Zozor-Alpha-255} \\
+190 &
+\includegraphics[width=0.25\textwidth]{Chapter_III-3_Window-Image-Zozor-Alpha-190} \\
+128 (شفافيّة متوسّطة) &
+\includegraphics[width=0.25\textwidth]{Chapter_III-3_Window-Image-Zozor-Alpha-128} \\
+75 &
+\includegraphics[width=0.25\textwidth]{Chapter_III-3_Window-Image-Zozor-Alpha-75} \\
+\end{Table}
+\begin{Table*}{2}
+0 (غير مرئيّة بالكامل) &
+\includegraphics[width=0.25\textwidth]{Chapter_III-3_Window-Image-Zozor-Alpha-0} \\
+\end{Table*}
+
+
+\begin{information}
+قيمة الشفافية
+\textenglish{Alpha}
+128 (شفافية متوسطة) هي قيمة خاصّة و كثيرة الإستعمال بالـ\textenglish{SDL}.
+هذا النمط من الشفافية أسرع من ناحية حسابات المعالج مقارنة بالأنماط الأخرى. قد يكون من المهم لك معرفة هذه المعلومة خاصة إن كنت تستعمل الشفافية
+\textenglish{Alpha}
+بشكل كبير في برامجك.
+\end{information}
