@@ -361,7 +361,9 @@ while (cont)
 
 ستجد قائمة أزرار لوحة المفاتيح في القسم
 "\textenglish{Keysym definitions}".
-هذه القائمة طويلة جداً و لا يمكنني تقديمها هنا و لهذا عليك تصفح التوثيق من الموقع مباشرة. 
+هذه القائمة طويلة جداً و لا يمكنني تقديمها هنا و لهذا عليك تصفح التوثيق من الموقع مباشرة.
+
+\url{http://www.siteduzero.com/uploads/fr/ftp/mateo21/sdlkeysym.html}
 
 هذه الملفات مُحررة باللغة الانجليزية، و هي غير متوفرة بلغة أخرى. إذا كنت تريد البرمجة حقّا، فمن الواجب أن تجيد هذه اللغة لأنّ  كلّ الملفات التوثيقيّة مكتوبة بها، فلا يمكنك أبدا تجاوزها !
 
@@ -433,3 +435,422 @@ while (cont)
 \end{information}
 
 سابقاً كنت قد منعتك من استعمال هذا الأسلوب في العرض خشية أننا لن نتمكن من غلق البرنامج (لأنه لن يظهر لنا زرّ الإغلاق الّذي نضغط عليه لإيقاف البرنامج !)
+
+\section{تمرين : تحريك \textenglish{Zozor} بواسطة لوحة المفاتيح}
+
+أنت الآن قادر على تحريك صورة في النافذة بواسطة لوحة المفاتيح !\\
+هذا تمرين مهمّ جداً سيسمح لنا بالتعرف على كيفية استعمال الـ\textenglish{double buffering}
+و الاستعمال المتكرر للأزرار.\\
+إضافة إلى ذلك، ما أنا بصدد تعليمه لك هو قاعدة كل ألعاب الفيديو التي تُصنع بالـ\textenglish{SDL}.
+و لهذا فإن
+\textbf{هذا التمرين ليس اختياريا}
+! أدعوك لقراءته و محاولة حلّه بشكل جدّي.
+
+\subsection{تحميل الصورة}
+
+في البداية، سنقوم بتحميل صورة. سيكون الأمر بسيطاً : سنعيد استعمال صورة 
+\textenglish{Zozor}
+المُستعملة في الفصل السابق.\\
+أنشئ المساحة
+\InlineCode{zozor}،
+حمّل الصورة و حوّل خلفيتها إلى اللون الشفاف (أذكرك بأن صيغة الصورة هي 
+\textenglish{BMP}).
+
+\begin{Csource}
+zozor = SDL_LoadBMP("zozor.bmp");
+SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+\end{Csource}
+
+بعد ذلك، الشيء الأكثر أهمية، يجب عليك إنشاء متغير من نوع
+\InlineCode{SDL\_Rect}
+لتقوم بحِفظ مركبات
+\textenglish{Zozor}.
+
+\begin{Csource}
+SDL_Rect positionZozor;
+\end{Csource}
+
+أنصحك بإعطاء قيم ابتدائية للمركبات، ضع مثلا
+\InlineCode{x = 0}
+و 
+\InlineCode{y = 0}
+(الوضعية أعلى يسار النافذة) أو قم بـِمـَرْكَـزَة
+\textenglish{Zozor}
+في وسط النافذة كما قمت بتعليمك هذا من قبل.
+
+\begin{Csource}
+// We center Zozor in the screen
+zozorPosition.x = screen->w / 2 - zozor->w / 2;
+zozorPosition.y = screen->h / 2 - zozor->h / 2;
+\end{Csource}
+
+\begin{critical}
+يجب عليك تهيئة المتغير 
+\InlineCode{zozorPosition}
+\textit{بعد}
+تحميل المساحتين 
+\InlineCode{screen}
+و 
+\InlineCode{zozor}.
+في الواقع، سأستعمل العرض 
+\InlineCode{w}
+و الارتفاع 
+\InlineCode{h}
+لهاتين المساحتين من أجل حساب الموقع المركزي لـ\textenglish{Zozor}
+في الشاشة، و لهذا كان لازما أن يتم تهيئة هاتين المساحتين من قبل.
+\end{critical}
+
+إذا كنت قد تدبّرت أمرك جيّدا، يجدر أن يظهر 
+\textenglish{Zozor}
+في وسط النافذة.
+
+\Picture{Chapter_III-4_Window-Zozor}
+
+لقد اخترت هذه المرة وضع خلفية بيضاء (قمت بـ\InlineCode{SDL\_FillRect})
+لكن هذا ليس واجباً.
+
+\subsection{مخطط البرمجة بالأحداث}
+
+حينما تقوم ببرمجة برنامج يتفاعل مع الأحداث (كما سنقوم بفعله الآن)، يجب عليك اتّباع نفس "المخطط" في غالب الأحيان.\\
+يجدر بك 
+\textit{حفظ هذا المخطط عن ظهر قلب} :
+
+\begin{Csource}
+while (cont)
+{
+	SDL_WaitEvent(&event);
+	switch(event.type)
+	{
+		// Managing the events of type TRUC
+		case SDL_TRUC: 
+		// Managing the events of type BIDULE
+		case SDL_BIDULE:
+	}
+	// We clear the screen
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255)); 
+	// We do all the necessary SDL_BlitSurface to past the surfaces on the screen
+	// We update the display
+	SDL_Flip(screen);
+}
+\end{Csource}
+
+سأقدّم لك أهمّ السطور التي تكوّن الحلقة الرئيسية في برنامج 
+\textenglish{SDL}.\\
+سنستمر في تشغيل الحلقة مادام لم يتم طلب غلق البرنامج.
+
+\begin{enumerate}
+	\item ننتظر حدثاً
+	(\InlineCode{SDL\_WaitEvent})
+	أو نقوم بالتحقق من وجود حدث لكن لا نقوم بانتظار حدوث واحد 
+	(\InlineCode{SDL\_PollEvent}).
+	حاليا نكتفي باستعمال 
+	\InlineCode{SDL\_WaitEvent}.
+	\item نستعمل 
+	\InlineCode{switch}
+	(كبير) من أجل معرفة نوع الحدث الذي نحن نتعامل معه. نقوم بتحليل الحدث الّذي تلقّيناه ثم نقوم ببعض الحسابات و العمليات.
+	\item ما إن نخرج من الـ\InlineCode{switch}،
+	نحضّر عرضا جديدا لنقوم بإظهاره.
+	\item أول شيء نفعله : نمسح الشاشة باستعمال
+	\InlineCode{SDL\_FillRect}.
+	إن لم نقم بذلك، ستبقى بعض "آثار" الشاشة السابقة في الشاشة الحالية مما يشوش المظهر.
+	\item نقوم بعد ذلك بلصق كل المساحات على الشاشة.
+	\item أخيرا، ما إن ننتهي من كل ذلك، نقوم بتحديث العرض من أجل المستعمل و ذلك باستدعاء الدالة
+	\InlineCode{SDL\_Flip}.
+\end{enumerate}
+
+\subsection{معالجة الحدث \texttt{SDL\_KEYDOWN}}
+
+لنرى الآن كيف نعالج الحدث 
+\InlineCode{SDL\_KEYDOWN}.\\
+هدفنا هو تحريك 
+\textenglish{Zozor}
+بواسطة لوحة المفاتيح باستعمال الأسهم التوجيهية. و لهذا سنقوم بتغيير مركباته في الشاشة بدلالة السهم الذي يضغط عليه المستعمل :
+
+\begin{Csource}
+switch(event.type)
+{
+	case SDL_QUIT:
+	continue = 0;
+	break;
+	case SDL_KEYDOWN:
+	switch(event.key.keysym.sym)
+	{
+		case SDLK_UP: // Up arrow
+		zozorPosition.y--;
+		break;
+		case SDLK_DOWN: // Down arrow
+		zozorPosition.y++;
+		break;
+		case SDLK_RIGHT: // Right arrow
+		zozorPosition.x++;
+		break;
+		case SDLK_LEFT: // Left arrow
+		zozorPosition.x--;
+		break;
+	}
+	break;
+}
+\end{Csource}
+
+أين وجدت أسماء الثوابت ؟  لقد وجدتها في التوثيق !\\
+لقد اعطيتك قبل قليل الرابط الخاص بالتوثيق الّذي يعطي لائحة كل الأزرارفي لوحة المفاتيح : هنا وجدت ضالّتي. 
+
+ما فعلناه هنا هو أمر بسيط جداً :
+
+\begin{itemize}
+	\item إذا ضغطنا على السهم "أعلى"، نقوم بإنقاص الترتيبة 
+	(\InlineCode{y})
+	الخاصة بـ\textenglish{Zozor}
+	ببيكسل واحد من أجل جعله يصعد. لاحظ أننا لسنا مُجبرين على تحريكه ببيكسل واحد، يمكننا تحريكه بـ10 بيكسل في كلّ مرة.
+	\item إذا توجهنا إلى الأسفل، سنقوم بزيادة الترتيبة
+	(\InlineCode{y})
+	لـ\textenglish{Zozor}.
+	\item إذا توجهنا لليمين نزيد قيمة الفاصلة 
+	(\InlineCode{x}).
+	\item إذا توجهنا لليسار نقوم بإنقاص الفاصلة  
+	(\InlineCode{x}).
+\end{itemize}
+
+و الآن ؟\\
+بما أنني أعطيتك التوجيهات و حتى المخطط، يجدر بك أن تكون قادراً على كتابة الشفرة التي تسمح بتحريك
+\textenglish{Zozor}
+في النافذة !
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *zozor = NULL;
+	SDL_Rect zozorPosition;
+	SDL_Event event;
+	int cont = 1;
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption("Managing events in SDL", NULL);
+	// Loading Zozor
+	zozor = SDL_LoadBMP("zozor.bmp");
+	SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+	zozorPosition.x = screen->w / 2 - zozor->w / 2;
+	zozorPosition.y = screen->h / 2 - zozor->h / 2;
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+			case SDL_KEYDOWN:
+			switch(event.key.keysym.sym)
+			{
+				case SDLK_UP: // Up arrow
+				zozorPosition.y--;
+				break;
+				case SDLK_DOWN: // down arrow
+				zozorPosition.y++;
+				break;
+				case SDLK_RIGHT: // Right arrow
+				zozorPosition.x++;
+				break;
+				case SDLK_LEFT: // Left arrow
+				zozorPosition.x--;
+				break;
+			}
+			break;
+		}
+		//Clear the screen
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+		// We put zozor in its new position
+		SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
+		// Update the display
+		SDL_Flip(screen);
+	}
+	SDL_FreeSurface(zozor);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+إنه من الضروري جداً الفهم الجيد لكيفية عمل الحلقة الرئيسية في البرنامج. يجب أن تكون قادراً على كتابتها بنفسك. استعن بالمخطط الذي أعطيتك إياه أعلاه غذا اقتضت الحاجة.
+
+باختصار إذا، توجد حلقة كبيرة تُسمى "الحلقة الرئيسية في البرنامج". و هي لا تتوقف إلا إذا أعطينا للمتغير 
+\InlineCode{cont}
+القيمة 0.\\
+في هذه الحلقة، نقوم أولا باسترجاع حدث لنقوم بمعالجته. نستعمل 
+\InlineCode{switch}
+من أجل تحديد نوع الحدث. بدلالة الحدث، نقوم بعمليات مختلفة. في حالتنا هذه، نقوم بتحديث مركبات وضعية
+\textenglish{Zozor}
+من أجل إعطاء انطباع أننانقوم بتحريكه.
+
+ثم بعد الـ
+\InlineCode{switch}
+يجب عليك تحديث الشاشة كالتالي :
+
+\begin{enumerate}
+	\item أولاً، نمسح الشاشة باستعمال
+	\InlineCode{SDL\_FillRect}
+	(باستعمال لون خلفية يناسبك).
+	\item ثم تقوم بتسوية المساحات على الشاشة. هنا، لم أحتج إلى لصق إلا
+	\textenglish{Zozor}
+	لأننا لا نحتاجه إلا هو كما هو واضح، و من المهم جداً أن نضع
+	\textenglish{Zozor}
+	في الموضع
+	\InlineCode{zozorPosition} !
+	لان هذا ما يصنع الفارق : إذا كنت قد حدّثتُ
+	\InlineCode{zozorPosition}
+	كان
+	\textenglish{Zozor}
+	ليظهر في مكان آخر و بهذا نعتقد أننا غيّرنا مكانه كليا !
+	\item أخيراً، و آخر شيء للقيام به :
+	\InlineCode{SDL\_Flip}
+	لكي نحدّث الشاشة من أجل المستعمل.
+\end{enumerate}
+
+و بهذا نتمكن من تحريك الحيوان إلى أي مكان نريده !
+
+\Picture{Chapter_III-4_Window-Zozor-moved}
+
+\subsection{بعض التحسينات}
+
+\subsubsection{تكرار الضغط على الأزرار}
+
+لحد الآن، البرنامج يعمل لكنّه يُلزم تحرّك اللاعب أن يكون بيكسلا في المرّة الواحدة. نحن مُجبَرون على الضغط من جديد على الأسهم إذا أردنا التحرك مرة أخرى ببيكسل. لا أدري بالنسبة لك، لكنني أستمتع أحيانا بالبقاء ضاغطا على نفس الزر وقتا أطول لكي أحرك اللاعب بـ200 بيكسل.
+
+على كل حال، من حسن الحظّ أن الدالة 
+\InlineCode{SDL\_EnableKeyRepeat}
+موجودة !\\
+هذه الدالة تسمح بتفعيل الضغط المتكرر على الأزرار. فهي تحرّض الـ\textenglish{SDL}
+على إعادة إنتاج حدث من نوع
+\InlineCode{SDL\_KEYDOWN}
+إذا بقي المستعمل ضاغطاً على نفس الزر لمدة من الزمن.
+
+يمكنك استدعاء هذه الدالة أينما أردت، لكنني أنصحك باستدعائها قبل الحلقة الرئيسية للبرنامج. يمكن للدالة أخذ معاملين :
+
+\begin{itemize}
+	\item المدة (بالميلّي ثانية) التي يجدر بالزر أن يبقى فيها مضغوطاً قبل تفعيل تكرار الضغط على الأزرار.
+	\item الأجل (بالميلّي ثانية) بين كل إنتاج لحدث
+	\InlineCode{SDL\_KEYDOWN}
+	و آخر ما إن يتم تفعيل تكرار الضغط على الأزرار.
+\end{itemize}
+
+المعامل الأول يشير إلى مدة الزمن التي يجدر بنا بعدها إنتاج تكرار الضغط على الأزرار في المرة الأولى. أما الثاني فيشير إلى الوقت اللازم ليتم إعادة إنتاج الحدث.\\
+شخصياً، و من أجل أسباب ليونة التحرك، أعطي غالباً نفس القيمة للمعاملين. جرّب القيمة 10 ميلّي ثانية :
+
+\begin{Csource}
+SDL_EnableKeyRepeat(10, 10);
+\end{Csource}
+
+الآن، يمكنك البقاء ضاغطاً على نفس السهم. سترى أنّ هذا أحسن !
+
+\subsubsection{العمل بالـ\textenglish{double buffering}}
+
+إنطلاقا من الآن، سيكون من الجيد تفعيل تقنية الـ\textenglish{double buffering}
+الخاصة بالـ\textenglish{SDL}.
+الـ\textenglish{double buffering}
+هي تقنية مستعملة بكثرة في الألعاب. تسمح هذه التقنيّة بتجنب التقطع في الصورة.\\
+لِـمَا تتقطع الصورة ؟ لأنه حينما نرسم في الشاشة، المستعمل "يرى" كيف ترسم و بهذا يرى كيف تُمسح الشاشة. حتى وإن جرت العملية بسرعة فإن مخّ الإنسان يلتقط إشارات خفيفة و قد تكون مزعجة.
+
+تقنية الـ\textenglish{double buffering}
+تعمل على استخدام "شاشتين" : واحدة حقيقية (التي يراها المستعمل في شاشة الحاسوب) و أخرى افتراضية (هي صورة يقوم الحاسوب بإنشائها في الذاكرة).
+
+هاتان الشاشتان تتناوبان : الشاشة
+\textenglish{A}
+تظهر في حين تحضّر الشاشة
+\textenglish{B}
+الصورة القادمة في  الخلفية. لاحظ الصورة التالية :
+
+\Picture{Chapter_III-4_Double-buffering-1}
+
+ما إن يتم رسم الصورة في الشاشة الخلفية (الشاشة 
+\textenglish{B})،
+نقوم بقلب الشاشتين و ذلك باستدعاء الدالة
+\InlineCode{SDL\_Flip}.
+
+\Picture{Chapter_III-4_Double-buffering-2}
+
+الشاشة
+\textenglish{A}
+تصبح شاشة خلفية و تقوم بتحضير الصورة القادمة، بينما يتم إظهار الصورة في الشاشة
+\textenglish{B}
+و يراها المستعمل. النتيجة : لا يوجد تقطع في الصورة !
+
+لتحقيق هذا كل ما عليك فعله هو تحميل وضع العرض فيديو بإضافة العَلم 
+\InlineCode{SDL\_DOUBLEBUF} :
+
+\begin{Csource}
+screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+\end{Csource}
+
+لا يوجد شيء آخر لتغييره في الشفرة المصدرية.
+
+\begin{information}
+ الـ\textenglish{double buffering}
+هي تقنية معروفة جداً في البطاقة الرسومية
+(\textenglish{Graphics card})
+ للحاسوب. ما أقصده هو أن الجهاز هو من يتحكم في كلّ شيء، و يتم ذلك بسرعة جدّ فائقة.
+\end{information}
+
+ستتساءل ربّما لماذا كنا قد استعملنا
+\InlineCode{SDL\_Flip}
+من قبل دون الـ\textenglish{double buffering} ؟\\
+الواقع أن لهذه الدالة وظيفتين :
+
+\begin{itemize}
+	\item إذا كانت الـ\textenglish{double buffering}
+	مفعّلة، فستتحكم في تناوب الشاشتين.
+	\item أما إن كانت غير مفعّلة، فهي تتحكم في تحديث النافذة يدويا. هذه التقنية تعمل في حالة كان البرنامج لا يقدّم حركية كبيرة، و لكن في غالبية الألعاب، أنصحك بتفعيلها.
+\end{itemize}
+
+من الآن و صاعداً، سأقوم بتفعيل هذه التقنية في كل الشفرات المصدرية التي أكتبها (لأنها لا تكلف الكثير و تقدم الكثير، فمما نشكي ؟)
+
+إليك الشفرة المصدرية الكاملة التي تسمح باستعمال الـ\textenglish{double buffering}
+و تكرار الضغط على الأزرار. إنها مشابهة للشفرة التي رأيناها قبل قليل، لقد قمت فقط بإضافة بعض التعليمات التي نحن بصدد تعلّمها :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *zozor = NULL;
+	SDL_Rect zozorPosition;
+	SDL_Event event;
+	int cont = 1;
+	SDL_Init(SDL_INIT_VIDEO);
+	zozorPosition = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); // Double buffering
+	SDL_WM_SetCaption("Managing events in SDL", NULL);
+	zozor = SDL_LoadBMP("zozor.bmp");
+	SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
+	zozorPosition.x = screen->w / 2 - zozor->w / 2;
+	zozorPosition.y = screen->h / 2 - zozor->h / 2;
+	SDL_EnableKeyRepeat(10, 10); // Enabling keys repetition
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+			case SDL_KEYDOWN:
+			switch(event.key.keysym.sym)
+			{
+				case SDLK_UP:
+				zozorPosition.y--;
+				break;
+				case SDLK_DOWN:
+				zozorPosition.y++;
+				break;
+				case SDLK_RIGHT:
+				zozorPosition.x++;
+				break;
+				case SDLK_LEFT:
+				zozorPosition.x--;
+				break;
+			}
+			break;
+		}
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+		SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
+		SDL_Flip(screen);
+	}
+	SDL_FreeSurface(zozor);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
