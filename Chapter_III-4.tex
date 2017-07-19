@@ -854,3 +854,258 @@ int main(int argc, char *argv[])
 	return EXIT_SUCCESS;
 }
 \end{Csource}
+
+\section{الفأرة}
+
+ربما تعتقد أن التحكّم في الفأرة أمر أكثر تعقيداً من التحكم في لوحة المفاتيح ؟\\
+لا بل حتّى أن الأمر أسهل، سترى !
+
+سترى بأن الفأرة يمكن لها أن تُنتج ثلاثة أنواع مختلفة من الأحداث.
+
+\begin{itemize}
+	\item \InlineCode{SDL\_MOUSEBUTTONDOWN}
+	حينما ننقر بالفأرة، و هذا الحدث يوافق اللحظة الذي يكون فيه زر الفأرة مضغوطاً.
+	\item \InlineCode{SDL\_MOUSEBUTTONUP} :
+	حينما نحرر زر الفأرة. كل هذا يعمل وفقاً لنفس المبدأ التي تعمل به أزرار لوحة المفاتيح : يوجد ضغط للزر ثم تحرير لهذا الأخير.
+	\item \InlineCode{SDL\_MOUSEMOTION} :
+	حينما نقوم بتحريك الفأرة. في كل مرة تقوم فيها الفأرة بالتحرك في النافذة (هذا لا يتم إلا بيكسلا ببيكسل)، يتم إنتاج الحدث 
+	\InlineCode{SDL\_MOUSEMOTION} !
+\end{itemize}
+ 
+سنبدأ أولا بالعمل على النقر على الفأرة و بشكل خاص على
+\InlineCode{SDL\_MOUSEBUTTONUP}.
+لن نعمل مع الـ\InlineCode{SDL\_MOUSEBUTTONDOWN}،
+لكنك تعرف بأن الطريقة لا تختلف إلا أن الحدث الأخير يُنتج قبل الحدث الآخر.\\
+سنعلم لاحقاً كيف نتعامل مع الحدث
+\InlineCode{SDL\_MOUSEMOTION}.
+
+\subsection{معالجة نقرات الفأرة}
+
+سنقوم إذا باستقبال حدث من نوع
+\InlineCode{SDL\_MOUSEBUTTONUP}
+(النقر بالفأرة) ثم نرى ما يمكننا استرجاعه من معلومات.\\
+كالعادة، يجدر بنا إضافة حالة
+\InlineCode{case}
+في الـ\InlineCode{switch}
+كالتالي :
+
+\begin{Csource}
+switch(event.type)
+{
+	case SDL_QUIT:
+	cont = 0;
+	break;
+	case SDL_MOUSEBUTTONUP: // Mouse click
+	break;
+} 
+\end{Csource}
+
+لحد الآن، لا توجد صعوبة كبيرة.
+
+ما هي المعلومات التي يمكن استرجاعها حينما ننقر بالفأرة. لدينا معلومتان :
+
+\begin{itemize}
+	\item \textbf{الزر الذي قمنا بالضغط عليه}
+	 (الزر الأيسر ؟ الأيمن ؟ الأوسط ؟)،
+	\item \textbf{إحداثيات مؤشر الفأرة}
+	 لحظة النقر 
+	(\textenglish{x}
+	و
+	\textenglish{y}).
+\end{itemize}
+
+\subsubsection{استرجاع زر الفأرة}
+
+يجب أن نرى أولا أي الأزرار تم الضغط عليها . من أجل هذا، يجب تحليل المركب
+\InlineCode{event.button.button}
+و مقارنة قيمته بإحدى القيم التالية :
+
+\begin{itemize}
+	\item \InlineCode{SDL\_BUTTON\_LEFT} :
+	الضغط بالزر الأيسر للفأرة.
+	\item \InlineCode{SDL\_BUTTON\_MIDDLE} :
+	الضغط بالزر الأوسط للفأرة (لا يملكه كل شخص، و هو يمثل غالبا النقر بالعجلة).
+	\item \InlineCode{SDL\_BUTTON\_RIGHT} :
+	النقر بالزر الأيمن للفأرة.
+	\item \InlineCode{SDL\_BUTTON\_WHEELUP} :
+	تحريك عجلة الفأرة إلى الأعلى.
+	\item \InlineCode{SDL\_BUTTON\_WHEELDOWN} :
+	تحريك عجلة الفأرة إلى الأسفل.
+\end{itemize}
+
+\begin{information}
+الثابتان الأخيران يوافقان تحريك عجلة الفأرة إلى الأعلى و الأسفل. و هما لا يوافقان "النقر" على العجلة كما يمكن أن نعتقد بالخطأ.
+\end{information}
+
+سنقوم باختبار سهل لنرى ما إن تم الضغط بالزر الأيمن للفأرة. إذا ضغطنا عليه، نخرج من البرنامج. (أعرف أن هذا ليس بقرار مناسب لكن لكي نجرّب لا أكثر) :
+
+\begin{Csource}
+switch(event.type)
+{
+	case SDL_QUIT:
+	cont = 0;
+	break;
+	case SDL_MOUSEBUTTONUP:
+	if (event.button.button == SDL_BUTTON_RIGHT) 
+	// We stop the program on right-click with the mouse
+		cont = 0;
+	break;
+}
+\end{Csource}
+
+يمكنك التجريب، سترى بأن البرنامج يتوقف حين يتم النقر بالزر الأيمن للفأرة.
+
+\subsubsection{استرجاع إحداثيات الفأرة}
+
+هذه معلومة جد مهمة : إحداثيات مؤشّر الفأرة في حين النقر !\\
+سنقوم باستعادتها بواسطة مركّبين (واحد من أجل الفاصلة و آخر من أجل الترتيبة) :
+\InlineCode{event.button.x}
+و
+\InlineCode{event.button.y}.
+
+فلنستمتع قليلاً : سنقوم بلصق 
+\textenglish{Zozor}
+في الوضعية التي توافق إحداثيات النقطة التي تم النقر عليها بالفأرة.\\
+هل هذا صعب ؟ لا أبداً ! حاول فعل ذلك، سترى بأنها لعبة أطفال !
+
+هاهو التصحيح :
+
+\begin{Csource}
+while (cont)
+{
+	SDL_WaitEvent(&event);
+	switch(event.type)
+	{
+		case SDL_QUIT:
+		cont = 0;
+		break;
+		case SDL_MOUSEBUTTONUP:
+		zozorPosition.x = event.button.x;
+		zozorPosition.y = event.button.y;
+		break;
+	}
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+	// We put Zozor in its new position
+	SDL_BlitSurface(zozor, NULL, screen, &zozorPosition); 
+	SDL_Flip(screen);
+}
+\end{Csource}
+
+هذه الشفرة تشبه الشفرة التي كتبتُها من أجل أزرار لوحة المفاتيح. هنا الأمر أسهل بكثير : نضع مباشرة قيمة 
+\InlineCode{x}
+في المتغير  
+\InlineCode{zozorPosition.x}
+و نفس الشيء بالنسبة لـ\InlineCode{y}.\\
+ثم نقوم بلصق
+\textenglish{Zozor}
+في الإحداثيات الخاصة به، و هاهي النتيجة :
+
+\Picture{Chapter_III-4_Window-Zozor-moved-mouse}
+
+إليك تمريناً سهلاً جداً : لحد الآن، نقوم بتحريك
+\textenglish{Zozor}
+مهما كان زر الفأرة الذي قمنا بضغطه. حاول ألا تحرّكه إلا إذا كان الزر المضغوط هو الأيسر. إذا تم الضغط على الزر الأيمن، يتوقف البرنامج.
+
+\subsection{معالجة تحرّكات الفأرة}
+
+تحرّك الفأرة يقوم بإنتاج حدث من نوع
+\InlineCode{SDL\_MOUSEMOTION}.\\
+و تيقن أنه يتم إنتاج أحداث بالقدر الذي تتحركه به الفأرة بيكسلا ببيكسل في الشاشة ! لو نحرّك الفأرة 100 بيكسل (هذا ليس كثيرا)، سيكون إذا هناك 100 حدث مـُنتج.
+
+\begin{question}
+لكن ألا تقوم هذه العملية بإنتاج الكثير من الأحداث بالنسبة للحاسوب ؟
+\end{question}
+
+لا بالتأكيد، تيقّن أنه يستقبل أكثر من ذلك بكثير !
+
+حسناً، هل ما نقوم باسترجاعه مهم هنا ؟\\
+إحداثيات الفأرة، بالطبع ! سنجدها في
+\InlineCode{event.motion.x}
+و
+\InlineCode{event.motion.y}.
+
+\begin{warning}
+إحذر : لن نعمل بنفس المركّبين اللذين استعملناهما من أجل النقر بالفأرة قبل قليل (سابقاً، كانت
+\InlineCode{event.button.x}).
+المركّبات المُستعملة تكون مختلفة في الـ\textenglish{SDL}
+بحسب الحدث.
+\end{warning}
+
+سنقوم بتحريك
+\textenglish{Zozor}
+إلى نفس إحداثيات الفأرة، هنا أيضا. سترى أن العملية فعالة و بسيطة في نفس الوقت !
+
+\begin{Csource}
+while (cont)
+{
+	SDL_WaitEvent(&event);
+	switch(event.type)
+	{
+		case SDL_QUIT:
+		cont = 0;
+		break;
+		case SDL_MOUSEMOTION:
+		zozorPosition.x = event.motion.x;
+		zozorPosition.y = event.motion.y;
+		break;
+	}
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+	SDL_BlitSurface(zozor, NULL, screen, &zozorPosition); 
+	SDL_Flip(screen);
+}
+\end{Csource}
+
+حرّك
+\textenglish{Zozor}
+في الشاشة، ما رأيك ؟\\
+سيتبع طبيعياً الفأرة أينما تتحرّك. هذا أمر جميل، سريع، و مرن (بفضل الـ\textenglish{double buffering}).
+
+\subsection{دوال أخرى من أجل التعامل مع الفأرة}
+
+سنرى دالتين سهلتي الاستعمال لهما علاقة بالفأرة. هاتين الدالتين ستكونان مفيدتين قريباً.
+
+\subsubsection{إخفاء مؤشّر الفأرة}
+
+يمكننا إخفاء مؤشر الفأرة بسهولة تامة، يكفي أن نستدعي الدالة
+\InlineCode{SDL\_ShowCursor}
+و نُعطيها عَلَماً :
+
+\begin{itemize}
+	\item \InlineCode{SDL\_DISABLE} :
+	إخفاء مؤشّر الفأرة.
+	\item \InlineCode{SDL\_ENABLE} :
+	إظهار مؤشر الفأرة.
+\end{itemize}
+مثلا :
+
+\begin{Csource}
+SDL_ShowCursor(SDL_DISABLE);
+\end{Csource}
+
+مؤشّر الفأرة سيبقى مختفياً طالما هو داخل النافذة.\\
+أنصحك بأن تقوم بإخفائه قبل الحلقة الرئيسية في البرنامج لأنه لا داعي لإخفائه في كلّ دورة للحلقة، مرة واحدة كافية.
+
+\subsubsection{وضع الفأرة في موضع محدد}
+
+يمكننا تحريك مؤشر الفأرة يدويا إلى الإحداثيات التي نريدها في النافذة.\\
+نستعمل من أجل هذا
+\InlineCode{SDL\_WarpMouse}
+و التي تأخذ كمعاملين الإحداثيتان
+\InlineCode{x}
+و 
+\InlineCode{y}
+أين يجدر بالمؤشّر أن يتواجد.
+
+مثلا، الشفرة المصدرية التالية تقوم بتحريك الفأرة إلى وسط النافذة :
+
+\begin{Csource}
+SDL_WarpMouse(screen->w / 2, screen->h / 2);
+\end{Csource}
+
+\begin{information}
+حينما تستدعي
+\InlineCode{SDL\_WarpMouse}،
+يتم إنتاج حدث من نوع
+\InlineCode{SDL\_MOUSEMOTION}.
+نعم، فالفأرة تحرّكت ! حتى و إن لم يقم المستعمل بذلك، فقد كان هناك تحرّك رغم ذلك.
+\end{information}
