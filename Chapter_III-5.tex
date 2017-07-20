@@ -163,3 +163,258 @@
 إذا نسيت كيف تفعل ذلك، فراجع الفصول السابقة. إذا لم تقم بتخصيص المشروع بشكل صحيح، سيشير المُترجم بأن الدوال التي تستعملها (مثل
 \InlineCode{IMG\_Load})
 غير موجودة !
+
+\section{الدالة \texttt{main} و الثوابت}
+
+في كلّ مرة نبدأ بتحقيق مشروع مهمّ، من الواجب أن نقوم بتنظيم العمل في البداية.\\
+بشكل عام، أبدأ في إنشاء ملف ثوابت
+\InlineCode{constants.h}
+إضافة إلى ملف
+\InlineCode{main.c}
+يحتوي الدالة
+\InlineCode{main}
+(فقط هذه الدالة). هذه ليست قاعدة لكنها طريقتي الخاصة في العمل، و لكلّ شخص طريقته الخاصة.
+
+\subsection{ملفّات المشروع المختلفة}
+
+أقترح أن نقوم بإنشاء ملفات المشروع كلّه الآن، (حتى و إن كانت فارغة في البداية). هاهي الملفات التي أنشئها إذا :
+\begin{itemize}
+	\item \InlineCode{constants.h} :
+	تعريف الثوابت الشاملة الخاصة بكل البرنامج.
+	\item \InlineCode{main.c} :
+	الملف الذي يحتوي
+	\InlineCode{main}
+	(الدالة الرئيسية في البرنامج).
+	\item \InlineCode{game.c} :
+	الدوال الّتي تسيّر جولة من اللعبة 
+	\textenglish{Sokoban}.
+	\item \InlineCode{game.h} :
+	نماذج الدوال الخاصة بالملف 
+	\InlineCode{game.c}.
+	\item \InlineCode{editor.c} :
+	ملف يحتوي الدول التي تتحكم في مـُنشئ المستويات.
+	\item \InlineCode{editor.h} :
+	نماذج الدوال الخاصة بالملف 
+	\InlineCode{editor.c}.
+	\item \InlineCode{files.c} :
+	الدوال الخاصّة بقراءة و كتابة ملفّات المستويات (مثل
+	\InlineCode{levels.lvl}).
+	\item نماذج الدوال الخاصة بالملف 
+	\InlineCode{files.c}.
+\end{itemize}
+سنبدأ بإنشاء ملف الثوابت.
+
+\subsection{الثوابت : \texttt{constants.h}}
+
+هذا محتوى الملف
+\InlineCode{constants.h}
+الخاص بي :
+
+\begin{Csource}
+/*
+constants.h
+------------
+
+By mateo21, for "Site du Zéro" (www.siteduzero.com)
+
+Role : define some constants for all of the program (window size...)
+*/
+#ifndef DEF_CONSTANTS
+#define DEF_CONSTANTS
+#define BLOCK_SIZE 34 // Block size (square) in pixels
+#define NB_BLOCKS_WIDTH 12
+#define NB_BLOCKS_HEIGHT 12
+#define WINDOW_WIDTH BLOCK_SIZE * NB_BLOCKS_WIDTH
+#define WINDOW_HIGHT BLOCK_SIZE * NB_BLOCKS_HEIGHT
+enum {UP, DOWN, LEFT, RIGHT};
+enum {EMPTY, WALL, BOX, GOAL, MARIO, BOX_OK};
+#endif
+\end{Csource}
+
+ستلاحظ الكثير من النقاط المهمّة في هذا الملف الصغير.
+
+\begin{itemize}
+	\item يبدأ الملف بتعليق رأسي. أنصحك بوضع تعليق مماثل في كلّ ملفاتك (مهما كانت صيغتها
+	\InlineCode{.c}
+	أو
+	\InlineCode{.h}).
+	بشكل عام، التعليق الرأسي يحوي :
+	\begin{itemize}
+		\item اسم الملف،
+		\item اسم الكاتب (المبرمج)،
+		\item مهمّة الملف (أي فائدة الدوال الّتي يحويها)،
+		\item لم أقم بهذا هنا، لكن عادة يفترض أيضاً إضافة تاريخ كتابة الملف و تاريخ آخر تعديل عليه. هذا يسمح لك بإيجاد المعلومات بسرعة حينما تحتاج إليها و خاصة حينما يتعلّق الأمر بمشاريع كبيرة.
+	\end{itemize}
+	\item الملف محمّي ضد التضمينات غير المنتهية. لقد استعملت لذلك التقنية التي تعلّمناها في نهاية فصل المعالج القبلي. هنا، الحماية ليست مهمّة جدّا، لكن جرت العادة أن أستعملها في كلّ ملفاتي
+	\InlineCode{.h}
+	بدون استثناء.
+	\item أخيراً، قلب الملف. ستجد لائحة من 
+	\InlineCode{\#define}.
+	قمت بتحديد حجم كتلة بالبيكسل (كل
+	\textenglish{sprites}
+	هي عبارة عن مربّعات ذات حجم 34 بيكسل). أحدد بأن حجم النافذة يساوي 12*12 كتلة كعُرض. و بهذا أقوم بحساب أبعاد النافذة بعملية ضرب ثوابت بسيطة. ما أقوم به هنا ليس ضرورياً، لكنه يعود علينا بالفائدة : إذا أردت لاحقاً مراجعة حجم اللعبة، يكفي أن أقوم بتعديل هذا الملف و إعادة ترجمة المشروع فيعمل مع القيم الجديدة دون أية مشاكل.
+	\item أخيراً، قمت بتعريف ثوابت عن طريق تعدادات غير معرّفة، الأمر مختلف قليلاً عمّا تعلّمناه في فصل إنشاء أنواع خاصة بنا. هنا أنا لست أقوم بتعريف نوع خاص بي بل أقوم فقط بتعريف ثوابت. هذا يشبه المعرّفات مع اختلاف بسيط : الحاسوب هو من يقوم بإعطاء عدد لكلّ قيمة (بدءً من 0). و بهذا يكن لدينا : 
+	\InlineCode{UP} = 0،
+	\InlineCode{DOWN} = 1،
+	\InlineCode{LEFT} = 2،
+	إلخ. هذا ما سيسمح للشفرة بأن تكون مفهومة لاحقاً، سترى ذلك !
+\end{itemize}
+
+باختصار، لقد استعملت :
+
+\begin{itemize}
+	\item معرّفات حينما أريد أن أعطي قيمة محددة لثابت (مثلاً 34 بيكسل).
+	\item تعدادات حينما تكون قيمة الثابت لا تهمّني. هنا، لا يهمني ما إن كانت القيمة المُرفقة بالعنصر
+	\InlineCode{UP}
+	هي 0 (كان من الممكن أن تكون 150، هذا لن يغييّر شيئا)، كلّ ما يهمّني هو أن يكون هذا العنصر مختلفا عن
+	\InlineCode{DOWN}
+	و
+	\InlineCode{LEFT}
+	و
+	\InlineCode{RIGHT}.
+\end{itemize}
+
+\subsubsection{تضمين تعريفات الثوابت}
+
+المبدأ ينص على تضمين ملف الثوابت في كلّ الملفات
+\InlineCode{.c}.\\
+هكّذا، أستطيع استعمال الثوابت في أي مكان من الشفرة المصدرية الخاصة بالمشروع.
+
+يعني أنه عليّ أن أكتب السطر التالي في كل بداية للملفات 
+\InlineCode{.c} :
+
+\begin{Csource}
+#include "constants.h"
+\end{Csource}
+
+\subsection{الدالة \texttt{main} : \texttt{main.c}}
+
+الدالة الرئيسيّة الخاصة بالبرنامج سهلة جداً. هي تقوم بإظهار واجهة اللعبة ثم التوجيه إلى القِسم المناسب.
+
+\begin{Csource}
+/*
+main.c
+------
+
+By mateo21, for "Site du Zéro" (www.siteduzero.com)
+
+Role : game menu. Allow to choose between the editor and the game.
+*/
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include "constants.h"
+#include "game.h"
+#include "editor.h"
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *menu = NULL;
+	SDL_Rect menuPosition;
+	SDL_Event event;
+	int cont = 1;
+	SDL_Init(SDL_INIT_EMPTYO);
+	SDL_WM_SetIcon(IMG_Load("box.jpg"), NULL); // The icon must be loaded before SDL_SetVideoMode
+	screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HIGHT, 32,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Mario Sokoban", NULL);
+	menu = IMG_Load("menu.jpg");
+	menuPosition.x = 0;
+	menuPosition.y = 0;
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+			case SDL_KEYDOWN:
+			switch(event.key.keysym.sym)
+			{
+				case SDLK_ESCAPE: // Want to quit the game
+				cont = 0;
+				break;
+				case SDLK_KP1: // Want to play
+				play(screen);
+				break;
+				case SDLK_KP2: // Want to edit levels
+				editor(screen);
+				break;
+			}
+			break;
+		}
+		// Cleaning the screen
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0,0));
+		SDL_BlitSurface(menu, NULL, screen, &menuPosition);
+		SDL_Flip(screen);
+	}
+	SDL_FreeSurface(menu);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+الدالة
+\InlineCode{main}
+تتكفّل بتهيئة الـ\textenglish{SDL}،
+و إعطاء عنوان للنافذة إضافة إلى منحها أيقونة. في نهاية الدالة، يتم استدعاء الدالة 
+\InlineCode{SDL\_Quit}
+ لإيقاف الـ\textenglish{SDL}
+بشكل سليم.
+
+الدالة تقوم بإظهار قائمة يتم تحميلها بواسطة الدالة 
+\InlineCode{IMG\_Load}
+من المكتبة
+\textenglish{SDL\_Image}.
+
+\begin{Csource}
+menu = IMG_Load("menu.jpg");
+\end{Csource}
+
+تلاحظ أنه، لكي أعطي أبعاداً للنافذة، أستعمل الثابتين
+\InlineCode{WINDOW\_WIDTH}
+و
+\InlineCode{WINDOW\_HIGHT}
+المعرّفين في الملف
+\InlineCode{constants.h}.
+
+\subsubsection{حلقة الأحداث}
+
+الحلقة غير المنتهية تعالج الأحداث التالية :
+
+\begin{itemize}
+	\item \textbf{إيقاف البرنامج}
+	(\InlineCode{SDL\_QUIT}) :
+	إذا قمنا بطلب غلق البرنامج (النقر على العلامة
+	\InlineCode{X}
+	أعلى يمين النافذة) فسنعطي القيمة 0 للمتغير
+	\InlineCode{cont}
+	و تتوقف الحلقة. باختصار، هذا أمر تقليديّ.
+	\item \textbf{الضغط على الزر
+		\InlineCode{Escape}} :
+	إغلاق البرنامج (مثل
+	\InlineCode{SDL\_QUIT}).
+	\item \textbf{الضغط على الزر
+	\InlineCode{1}
+	من لوحة الأرقام} :
+	إنطلاق تشغيل اللعبة (استدعاء الدالة 
+	\InlineCode{play}).
+	\item \textbf{الضغط على الزر
+	\InlineCode{2}
+	من لوحة الأرقام} :
+	إنطلاق تشغيل مُنشئ المراحل (استدعاء الدالة
+	\InlineCode{editor}).
+\end{itemize}
+
+كما ترى فالأمور تجري بسهولة تامة. إذا ضغطنا على الزر 1، يتم تشغيل اللعبة، ما إن تنتهي اللعبة، تنتهي الدالة
+\InlineCode{play}
+و نرجع للـ\InlineCode{main}
+من أجل القيام بدورة أخرى للحلقة. الحلقة تستمر في الاشتغال مادمنا لم نطلب إيقاف البرنامج.
+
+بفضل هذا التنظيم البسيط جدّا، يمكننا التحكم في الدالة
+\InlineCode{main}
+و ترك الدوال الأخرى (مثل
+\InlineCode{play}
+و
+\InlineCode{editor})
+تهتم بالتحكم في مختلف أجزاء اللعبة.
