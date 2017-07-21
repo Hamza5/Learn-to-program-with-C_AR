@@ -591,7 +591,7 @@ int map[12][12] = {0};
 توجد 12 خانة داخلية.\\
 بهذا تكون لدينا المتغيرات التالية :
 
-\begin{Csource}
+\begin{Console}
 map[0][0]
 map[0][1]
 map[0][2]
@@ -626,7 +626,7 @@ map[11][8]
 map[11][9]
 map[11][10]
 map[11][11]
-\end{Csource}
+\end{Console}
 
 إذا هو جدول من 12 * 12 = 144 خانة !\\
 كلّ من هذه الخانات تمثّل خانة في خريطة اللعبة.
@@ -1235,3 +1235,159 @@ switch(direction)
 ها قد انتهينا من كتابة شفرة اللعبة !\\
 حسناً، قريباً : بقي لنا أن نرى دالة التحميل و حِفظ المستويات.
 سنرى بعد ذلك كيف نقوم بكتابة شفرة مُنشئ المستويات. كن متأكّدا، سيكون هذا سريعا !
+
+\section{تحميل و حِفظ المستويات}
+
+الملف
+\InlineCode{files.c}
+يحتوي على دالتين :
+
+\begin{itemize}
+	\item \InlineCode{loadLevel}.
+	\item \InlineCode{saveLevel}.
+\end{itemize} 
+فلنبدأ بتحميل المستوى.
+
+\subsection{تحميل المستوى \texttt{loadLevel}}
+
+هذه الدالة تأخذ معاملا : الخريطة. هنا أيضاً، يجب تحديد مقدار البُعد الثاني للجدول لأننا نتكلم عن جدول ذو بعدين.\\
+الدالة تُرجع متغيرا منطقيا : "صحيح" إذا تم التحميل بنجاح، "خطأ" إذا فشل.
+
+النموذج إذا هو :
+
+\begin{Csource}
+int loadLevel(int level[][NB_BLOCKS_HEIGHT]);
+\end{Csource}
+
+فلنرى بداية الدالة :
+
+\begin{Csource}
+FILE* file = NULL;
+char fileLine[NB_BLOCKS_WIDTH * NB_BLOCKS_HEIGHT + 1] = {0};
+int i = 0, j = 0;
+file = fopen("levels.lvl", "r");
+if (file == NULL)
+	return 0;
+\end{Csource}
+
+نقوم بإنشاء جدول للتخزين المؤقّت للنتيجة الخاصة بتحميل المستوى.\\
+نفتح الملف بوضع "قراءة فقط"
+(\InlineCode{r}).
+نوقف الدالة و ذلك بإرجاع القيمة 0 ("خطأ") إذا فشلت عملية فتح الملف. عملية تقليديّة.
+
+الملف
+\InlineCode{levels.lvl}
+يحتوي على سطر و الذي هو عبارة عن تتالي أرقام. كل رقم يمثّل خانة من المستوى، مثلا :
+
+\begin{Console}
+11111001111111111400000111110001100103310101101100000200121110 [...]
+\end{Console}
+
+يمكننا إذا قراءة هذا السطر باستعمال
+\InlineCode{fgets} :
+
+\begin{Csource}
+fgets(fileLine, NB_BLOCKS_WIDTH * NB_BLOCKS_HEIGHT + 1, file);
+\end{Csource}
+
+سنقوم بتحليل محتوى
+\InlineCode{fileLine}.
+نحن نعرف أن أول 12 محرفا تمثل السطر الأول، الـ12 محرفا الموالية تمثل السطر الموالي، إلى آخره.
+
+\begin{Csource}
+for (i = 0 ; i < NB_BLOCKS_WIDTH ; i++)
+{
+	for (j = 0 ; j < NB_BLOCKS_HEIGHT ; j++)
+	{
+		switch (fileLine[(i * NB_BLOCKS_WIDTH) + j])
+		{
+			case '0':
+			level[j][i] = 0;
+			break;
+			case '1':
+			level[j][i] = 1;
+			break;
+			case '2':
+			level[j][i] = 2;
+			break;
+			case '3':
+			level[j][i] = 3;
+			break;
+			case '4':
+			level[j][i] = 4;
+			break;
+		}
+	}
+}
+\end{Csource}
+
+بواسطة عملية حسابية بسيطة، نأخذ الحرف الذي يهمّنا في
+\InlineCode{fileLine}
+و نحلل قيمته.
+
+\begin{warning}
+إنها "حروف" مخزّنة في الملف. ما أريد أن أقوله بهذا هو أن 
+\InlineCode{'0'}
+مخزّن كمحرف
+\InlineCode{'0'} \textenglish{ASCII}
+و أن قيمته ليست 0 !\\
+لنحلل الملف، يجب الاختبار بـ\InlineCode{case '0'}
+ و ليس 
+\InlineCode{case 0} !
+احذر من الخلط بين الحروف و الأرقام !
+\end{warning}
+
+يقوم الـ\InlineCode{switch}
+بالتحويل : 
+\InlineCode{'0'} $ \Leftarrow $ \InlineCode{0}،
+\InlineCode{'1'} $ \Leftarrow $ \InlineCode{1}،
+ إلخ. يقوم بوضع الكلّ في الجدول
+\InlineCode{map}.
+الخريطة تسمّى
+\InlineCode{level}
+في هذه الدالة لكن هذا لا يغيّر أي شيء.
+
+ما إن يتم هذا، يمكننا غلق الملف و إرجاع القيمة 1 لنقول أن كلّ شيء تمّ على ما يُرام.
+\begin{Csource}
+fclose(file);
+return 1;
+\end{Csource}
+
+أخيراً، تحميل المستوى من الملف لم يكن معقداً. الفخّ الوحيد الذي وُجب تجنّبه هو التفكير في تحويل القيمة
+\textenglish{ASCII} \InlineCode{'0'}
+إلى الرقم
+\InlineCode{0}
+(نفس الشيء بالنسبة لـ\InlineCode{1}، \InlineCode{2}، \InlineCode{3}، \InlineCode{4}، \dots).
+
+\subsection{حِفظ المستوى \texttt{saveLevel}}
+
+هذه الدالة أسهل :
+
+\begin{Csource}
+int saveLevel(int level[][NB_BLOCKS_HEIGHT])
+{
+	FILE* file = NULL;
+	int i = 0, j = 0;
+	file = fopen("levels.lvl", "w");
+	if (file == NULL)
+	return 0;
+	for (i = 0 ; i < NB_BLOCKS_WIDTH ; i++)
+	{
+		for (j = 0 ; j < NB_BLOCKS_HEIGHT ; j++)
+		{
+			fprintf(file, "%d", level[j][i]);
+		}
+	}
+	fclose(file);
+	return 1;
+}
+\end{Csource}
+
+استعملت الدالة
+\InlineCode{fprintf}
+من أجل "ترجمة" أعداد الجدول إلى حروف
+\textenglish{ASCII}.
+كانت هنا الصعوبة الوحيدة : تجب عدم كتابة
+\InlineCode{0}
+و إنما
+\InlineCode{'0'}.
