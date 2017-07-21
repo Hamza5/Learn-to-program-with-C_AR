@@ -418,3 +418,820 @@ menu = IMG_Load("menu.jpg");
 و
 \InlineCode{editor})
 تهتم بالتحكم في مختلف أجزاء اللعبة.
+
+\section{اللعبة}
+
+فلندخل إلى المرحلة الأكثر أهمية في الموضوع : الدالة 
+\InlineCode{play} !\\
+هذه هي الدالة الأكثر أهمية في البرنامج، كن متيقّظاً لأن هذه الدالة هي حقّا ما يجدر بك فهمه. لأنك ستجد بعدها بأن مُنشئ المراحل ليس بالصعوبة التي تتخيّلها.
+
+\subsection{المعاملات التي نبعثها للدالة}
+
+الدالة
+\InlineCode{play}
+تحتاج إلى معامل واحد : المساحة
+\InlineCode{screen}.
+بالفعل، تم فتح النافذة في الدالة الرئيسية، و لكي تستطيع الدالة
+\InlineCode{play}
+أن ترسم على النافذة، يجب أن تقوم باسترجاع المؤشّر نحو المساحة
+\InlineCode{screen} !
+
+لو تقرأ مجدداً محتوى الدالة الرئيسية، ستجد بأنني قمت باستدعاء الدالة
+\InlineCode{play}
+و ذلك بإعطائها المؤشّر
+\InlineCode{screen} :
+
+\begin{Csource}
+play(screen);
+\end{Csource}
+
+نموذج الدالة، الذي يمكنك وضعه في الملف
+\InlineCode{game.h}،
+هو التالي :
+
+\begin{Csource}
+void play(SDL_Surface* screen);
+\end{Csource}
+
+\begin{information}
+الدالة لا تقوم بإرجاع أي شيء (و من هنا الـ\InlineCode{void}).
+يمكننا أن نجعلها إن أردنا تُرجع قيمة منطقية تشير إلى ما كنّا قد ربحنا الجولة أم لا.
+\end{information}
+
+\subsection{التصريح عن المتغيرات}
+
+تحتاج هذه الدالة إلى كثير من المتغيرات.\\
+لم أفكّر في كلّ المتغيرات التي أحتاجها من الوهلة الأولى. هناك من أضفتها لاحقاً و أنا أكتب الشفرة.
+
+\subsubsection{متغيّرات من أنواع معرّفة في الـ\textenglish{SDL}}
+
+لكي نبدأ، هاهي كلّ المتغيرات ذات الأنواع المعرّفة في الـ\textenglish{SDL}
+التي نحن بحاجة إليها :
+
+\begin{Csource}
+SDL_Surface *mario[4] = {NULL}; // 4 surfaces for the 4 directions of mario
+SDL_Surface *wall = NULL, *box = NULL, *boxOK = NULL, *objective = NULL, *level= NULL, *currentMario = NULL;
+SDL_Rect position, playerPosition;
+SDL_Event event;
+\end{Csource}
+
+لقد قمتُ بإنشاء جدول من نوع 
+\InlineCode{SDL\_Surface}
+يسمّى 
+\InlineCode{mario}.
+و هو جدول من أربع خانات يقوم بتخزين 
+\textenglish{Mario}
+في كلّ من الاتجاهات الأربعة (واحد للأسفل، الأعلى، اليمين و اليسار).
+
+توجد بعد ذلك العديد من المساحات الموافقة لكلّ من 
+\textenglish{sprites}
+التي قمت بتحميلها أعلاه : 
+\InlineCode{wall}،
+\InlineCode{box}،
+\InlineCode{boxOK}
+و
+\InlineCode{objective}.
+
+\begin{question}
+بماذا ينفعنا
+\InlineCode{currentMario} ؟
+\end{question}
+
+هو عبارة عن مؤشّر نحو مساحة. و هو مؤشّر يؤشّر نحو المساحة الموافقة لـ\textenglish{Mario}
+المتّجه نحو الإتجاه الحالي. أي أنه عبارة عن 
+\InlineCode{currentMario}
+(\textenglish{Mario}
+الحالي) الّذي سنقوم بتسويته في الشاشة. إذا رأيت في أسفل الدالة
+\InlineCode{play}
+ستجد :
+\begin{Csource}
+SDL_BlitSurface(currentMario, NULL, screen, &position);
+\end{Csource}
+
+لا نقوم إذا بلصق عنصر من الجدول
+\InlineCode{mario}،
+بل المؤشّر
+\InlineCode{currentMario}.\\
+و بلصق 
+\InlineCode{currentMario}،
+يعني أننا سنلصق إما
+\textenglish{Mario}
+نحو الأسفل، أو نحو الأعلى، إلخ.\\
+المؤشّر
+\InlineCode{currentMario}
+يؤشّر نحو إحدى خانات الجدول
+\InlineCode{mario}.
+
+ماذا بعد غير هذا ؟\\
+متغير
+\InlineCode{position}
+من نوع
+\InlineCode{SDL\_Rect}
+سنستعين به من أجل تعريف موضع العناصر التي سنقوم بتسويتها (سنحتاج إليها من أجل كلّ الـ\textenglish{sprites}،
+و لا داعي لإنشاء
+\InlineCode{SDL\_Rect}
+من أجل كلّ مساحة !).
+المتغير
+\InlineCode{playerPosition}
+مختلف : إنه يشير إلى أية خانة من الخريطة يوجد اللاعب. أخيراً، المتغير
+\InlineCode{event}
+يهتم بتحليل الأحداث.
+
+\subsubsection{متغيّرات "تقليديّة"}
+
+حان الوقت لكي أعرّف متغيرات تقليديّة نوعاً ما من نوع 
+\InlineCode{int} :
+
+\begin{Csource}
+int cont = 1, remainingGoals = 0, i = 0, j = 0;
+int map[NB_BLOCKS_WIDTH][NB_BLOCKS_HEIGHT] = {0};
+\end{Csource}
+
+\InlineCode{cont}
+و 
+\InlineCode{remainingGoals}
+هي متغيرات منطقية.\\
+\InlineCode{i}
+و
+\InlineCode{j}
+هي متغيرات مُساعِدة ستساعدنا في قراءة الجدول 
+\InlineCode{map}.
+
+هنا تبدأ الأمور الهامّة حقّا. لقد قمت فعلياً بإنشاء جدول ذو بُعدين. لم أكلّمك عن هذا النوع من الجداول من قبل، لكنه الوقت المناسب لتتعلّم ما يعنيه. ليس الأمر صعباً، سترى ذلك بنفسك.
+
+لاحظ التعريف عن كثب :
+
+\begin{Csource}
+int map[NB_BLOCKS_WIDTH][NB_BLOCKS_HEIGHT] = {0};
+\end{Csource}
+
+هو عبارة عن جدول من 
+\InlineCode{int}
+(أعداد صحيحة) يختلف في كونه يأخذ حاضنتين مربّعتين
+\InlineCode{[ ]}.
+إذا كنت تتذكر جيداً الملف 
+\InlineCode{constants.h}،
+ فـ\InlineCode{NB\_BLOCKS\_WIDTH}
+و
+\InlineCode{NB\_BLOCKS\_HEIGHT}
+هما ثابتين يأخذ كلاهما القيمة 12.
+
+هذا الجدول سيتمّ إنشاءه في وقت الترجمة هكذا :
+
+\begin{Csource}
+int map[12][12] = {0};
+\end{Csource}
+
+\begin{question}
+لكن، ماذا يعني هذا ؟
+\end{question}
+
+هذا يعني أنه من أجل كلّ "خانة" من
+\InlineCode{map}
+توجد 12 خانة داخلية.\\
+بهذا تكون لدينا المتغيرات التالية :
+
+\begin{Csource}
+map[0][0]
+map[0][1]
+map[0][2]
+map[0][3]
+map[0][4]
+map[0][5]
+map[0][6]
+map[0][7]
+map[0][8]
+map[0][9]
+map[0][10]
+map[0][11]
+map[1][0]
+map[1][1]
+map[1][2]
+map[1][3]
+map[1][4]
+map[1][5]
+map[1][6]
+map[1][7]
+map[1][8]
+map[1][9]
+map[1][10]
+...
+map[11][2]
+map[11][3]
+map[11][4]
+map[11][5]
+map[11][6]
+map[11][7]
+map[11][8]
+map[11][9]
+map[11][10]
+map[11][11]
+\end{Csource}
+
+إذا هو جدول من 12 * 12 = 144 خانة !\\
+كلّ من هذه الخانات تمثّل خانة في خريطة اللعبة.
+
+الصورة التالية تعطيك فكرة كيف قُمنا بتمثيل الخريطة  :
+
+\Picture{Chapter_III-5_Map}
+
+و بهذا فالخانة في أعلى اليسار مخزّنة في
+\InlineCode{map[0][0]}.\\
+الخانة أعلى اليمين مخزنة في
+\InlineCode{map[0][11]}.\\
+الخانة أسفل اليمين (آخر خانة) مخزنة في
+\InlineCode{map[11][11]}.
+
+حسب قيمة الخانة (و التي هي عدد صحيح)، نعرف أي خانة من النافذة تحتوي جداراً، أو صندوقاً، أو منطقة مستهدفة، إلخ.\\
+هنا بالضبط سنستفيد من تعريف التعداد السابق !
+
+\begin{Csource}
+enum {EMPTY, WALL, BOX, GOAL, MARIO, BOX_OK};
+\end{Csource}
+
+إذا كانت قيمة الخانة تساوي
+\InlineCode{EMPTY} (0)
+سنعرف بأن هذه المنطقة من الشاشة يجب أن تبقى بيضاء. إذا كانت تساوي
+\InlineCode{WALL} (1)
+فسنعرف أنه يجب أن نقوم بلصق صورة جدار، إلخ.
+
+\subsection{تهيئات}
+
+\subsubsection{تحميل المساحات}
+
+و الآن، بما أننا قمنا بشرح كل متغيرات الدالة
+\InlineCode{play}،
+يمكننا البدء في القيام ببعض التهيئات :
+
+\begin{Csource}
+// Loading the sprites (Boxes, player...)
+wall = IMG_Load("wall.jpg");
+box = IMG_Load("box.jpg");
+boxOK = IMG_Load("box_ok.jpg");
+level = IMG_Load("level.png");
+mario[DOWN] = IMG_Load("mario_bas.gif");
+mario[LEFT] = IMG_Load("mario_gauche.gif");
+mario[UP] = IMG_Load("mario_haut.gif");
+mario[RIGHT] = IMG_Load("mario_droite.gif");
+\end{Csource}
+
+لا يوجد شيء صعب : نقوم بتحميل الكلّ بواسطة 
+\InlineCode{IMG\_Load}.\\
+إن كانت هناك حالة خاصّة، فهي تحميل
+\textenglish{Mario}.
+ إذ أننا نقوم بتحميل 
+\textenglish{Mario}
+ في كلّ من الإتّجاهات الأربعة في الجدول
+\InlineCode{mario}
+باستعمال الثوابت : 
+\InlineCode{UP}، \InlineCode{DOWN}، \InlineCode{LEFT}، \InlineCode{RIGHT}.
+كوننا استعملنا هنا ثوابت فستصبح الشفرة أكثر وضوحاً -كما تلاحظ- . كان بإمكاننا استعمال
+\InlineCode{mario[0]}،
+لكن من الأفضل و من الأكثر وضوحاً أن نستعمل
+\InlineCode{mario[UP]}
+مثلاً !
+
+\subsubsection{التوجيه الابتدائيّ لـ\textenglish{Mario} (\texttt{currentMario})}
+
+نهيّئ بعدها
+\InlineCode{currentMario}
+لكيّ تكون له وجهة ابتدائيّة :
+\begin{Csource}
+currentMario = mario[DOWN]; // Mario will be headed down when starting the program
+\end{Csource}
+
+وجدت أنه من المنطقي أكثر أن أبدأ المرحلة فيما يكون ماريو موجّها نحو الأسفل (أي نحونا)، كان بامكانك أن تكتب مثلاً :
+
+\begin{Csource}
+currentMario = mario[RIGHT];
+\end{Csource}
+
+ستُلاحظ بأن
+\textenglish{Mario}
+سيكون موجّهاً نحو اليمين في بداية اللعبة.
+
+\subsubsection{تحميل الخريطة}
+
+الآن، يجدر بنا ملئ الجدول ثنائي الأبعاد
+\InlineCode{map}.
+لحدّ الآن، الجدول لا يحتوي إلا أصفاراً.\\
+يجب أن نقرأ المستوى المخزّن في الملف
+\InlineCode{levels.lvl} :
+
+\begin{Csource}
+// Loading the level
+if (!loadLevel(map))
+	exit(EXIT_FAILURE); // We stop the game if we couldn't load the level
+\end{Csource}
+
+لقد اخترت معالجة تحميل (و حفظ) المستويات بواسطة دوال متواجدة بالملف
+\InlineCode{files.c}.\\
+هنا ، نستدعي إذا الدالة
+\InlineCode{loadLevel}.
+سنقوم بدراستها بالتفصيل لاحقا (هي ليست معقدة كثيراً على أي حال). كل ما يهمنا هنا هو معرفة أنه تم تحميل المستوى في الجدول
+\InlineCode{map}.
+
+\begin{critical}
+إذا لم يتم تحميل المستوى (لأن ملف
+\InlineCode{levels.lvl}
+غير موجود)، ستُرجع الدالة "خطأ". أمّا في الحالة المعاكسة فتُرجع "صحيح".
+\end{critical}
+
+نقوم إذا باختبار نتيجة التحميل بواسطة شرط. إذا كانت النتيجة سلبية (من هنا استعملت إشارة التعجّب لأعبّر عن ضدّ الشرط) يتوقف كلّ شيء : : سنستدعي الدالة 
+\InlineCode{exit}.\\
+في الحالة الأخرى، كلّ شيء يعمل بشكل جيّد إذاً و يمكننا المواصلة.
+
+نحن نملك الآن جدولا
+\InlineCode{map}
+يصف محتوى كلّ خانة : 
+\InlineCode{WALL}، \InlineCode{EMPTY}، \InlineCode{BOX}\dots
+
+\subsubsection{البحث عن وضعية الإنطلاق لـ\textenglish{Mario}}
+
+يجب الآن أن نعطي قيمة ابتدائية للمتغير
+\InlineCode{playerPosition}.\\
+هذا المتغير من نوع
+\InlineCode{SDL\_Rect}
+خاصّ قليلاً. لن نستعين به لتخزين الإحداثيات بالبيكسل و إنما بتخزينه بدلالة الـ"خانات" في الخريطة. و بهذا فإن كانت لدينا :
+
+\InlineCode{playerPosition.x == 11}
+و
+\InlineCode{playerPosition.y == 11}
+
+فهذا يعني أن اللاعب متواجد في آخر خانة في أسفل يمين الخريطة.\\
+يمكنك الرجوع إلى الصورة السابقة لتتوضح لك الأمور أكثر.
+
+سنقوم بالتقدّم داخل الجدول
+\InlineCode{map}
+و ذلك باستعمال حلقتين. نستعمل المتغير
+\InlineCode{i}
+للتقدّم في الجدول عمودياً، و نستعمل المتغير
+\InlineCode{j}
+للتقدّم فيه أفقياً :
+
+\begin{Csource}
+// We search for the position of Mario in the beginning of the game
+for (i = 0 ; i < NB_BLOCKS_WIDTH ; i++)
+{
+	for (j = 0 ; j < NB_BLOCKS_HEIGHT ; j++)
+	{
+		if (map[i][j] == MARIO) // If Mario is in this position
+		{
+			playerPosition.x = i;
+			playerPosition.y = j;
+			map[i][j] = EMPTY;
+		}
+	}
+}
+\end{Csource}
+
+في كلّ خانة، نختبر ما إن كانت هذه الأخيرة تحتوي
+\InlineCode{MARIO}
+(أي نقطة انطلاق اللاعب في الخريطة). إذا كانت كذلك، نقوم بتخزين الإحداثيات الحالية (المتواجدة في 
+\InlineCode{i}
+و
+\InlineCode{j})
+في المتغير
+\InlineCode{playerPosition}.\\
+نمسح أيضاً الخانة و ذلك بإعطائها القيمة
+\InlineCode{EMPTY}
+لكي يتم اعتبارها كخانة فارغة لاحقاً.
+
+\subsubsection{تفعيل تكرار الضغط على الأزرار}
+
+آخر شيء، أمر سهل جداً : سنقوم بتفعيل تكرار الضغط على الأزرار لكي نستطيع التحرّك في الخريطة بترك الزر مضغوطاً.
+
+\begin{Csource}
+// Enabeling keys repetition
+SDL_EnableKeyRepeat(100, 100);
+\end{Csource}
+
+\subsection{الحلقة الرئيسية}
+
+حسناً، لقد قُمنا بتهيئة كلّ شيء، يمكننا الآن العمل على الحلقة الرئيسية.
+
+إنها حلقة تقليديّة تعمل بنفس المخطط الذي تعمل به الحلقات التي رأيناها لحدّ الآن. هي فقط كبيرة قليلاً.
+
+فلنرى عن قرب الـ\InlineCode{switch}
+الذي يختبر الحدَث :
+
+\begin{Csource}
+switch(event.type)
+{
+	case SDL_QUIT
+	cont = 0;
+	break;
+	case SDL_KEYDOWN:
+	switch(event.key.keysym.sym)
+	{
+		case SDLK_ESCAPE:
+		cont = 0;
+		break;
+		case SDLK_UP:
+		currentMario = mario[UP];
+		movePlayer(map, &playerPosition, UP);
+		break;
+		case SDLK_DOWN:
+		currentMario = mario[DOWN];
+		movePlayer(map, &playerPosition, DOWN);
+		break;
+		case SDLK_RIGHT:
+		currentMario = mario[RIGHT];
+		movePlayer(map, &playerPosition, RIGHT);
+		break;
+		case SDLK_LEFT:
+		currentMario = mario[LEFT];
+		movePlayer(map, &playerPosition, LEFT);
+		break;
+	}
+	break;
+}
+\end{Csource}
+
+إذا ضغطنا على الزر
+\InlineCode{Esc}،
+فستنتهي اللعبة و نرجع للقائمة الرئيسية.
+
+كما ترى، لا توجد العديد من الأحداث لنعالجها : سنختبر فقط ما إن ضغط اللاعب على الأزرار "أعلى"، "أسفل"،"يمين" أو "يسار" من لوحة المفاتيح.\\
+على حسب الزر المضغوط نغيّر اتجاه 
+\textenglish{Mario}.
+ و هنا يتدخّل المتغير 
+\InlineCode{currentMario} !
+ إذا ضغطنا السهم الموجه نحو الأعلى إذاً :
+
+\begin{Csource}
+currentMario = mario[UP];
+\end{Csource}
+
+إذا ضغطنا على السهم الموجّه نحو الأسفل فإذاً :
+
+\begin{Csource}
+currentMario = mario[DOWN];
+\end{Csource}
+
+الآن، شيء مهمّ جداً : نستدعي الدالة
+\InlineCode{movePlayer}.
+هذه الدالة ستقوم بتحريك اللاعب في الخريطة إن كان له الحق في فعل ذلك.
+
+\begin{itemize}
+	\item مثلاً، لا يمكننا أن نُحرك 
+	\textenglish{Mario}
+	إلى الأعلى إن كان متواجداً أصلاً في الحافة العلوية للنافذة.
+	\item لا يمكننا أيضاً أن نحرّكه للأعلى إن كان فوقه جدار.
+	\item لا يمكننا أن نحرّكه للأعلى إن كان فوقه صندوقان.
+	\item على العكس، يمكننا تحريكه للأعلى إن تواجد صندوق واحد فوقه.
+	\item لكن احذر، لا يمكننا تحريكه للأعلى إن تواجد صندوق واحد فوقه و كان هذا الصندوق متواجد أصلاً في الحافة العلوية للنافذة !
+\end{itemize}
+
+\begin{question}
+يا إلاهي، ماهذا السوق ؟
+\end{question}
+
+هذا ما نسمّيه بـ
+\textbf{معالجة الاصطدامات}
+(\textenglish{Collisions management}).
+و لكي أضمن لك، نحن نقوم بالتعامل مع الاصطدامات البسيطة بما أن اللاعب يتحرّك خانة بخانة و في أربع اتجاهات فقط. في لعبة ثنائية الأبعاد أين يتحرّك اللاعب في كلّ الاتجاهات بيكسلا ببيكسل، يكون التحكّم في الاصطدامات أمرا أصعب. 
+
+لكن هناك ماهو أسوء : الألعاب ثلاثية الأبعاد. التحكم في الإصطدامات في لعبة ثلاثية الأبعاد يُعدّ كابوساً بالنسبة للمبرمجين. لحسن الحظ، توجد مكتبات للتحكّم في الاصطدامات في العوالم ثلاثية الأبعاد و التي تقوم بالكثير من العمل في مكاننا.
+
+لنرجع للدالة
+\InlineCode{movePlayer}
+و لنركّز . نقوم بإعطائها ثلاثة معاملات :
+
+\begin{itemize}
+	\item الخريطة : لكي تستطيع قراءتها و أيضاً التعديل عليها إذا قمنا بتحريك صندوق مثلاً.
+	\item وضعية اللاعب : هنا أيضاً، يجب على الدالة قراءة و "ربما" تعديل وضعية اللاعب.
+	\item الإتجاه الذي نطلب من اللاعب التوجّه إليه : نستعمل هنا أيضاً الثوابت :
+	\InlineCode{UP}، \InlineCode{DOWN}، \InlineCode{LEFT}، \InlineCode{RIGHT}
+	من أجل فهم الشفرة بشكل أفضل.
+\end{itemize}
+
+سندرس الدالة
+\InlineCode{movePlayer}
+لاحقاً. كان بإمكاني وضع كلّ الاختبارات داخل الـ\InlineCode{switch}،
+لكن بهذا سيصبح كبيراً و ستصعب علينا قراءته. و من هنا نرى الفائدة من تقسيم الشفرة إلى عدّة دوال.
+
+\subsubsection{التسوية، فلنسوّي كلّ شيء}
+
+لقد انتهينا من الـ\InlineCode{switch} :
+في هذه الوضعية من البرنامج، قد تكون الخريطة قد تغيّرت و كذا وضعية اللاعب. مهما كان، لقد حان وقت التسوية !
+
+سنبدأ بمسح الشاشة و ذلك بإعطائها لون خلفية أبيض :
+
+\begin{Csource}
+// Clearing the screen
+SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+\end{Csource}
+
+و الآن، نقوم بالتقدّم في الجدول ذو البعدين 
+\InlineCode{map}
+لكي نعرف أي عنصر سنقوم بتسويته و في أي منطقة من الشاشة.\\
+سنستعمل حلقتين كما رأينا سابقاً للتقدّم في الـ144 خانة من الجدول :
+
+\begin{Csource}
+// Placing the objects on the screen
+remainingGoals = 0;
+for (i = 0 ; i < NB_BLOCKS_WIDTH ; i++)
+{
+	for (j = 0 ; j < NB_BLOCKS_HEIGHT ; j++)
+	{
+		position.x = i * BLOCK_SIZE;
+		position.y = j * BLOCK_SIZE;
+		switch(map[i][j])
+		{
+			case WALL:
+			SDL_BlitSurface(wall, NULL, screen, &position);
+			break;
+			case BOX:
+			SDL_BlitSurface(box, NULL, screen, &position);
+			break;
+			case BOX_OK:
+			SDL_BlitSurface(boxOK, NULL, screen, &position);
+			break;
+			case GOAL:
+			SDL_BlitSurface(level, NULL, screen, &position);
+			remainingGoals = 1;
+			break;
+		}
+	}
+}
+\end{Csource}
+
+من أجل كل خانة، نحضّر المتغير
+\InlineCode{position}
+(من نوع
+\InlineCode{SDL\_Rect})
+لكي نضع العنصر الحالي في المكان المناسب من الشاشة.\\
+العملية جدّ بسيطة :
+
+\begin{Csource}
+position.x = i * BLOCK_SIZE;
+position.y = j * BLOCK_SIZE;
+\end{Csource}
+
+يكفي ضرب
+\InlineCode{i}
+بـ\InlineCode{BLOCK\_SIZE}
+لكي نعرف قيمة
+\InlineCode{position.x}.\\
+و بهذا، فإن كنا نتواجد في الخانة الثالثة، أي أن
+\InlineCode{i} = 2
+(لا تنس أن
+\InlineCode{i}
+يبدأ من 0 !)، نقوم إذاً بالعملية
+\mbox{2 * 34 = 68}.
+ إذا نقوم بلصق الصورة 68 بيكسلا نحو اليمين في المساحة 
+\InlineCode{screen}.\\
+نقوم بنفس الشيء بالنسبة للترتيبة
+\InlineCode{y}.
+
+بعد ذلك، نطبّق
+\InlineCode{switch}
+على الخانة التي نقوم بتحليلها من الخريطة.\\
+هنا أيضاً، استعمال الثوابت يعتبر شيئاً عملياً و يسمح بقراءة مُثلى للشفرة.\\
+نختبر إذا ما إن كانت الخانة تساوي
+\InlineCode{WALL}،
+في هذه الحالة نقوم بلصق جدار. نفس الشيء بالنسبة للصناديق و المناطق المُستهدفة.
+
+\subsubsection{اختبار الفوز}
+
+تلاحظ أنه قبل استعمال الحلقتين المتداخلتين، نعطي القيمة الإبتدائية 0 للمتغير المنطقي
+\InlineCode{remainingGoals}.\\
+هذا المتغير المنطقي يأخذ القيمة 1 ما إن نقوم بكشف منطقة مُستهدفة على الخريطة. حينما لا تتبقّى أية منطقة مستهدفة، فهذا يعني أن كل الصناديق متواجدة فوق هذه المناطق (لم تتبقّ سوى صناديق
+\InlineCode{BOX\_OK}).
+
+يكفي أن نختبر ما إن كان المتغير المنطقي يحمل القيمة "خطأ"، أي أنه لم تتبقّ أية منطقة مستهدفة.\\
+في هذه الحالة، نُعطي القيمة 0 للمتغير
+\InlineCode{cont}
+من أجل إيقاف الجولة :
+
+\begin{Csource}
+// If there's no remaining goal, we win
+if (!remainingGoals)
+	cont = 0;
+\end{Csource}
+
+\subsubsection{اللاعب}
+
+لم يتبقّ سوى تسوية اللاعب :
+
+\begin{Csource}
+// We place the player in the right position
+position.x = playerPosition.x * BLOCK_SIZE;
+position.y = playerPosition.y * BLOCK_SIZE;
+SDL_BlitSurface(currentMario, NULL, screen, &position);
+\end{Csource}
+
+نحسُب وضعيته (بالبيكسل هذه المرة) و ذلك بالقيام بعملية ضرب بين
+\InlineCode{playerPosition}
+و
+\InlineCode{BLOCK\_SIZE}.
+بعد ذلك، نقوم بلصق اللاعب في الوضعية المناسبة.
+
+\subsubsection{القلب !}
+
+لقد قُمنا بكلّ شيء، يكفي أن نُظهر الشاشة للمستعمل :
+
+\begin{Csource}
+SDL_Flip(screen);
+\end{Csource}
+
+\subsection{نهاية الدالة : إلغاء التحميل}
+
+بعد الحلقة الرئيسية، يجدر بنا القيام بتحرير الذاكرة التي حجزناها للـ\InlineCode{sprites}
+التي حمّلناها.\\
+نقوم أيضا بتعطيل تكرار الضغط على الأزرار و ذلك بإعطاء القيمة 0 للدالة
+\InlineCode{SDL\_EnableKeyRepeat} :
+
+\begin{Csource}
+// Disabling keys repetition (reset to 0)
+SDL_EnableKeyRepeat(0, 0);
+// Freeing the used surfaces
+SDL_FreeSurface(wall);
+SDL_FreeSurface(box);
+SDL_FreeSurface(boxOK);
+SDL_FreeSurface(level);
+for (i = 0 ; i < 4 ; i++)
+	SDL_FreeSurface(mario[i]);
+\end{Csource}
+
+\subsection{الدالة \texttt{movePlayer}}
+
+هذه الدالة متواجدة أيضاً في الملف 
+\InlineCode{game.c}.
+هي دالة \dots معقّدة جدّا من ناحية كتابتها. و ربّما هي الدالة الأكثر صعوبة حينما نريد برمجة لعبة
+\textenglish{Sokoban}.
+
+\paragraph{تذكير :}
+الدالة
+\InlineCode{movePlayer}
+تختبر ما إن كان لدينا الحق في تحريك اللاعب في الإتجاه المطلوب. تقوم بتحديث وضعية اللاعب
+\InlineCode{playerPosition}
+و أيضاً بتحديث الخريطة إذا تم تحريك صندوق.
+
+هذا نموذج الدالة :
+
+\begin{Csource}
+void movePlayer(int map[][NB_BLOCKS_HEIGHT], SDL_Rect *pos,int direction);
+\end{Csource}
+
+هذا النموذج خاص قليلاً. تلاحظ أنني أبعث الجدول
+\InlineCode{map}
+و أحدد الحجم الخاص بالبُعد الثاني\\
+(\InlineCode{NB\_BLOCKS\_HEIGHT}).\\
+لماذا هذا ؟
+
+الإجابة معقّدة قليلاً لكي أقوم بمناقشتها في وسط هذا الدرس. لكي نبسّط الأمور، لغة الـ\textenglish{C}
+لا تتكهّن بأننا نتحدّث عن جدول ثنائي الأبعاد و أنه يجب أن نعطي على الأقل حجم البُعد الثاني لكي تشتغل الأمور.\\
+إذا، حينما تبعث جدولاً ذو بُعدين إلى دالة، يجب أن تحددّ حجم البُعد الثاني للجدول في النموذج. هكذا تعمل الأمور، إن الأمر ضروري.
+
+أمر آخر : تلاحظ أن
+\InlineCode{playerPosition}
+تُسمى 
+\InlineCode{pos}
+في هذه الدالة. لقد اخترت اختصار الاسم لكي تسهل كتابته بما أننا سنحتاج إلى كتابته عدّة مرات، لكي لا نتعب.
+
+فلنبدأ باختبار الإتجاه الذي نريد التوجّه إليه و ذلك باستعمال
+\InlineCode{switch}
+ضخم :
+
+\begin{Csource}
+switch(direction)
+{
+	case UP:
+	/* etc */
+\end{Csource}
+
+\subsubsection{فلننطلق في رحلة من الاختبارات المجنونة !}
+
+يجب الآن أن نكتب الاختبارات الخاصة بكلّ حالة ممكنة محاولين ألا ننسى أية واحدة. 
+
+هكذا تقوم الخطة التي أعتمدها : أختبر كل الحالات الممكنة للاصطدامات حالة بحالة، و ما إن أكشف عن اصطدام (أي أن اللاعب غير متمكّن من التحرّك) أضع الأمر
+\InlineCode{break}
+لأخرج من الـ\InlineCode{switch}،
+و بهذا أمنع التحرّك.
+
+هذا مثال عن كلّ حالات الاصطدام المتواجدة للاعب يريد التحرّك نحو الأعلى :
+
+\begin{itemize}
+	\item اللاعب متواجد أصلاً في أقصى أعلى الخريطة.
+	\item يوجد جدار فوق اللاعب.
+	\item يوجد صندوقان معاً فوق اللاعب (و هو غير قادر على دفع صندوقين).
+	\item يوجد صندوق فوق اللاعب و الصندوق متواجد في الحافة العلوية للخريطة.
+\end{itemize}
+
+إذا مرّت كلّ هذه الاختبارات، يمكننا تحريك اللاعب. 
+
+سأريك الاختبارات اللازمة من أجل التحرّك نحو الأعلى. من أجل الحالات الأخرى، يكفي تعديل الشفرة قليلا.
+
+\begin{Csource}
+if (pos->y - 1 < 0) // If the player exceeds the screen, we stop
+	break;
+\end{Csource}
+
+نبدأ بالتحقق ما إن كان اللاعب متواجداً أعلى النافذة. بالفعل، لو نحاول أن نطلب الخانة 
+\InlineCode{map[5][-1]}
+مثلاً، سيتوقف البرنامج بشكل خاطئ !\\
+نبدأ إذا بالتأكد من أننا لن "نتجاوز" الشاشة.
+
+بعد ذلك :
+
+\begin{Csource}
+if (map[pos->x][pos->y - 1] == WALL) // If there's a wall, we stop
+	break;
+\end{Csource}
+
+هنا أيضاً، الأمر بسيط. نتحقق من عدم وجود جدار فوق اللاعب. إذا كان هناك واحد، نتوقّف
+(\InlineCode{break}).
+
+بعد ذلك (حافظ على عينيك): 
+
+\begin{Csource}
+// If we want to push a box, we have to verify that there's no wall behind it (or another box, or the world's limit)
+if ((map[pos->x][pos->y - 1] == BOX || map[pos->x][pos->y -1] == BOX_OK) && (pos->y - 2 < 0 || map[pos->x][pos->y - 2] == WALL || map[pos->x][pos->y - 2] == BOX || map[pos->x][pos->y - 2] == BOX_OK))
+	break;
+\end{Csource}
+
+هذا الاختبار الضخم يمكن ترجمته كالتالي : "إذا كان هناك صندوق فوق اللاعب (أو صندوق في الوضعية المناسبة) و إذا كان فوق هذا الصندوق يوجد إما الفراغ (سنتجاوز من الحافّة العلوية لأننا في أقصى الأعلى)، أو صندوق آخر، أو صندوق في الوضعيّة المناسبة : إذاً لا يمكننا التحرّك : خروج
+(\InlineCode{break})".
+
+إذا تمكنّا من عبور هذا الإختبار فنحن قادرون على التحرّك، أوووف !\\
+نستدعي اولاً دالة تقوم بتحريك الصندوق إن كنا بحاجة إلى ذلك :
+
+\begin{Csource}
+// If we are here, so we can move the player
+// We verify if there's a box to move first
+moveBox(&map[pos->x][pos->y - 1], &map[pos->x][pos->y - 2]);
+\end{Csource}
+
+\subsection{تحريك الصناديق : \texttt{moveBox}}
+
+قررت معالجة تحرّك الصناديق باستعمال دالة أخرى لأن الشفرة تبقى نفسها من أجل الإتجاهات الأربعة. يجب فقط أن نتأكّد بأننا قادرون على التحرّك (هذا ما كنتُ بصدد شرحه).\\
+سنبعث للدالة معاملين : محتوى الخانة التي نريد الذهاب إليها و محتوى الخانة التي تليها.
+
+\begin{Csource}
+void moveBox(int *firstSquare, int *secondSquare)
+{
+	if (*firstSquare == BOX || *firstSquare == BOX_OK)
+	{
+		if (*secondSquare == GOAL)
+			*secondSquare = BOX_OK;
+		else
+			*secondSquare = BOX;
+		if (*firstSquare == BOX_OK)
+			*firstSquare = GOAL;
+		else
+			*firstSquare = EMPTY;
+	}
+}
+\end{Csource}
+
+هذه الدالة تقوم بتحديث الخريطة و هي تأخذ كمعاملات مؤشّرات نحو الخانات المعنيّة.\\
+سأتركك لتقرأها، فهي سهلة للفهم. لا يجب أن ننسى أننا إذا حرّكنا 
+\InlineCode{BOX\_OK}.
+يجب تعويض المكان الذي كان به بـ\InlineCode{OBJECTIVE}.
+و إلا، إذا كان
+\InlineCode{BOX}،
+ سنعوّض مكانه بـ\InlineCode{EMPTY}.
+
+\subsubsection{تحريك اللاعب}
+
+نعود للدالة
+\InlineCode{movePlayer}.\\
+نحن هنا في الحالة الصحيحة، سنقوم بتحريك اللاعب.
+
+كيف نفعل ذلك ؟ هذا أمر سهل :
+
+\begin{Csource}
+pos->y--; // Finally, we can move up the player (ouf!)
+\end{Csource}
+
+يكفي أن ننقِص من الترتيبة (لأن اللاعب يريد الصعود للأعلى).
+
+\subsection{تلخيص}
+
+كملخّص، هاهي كلّ الاختبارات اللازمة من أجل الصعود إلى الأعلى :
+
+\begin{Csource}
+switch(direction)
+{
+	case UP:
+	if (pos->y - 1 < 0) // If the player exceeds the screen, we stop
+		break;
+	if (map[pos->x][pos->y - 1] == WALL) // If there's a wall, we stop
+		break;
+	// If we want to push a box, we have to verify that there's no wall behind it (or another box, or the world's limit)
+	if ((map[pos->x][pos->y - 1] == BOX || map[pos->x][pos->y - 1] == BOX_OK) && (pos->y - 2 < 0 || map[pos->x][pos->y - 2] == WALL || map[pos->x][pos->y - 2] == BOX || map[pos->x][pos->y - 2] == BOX_OK))
+		break;
+	// If we are here, so we can move the player
+	// We verify if there's a box to move first
+	moveBox(&map[pos->x][pos->y - 1], &map[pos->x][pos->y - 2]);
+	pos->y--; // Finally, we can move up the player (ouf!)
+	break;
+\end{Csource}
+
+سأترك لك عناء نقل الشفرة و تعديلها من أجل الحالات الأخرى (إحذر، عليك ملائمة الشفرة، ليست مطابقة تماما في كلّ مرّة !).
+
+ها قد انتهينا من كتابة شفرة اللعبة !\\
+حسناً، قريباً : بقي لنا أن نرى دالة التحميل و حِفظ المستويات.
+سنرى بعد ذلك كيف نقوم بكتابة شفرة مُنشئ المستويات. كن متأكّدا، سيكون هذا سريعا !
