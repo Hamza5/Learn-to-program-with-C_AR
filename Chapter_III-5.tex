@@ -1391,3 +1391,310 @@ int saveLevel(int level[][NB_BLOCKS_HEIGHT])
 \InlineCode{0}
 و إنما
 \InlineCode{'0'}.
+
+\section{مُنـشئ المستويات}
+
+هذا الأخير سهل الكتابة أكثر مما تتخيل.\\
+بالمناسبة، هذه تقنية تسمح بزيادة عمر لعبتنا، فلما نتجاهلها ؟
+
+هكذا تسري الأمور :
+
+\begin{itemize}
+	\item نستعمل الفأرة لوضع الكتل التي نريدها في النافذة.
+	\item النقر باليمين يسمح بمسح الكتلة الذي تتواجد فوقها الفأرة.
+	\item النقر باليسار يسمح بوضع شيء على الخريطة. هذا الشيء يكون مخزّناً : افتراضيّا، نقوم بوضع الجدران بالنقر بيسار الفأرة. يمكننا تغيير الشيء الذي نريد وضعه في الخريطة بالضغط على الأزرار المتواجدة في لوحة الأرقام :
+	\begin{enumerate}
+		\item جدار.
+		\item صندوق.
+		\item منطقة مُستهدفة.
+		\item مكان انطلاق 
+		\textenglish{Mario}.
+	\end{enumerate}
+	\item بالضغط على
+	\InlineCode{S}
+	يتم حفظ المستوى.
+	\item يمكننا الرجوع إلى القائمة الرئيسية بالضغط على
+	\InlineCode{Esc}.
+\end{itemize}
+
+\Picture{Chapter_III-5_Editor}
+
+\subsection{التهيئات}
+
+بشكل عام، تشبه هذه الدالة، الدالة الخاصة باللعبة. ولذلك فقط بدأت في كتابتها باستعمال "نسخ-لصق" لدالة اللعبة، و بعد ذلك قمتُ بنزع ما لا أحتاجُه و أضفت مميزات جديدة.
+
+هذه كانت البداية :
+
+\begin{Csource}
+void editor(SDL_Surface* screen)
+{
+	SDL_Surface *wall = NULL, *box = NULL, *level = NULL, *mario = NULL;
+	SDL_Rect position;
+	SDL_Event event;
+	int cont = 1, leftClickInProgress = 0, rightClickInProgress = 0;
+	int currentObject = WALL, i = 0, j = 0;
+	int map[NB_BLOCKS_WIDTH][NB_BLOCKS_HEIGHT] = {0};
+	// Loading the objects and the level
+	wall = IMG_Load("wall.jpg");
+	box = IMG_Load("box.jpg");
+	level = IMG_Load("level.png");
+	mario = IMG_Load("mario_bas.gif");
+	if (!loadLevel(map))
+		exit(EXIT_FAILURE);
+\end{Csource}
+
+هنا تجد تعريف المتغيرات و التهيئات اللازمة.\\
+تلاحظ أنني لا أقوم بتحميل إلا 
+\textenglish{Mario}
+واحد (المتّجه نحو الأسفل). في الواقع، لن نقوم بتوجيه
+\textenglish{Mario}
+بلوحة المفاتيح و إنما نحتاج إلى ملصق يمثّل وضعية الإنطلاق الخاصة به.
+
+المتغير
+\InlineCode{currentObject}
+يحفظ الشيء الذي يختاره المُستعمل حالياً. افتراضيّا، هذا الشيء هو
+\InlineCode{WALL}.
+ أي أننا في البداية إذا نقرنا بالزرّ اليسار سنقوم بوضع جدار، لكن يمكن تغيير هذا بواسطة المستعمل و ذلك بالضغط على 
+\InlineCode{1}، \InlineCode{2}، \InlineCode{3}
+ أو
+\InlineCode{4}.
+
+المتغيرات المنطقية
+\InlineCode{leftClickInProgress}
+و
+\InlineCode{rightClickInProgress}
+كما تشير أسماؤها، تسمح بحفظ ما إن كان هناك نقر ياليمين حالياً (أي أن زر الفأرة مضغوط). سأشرح لك المبدأ لاحقاً. على أي حال، هذه التقنية تسمح لنا بإضافة أشياء إلى الخريطة بترك زر الفأرة مضغوطاً، و إلا فسنكون مجبرين على الضغط على الزر عدة مرات من أجل وضع نفس الشيء عدّة مرات في الخريطة في أمكنة مختلفة، و هذا أمر مُتعب قليلا.
+
+أخيراً، يتم تحميل الخريطة المحفوطة حالياً في الملف
+\InlineCode{levels.lvl}.
+سيكون نقطة انطلاقنا.
+
+\subsection{معالجة الأحداث}
+
+هذه المرة سيكون علينا معالجة كثير من الأحداث المختلفة. هيا بنا، واحداً واحداً.
+
+\subsubsection{\texttt{SDL\_QUIT}}
+
+\begin{Csource}
+case SDL_QUIT:
+cont = 0;
+break;
+\end{Csource}
+
+إذا ضغطنا على الزر
+\InlineCode{X}،
+تتوقف الحلقة و نعود إلى القائمة الرئيسية.\\
+ليكن في علمك أن هذا الشيء ليس أحسن حلّ بالنسبة لللاعب : فهو يريد الخروج من اللعبة و ليس الرجوع إلى القائمة الرئيسية. يجب أن نجد حلاً لإيقاف البرنامج و ذلك بإرجاع قيمة خاصّة للدالة الرئيسية مثلاً. سأتركك لتجد حلاً بنفسك.
+
+\subsubsection{\texttt{SDL\_MOUSEBUTTONDOWN}}
+
+\begin{Csource}
+case SDL_MOUSEBUTTONDOWN:
+if (event.button.button == SDL_BUTTON_LEFT)
+{
+	// We put the chosen object (wall, box) in the click position
+	map[event.button.x / BLOCK_SIZE][event.button.y / BLOCK_SIZE] = currentObject;
+	leftClickInProgress = 1; // We put in mind that there's a pushed button
+}
+else if (event.button.button == SDL_BUTTON_RIGHT) // Right click to erase
+{
+	map[event.button.x / BLOCK_SIZE][event.button.y /BLOCK_SIZE] = EMPTY;
+	rightClickInProgress = 1;
+}
+break;
+\end{Csource}
+
+نبدأ باختبار الزر المضغوط (نرى ما إن كان ضغطاً بالزر الأيسر أو الأيمن) :
+
+\begin{itemize}
+	\item إذا كان ضغطا بالزر الأيسر، نقوم بوضع الشيء الحالي
+	\InlineCode{currentObject}
+	على الخريطة في الموضع الذي تشير إليه الفأرة.
+	\item إذا كان ضغطا بالزر الأيمن، نمسح مايوجد في الموضع الحالي للفأرة (نضع 
+	\InlineCode{EMPTY}
+	كما سبق و قلتُ لك).
+\end{itemize}
+
+\begin{question}
+كيف نعرف في أي "خانة" من الخريطة نحن متواجدون ؟
+\end{question}
+
+نعرف ذلك عن طريق عملية حسابية صغيرة. يكفي أن نأخذ إحداثيات الفأرة
+(\InlineCode{event.button.x}
+مثلاً) و نقسم هذه القيمة على حجم كتلة
+\InlineCode{BLOCK\_SIZE}.\\
+هذه قسمة لأعداد صحيحة. و بما أن قسمة الأعداد الصحيحة في لغة 
+\textenglish{C}
+تُعطي عدداً صحيحا، فنتحصّل بالتأكيد على قيمة توافق خانة من الخريطة.
+
+مثلاً، لو أنني في البيكسل الـ75 من الخريطة (على محور الفواصل
+\textenglish{x})،
+أقسم هذا العدد على 
+\InlineCode{BLOCK\_SIZE}
+و التي تساوي هنا 34. 
+يكون لدينا هنا :
+$$ 75/34=2 $$.
+ لا تنس هنا أننا نتجاهل باقي القسمة و نقوم بحفظ الجزء الصحيح فقط لأننا نتكلم عن قسمة أعداد صحيحة.\\
+نحن نعلم إذا أننا نتواجد في الخانة رقم 2 (أي الخانة الثالثة لأن الجدول يبدأ من 0، لا تنس ذلك).
+
+مثال آخر : لو أنني في البيكسل العاشر (أي أنني قريب من الحافة)، ستكون لدينا العملية الحسابية التالية :
+$$ 10/34=0 $$
+أي أننا في الخانة رقم 0  !
+
+بفضل هذه العملية الحسابية البسيطة يمكننا أن نعرف في أي خانة من الخريطة نحن متواجدون.
+
+\begin{Csource}
+map[event.button.x / BLOCK_SIZE][event.button.y / BLOCK_SIZE] = currentObject;
+\end{Csource}
+
+شيء آخر مهم : إعطاء القيمة 1 للمتغير المنطقي
+\InlineCode{leftClickInProgress}
+(أو
+\InlineCode{rightClickInProgress}
+حسب الحالة) يسمح لنا بمعرفة، خلال حدث
+\InlineCode{MOUSEMOTION}،
+ما إن كان زر الفأرة مضغوطاً خلال الإنتقال.
+
+\subsubsection{\texttt{SDL\_MOUSEBUTTONUP}}
+
+\begin{Csource}
+case SDL_MOUSEBUTTONUP: // We disable the boolean which indicates that there's a clicked button
+if (event.button.button == SDL_BUTTON_LEFT)
+	leftClickInProgress = 0;
+else if (event.button.button == SDL_BUTTON_RIGHT)
+	rightClickInProgress = 0;
+break;
+\end{Csource}
+
+الحدث
+\InlineCode{MOUSEBUTTONUP}
+يقوم ببساطة بإعادة القيمة 0 للمتغير المنطقي. نحن نعرف بأن النقر انتهى و بهذا لا يوجد أي "نقر حالي" بالفأرة.
+
+\subsubsection{\texttt{SDL\_MOUSEMOTION}}
+
+\begin{Csource}
+case SDL_MOUSEMOTION:
+if (leftClickInProgress) // If we move the mouse and the left button is clicked
+{
+	map[event.motion.x / BLOCK_SIZE][event.motion.y /BLOCK_SIZE] = currentObject;
+}
+else if (rightClickInProgress) // The same thing for the right button
+{
+	map[event.motion.x / BLOCK_SIZE][event.motion.y / BLOCK_SIZE] = EMPTY;
+}
+break;
+\end{Csource}
+
+هنا يمكن لنا رؤية أهمية المتغيرات المنطقية. نختبر حينما نقوم بتحريك الفأرة ما إن كان هناك نقر حالي. إذا كانت هذه هي الحالة، نضع على الخريطة شيئاً ما (أو الفراغ إذا كان نقرا باليمين).\\
+هذا يسمحُ لنا بوضع شيء واحد لعدة مرات دون الحاجة إلى إلى النقر في كلّ مرة من أجل كلّ تكرار للشيء، يكفي إذاً أن نُبقي زر الفأرة مضغوطاً بينما نسحبُ هذه الأخيرة.
+
+الأمر واضح : في كلّ مرة نحرّك فيها الفأرة (يكون ذلك ببيكسل واحد)، نختبر ما إن كانت المتغيرات المنطقية مفعّلة. إذا كان الأمر كذلك، نقوم بوضع شيء على الخريطة. و إلاً، لا نقوم بأي شيء.
+
+\paragraph{ملخّص :}
+سألخّص التقنية لأنها ستكون مفيدة من أجل برامج أخرى.\\
+تسمح هذه التقنية بمعرفة ما إن كان زر الفأرة مضغوطاً بينما يتم تحريك هذه الأخيرة. يمكننا أن نستفيد من هذا الأمر لبرمجة
+\textit{السحب و الإفلات}
+(\textenglish{drag and drop}).
+
+\begin{enumerate}
+	\item خلال حدث
+	\InlineCode{MOUSEBUTTONDOWN} :
+	نعطي القيمة 1 للمتغير المنطقي
+	\InlineCode{clickInProgress}.
+	\item خلال حدث 
+	\InlineCode{MOUSEMOTION} :
+	نختبر ما إن كان المتغير المنطقي 
+	\InlineCode{clickInProgress}
+	يساوي "صحيح". إذا كان الأمر كذلك فسنعرف أننا نقوم بالسحب باستخدام الفأرة.
+	\item  خلال حدث
+	\InlineCode{MOUSEBUTTONUP} :
+	نعيد القيمة 0 للمتغير المنطقي
+	\InlineCode{clickInProgress}
+	لأن النقر قد انتهى (إفلات زر الفأرة).
+\end{enumerate}
+
+\subsubsection{\texttt{SDL\_KEYDOWN}}
+
+تسمح أزرار لوحة المفاتيح بتحميل و حفظ المستوى و أيضاً بتغيير الشيء المُختار من أجل النقر اليساري بالفأرة. 
+
+\begin{Csource}
+case SDL_KEYDOWN:
+switch(event.key.keysym.sym)
+{
+	case SDLK_ESCAPE:
+		cont = 0;
+		break;
+	case SDLK_s:
+		saveLevel(map);
+		break;
+	case SDLK_c:
+		loadLevel(map);
+		break;
+	case SDLK_KP1:
+		currentObject = WALL;
+		break;
+	case SDLK_KP2:
+		currentObject = BOX;
+		break;
+	case SDLK_KP3:
+		currentObject = GOAL;
+		break;
+	case SDLK_KP4:
+		currentObject = MARIO;
+		break;
+}
+break;
+\end{Csource}
+
+هذه الشفرة سهلة للغاية. نقوم بتغيير الشيء إذا تم الضغط على الأرقام في اللوحة، نقوم بحفظ المستوى إذا تم الضغط على 
+\InlineCode{S}
+و نقوم بتحميل آخر مستوى تم حفظه بالنقر على
+\InlineCode{C}.
+
+\subsection{وقت اللصق !}
+
+ها نحن ذا : لقد أتتممنا كلّ الأحداث.\\
+الآن، لم يتبقّ لنا سوى لصق كل عناصر الخريطة بمساعدة حلقتين متداخلتين. الشفرة التالية تشبه الشفرة التي استعملناها في دالة اللعبة. سأعطيها لك لكنّي لن أعيد شرحها هنا :
+
+\begin{Csource}
+// Clearing the screen
+SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+// Placing the objects in the screen
+for (i = 0 ; i < NB_BLOCKS_WIDTH ; i++)
+{
+	for (j = 0 ; j < NB_BLOCKS_HEIGHT ; j++)
+	{
+		position.x = i * BLOCK_SIZE;
+		position.y = j * BLOCK_SIZE;
+		switch(map[i][j])
+		{
+			case WALL:
+			SDL_BlitSurface(wall, NULL, screen, &position);
+			break;
+			case BOX:
+			SDL_BlitSurface(box, NULL, screen, &position);
+			break;
+			case GOAL:
+			SDL_BlitSurface(level, NULL, screen, &position);
+			break;
+			case MARIO:
+			SDL_BlitSurface(mario, NULL, screen, &position);
+			break;
+		}
+	}
+}
+// Updating the screen
+SDL_Flip(screen);
+\end{Csource}
+
+لا يجب أن ننسى أن نحرر الذاكرة بعد الانتهاء من الحلقة الرئيسية بالشكل اللازم (باستعمال
+\InlineCode{SDL\_FreeSurface}) :
+
+\begin{Csource}
+SDL_FreeSurface(wall);
+SDL_FreeSurface(box);
+SDL_FreeSurface(level);
+SDL_FreeSurface(mario);
+\end{Csource}
+
+حسناً، إنتهينا من التنظيف !
