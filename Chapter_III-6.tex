@@ -144,7 +144,7 @@ Uint32 SDL_GetTicks(void);
 هذا العدد يتصاعد مع مضي الزمن. لمعلوماتك، التوثيق الخاص بالـ\textenglish{SDL}
 يشير إلى أن هذا العدد يصل إلى الحد الأقصى 49 يوما ثم يبدأ العدد من جديد ! لكن يجدر بالبرنامج الذي تكتبه ألا يستمرّ كلّ هذا الوقت و لهذا فلا تقلق من هذه الناحية.
 
-\subsubsection{إستعمال \texttt{SDL\_GetTicks} لإدارة الوقت}
+\subsection{إستعمال \texttt{SDL\_GetTicks} لإدارة الوقت}
 
 إذا كانت الدالة
 \InlineCode{SDL\_Delay}
@@ -447,6 +447,268 @@ else
 	يتوقّف عن التحرّك إذا تمّ الضغط على الزر
 	\InlineCode{P}،
 	و إذا تم الضغط مجدداً على نفس الزر ينطلق
-	\textenglish{Zozor} 
+	\textenglish{Zozor}
 	مجدداً. يحتاج الأمر متغيرا منطقيا بسيطا تقوم بتفعيله أو تعطيله.
+\end{itemize}
+
+\section{المُؤقـِتات (\textenglish{Timers})}
+
+\begin{warning}
+استعمال 
+\textit{المُؤقـِتات}
+أكثر تعقيداً قليلاً لأننا سنعتمد على مبدأ لم نره لحدّ الآن : المؤشّرات نحو الدوال. استعمال المُؤقـِتات ليس أمراً ضروريا : إذا وجدت بأنها صعبة جداً لتستعملها، يمكنك غضّ النظر عنها دون أي مشكل.
+\end{warning}
+
+المُؤقـِتات تشكّل طريقة أخرى لتحقيق ما نحن بصدد رؤيته بالدالة 
+\InlineCode{SDL\_GetTicks}.\\
+هي تقنية خاصّة نوعاً ما. بعض المبرمجين يجدونها عمليّة، و آخرون لا. هذا يعتمد على ذوقك البرمجي.
+
+ماهو 
+\textit{المُؤقـِت} ؟\\
+هو نظام يسمح بالطلب من الـ\textenglish{SDL}
+أن تستدعي دالة ما كل 
+\textenglish{X}
+ميلّي ثانية. يمكنك بهذا أن تنشئ دالة 
+\InlineCode{moveEnemy()}
+تقوم الـ\textenglish{SDL}
+باستدعائها تلقائيّا كل 50 مث كي يستطيع العدوّ التحرّك في مجالات معيّنة.
+
+\begin{information}
+كما كنت أقول لك الآن، يمكننا القيام بهذا بواسطة
+\InlineCode{SDL\_GetTicks}
+باستعمال التقنية التي رأيناها أعلاه.\\
+ما الفائدة إذا ؟ لنقل أن المُؤقـِتات تفرض علينا هيكلة برامجنا بشكل أفضل على شكل دوال.
+\end{information}
+
+\subsection{تهيئة نظام المُؤقـِتات}
+
+لكي نتمكّن من استعمال المُؤقـِتات، يجب علينا تهيئة الـ\textenglish{SDL}
+أولاً باستعمال عَـلَم خاص :
+\InlineCode{SDL\_INIT\_TIMER}.
+يجب عليك إذا استدعاء الدالة
+\InlineCode{SDL\_Init}
+كالتالي :
+
+\begin{Csource}
+SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
+\end{Csource}
+
+الـ\textenglish{SDL}
+جاهزة الآن لاستعمال المُؤقـِتات !
+
+\subsection{إضافة مُؤقـِت}
+
+لنضيف مُؤقـِتاً يجب علينا استدعاء الدالة
+\InlineCode{SDL\_AddTimer}.
+إليك نموذجها :
+
+\begin{Csource}
+SDL_TimerID SDL_AddTimer(Uint32 interval, SDL_NewTimerCallback callback, void *param);
+\end{Csource}
+
+توجد في الواقع دالتان تسمحان بإضافة مُؤقـِت في الـ\textenglish{SDL}
+هما :
+\InlineCode{SDL\_AddTimer}
+و
+\InlineCode{SDL\_SetTimer}
+و هما تقريباً متطابقتان. و مع ذلك،
+\InlineCode{SDL\_SetTimer}
+هي دالة قديمة موجودة دائماً لأسباب التوافقيّة
+(\textenglish{Compatibility}).
+حاليّا، إذا أردنا القيام بالأمر بالشكل الجيد، أنصحك باستعمال
+\InlineCode{SDL\_AddTimer}.
+
+الدالة تستقبل ثلاثة معاملات :
+
+\begin{itemize}
+	\item \textbf{المجال الزمني}
+	(بالميلي ثانية) بين كلّ استدعاء للدالة و آخر.
+	\item \textbf{اسم الدالة التي نريد استدعاءها}.
+	نسمّي هذه بدالة
+	\textit{الرد}
+	(\textenglish{Callback}) :
+	يتكفّل البرنامج باستدعاء الدالة بشكل دوري.
+	\item \textbf{المعاملات}
+	التي نبعثها لدالة الرد.
+\end{itemize}
+
+\begin{question}
+كيف يمكن لاسم دالة أن يكون معاملا ؟ اعتقدتُ أن المعاملات لا يمكنها أن تكون إلا أسماء متغيرات~!
+\end{question}
+
+في الواقع، يتم أيضاً حْفظ الدوال في الذاكرة خلال تحميل البرنامج. فهي تملك أيضاً عناوين خاصة بها. لهذا، يمكننا أن ننُشئ مؤشّرات نحو دوال ! تكفي كتابة اسم الدالة التي نريد استدعاءها للإشارة إلى عنوانها. و بهذا، ستعرف الـ\textenglish{SDL}
+العنوان بالذاكرة الذي يجب أن تذهب إليه لاستدعاء دالة الرد.\\
+إذا أردت معرفة المزيد حول المؤشرات نحو الدوال، أدعوك إلى قراءة الدرس التعليمي المكتوب بواسطة العضو 
+\textenglish{mleg}
+(في الموقع الفرنسي) و الذي يحللّ هذا الموضوع :
+
+\url{http://www.siteduzero.com/tutoriel-3-314203-les-pointeurs-sur-fonctions.html}
+
+تُرجع الدالة
+\InlineCode{SDL\_AddTimer}
+عدداً خاصاً بالمُؤقـِت 
+(\textenglish{ID}).
+يجدر بك تخزين هذه النتيجة في متغير من نوع
+\InlineCode{SDL\_TimerID}.
+هذا سيسمح لك لاحقاً بتعطيل المُؤقـِت : يكفي أن تشير إلى 
+\textenglish{ID}
+المُؤقـِت و يستمّ إيقافه.
+
+تسمح لنا الـ\textenglish{SDL}
+بتفعيل الكثير من المُؤقـِتات في نفس الوقت. هذا يشرح الفائدة من تخزين هويّة كلّ مُؤقـِت لكيّ نفرق بينها.
+
+سنُنشئ إذا هوية المُؤقـِت :
+
+\begin{Csource}
+SDL_TimerID timer; // A variable to save the number of timer
+\end{Csource}
+
+ثم نقوم بإنشاء المُؤقـِت :
+
+\begin{Csource}
+timer = SDL_AddTimer(30, moveZozor, &zozorPosition); // Starting the timer 
+\end{Csource}
+
+هنا، أنشئ مُؤقـِتا يحمل المعاملات التالية :
+
+\begin{itemize}
+	\item يتم استدعاؤه كلّ 30 مث.
+	\item يقوم باستدعاء دالة الرد المسمّاة 
+	\InlineCode{moveZozor}.
+	\item يبعث له كمعامل، مؤشّراً نحو وضعية
+	\textenglish{Zozor}
+	لكي يتمكّن من التعديل عليه.
+\end{itemize}
+
+لقد فهمت المبدأ : دور الدالة
+\InlineCode{moveZozor}
+هو تغيير وضعية
+\textenglish{Zozor}
+كل 30 مث.
+
+\subsubsection{إنشاء دالة الرد}
+
+إحذر : يجب أن تكون حذراً هنا. يجب أن يكون نموذج دالة الرد هو التالي 
+\textit{إجباريا} :
+
+\begin{Csource}
+Uint32 functionName(Uint32 interval, void *parameter);
+\end{Csource}
+
+لكي ننشئ دالة الرد المسمّاة
+\InlineCode{moveZozor}،
+يجب أن نكتب الدالة كالتالي :
+
+\begin{Csource}
+Uint32 moveZozor(Uint32 interval, void *parameter);
+\end{Csource}
+
+إليك الشفرة الخاصة بالدالة
+\InlineCode{moveZozor}،
+إنها معقّدة أكثر مما تبدو عليه :
+
+\begin{Csource}
+// Callback function (Will be called every 30 ms)
+Uint32 moveZozor(Uint32 interval, void *parameter)
+{
+	SDL_Rect* zozorPosition = parameter; // Automatic conversion from void* to SDL_Rect*
+	zozorPosition->x++;
+	return interval;
+}
+\end{Csource}
+
+ يتم استدعاء الدالة 
+\InlineCode{moveZozor}
+تلقائيّا كل 30 مث بواسطة الـ\textenglish{SDL}.
+تقوم هذه الأخيرة ببعث معاملين تماماً للدالة (لا أكثر و لا أقل) :
+
+\begin{itemize}
+	\item \textbf{المجال الزمني}
+	الذي يفرّق كل استدعائين للدالة (هنا 30 مث).
+	\item \textbf{المعامل "المخصّص"}
+	الذي طلبت إعطاءه للدالة .لاحظ، و من المهم جداً، أن هذا المعامل هو عبارة عن مؤشّر نحو
+	\InlineCode{void}.
+	هذا يعني أنه مؤشّر يؤشّر نحو أي نوع كان : على
+	\InlineCode{int}،
+	هيكل مخصّص، أو ،مثل هنا، على
+	\InlineCode{SDL\_Rect} (\InlineCode{zozorPosition}).\\
+لاحظ أيضاً أنه لا يمكن بعث أكثر من معامل مخصّص لدالة الرد. لحسن الحظ، نحن دائماً قادرون على إنشاء أنواع خاصة بنا (أو جداول) و التي ستكون عبارة عن تجميع لمتغيرات نريد بعثها للدالة.
+\end{itemize}
+
+المشكل هو أن هذا المعامل هو مؤشّر من نوع غير معروف
+(\InlineCode{void})
+للدالة. يجب إذا أن نقول للحاسوب أن هذا المعامل هو
+\InlineCode{SDL\_Rect*}
+(مؤشّر نحو
+\InlineCode{SDL\_Rect}).
+
+لفعل ذلك، أنشئ مؤشّرا نحو
+\InlineCode{SDL\_Rect}
+في دالتي التي تأخذ كمعامل المؤشّر 
+\InlineCode{parameter}.
+
+\begin{question}
+ما الفائدة من إنشاء مؤشّر \underline{ثانٍ} ليحمل نفس العنوان ؟
+\end{question}
+
+الفائدة هي أن
+\InlineCode{zozorPosition}
+من نوع
+\InlineCode{SDL\_Rect*}
+بعكس المتغير
+\InlineCode{parameter}
+الذي كان من نوع
+\InlineCode{void*}.
+
+يمكننا إذا الوصول إلى
+\InlineCode{zozorPosition->x}
+و
+\InlineCode{zozorPosition->y}.\\
+لو قمت بكتابة
+\InlineCode{parametre->x}
+أو
+\InlineCode{parametre->y}
+فالمترجم كان سيرفضها لأنّ متغيّرا من نوع
+\InlineCode{void}
+لا يملك هذه المركّبات.
+
+بعد ذلك، السطر التالي بسيط : نعدّل قيمة
+\InlineCode{zozorPosition->x}
+لتحريك
+\textenglish{Zozor}
+نحو اليمين.
+
+آخر شيء (مهم جداً) : يجب عليك إرجاع المتغير
+\InlineCode{interval}.
+ هذا يُشير للـ\textenglish{SDL}
+بأننا نريد أن نستمر في اعتبار أنه سيتم استدعاء الدالة كل 30 مث.\\
+إذا كنت تريد تغيير المجال الزمني لاستدعاء الدالة، يكفي أن تبعث قيمة أخرى (في غالب الأحيان لا نفعل ذلك).
+
+\subsubsection{إيقاف  المُؤقـِت}
+
+لإيقاف المُؤقـِت، الأمر بسيط :
+
+\begin{Csource}
+SDL_RemoveTimer(timer); // Stopping the timer
+\end{Csource}
+
+ يكفي إذا استدعاء
+\InlineCode{SDL\_RemoveTimer}
+و ذلك بالإشارة إلى هوية المُؤقـِت الذي نريد إيقافه.\\
+هنا أوقف المُؤقـِت مباشرة بعد الحلقة غير المنتهية، في نفس موضع
+\InlineCode{SDL\_FreeSurface}.
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item تمكّن الدالة 
+	\InlineCode{SDL\_Delay}
+	من إيقاف البرنامج مؤقّتا لعدد معين من الميلّي ثواني. هذا يسمح بإنقاص نسبة استعمال المُعالج الذي لن يكون "خلال نوم البرنامج" مستعملاً من طرف هذا الأخير.
+	\item يمكننا معرفة عدد الميلّي ثواني المنقضية منذ اشتغال البرنامج باستعمال 
+	\InlineCode{SDL\_GetTicks}،
+	بواسطة عمليات حسابية بسيطة، يمكننا الاستفادة من هذا لكي نقوم بمعالجة غير مُعطّلة للأحداث بواسطة
+	\InlineCode{SDL\_PollEvent}.
+	\item المُؤقـِتات تشكّل نظاما يسمح باستدعاء دوالك (المسمّاة بدوال الرد) على مجالات زمنيّة محدّدة. يمكننا التحصل على نفس النتيجة باستعمال
+	\InlineCode{SDL\_GetTicks}
+	لكن المُؤقـِتات تساعد على هيكلة البرنامج بشكل أفضل و جعله أحسن من ناحية القراءة.
 \end{itemize}

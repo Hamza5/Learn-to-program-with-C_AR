@@ -49,7 +49,7 @@
     - [x] <span dir='rtl'>إظهار صور</span>
     - [x] <span dir='rtl'>معالجة الأحداث</span>
     - [x] <span dir='rtl'>عمل تطبيقي: Mario Sokoban</span>
-    - [ ] <span dir='rtl'>تحكّم في الوقت</span>
+    - [x] <span dir='rtl'>تحكّم في الوقت</span>
     - [ ] <span dir='rtl'>كتابة نصوص باستخدام SDL_ttf</span>
     - [ ] <span dir='rtl'>تشغيل الصوت بـFMOD</span>
     - [ ] <span dir='rtl'>عمل تطبيقي: الإظهار الطيفيّ للصوت</span>
