@@ -212,3 +212,218 @@
 هيا، حان الوقت لنتعلّم كيف نستخدم
 \textenglish{SDL\_ttf}
 الآن !
+
+\section{تحميل \textenglish{SDL\_ttf}}
+
+\subsection{التضمين}
+
+قبل كلّ شيء، يجب تضمين الملف الرأسي التالي قبل كلّ استعمال لهذه المكتبة :
+
+\begin{Csource}
+#include <SDL/SDL_ttf.h>
+\end{Csource}
+
+إذا صادفت أخطاء ترجمة الآن، تأكد بأنك وضعت الملف
+\InlineCode{SDL\_ttf.h}
+في المجلّد
+\InlineCode{mingw32/include/SDL}
+و ليس في 
+\InlineCode{mingw32/include}
+فقط.
+
+\subsection{تشغيل \textenglish{SDL\_ttf}}
+
+تماما مثل الـ\textenglish{SDL}،
+تحتاج
+\textenglish{SDL\_ttf}
+أن ُتشغّل في بداية الشفرة وتُوقّف في نهايتها.\\
+توجد دالتان تشبهان كثيراً الدالتين الخاصتين بالـ\textenglish{SDL} :
+
+\begin{itemize}
+	\item \InlineCode{TTF\_Init} :
+	تقوم ببدء تشغيل
+	\textenglish{SDL\_ttf}.
+	\item \InlineCode{TTF\_Quit} :
+	توقّف
+	\textenglish{SDL\_ttf}.
+\end{itemize}
+
+\begin{information}
+ليس واجباً أن يتم بدء تشغيل
+\textenglish{SDL}
+قبل
+\textenglish{SDL\_ttf}.
+\end{information}
+
+ لكي تقوم ببدء تشغيل
+\textenglish{SDL\_ttf}
+(نقول أيضاً تهيئة)، يجب أن نستدعي الدالة
+\InlineCode{TTF\_Init}.
+هذه الأخيرة لا تحتاج إلى أن تستقبل أي معامل و هي تقوم بإرجاع القيمة
+$-1$
+إن حدث أي خطأ.
+
+يمكنك البدء في تشغيل
+\textenglish{SDL\_ttf}
+ببساطة كالتالي :
+
+\begin{Csource}
+TTF_Init();
+\end{Csource}
+
+إذا أردت أن تتأكد ما إن كان قد حدث خطأ أم لا، جرّب الشفرة التالية :
+
+\begin{Csource}
+if(TTF_Init() == -1)
+{
+	fprintf(stderr, "Error initializing TTF_Init : %s\n", TTF_GetError());
+	exit(EXIT_FAILURE);
+}
+\end{Csource}
+إذا كان هناك خطأ في تشغيل
+\textenglish{SDL\_ttf}،
+سيتم إنشاء ملف
+\InlineCode{stderr.txt}
+(في
+\textenglish{Windows}
+على الأقل) يحتوي على رسالة تشرح الخطأ.\\
+للذين يطرحون السؤال : الدالة
+\InlineCode{TTF\_GetError}
+تقوم بإرجاع آخر رسالة خطأ للـ\textenglish{SDL\_ttf}،
+و لهذا استعملته في الـ\InlineCode{fprintf}.
+
+\subsection{إيقاف \textenglish{SDL\_ttf}}
+
+ لنوقّف المكتبة، نستدعي الدالة
+\InlineCode{TTF\_Quit}.
+هي أيضاً لا تحتاج أي معامل. يمكنك استدعاؤها قبل أو بعد
+\InlineCode{SDL\_Quit}
+هذا لا يهم  :
+
+\begin{Csource}
+TTF_Quit();
+\end{Csource}
+
+\subsection{تحميل خط}
+
+حسناً كان كلّ شيء جيداً و غير معقّدٍ، لكننا لم نستمتع بعد. لننتقل إلى الأهمّ إذا أردت ذلك : و الآن بما أنه تم تحميل 
+\textenglish{SDL\_ttf}،
+يجب علينا أن نقوم بتحميل خط ما. ما إن يتم هذا الشيء، يمكننا أخيراً كتابة النص !
+
+هنا أيضاً، توجد دالتان :
+\begin{itemize}
+	\item \InlineCode{TTF\_OpenFont} :
+	تفتح ملف خط
+	(\InlineCode{.ttf}).
+	\item \InlineCode{TTF\_CloseFont} : 
+	تغلق الملف المفتوح.
+\end{itemize}
+
+يجدر بالدالة
+\InlineCode{TTF\_OpenFont}
+أن تخزّن النتيجة في متغير من نوع
+\InlineCode{TTF\_Font}.
+لهذا يجب عليك إنشاء مؤشّر من نوع
+\InlineCode{TTF\_Font}
+كالتالي :
+
+\begin{Csource}
+TTF_Font *font = NULL;
+\end{Csource}
+
+يحتوي المؤشّر
+\InlineCode{font}
+إذا على معلومات خاصة بالخط المفتوح.
+
+تأخذ الدالة 
+\InlineCode{TTF\_OpenFont}
+معاملين :
+
+\begin{itemize}
+	\item اسم ملف الخط (بصيغة
+	\InlineCode{.ttf})
+	الذي نريد فتحه. الأمثل هو وضع ملف الخط في مجلّد المشروع. مثال عن ملف :
+	\InlineCode{arial.ttf}
+	(من أجل الخط
+	\textenglish{Arial}).
+	\item حجم الخط الذي نريد استعماله. يمكنك مثلا استعمال حجم 22.
+	
+	إنها نفس الحجوم التي تستعملها في برامج معالجة النصوص مثل
+	\textenglish{Word}.
+\end{itemize}
+
+لم يتبقّ لنا سوى إيجاد الخطوط ذات الصيغة
+\InlineCode{.ttf}.
+أنت تملك أصلاً العديد منها على حاسوبك، لكن يمكنك تنزيلها من الأنترنت كما سنرى الآن.
+
+\subsubsection{على حاسوبك}
+
+لديك أصلا خطوط على حاسوبك !\\
+إن كنت تعمل بالويندوز، ستجد الكثير من هذه الملفات في المجلّد
+\InlineCode{C:\textbackslash Windows\textbackslash Fonts}.\\
+ليس عليك سوى نسخ الملف الخاص بالخط الذي يعجبك و لصقه في مجلّد المشروع. 
+
+إذا كان اسم الملف يحتوي على حروف "غريبة" كالفراغات، الحروف ذات العلامات الصوتية 
+(\textenglish{accents})
+أو حتى الحروف الكبيرة، أنصحك بإعادة تسمية هذا الملف. و لكي نكون متيقنين من عدم وجود أيّ مشكل، لا تستعمل سوى الأحرف الصغيرة و تجنّب الفراغات.
+
+\begin{itemize}
+	\item مثال عن اسم خاطئ : 
+	\InlineCode{TIMES NEW ROMAN.TTF}.
+	\item مثال عن اسم صحيح :
+	\InlineCode{times.ttf}.
+\end{itemize}
+
+\subsubsection{على الأنترنت}
+
+الخيار الآخر : احصل على خطّ من الأنترنت. ستجد الكثير من المواقع التي تقترح خطوطا مجانية و أصلية للتنزيل.
+
+أنصحك شخصيا بزيارة الموقع
+\href{http://www.dafont.com/}{\textenglish{dafont.com}}
+لأنّه مصنّف بشكل جيّد و محتواه منظّم و منوّع.
+
+لاحظ الصور التالية التي ستعطيك فكرة عن الخطوط التي ستجدها هناك بسهولة :
+
+\Picture{Chapter_III-7_Font1}
+\Picture{Chapter_III-7_Font2}
+\Picture{Chapter_III-7_Font3}
+
+\subsubsection{تحميل الخط}
+
+ أقترح عليك استعمال الخط 
+\textenglish{Angelina} (\url{http://www.dafont.com/angelina.font})
+ لبقية الأمثلة.
+
+فلنفتح الخط كالتالي  :
+
+\begin{Csource}
+font = TTF_OpenFont("angelina.ttf", 65);
+\end{Csource}
+
+الخط المستعمل سيكون
+\InlineCode{angelina.ttf}.
+لقد قمت وضع هذا الخط في مجلّد المشروع كما قمت بإعادة تسميته لكي يكون كلّه بحروف صغيرة.\\
+سيكون للخط الحجم 65. ستبدو الكتابة كبيرة لكنه خطّ خاص يستلزم ذلك لكي يظهر بشكل جيد.
+
+الأمر المهم هو أن
+\InlineCode{TTF\_OpenFont}
+تخزّن النتيجة في المتغير
+\InlineCode{font}،
+ستعيد استعمال هذا المتغير الآن بكتابة نص. فهي تسمح بالإشارة إلى الخط الذي نريد أن نستعمله لكي نكتب النص.
+
+\begin{information}
+لا تحتاج إلى فتح الخط في كلّ مرة تريد فيها الكتابة به : افتحه مرّة واحدة في بداية البرنامج و أغلقه في نهايته.
+\end{information}
+
+\subsubsection{غلق الخط}
+
+يجب التفكير في غلق كل خط قمنا بفتحه قبل استدعاء
+\InlineCode{TTF\_Quit}.
+في حالتي، هذا ما تكون عليه الشفرة :
+
+\begin{Csource}
+TTF_CloseFont(font); // Must be before TTF_Quit();
+TTF_Quit();
+\end{Csource}
+
+هكذا يكون العمل !
