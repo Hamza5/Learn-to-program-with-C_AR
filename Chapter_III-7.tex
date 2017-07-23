@@ -13,3 +13,202 @@
 دورها هو إنشاء مساحة
 \InlineCode{SDL\_Surface}
 إنطلاقا من النص الذي نبعثه لها.
+
+\section{تسطيب \textenglish{SDL\_ttf}}
+
+يجب أن تعرف أنه، مثل
+\textenglish{SDL\_image}، \textenglish{SDL\_ttf}
+هي مكتبة تحتاج إلى أن تكون المكتبة
+\textenglish{SDL}
+مثبّتة من قبل. حسناً : إذا كنت إلى حدّ الآن لم تتمكّن من تسطيب المكتبة
+\textenglish{SDL}
+فهذا أمر شنيع و لهذا فسأعتبر أنك قمت بذلك !
+
+تماما مثل 
+\textenglish{SDL\_image}،
+فإن المكتبة 
+\textenglish{SDL\_ttf}
+هي واحدة من المكتبات المُرتبطة بالـ\textenglish{SDL}
+الأكثر شعبية (أي أنه يتم تحميلها بكثرة). كما ستُلاحظ، هذه المكتبة مُبرمجة بشكل جيد. ما إن تجيد استعمالها لن يمكنك أن تتوقّف عن ذلك !
+
+\subsection{كيف تعمل \textenglish{SDL\_ttf} ؟}
+
+\textenglish{SDL\_ttf}
+لا تقوم بإظهار صور 
+\textenglish{bitmap}
+لتولّد نصا في مساحات. في الحقيقة، هي طريقة ثقيلة لفعلها و لن يتاح لنا استعمال سوى خط واحد. \\
+في الواقع، تستدعي المكتبة
+\textenglish{SDL\_ttf}
+مكتبةَ أخرى : 
+\textenglish{FreeType}.
+هي مكتبة قادرة على قراءة ملفات خطوط بصيغة
+\InlineCode{.ttf}
+لتُخرج منها صورة. تقوم
+\textenglish{SDL\_ttf}
+باسترجاع هذه الصورة و تحوّلها للـ\textenglish{SDL}
+و ذلك بإنشاء مساحة
+\InlineCode{SDL\_Surface}.
+
+و بهذا فإن
+\textenglish{SDL\_ttf}
+تحتاج المكتبة
+\textenglish{FreeType}
+لكي تشتغل، و إلا فلن تكون قادرة على قراءة ملفات الخطوط
+\InlineCode{.ttf}.
+
+إذا كنت تعمل بـ\textbf{\textenglish{Windows}}
+و تستعمل، مثلما أفعل، النسخة المُترجمَة للمكتبة، لن تحتاج إلى تحميل أي شيء لأن
+\textenglish{FreeType}
+مضمّنة من قبل في المكتبة الحيّة
+\InlineCode{SDL\_ttf.dll}
+و لهذا فليس عليك القيام بأي شيء.
+
+إذا كنت تعمل بالـ\textbf{\textenglish{GNU/Linux}}
+أو
+\textbf{\textenglish{Mac OS X}}
+فمن اللازم أن تعيد ترجمة المكتبة، فتلزمك
+\textenglish{FreeType}
+لتتم الترجمة. إذهب إذن إلى صفحة تحميل
+\textenglish{FreeType} :
+
+\url{http://www.freetype.org/download.html#stable}
+
+لنحمّل الملفات الخاصة بالمطورين.
+
+\subsection{تثبيت \textenglish{SDL\_ttf}}
+
+إذهب إلى  صفحة تحميل 
+\textenglish{SDL\_ttf} :
+
+\url{http://www.libsdl.org/projects/SDL_ttf/}
+
+هنا، اختر الملف اللازم من القسم
+"\textit{\textenglish{Binary}}".
+
+\begin{information}
+في
+\textenglish{Windows}،
+ لاحظ أنه لا يوجد سوى ملفان بصيغة 
+\InlineCode{.zip}
+يحملان في نهاية اسميهما اللاحقتين
+\InlineCode{win32}
+و
+\InlineCode{VC6}.
+الأولى 
+(\InlineCode{win32})
+تحتوي الـ\textenglish{DLL}
+التي تحتاج إلى تقديمها مع الملف التنفيذي. يجب عليك أيضاً وضع هذه الـ\textenglish{DLL}
+في مجلّد المشروع لتستطيع تجريب البرنامج، طبعا.
+
+الثانية 
+(\InlineCode{VC6})
+تحتوي الملفات 
+\InlineCode{.h}
+و الملفات
+\InlineCode{.lib}
+التي تحتاجها للبرمجة. يمكننا أن نفكّر من خلال الاسم أن هذه الملفّات تخص
+\textenglish{Visual C++}
+فقط، لكن في الحقيقة، و بشكل خاص، الملف
+\InlineCode{.lib}
+يعمل أيضاً مع
+\textenglish{mingw32}،
+سيشتغل إذن في الـ\textenglish{Code::Blocks}.
+\end{information}
+
+الملف
+\InlineCode{.zip}
+يحتوي كالعادة مجلد
+\InlineCode{include}
+و مجلد
+\InlineCode{lib}.
+قم بوضع محتوى المجلد
+\InlineCode{include}
+في المسار
+\InlineCode{mingw32/include/SDL}،
+و محتوى المجلد
+\InlineCode{lib}
+في المسار 
+\InlineCode{mingw32/lib}.
+
+\begin{warning}
+ يجدر بك نسخ الملف
+\InlineCode{SDL\_ttf.h}
+في المجلد
+\InlineCode{mingw32/include/SDL}
+و ليس في المجلد 
+\InlineCode{mingw32/include}
+فقط. احذر الخطأ !
+\end{warning}
+
+\subsection{تخصيص مشروع من أجل الـ\textenglish{SDL\_ttf}}
+
+بقيت لنا مرحلة واحدة أخيرة : تخصيص المشروع لكي يكون قادراً على استعمال
+\textenglish{SDL\_ttf}
+بشكل جيد. يجب أن يتم التعديل على خصائص محرّر الروابط لكي يُترجم البرنامج بشكل جيد و ذلك باستعمال
+\textenglish{SDL\_ttf}.
+
+لقد تعلّمت من قبل هذه العملية بالنسبة لـ\textenglish{SDL\_image}،
+و لهذا سأسرع قليلاً. \\
+بما أنني أعمل في الـ\textenglish{Code::Blocks}
+سأعطيك العملية الخاصة بهذه البيئة التطويرية. بالنسبة لباقي البيئات، فالطريقة لا تختلف كثيراً عن هذه :
+
+\begin{itemize}
+	\item توجّه نحو القائمة
+	\InlineCode{Project} / \InlineCode{Build Options}.
+	\item في القسم
+	\InlineCode{Linker}
+	أنقر على الزر الصغير
+	\InlineCode{Add}.
+	\item أشر إلى المسار الذي يوجد به الملف
+	\InlineCode{SDL\_ttf.lib}
+	(بالنسبة لي هو في\\
+	\InlineCode{C:\textbackslash Program Files\textbackslash CodeBlocks\textbackslash mingw32\textbackslash lib}).
+	\item ستظهر لك هذه الرسالة :
+	"\textenglish{Keep this as a relative path ?}"
+	لا يهمّ ما تختاره لأن الأمر سيشتغل في كلتا الحالتين. أنصحك أن تجيب بالسلب لأن المشروع لن يشتغل لو وضعته في مسار آخر غير المتواجد به لو أنك أجبت بالإيجاب.
+	\item وافق على التغييرات بالنقر على 
+	\InlineCode{OK}.
+\end{itemize}
+
+\begin{question}
+ألا نحتاج إلى ربط المكتبة
+\textenglish{FreeType}
+أيضاً ؟
+\end{question}
+
+كلا، مثلما قلتُ فـ\textenglish{FreeType}
+مضمّنة في الـ\textenglish{DLL}
+الخاصة بـ\textenglish{SDL\_ttf}.
+لهذا فلن يكون عليك الإهتمام بها، لأن
+\textenglish{SDL\_ttf}
+تفعل ذلك الآن.
+\subsection{الملفات التوثيقية}
+
+و الآن بما أنك أصبحت مبرمجاً محنّكاً تقريباً، يجدر بك أن تطرح التساؤل التالي : "لكن أين هو التوثيق ؟" إن لم تطرح هذا السؤال فهذا يعني أنّك لازلت لم تصبح بعد مبرمجاً محنّكاً.
+
+يوجد بالطبع دروس تفصّل في كيفية عمل المكتبات، مثل هذا الكتاب، و لكن :
+
+\begin{itemize}
+	\item لن أستطيع أن أضع لك فصلاً حول كل المكتبات الموجودة (حتى لو أمضيت حياتي كلّها في ذلك، لن يكفيني الوقت !). و لهذا يجب عاجلاً أم آجلا قراءة التوثيق و يجدر بك أن تتعوّد على ذلك من الآن !
+	\item من جهة أخرى، في غالب الأحيان تكون المكتبة معقّدة نوعاً ما و تحتوي كثيراً من الدوال. لن أتمكن من تقديم كلّ هذه الدوال في هذا الفصل لأنه سيكون بذلك طويلاً جداً !
+\end{itemize}
+
+من الواضح جداً أن التوثيق يكون كاملا و يلمّ بكل حفايا المكتبة، و لهذا أفضّل أن أعطيك من الآن رابط صفحة التوثيق الخاصة بـ\textenglish{SDL\_ttf} :
+
+\url{http://sdl.beuc.net/sdl.wiki/SDL_ttf}
+
+التوثيق متوفّر بصيغ مختلفة : 
+\textenglish{HTML}
+على الشبكة، 
+\textenglish{HTML}
+مضغوطة،
+\textenglish{PDF}،
+إلخ. خذ النسخة التي تناسبك.
+
+ستجد بأن
+\textenglish{SDL\_ttf}
+مكتبة بسيطة جداً : يوجد بها قليل من الدوال (حوالي 40 - 50، نعم إنها قليلة !). يجدر بهذا أن تكون إشارة (للمبرمجين المحنّكين من ضمن القرّاء) إلى أن هذه المكتبة سهلة و ستستطيع التعامل معها سريعاً.
+
+هيا، حان الوقت لنتعلّم كيف نستخدم
+\textenglish{SDL\_ttf}
+الآن !
