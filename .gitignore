@@ -7,3 +7,5 @@
 !*.md
 !Pictures/
 !Pictures/*
+# But ignore hidden files
+Pictures/.*
