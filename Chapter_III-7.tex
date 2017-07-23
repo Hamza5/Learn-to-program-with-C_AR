@@ -427,3 +427,428 @@ TTF_Quit();
 \end{Csource}
 
 هكذا يكون العمل !
+
+\section{الطرق المختلفة للكتابة}
+
+و الآن، بما أنه تم تحميل
+\textenglish{SDL\_ttf}
+و أن لدينا متغيرا 
+\InlineCode{font}
+محمّل هو الآخر، لن يمنعنا أي شيء و أي شخص من كتابة نص في نافذة 
+\textenglish{SDL} !
+
+جيد : كتابة النص هو أمر جيد، لكن بواسطة أي دالة ؟ من خلال التوثيق توجد على الأقل 12 دالة لفعل ذلك !
+
+في الواقع، توجد 3 طرق مختلفة للـ\textenglish{SDL\_ttf}
+لكي ترسم نصاً.
+
+
+\begin{itemize}
+	\item \textbf{\textenglish{Solid}}
+	(الصورة 1) : هي التقنية الأكثر سرعة. ستتم كتابة النص بسرعة في
+	\InlineCode{SDL\_Surface}.
+	ستكون المساحة شفافة لكنها لن تستخدم إلا مستوى واحدا من الشفافية (لقد تعلّمنا ذلك في الفصول السابقة). هذا أمر عملي، لكن النص لن يكون جميلاً لأنه حوافه لن تكون منحوتة بشكل جيد و خاصة إن كان مكتوبا بحجم ضخم. استعمل هذه التقنية حينما يكون عليك تغيير النص كثيراً، مثلا لإظهار الوقت المنقضي أو عدد الـ\textenglish{FPS}
+	الخاص بلعبة.
+	\item \textbf{\textenglish{Shaded}}
+	(الصورة 2) : هذه المرة، سيكون النص جميلاً. فالحروف ستكون محسّنة أكثر (هذا يعني أن محيط الحواف سيكون مُـلطّفا بشكل مُريح لعين الإنسان) و سيظهر النص أكثر نعومة. يوجد عيب في هذه التقنية : يجب أن تكون الخلفية ذات لون واحد موّحد. يستحيل جعل خلفية الـ\InlineCode{SDL\_Surface}
+	شفافة بطريقة الـ\textenglish{Shaded}.
+	\item \textbf{\textenglish{Blended}}
+	(الصورة 3) : هي التقنية الأكثر قوّة، لكنها بطيئة. في الواقع، هي تأخذ الوقت اللازم الذي تأخذه التقنية 
+	\textenglish{Shaded}
+	لإنشاء الـ\InlineCode{SDL\_Surface}.
+	الإختلاف الوحيد بينها و بين الـ\textenglish{Shaded}،
+	هي أنه يمكنك لصقُ النص على صورة و سيتم احترام الشفافية (على عكس
+	\textenglish{Shaded}
+	التي تفرض وجود خلفية موحّدة اللون). احذر : عملية اللصق بهذه الطريقة أبطأ من تلك الخاصة بالـ\textenglish{Shaded}.
+\end{itemize}
+
+\Picture{Chapter_III-7_Solid}
+\Picture{Chapter_III-7_Shaded}
+\Picture{Chapter_III-7_Blended}
+
+ملخّص :
+
+\begin{itemize}
+	\item إذا كان لديك نص يتغير محتواه كثيراً، كعداد عكسي، استعمل التقنية 
+	\textenglish{Solid}.
+	\item إذا كان النص لا يتغير كثيراً و أنك تريد لصق النص على خلفية موحدة اللون، استعمل التقنية 
+	\textenglish{Shaded}.
+	\item إذا كان النص لا يتغير كثيراً و لكنك تريد لصقه على خلفية غير موحدّة اللون (كصورة مثلاً) استعمل التقنية 
+	\textenglish{Blended}.
+\end{itemize}
+
+هكذا إذا، يجدر بك أن تكون قد تعوّدت قليلاً على هذه الأساليب الخاصة بـ\textenglish{SDL\_ttf}
+في الكتابة.
+
+لقد قلتُ لك أنه توجد 12 دالة لذلك.\\
+في الواقع، من أجل كلّ طريقة في الكتابة، توجد 4 دوال لذلك. كلّ دالة تكتب النص بالاستعانة بمجموعة محارف 
+(\textenglish{Charset})
+مختلفة. هذه الدوال هي :
+
+\begin{itemize}
+	\item \textenglish{Latin1}،
+	\item \textenglish{UTF8}،
+	\item \textenglish{Unicode}،
+	\item \textenglish{Unicode Glyph}.
+\end{itemize}
+
+الأمثل أن تختار
+\textenglish{Unicode}
+لأنها مجموعة محارف تحوي أغلب الحروف و الإشارات الموجودة على وجه الأرض. و لكن، استعمال الـ\textenglish{Unicode}
+ليس سهلا دائماً (محرف واحد يأخذ حجما أكثر من حجم
+\InlineCode{char}
+في الذاكرة)، فلن نرَ كيفية استعماله هنا.
+
+إذا كان برنامجك مكتوباً بالفرنسية فمجموعة
+\textenglish{Latin1}
+تكفي بإسهاب، يمكنك الاكتفاء بهذه الأخيرة.
+
+الدوال الثلاثة التي تستعمل نظام التشفير
+\textenglish{Latin1}
+هي :
+
+\begin{itemize}
+	\item \InlineCode{TTF\_RenderText\_Solid}،
+	\item \InlineCode{TF\_RenderText\_Shaded}،
+	\item \InlineCode{TTF\_RenderText\_Blended}.
+\end{itemize}
+
+\subsection{مثال عن كتابة نص بطريقة الـ\textenglish{Blended}}
+
+لكيّ نختار لونا بـ\textenglish{SDL\_ttf}،
+لن نستعمل نفس النوع كما بالـ\textenglish{SDL}
+(إنشاء متغير من نوع
+\InlineCode{Uint32}
+بالاستعانة بالدالة
+\InlineCode{SDL\_MapRGB}).\\
+بالعكس، سنستعمل هيكلا جاهزا من طرف الـ\textenglish{SDL}
+و هو : 
+\InlineCode{SDL\_Color}.
+هذا الهيكل يحتوي ثلاثة مركّبات~: كمية الأحمر، الأخضر و الأزرق.
+
+إذا أردت إنشاء متغير
+\InlineCode{blackColor}،
+يجب عليك أن تكتب إذا :
+
+\begin{Csource}
+SDL_Color blackColor = {0, 0, 0};
+\end{Csource}
+
+\begin{warning}
+احذر لكي لا تخلط بينها و بين الألوان التي تستعملها عادة 
+\textenglish{SDL} !\\
+الـ\textenglish{SDL}
+تستعمل متغيرات
+\InlineCode{Uint32}
+يتم إنشاؤها بمساعدة 
+\InlineCode{SDL\_MapRGB}.\\
+بينما
+\textenglish{SDL\_ttf}
+تستعمل متغيرات
+\InlineCode{SDL\_Color}.
+\end{warning}
+
+سنقوم بكتابة نص بالأسود في
+\InlineCode{SDL\_Surface}،
+نسميها
+\InlineCode{text}.
+
+\begin{Csource}
+text = TTF_RenderText_Blended(font, "Salut les Zér0s !", blackColor);
+\end{Csource}
+
+أنت ترى  المعاملات التي بعثتاها بالترتيب : الخط (من نوع
+\InlineCode{TTF\_Font})،
+النص الذي نريد كتابته و أخيراً اللون (من نوع
+\InlineCode{SDL\_Color}).\\
+يتم تخزين النتيجة في مساحة. تحسب
+\textenglish{SDL\_ttf}
+تلفائياً الحجم اللازم للمساحة بدلالة حجم النص و عدد الحروف التي تريد كتابتها.
+
+كما هو الحال بالنسبة لأي مساحة، سيحتوي المؤشّر
+\InlineCode{text}
+المركّبات
+\InlineCode{w}
+و
+\InlineCode{h}
+التي تشير بالترتيب إلى عرض و ارتفاع المساحة. إذن فهذه طريقة جيدة لمعرفة أبعاد النص ما إن تتم كتابة هذا الأخير على المساحة. لن يكون عليك سوى كتابة :
+
+\begin{Csource}
+text->w // Gives the width
+text->h // Gives the height
+\end{Csource}
+
+\subsection{الشفرة المصدرية الكاملة لكتابة نص}
+
+أنت تعرف الآن كلّ ما يجب أن تتم معرفته بخصوص الـ\textenglish{SDL\_ttf}،
+فلنرى الشفرة المصدرية التي تلخّص كتابة نص بطريقة الـ\textenglish{Blended} :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *text = NULL, *wallpaper = NULL;
+	SDL_Rect position;
+	SDL_Event event;
+	TTF_Font *font = NULL;
+	SDL_Color blackColor = {0, 0, 0};
+	int cont = 1;
+	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();	
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Managing text with SDL_ttf", NULL);
+	wallpaper = IMG_Load("moraira.jpg");
+	// Loading the font 
+	font = TTF_OpenFont("angelina.ttf", 65);
+	// Writing the text on the surface with blended mode (the optimal one)
+	text = TTF_RenderText_Blended(font, "Salut les Zér0s !", blackColor);
+	while (cont)	
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+		}
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+		position.x = 0;
+		position.y = 0;
+		SDL_BlitSurface(wallpaper, NULL, screen, &position); // Blitting the wallpaper
+		position.x = 60;
+		position.y = 370;
+		SDL_BlitSurface(text, NULL, screen, &position); // Blitting the text
+		SDL_Flip(screen);
+	}
+	TTF_CloseFont(font);
+	TTF_Quit();
+	SDL_FreeSurface(text);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+النتيجة تمثّلُها الصورة التالية :
+
+\Picture{Chapter_III-7_Blended-text}
+
+إذا أردت تغيير طريقة الكتابة للتجريب، لا يوجد سوى سطر للتعديل : السطر الخاص بإنشاء المساحة (استدعاء الدالة 
+\InlineCode{TTF\_RenderText\_Blended}).
+
+\begin{warning}
+تأخذ الدالة
+\InlineCode{TTF\_RenderText\_Shaded}
+معاملا رابعا على عكس الأخرتين. هذا المعامل الأخير هو لون الخلفية الذي نريد استعماله. يجب عليك إذا إنشاء متغير من نوع
+\InlineCode{SDL\_Color}
+للإشارة إلى لون الخلفية (مثلا أبيض).
+\end{warning}
+
+\subsection{خصائص كتابة نص}
+
+يمكن أيضاً تحديد خصائص الخط، كـغليظ مثلاً، مائل و مسطّر. 
+
+يجب أولاّ أن يتم تحميل الخط و لهذا يجب أن يتوفر لديك متغير
+\InlineCode{font}
+صحيح. و يمكنك إذا استدعاء الدالة 
+\InlineCode{TTF\_SetFontStyle}
+التي ستقوم بالتعديل على الخط لكي يكون غليظا، مائلا أو مسطّرا حسب الرغبة. الدالة تأخذ معاملين :
+
+\begin{itemize}
+	\item الخط الذي نريد تعديله.
+	\item دمج أعلام للإشارة إلى نمط الكتابة الذي نريد إعطاءه : غليظ، مائل أو مسطّر.
+\end{itemize}
+
+بالنسبة للأعلام، يجب عليك استعمال الثوابت التالية :
+
+\begin{itemize}
+	\item \InlineCode{TTF\_STYLE\_NORMAL} :
+	عادي.
+	\item \InlineCode{TTF\_STYLE\_BOLD} :
+	غليظ.
+	\item \InlineCode{TTF\_STYLE\_ITALIC} :
+	مائل.
+	\item \InlineCode{TTF\_STYLE\_UNDERLINE} :
+	مسطّر.
+\end{itemize}
+
+بما أنها قائمة من الاعلام، يمكنك الدمج بينها باستعمال الإشارة
+\InlineCode{|}
+كما تعلّمنا القيام بذلك سابقاً.
+
+فلنجرّب :
+
+\begin{Csource}
+// Loading the font
+font = TTF_OpenFont("angelina.ttf", 65);
+// The text will be italic and underlined
+TTF_SetFontStyle(font, TTF_STYLE_ITALIC | TTF_STYLE_UNDERLINE);
+// Writing the text in italic and underlined modes
+text = TTF_RenderText_Blended(font, "Salut les Zér0s !", blackColor);
+\end{Csource}
+
+النتيجة : النص مكتوب بخاصية مائل و مسطّر :
+
+\Picture{Chapter_III-7_Italic-underlined-text}
+
+لإرجاع خط ما إلى حالته العاديّة، يكفي أن نعيد استدعاء الدالة
+\InlineCode{TTF\_SetFontStyle}
+باستعمال العلم
+\InlineCode{TTF\_STYLE\_NORMAL}
+هذه المرّة.
+
+\subsection{تمرين : العداد}
+
+سيجمع هذا التمرين بين المفاهيم التي تعلّمتها في هذا الفصل و فصل التحكّم في الوقت. مهمّتك، إن قبلتها، هي إنشاء عداد تتصاعد قيمته كلّ أعشار الثانية، أي أنه سيُظهر بشكل تقدّمي القيم التالية : 0، 100، 200، 300، 400 \dots
+بعد ثانية، يجدر بالرقم 1000 أن يظهر.
+
+\subsubsection{طريقة للكتابة في سلسلة محارف}
+
+لكي تحلّ هذا التمرين، ستحتاج إلى معرفة كيفية الكتابة داخل سلسلة محارف في الذاكرة.\\
+في الواقع يجب عليك أن تعطي للدالة
+\InlineCode{TTF\_RenderText}
+متغيرا من نوع
+\InlineCode{char*}
+لكن ماهو متوفّر لديك هو عدد (من نوع
+\InlineCode{int}
+مثلا). كيف يمكننا تحويل عدد إلى سلسلة محارف ؟
+
+يمكننا أن نستعمل من أجل هذا الدالة
+\InlineCode{sprintf}.\\
+إنها تعمل بنفس الطريقة التي تعمل بها
+\InlineCode{fprintf}،
+الاختلاف الوحيد هو أنه في عوض الكتابة في ملف، ستتم الكتابة في سلسلة محارف (الحرف
+\textenglish{s}
+يختصر الكلمة
+\textenglish{string}
+و التي تعني "سلسلة محارف" بالإنجليزيّة).\\
+أوّل معامل تقدّمه سيكون إذا مؤشّرا نحو جدول من
+\InlineCode{char}.
+
+\begin{critical}
+قم بحجز مكان كافٍ من أجل جدول
+\InlineCode{char}
+إذا أردت ألا تتجاوز في الذاكرة !
+\end{critical}
+
+مثال :
+
+\begin{Csource}
+sprintf(time, "Time : %d", counter);
+\end{Csource}
+
+هنا، المتغير
+\InlineCode{time}
+هو جدول محارف (20 محرفا)، و
+\InlineCode{counter}
+هو متغير من نوع
+\InlineCode{int}
+يحوي الزمن.\\
+بعد هذه التعليمة، سلسلة المحارف 
+\InlineCode{time}
+ستحتوي مثلا على
+"\textenglish{Time : 500}".
+
+هيّا، حان وقتُ العمل !
+
+\subsection{التصحيح}
+
+هذا تصحيح ممكن للتمرين :
+
+\begin{Csource}
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *text = NULL;
+	SDL_Rect position;
+	SDL_Event event;
+	TTF_Font *font = NULL;
+	SDL_Color blackColor = {0, 0, 0}, whiteColor = {255, 255, 255};
+	int cont = 1;
+	int currentTime = 0, previousTime = 0, counter = 0;
+	char time[20] = ""; // A table of char big enough
+	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Managing text with SDL_ttf", NULL);
+	// Loading the police
+	font = TTF_OpenFont("angelina.ttf", 65);
+	// Time and text initialization
+	currentTime = SDL_GetTicks();
+	sprintf(time, "Temps : %d", counter);
+	text = TTF_RenderText_Shaded(font, time, blackColor, whiteColor);
+	while (cont)
+	{
+		SDL_PollEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+		}
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+		currentTime = SDL_GetTicks();
+		if (currentTime - previousTime >= 100) // If 100ms at least have passed
+		{
+			counter += 100; // We add 100ms to the counter
+			sprintf(time, "Temps : %d", counter); // We write in the string "time" the new time
+			SDL_FreeSurface(text);// We delete the previous surface
+			text = TTF_RenderText_Shaded(font, time, blackColor, whiteColor); // We write the sring "time" in SDL_Surface
+			previousTime = currentTime; // We update the previous time
+		}
+		position.x = 180;
+		position.y = 210;
+		SDL_BlitSurface(text, NULL, screen, &position); // Blitting the text
+		SDL_Flip(screen);
+	}
+	TTF_CloseFont(font);
+	TTF_Quit();
+	SDL_FreeSurface(text);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+ 
+الصورة التالية تمثّل النتيجة في غضون 13,9 ثانية بالتحديد :
+
+\Picture{Chapter_III-7_Time-text}
+
+لا تتردد في تنزيل المشروع إذا أردت دراسته بالتفصيل و تحسينه. هو ليس مثالياً بعد : يمكننا مثلاً استعمال
+\InlineCode{SDL\_Delay}
+لتجنّب استعمال المعالج بنسبة 100\%.
+
+\textenglish{\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/ttf_exercice_temps.zip} (437 Ko)}
+
+\subsubsection{للذهاب بعيدا}
+
+إذا أردت التقدّم و تحسين هذا البرنامج، يمكنك أن تحاول صنع لعبة أين يجب النقر بالفأرة العدد الأقصى من المرات الممكنة في النافذة في وقت محدود حيث تتزايد قيمة العداد بعد كلّ نقرة.
+
+يجب أن يتم إظهار عداد عكسي. حينما يصل إلى الصفر، نظهر عدد النقرات التي تم القيام بها و نطلب من المستعمل ما إن كان يريد إعادة المحاولة.
+
+يمكنك أيضاً معالجة أفضل النتائج و تسجيلها في ملف. هذا سيساعدك في التدرب من جديد على استخدام الملفات في الـ\textenglish{C}.
+
+حظاً موفقا !
+
+\section*{تلخيص}
+
+\begin{itemize}
+	\item لا يمكننا أن نكتب نصاً في الـ\textenglish{SDL}،
+	إلا إن استعملنا تمديداً كالمكتبة 
+	\textenglish{SDL\_ttf}.
+	\item تسمح هذه المكتبة بتحميل ملفات خطوط ذات صيغة 
+	\InlineCode{.ttf}
+	بالاستعانة بالدالة
+	\InlineCode{TTF\_OpenFont}.
+	\item توجد ثلاث طرق لكتابة نص، ترتيبها من الأبسط إلى الأكثر تعقيدا :
+	\textenglish{Solid}،
+	ثم
+	\textenglish{Shaded}
+	ثم
+	\textenglish{Blended}.
+	\item يمكننا الكتابة في
+	\InlineCode{SDL\_Surface}
+	عن طريق دوال مثل
+	\InlineCode{TTF\_RenderText\_Blended}.
+\end{itemize}
