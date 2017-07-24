@@ -6,3 +6,214 @@
 سيسدّ هذا الفصل ذلك النقص. بما أن الإمكانيّات التي توفّرها لنا الـ\textenglish{SDL}
 من ناحية الصوت محدودة جداً، سنكتشف هنا مكتبة متخصصة في الصوت :
 \textenglish{FMOD}.
+
+\section{تثبيت \textenglish{FMOD}}
+
+\subsection{لماذا \textenglish{FMOD} ؟}
+
+أنت تعرف ذلك الآن: الـ\textenglish{SDL}
+ليست فقط مكتبة رسومية. هي تسمح أيضاً بمعالجة الصوت عن طريق وحدة تسمّى
+\textenglish{SDL\_audio}.
+فلماذا إذاً سنحضّر مكتبة خارجية لا علاقة لها بالـ\textenglish{SDL}
+كـ\textenglish{FMOD} ؟
+
+في الواقع هو اختيار قمتُ به بعد عدّة اختبارات. كان بإمكاني أن أشرح لك طريقة معالجة الصوت بالـ\textenglish{SDL}
+لكنّي فضّلت عدم فعل ذلك.\\
+سأشرح موقفي أكثر.
+
+\subsection{لماذا قمتُ بتجنّب \textenglish{SDL\_audio} ؟}
+
+يعتبر التحكم في الصوت بالـ\textenglish{SDL}
+"منخفض المستوى". هذا يعني أنه يجب القيام بالعديد من التعامُلات الدقيقة كي نستطيع تشغيل الصوت. بمعنى آخر، سيكون الأمر صعباً و لا أجد ذلك ممتعاً. توجد مكتبات أخرى تسمح بتشغيل الصوت بشكل بسيط.
+
+\begin{information}
+تذكير بسيط : مكتبة "منخفضة المستوى" هي مكتبة قريبة من الحاسوب. يجب أن نتعرّف إذا على قليل من العمل الداخلي للحاسوب كي نستفيد منها و يتطلب الأمر في الواقع وقتاً أكثر من الوقت اللازم للقيام بنفس الشيء مع مكتبة "عالية المستوى".\\
+لا تنس أنّ كلّ شيء نسبيّ : لا توجد مكتبات منخفضة المستوى من جهة و أخرى عالية المستوى من جهة أخرى. هي فقط أكثر أو أقل من بعضها البعض في المستوى. مثلا، المكتبة
+\textenglish{FMOD}
+عالية المستوى مقارنة بالوحدة
+\textenglish{SDL\_audio}
+من الـ\textenglish{SDL}.
+\end{information}
+
+تفصيل آخر مهم، تسمح الـ\textenglish{SDL}
+بتشغيل صوت بصيغة
+\textenglish{WAV}
+فقط. صيغة الصوت هذه ليست مضغوطة. أي أن موسيقى من 3 دقائق تأخذ عشرات الميغا أوكتي،
+على عكس الصيغ المضغوطة مثل
+\textenglish{MP3}
+أو
+\textenglish{Ogg}
+التي تحجز حجم ذاكرة أقلّ بكثير (من 2 إلى 3 ميغا أوكتي).
+
+في الواقع، لو نفكّر في الأمر جيًداً، كان الأمر مشابهاً بالنسبة للصور، فالـ\textenglish{SDL}
+لا تتعامل إلا مع الصيغة
+\textenglish{BMP}
+(صُور غير مضغوطة) بشكل مبدئي. مما استوجب علينا تسطيب مكتبة إضافية و هي
+\textenglish{SDL\_image}
+لنتمكّن من قراءة صيغ الصور الأخرى كـ\textenglish{JPEG}، \textenglish{PNG}، \textenglish{GIF}،
+إلخ.
+
+اعلم أنه هناك مكتبة مكافئة بالنسبة للصوت و هي :
+\textenglish{SDL\_mixer}.
+هي قادرة على قراءة عدد كبير من صيغ الصوت، من بينها
+\textenglish{MP3}، \textenglish{Ogg}، \textenglish{Midi} \dots
+و رغم ذلك، لم أكلّمك عن هذه المكتبة. لماذا ؟
+
+\subsection{لماذا قمتُ بتجنّب \textenglish{SDL\_mixer} ؟}
+
+\textenglish{SDL\_mixer}
+هي مكتبة نضيفها للـ\textenglish{SDL}،
+بطريقة 
+\textenglish{SDL\_image}.
+هي سهلة للاستعمال و تقرأ العديد من صيغ الصوت المختلفة. لكن، و بعد الاختبارات التي قمتُ بها، تبيّن لي أن هذه المكتبة تحتوي عِلَلا مزعجة بالإضافة إلى كونها محدودة من ناحية المزايا التي تمنحها.
+
+من أجل هذه الأسباب توجّهت مباشرة إلى
+\textenglish{FMOD}،
+مكتبة لا علاقة لها بالـ\textenglish{SDL}
+بالتأكيد لكن لها الأفضلية كونها قوية و متداولا عليها.
+
+\subsection{تنزيل \textenglish{FMOD}}
+
+إن كنت قد حكيت لك كل هذا، فهذا فقط لأخبرك بأن اختيار
+\textenglish{FMOD}
+لم يكن عشوائياً. ببساطة هي أفضل مكتبة مجانية استطعت إيجادها.\\
+كما أنها سهلة الإستخدام كـ\textenglish{SDL\_mixer}
+بأفضلية لا يمكن تجاهلها : لا توجد بها مشاكل برمجية.
+
+تسمح
+\textenglish{FMOD}
+بالقيام بالعديد من الوظائف التي لا تسمح بها
+\textenglish{SDL\_mixer}،
+كالتأثيرات الصوتيّة ثلاثية الأبعاد.
+
+\begin{warning}
+\textenglish{FMOD}
+هي مكتبة مجانية لكن ليست تحت رخصة
+\textenglish{LGPL}
+على عكس الـ\textenglish{SDL}.
+هذا يعني أنه بإمكانك أن تستخدمها مادامت لم تحقق بها برامج مدفوعة. إذا أردت أن يكون البرنامج غير مجاني، يجب أن تدفع رسوماً لمؤلّف المكتبة (سأتركك تطّلع على الأسعار من خلال الموقع الرسمي لـ\textenglish{FMOD}).\\
+كثير من الألعاب التجارية تستعمل
+\textenglish{FMOD}
+و من أشهر هذه الألعاب :
+\textenglish{Starcraft II}، \textenglish{World of Warcraft : Cataclysm}، \textenglish{Crysis 2}،
+إلخ.
+\end{warning}
+
+تتوفر العديد من نسخ
+\textenglish{FMOD}،
+و النسخة الموجهّة إلى الاستعمال في أنظمة التشغيل المألوفة
+(\mbox{\textenglish{GNU/Linux}}، \textenglish{Windows}، \mbox{\textenglish{Mac OS X}}، \dots)
+تُدعى
+\textenglish{FMOD Ex Programmers API}.
+
+نزّل إذا نسخة
+\textenglish{FMOD Ex}
+المناسبة لنظام التشغيل الخاص بك. خذ النسخة المسمّاة "مستقرة"
+(\textenglish{stable}).
+
+و تأكد بشكل خاص ما إن كان لديك نظام تشغيل
+\textenglish{32 bits}
+أو
+\textenglish{64 bits}
+(في
+\textenglish{Windows}،
+ قم بنقر يميني على جهاز الكمبيوتر
+(\textenglish{Computer})
+ثم في قسم الخصائص
+(\textenglish{Properties})
+تجد المعلومة اللازمة).
+
+\url{http://www.fmod.org/fmod-downloads.html#FMODExProgrammersAPI}
+
+\subsection{تثبيت \textenglish{FMOD}}
+
+يعمل التثبيت بنفس مبدأ عمل المكتبات السابقة، أي مثل الـ\textenglish{SDL}.
+
+يجدر بالملف الذي حمّلته أن يكون ملفاً تنفيذياً (في
+\textenglish{Windows})،
+ أو أن يكون أرشيفا 
+(\InlineCode{.dmg}
+في
+\mbox{\textenglish{Mac OS X}}
+و
+\InlineCode{.tar.gz}
+في
+\mbox{\textenglish{GNU/Linux}}).
+
+\begin{enumerate}
+	\item ثبّت
+	\mbox{\textenglish{FMOD Ex}}
+على قرصك الصلب. الملفات التي نحتاجها يجب أن تتواجد في مجلّد يشبه هذا :\\
+	\InlineCode{C:\textbackslash Program Files\textbackslash FMOD SoundSystem\textbackslash FMOD Programmers API Win32\textbackslash api}.
+	\item في هذا المجلّد تجد الـ\textenglish{DLL}
+	الخاصّ بـ\mbox{\textenglish{FMOD Ex}}
+	(\InlineCode{fmodex.dll})
+	و يجب أن يوضع في مجلّد المشروع. الـ\textenglish{DLL}
+	الأخرى، أي
+	\InlineCode{fmodexL.dll}
+	تعمل على تنقيح العلل البرمجية. لن نقوم بذلك هنا. تذكّر فقط بأن الملف
+	\InlineCode{fmodex.dll}
+	هو الذي يجب أن تُعطيه مع الملف التنفيذي للبرنامج.
+	\item في المجلّد
+	\InlineCode{api/inc}،
+	تجد الملفات
+	\InlineCode{.h}.
+	ضعها كلّها إلى جانب الملفات الرأسية التي هي في مجلّد البيئة التطويرية. مثلا :
+	\InlineCode{Code Blocks/mingw32/include/fmodex}
+	(لقد أنشأت مجلّدا خصيصاً لأجل
+	\textenglish{FMOD}
+	كما مثل الـ\textenglish{SDL}).
+	\item في المجلّد
+	\InlineCode{api/lib}،
+	استرجع الملف الموافق للمترجم. يجدر بملف نصّي أن يشير إلى أي ملف يجب أن نأخذ.
+	\begin{itemize}
+		\item إذا كنت تستعمل
+		\textenglish{Code::Blocks}،
+		فالمترجم هو
+		\textenglish{mingw}.
+		أنسخ الملف
+		\InlineCode{libfmodex.a}
+		في المجلّد
+		\InlineCode{lib}
+		للبيئة التطويرية.
+		
+		في
+		\textenglish{Code::Blocks}،
+		إنه المجلّد
+		\InlineCode{CodeBlocks/mingw32/lib}.
+		\item إذا كنت تستعمل
+		\textenglish{Visual C++}،
+		استرجع الملف
+		\InlineCode{fmodex\_vc.lib}.
+	\end{itemize}
+	\item أخيراً، الشيء الأكثر أهمية ربّما، يوجد مجلّد 
+	\InlineCode{documentation}
+	في المجلّد
+	\textenglish{FMOD Ex}.
+	من المفروض أن تتم إضافة اختصارات إلى قائمة "إبدأ" نحو هذه الملفات التوجيهية. أبق نظرك عليها لأننّا لا يمكن ألا نكتشف كلّ ميزات
+	\textenglish{FMOD Ex}
+	في هذا الفصل. ستحتاج إلى هذه الملفات في أقرب الآجال بالتأكيد.
+	
+	يبقى أن نخصص المشروع. هنا أيضاً و مثل كلّ مرة : افتح المشروع بواسطة البيئة التطويرية المفضّلة و أضف الملف
+	\InlineCode{.a}
+	(أو
+	\InlineCode{.lib})
+	إلى قائمة الملفات التي يجب أن يسترجعها محرر الروابط.\\
+	في
+	\textenglish{Code::Blocks}
+	(يخالجني شعور بأنني أقوم بالتكرار)، إذهب إلى قائمة
+	\InlineCode{Project} / \InlineCode{Build Options}
+	ثم قسم
+	\InlineCode{Linker}،
+	أنقر على
+	\InlineCode{Add}
+	و أشر إلى المسار الذي يوجد به الملف
+	\InlineCode{.a}
+	إذا ظهرت لك الرسالة~:
+	"\textenglish{Keep as a relative path ?}"،
+	أنصحك بأن تجيب بالسلب لكن يجدر بالأمور أن تشتغل في كلتا الحالتين.
+	
+	تم تثبيت
+	\textenglish{FMOD Ex}،
+	فلنَرَ بسرعة مما هي مُشَكَّلَة.
+\end{enumerate}
