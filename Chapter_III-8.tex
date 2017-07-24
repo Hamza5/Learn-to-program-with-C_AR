@@ -217,3 +217,130 @@
 	\textenglish{FMOD Ex}،
 	فلنَرَ بسرعة مما هي مُشَكَّلَة.
 \end{enumerate}
+
+\section{تهيئة و تحرير غرض نظامي}
+
+المكتبة
+\textenglish{FMOD Ex}
+متوفّرة من أجل اللغتين
+\textenglish{C}
+و
+\textenglish{C++}.\\
+الشيء الخاص فيها هو أن مطوّري هذه المكتبة احتفظوا ببعض التناسق في "تركيب الكلمات"
+(\textenglish{syntax})
+بين اللغتين. الميزة الأولى هي أنه إذا تعلّمت التعامل مع
+\textenglish{FMOD Ex}
+في لغة الـ\textenglish{C}
+ستتمكن من فعل ذلك في الـ\textenglish{C++}
+بنسبة 95\%.
+
+\subsection{تضمين الملف الرأسي}
+
+قبل كلّ شيء، يلزمك أن تقوم بتضمين الملف الرأسي الخاص بـ\textenglish{FMOD}.
+ لابأس في التذكير بكتابته :
+
+\begin{Csource}
+#include <fmodex/fmod.h>
+\end{Csource}
+
+لقد وضعت هذا الملف في المجلّد الداخلي
+\InlineCode{fmodex}.
+عدّل على هذا السطر من الشفرة على حسب المسار الذي يتواجد به الملف عندك.\\
+إذا كنت تعمل على
+\mbox{\textenglish{GNU/Linux}}،
+ يجدر بالتسطيب أن يتم تلقائيّا في المجلّد
+\InlineCode{fmodex}.
+
+\subsection{إنشاء و تهيئة غرض نظامي}
+
+الغرض النظامي هو عبارة عن متغير نستفيد منه على طول البرنامج لكي نعرّف معاملات المكتبة.\\
+تذكّر أنه بالـ\textenglish{SDL}
+مثلاً، كان يجب أن نهيّئ المكتبة بشكل مباشر بواسطة دالة. هنا، دليل الاستعمال مختلف قليلاً : في عوض تهيئة كلّ المكتبة، لن نعمل إلا بغرض
+(\textenglish{Object})
+دوره تعريف سلوك هذه الأخيرة.
+
+لكي ننشئ غرضا نظاميا، يكفي أن نعرّف مؤشّرا من نوع
+\InlineCode{FMOD\_SYSTEM}.
+مثلا :
+
+\begin{Csource}
+FMOD_SYSTEM *system;
+\end{Csource}
+
+لكي نحجز مكاناً في الذاكرة من أجل هذا الغرض النظامي، نستعمل الدالة
+\InlineCode{FMOD\_System\_Create}
+و التي نموذجها هو الآتي :
+
+\begin{Csource}
+FMOD_RESULT FMOD_System_Create(FMOD_SYSTEM ** system);
+\end{Csource}
+
+لاحظ أن هذه الدالة تأخذ مؤشّرا نحو مؤشّر يؤشّر نحو
+\InlineCode{FMOD\_SYSTEM}.
+القرّاء الأكثر حرصاً كانوا قد لاحظوا أنه لدى تعريف المؤشّر
+\InlineCode{FMOD\_SYSTEM}،
+لم يتم حجزه بواسطة
+\InlineCode{malloc}
+أو أي دالة أخرى. لهذا السبب تماماً تأخذ الدالة
+\InlineCode{FMOD\_SYSTEM}
+معاملا من ذلك النوع لكي تحجز مكاناً للمؤشّر النظامي.
+
+بعد تعريف الغرض النظامي ، تكفي كتابة :
+
+\begin{Csource}
+FMOD_SYSTEM *system;
+FMOD_System_Create(&system);
+\end{Csource}
+
+هكذا إذا، بما أننا نتوفّر الآن على الغرض النظامي، لم يتبّق علينا سوى تهيئته. لفعل هذا، نستعمل الدالة
+\InlineCode{FMOD\_System\_Init}
+ذات النموذج :
+\begin{Csource}
+FMOD_RESULT FMOD_System_Init(
+	FMOD_SYSTEM *  system,
+	int  maxchannels,
+	FMOD_INITFLAGS  flags,
+	void *  extradriverdata
+);
+\end{Csource}
+
+\begin{itemize}
+	\item المعامل
+	\InlineCode{system}
+	هو المعامل الذي يهمّنا أكثر، لأنه المؤشّر الذي سنقوم بتهيئته.
+	\item المعامل
+	\InlineCode{maxchannels}
+	يمثّل العدد الأقصى للقنوات التي يجب أن تديرها
+	\InlineCode{FMOD}.
+	بمعنى آخر، هو العدد الأقصى للأصوات التي يمكن أن يتم تشغيلها في نفس الوقت. هذا يعتمد على قوة بطاقة الصوت لديك . ننصح عادة بقيمة 32 (قيمة كافية من أجل معظم الألعاب البسيطة). لمعلوماتك، يمكن نظرياً لـ\InlineCode{FMOD}
+	إدارة 1024 قناة مختلفة، لكن بهذا المستوى ستخاطر بجعل حاسوبك يشتغل كثيرا !
+	\item المعامل
+	\InlineCode{flag}
+	لا يهمّنا كثيراً في هذا الدرس، سنكتفي بإعطائها القيمة
+	\InlineCode{FMOD\_INIT\_NORMAL}.
+	\item المعامل
+	\InlineCode{extradriverdata}
+	لا يهمّنا أيضاً، سنعطيه القيمة
+	\InlineCode{NULL}.
+\end{itemize}
+
+مثلا، لكي نعرّف، نحجز، و نهيّئ غرضا نظاميا،  نقوم بكتابة التالي :
+
+\begin{Csource}
+FMOD_SYSTEM *system;
+FMOD_System_Create(&system);
+FMOD_System_Init(system, 2, FMOD_INIT_NORMAL, NULL);
+\end{Csource}
+
+نتوفّر الآن على غرض نظامي جاهز للإستعمال.
+
+\subsection{غلق و تحرير غرض نظامي}
+
+نغلق ثمّ نحرر الغرض النظامي بواسطة دالتين :
+
+\begin{Csource}
+FMOD_System_Close(system);
+FMOD_System_Release(system);
+\end{Csource}
+
+هل يجدر بي أن أعلّق على هذه الشفرة ؟
