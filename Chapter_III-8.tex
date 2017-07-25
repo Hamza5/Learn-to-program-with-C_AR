@@ -631,3 +631,339 @@ position.y = event.motion.y - (gunSight->h / 2);}
 \href{http://www.siteduzero.com/forum-81-126-langage-c.html}{\textenglish{OpenClassrooms}}
 ستساعدك في حال علقت في أيّ لحظة أثناء إنشائك للعبة. مواجهة الصعوبات أمر عادي مهما كان المستوى الذي أنت فيه.
 \end{information}
+
+\section{الموسيقى (\textenglish{WAV}، \textenglish{MP3}، \textenglish{OGG})}
+
+نظرياً، يسمح العَلم
+\InlineCode{FMOD\_CREATESAMPLE}
+بتحميل أي صوت مهما كان، من ضمنها الصيغ المضغوطة
+\textenglish{WAV}، \textenglish{MP3}، \textenglish{OGG}.
+ المشكل يخصّ الأصوات "الطويلة"، أي الموسيقى.
+ 
+في الواقع، تدوم الموسيقى كمعدّل من 3 إلى 4 دقائق. لكن، بهذا العلم، تحمّل الدالة\\
+\InlineCode{FMOD\_System\_CreateSound}
+كلّ الملف في الذاكرة (و النسخة غير المضغوطة هي التي ستتواجد في الذاكرة، فهذا يعني أنها ستأخذ حيّزاً كبيراً !).
+
+إذا كان لديك صوت طويل المدّة (سنتكلّم عن "الموسيقى" من الآن و صاعداً)، سيكون من المستحسن أن نحمّلها بشكل تدفّقي
+(\textenglish{streaming})،
+يعني أن نحمّل منها أجزاء صغيرة في نفس الوقت الذي تشغّل فيه، هذا في الواقع ما تقوم به كلّ البرامج الخاصة بقراءة الأصوات.
+
+\subsection{إيجاد الموسيقى}
+
+ندخل هنا إلى أرضية ملغّمة، شائكة، بها متفجّرات (سمّها كما تريد).\\
+في الواقع، أغلب الموسيقى و الأغاني التي نعرفها معنيّة بحقوق المؤلّف. حتى لو كتبت برنامجاً صغيراً، يجب أن تدفع رسوماً إلى الـ\textenglish{SACEM}
+(في فرنسا على الأقل).
+
+إذا، على غرار الموسيقى
+\textenglish{MP3}
+المحميّة بحقوق المؤلّف، ماذا يتبقّى لنا ؟\\
+لحسن الحظ، توجد أغاني حرة من الحقوق ! يسمح أصحابها بنشر أغانيهم بشكل حرّ، إذا لا يوجد أي مشكل في استعمالها في برامجك.
+
+\begin{warning}
+إذا كان برنامجك تجاريا، يجب أن تتكلّم مع الفنان نفسه، فهناك من لا يقبل الاستعمالات التجارية لأغانيه. الأغنية حرّة الحقوق يمكن تنزيلها، نسخها و سماعها بشكل حرّ، لكن هذا لا يعني أنه بإمكاننا تحصيل المال على حساب الفنانين !
+\end{warning}
+
+حسناً السؤال هو : "أين نجد موسيقى حرّة ؟". يمكننا أن نجري بحثاً بالعبارة
+"\textenglish{Free Music}"
+في
+\textenglish{Google}،
+لكن هنا، هو ليس صديقنا هذه المرة. في الواقع، لنعرف لماذا، لقد كتبنا الكلمة
+\textenglish{Free}
+لكننا سنقع دائما على مواقع تطلب منا اشتراء الأغاني  !
+
+لحسن الحظ، توجد مواقع تحتوي موسيقى حرة الحقوق. هنا أنصحك بالموقع الجيد
+\textenglish{Jamendo}
+لكنه ليس وحده الموجود في المجال.
+\url{https://www.jamendo.com/}
+
+يتم تقسيم الأغاني على حسب النمط. لديك الكثير من الخيارات، ستجد الجيد، السيء و الجيد جداً، و العديم الجودة. في الواقع، كلّ يعتمد على ذوقك و تقبّلك للأنماط المختلفة من الموسيقى. من المستحسن أن تختار موسيقى تشغّل في خلفية اللعبة و تكون متناسبة مع عالم اللعبة.
+
+لمعلوماتك، توجد أغنية تنتمي إلى الألبوم
+"\textenglish{Lies and Speeches}"
+للمجموعة
+"\textenglish{Hype}".
+إذا أردت معرفة المزيد عنها، زر صفحتهم على الموقع
+\textenglish{My Space} :
+\url{http://www.myspace.com/hypemusic}
+
+\begin{information}
+متيقّن جداً أن الأذواق و الألوان لا مجال للنقاش فيهما. لا بأس باختيارك لأغنية أخرى إن كانت هذه لا تًعجبك.
+\end{information}
+
+لقد حمّلت إذاً الألبوم و سأستعمل أغنية
+\textenglish{Home}
+بصيغة
+\textenglish{MP3}.\\
+يمكنك تنزيلها مباشرة إذا أردت إختبار الشفرة في نفس الوقت معي. هذه من ميزات الموسيقى الحرة : يمكننا نسخها، توزيعها بشكل حر و لهذا لن نكون منزعجين.
+
+\subsection{الخطوات الواجب اتّباعها لتشغيل الموسيقى}
+
+الإختلاف الوحيد هو العَلم المُعطى للدالة
+\InlineCode{FMOD\_System\_CreateSound}.\\
+في عوض أن نعطيها العَلم
+\InlineCode{FMOD\_CREATESAMPLE}،
+نعطيها الأعلام :
+\InlineCode{FMOD\_SOFTWARE}، \InlineCode{FMOD\_2D} و \InlineCode{FMOD\_CREATESTREAM}.\\
+لا تنتظر كثيراً أن أشرح لك بشكل موسّع معاني هذه الأعلام، العَلم الذي يهمّنا أكثر هو
+\InlineCode{FMOD\_CREATESTREAM}
+لأنه يطلب من
+\textenglish{FMOD}
+تحميل الموسيقى جزءاً بجزء.
+
+لكي نستعمل كلّ هذه الأعلام في نفس الوقت، نستعمل العامل المنطقي
+\InlineCode{|}
+بهذه الطريقة :
+
+\begin{Csource}
+FMOD_System_CreateSound(system, "my_music.mp3", FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, &sound);
+\end{Csource}
+
+هكذا هو العمل  !\\
+لكن هذا ليس كلّ شيء. في حالة موسيقى، سيكون من الجيد أن نعرف كيف نغيّر من قوّة الصوت، نتحكّم في إعادة الأغنية مرات عديدة، إيقافها مؤقّتا، أو حتى إيقافها كلياً. هذا النوع من الأشياء ما سنراه الآن. لكن قبل هذا، سنحتاج أن نعمل على القنوات بشكل مباشر.
+
+\subsubsection{استرجاع قناة أو مجموعة من القنوات}
+
+في نسخ سابقة من المكتبة
+\textenglish{FMOD}،
+رقم الهويّة البسيط لقناة يكفي لكي يغيّر قوّة الصوت أو إيقاف أغنية مؤقّتا.\\
+طرأ تغيير صغير منذ
+\textenglish{FMOD Ex} :
+من خلال رقم القناة، نستعمل دالة توفّر لنا مؤشّراً نحو القناة. الفكرة تبقى نفسها، تتغيّر طريقة التنفيذ فقط.\\
+يتم تعريف قناة كنوع
+\InlineCode{FMOD\_CHANNEL}
+و الدالة التي تسمح باسترجاع قناة إنطلاقاً من رقم الهوية هي
+\InlineCode{FMOD\_System\_GetChannel}.\\
+مثلاً، إذا كان لدي غرض نظامي و أردت استرجاع القناة رقم 9، يجب أن أكتب :
+
+\begin{Csource}
+FMOD_CHANNEL *channel;
+FMOD_System_GetChannel(system, 9, &channel);
+\end{Csource}
+
+لا شيء أسهل من هذا !
+
+\begin{itemize}
+	\item المعامل الأول هو الغرض النظامي.
+	\item المعامل الثاني هو رقم الهويّة الخاص بالقناة.
+	\item المعامل الثالث هو عنوان المؤشّر الذي نريد تخزين المعلومة المُرادة فيه.
+\end{itemize}
+
+ما إن نتحصّل على مؤشّر القناة، يمكننا بسهولة التعامل مع الموسيقى (تغيير قوة الصوت، إيقاف الموسيقى مؤقّتا، \dots).
+
+لاحظ أنه يمكننا أيضاً استرجاع مجموعة كاملة من القنوات في مؤشّر واحد : بهذا نتجنّب أن نقوم سنفس العملية من أجل كلّ قناة مختلفة.\\
+نوع مجموعة القنوات هو
+\InlineCode{FMOD\_CHANNELGROUP}
+وواحدة من الدوال التي تهمّنا أكثر هي\\
+\InlineCode{FMOD\_System\_GetMasterChannelGroup}
+لأنها تسمح بالحصول على مؤشّر نحو كلّ القنوات المستعملة من طرف الغرض النظامي.\\
+أسلوب عمل هذه الدالة مماثل لسابقتها.
+
+\subsubsection{تغيير قوة الصوت}
+
+لنغيّر قوة الصوت، يمكننا أن نقوم بذلك إما من أجل قناة محددة أو من أجل كلّ القنوات.\\
+مثلاً، لكي نقوم بذلك من أجل كلّ القنوات، يجب أوّلاُ استرجاع المؤشّر نحو مجموعة القنوات، ثم استعمال الدالة
+\InlineCode{FMOD\_ChannelGroup\_SetVolume}
+ذات النموذج :
+
+\begin{Csource}
+FMOD_ChannelGroup_SetVolume 
+FMOD_RESULT FMOD_ChannelGroup_SetVolume(
+	FMOD_CHANNELGROUP *  channelgroup,  float  volume
+);
+\end{Csource}
+
+المعامل
+\InlineCode{channelgroup}
+هو المعامل الذي نحن بصدد استرجاعه.\\
+المعامل
+\InlineCode{volume}
+من نوع
+\InlineCode{float}،
+حيث $ 0.0 $ توافق المستوى الصامت و $ 1.0  $ توافق قراءة بكامل قوّة الصوت (هذه القيمة هي القيمة المُختارة تلقائيا).
+
+\subsubsection{إعادة تشغيل الأغنية}
+
+غالباً ما نحتاج إلى إعادة تشغيل الموسيقى الخلفية. هذا تماما ما تقترحه الدالة
+\InlineCode{FMOD\_Sound\_SetLoopCount}
+و التي تأخذ معاملين :
+
+\begin{itemize}
+	\item المؤشّر نحو الأغنية.
+	\item عدد المرات التي يجب فيها أن تتم إعادة قراءة الموسيقى. إذا وضعت القيمة $ 1 $، تتم إذا قراءة الأغنية مرتين. إذا وضعت قيمة سالبة (مثل $ -1 $)، تتم إعادة قراءة الأغنية إلى ما لانهاية.
+\end{itemize}
+
+بهذه الشفرة المصدرية، يتم تكرار الأغنية إلى ما لانهاية : 
+
+\begin{Csource}
+FMOD_Sound_SetLoopCount(music, -1);
+\end{Csource}
+
+\begin{critical}
+ لكي تشتغل عملية إعادة التشغيل، يجب أن نبعث 
+\InlineCode{FMOD\_LOOP\_NORMAL}
+ كمعامل ثالث للدالة
+\InlineCode{FMOD\_System\_CreateSound}.
+\end{critical}
+
+\subsubsection{إيقاف الموسيقى مؤقتا}
+
+توجد هنا دالتان لكي نتعلّمهما :
+
+\begin{itemize}
+	\item \InlineCode{FMOD\_Channel\_GetPaused} :
+	تشير ما إذا كانت الأغنية التي يتم تشغيلها حالياً في القناة المختارة في حالة متوقفة مؤقتا أم لا. تعطي القيمة "صحيح" للمتغير 
+	\InlineCode{state}
+	إذا كانت الأغنية متوقفة مؤقتا، و القيمة "خطأ" ما إن كانت تشتغل حالياً.
+	\item \InlineCode{FMOD\_Channel\_SetPaused} :
+	توقف الأغنية مؤقتا أو تعيد تشغيلها في القناة المشار إليها. أعطها القيمة 1 (صحيح) لإيقافها مؤقتا. و 0 (خطأ) لإعادة تفعيل القراءة.
+\end{itemize}
+
+هذه الشفرة المصدرية الخاصة بنافذة
+\textenglish{SDL}
+تقوم بإيقاف الأغنية مؤقتا إذا ضغطنا على الزر
+\InlineCode{P}
+من لوحة المفاتيح، و تعيد تفعيلها إذا ضغطنا مجدداً على
+\InlineCode{P}.
+
+\begin{Csource}
+case SDL_KEYDOWN:
+if (event.key.keysym.sym == SDLK_p) // If we press P
+{
+	FMOD_BOOL state;
+	FMOD_Channel_GetPaused(channel, &state);
+	if (state == 1) // if the music is paused
+		FMOD_Channel_SetPaused(channel, 0); // We play it
+	else // Else, the music is being played
+		FMOD_Channel_SetPaused(channel, 1); // We pause it
+}
+break;
+\end{Csource}
+
+ إذا أردنا إعادة تطبيق نفس الأمر من أجل كلّ القنوات معاً، نستعمل الدالتين\\
+\InlineCode{FMOD\_ChannelGroup\_GetPaused}
+ و
+\InlineCode{FMOD\_ChannelGroup\_SetPaused}،
+الإختلاف الوحيد الذي يجب القيام به هو إعطاءها كمعامل
+\InlineCode{FMOD\_CHANNELGROUP}
+بدلاً عن 
+\InlineCode{FMOD\_CHANNEL}.
+
+\subsubsection{إيقاف التشغيل}
+
+يكفي استدعاء
+\InlineCode{FMOD\_Channel\_Stop}
+لأجل إيقاف موسيقى في قناة ما، أو\\
+\InlineCode{FMOD\_ChannelGroup\_Stop}
+من أجل مجموعة من القنوات، نبعث لها على الترتيب المؤشر نحو القناة أو المؤشّر نحو مجموعة القنوات.
+
+\subsubsection{و بالطبع أشياء أخرى}
+
+يمكننا القيام بالكثير من الأشياء الأخرى، لكن لن أقوم بتعدادها كلّها هنا. يجب عليك قراءة الملفات التوجيهية~! و التي أنصحك بإلقاء نظرة عليها في حال ما احتجت الاطلاع على دوال أخرى.
+
+\subsubsection{تحرير الذاكرة}
+
+لكي نقوم بتفريغ الأغنية من الذاكرة، نستدعي الدالة
+\InlineCode{FMOD\_Sound\_Release}
+و نعطيها المؤشّر :
+
+\begin{Csource}
+FMOD_Sound_Release(music);
+\end{Csource}
+
+\subsection{الشفرة المصدرية الكاملة لقراءة ملف \textenglish{MP3}}
+
+الشفرة أسفله يقدّم لنا برنامجاً يقوم بتشغيل الموسيقى
+"\textenglish{Home}"
+التي حصلنا عليها من الموقع
+\textenglish{Jamendo}.\\
+يتم تشغيل الموسيقى منذ بداية تشغيل البرنامج. يمكننا إيقاف الموسيقى مؤقتا بالضغط على
+\InlineCode{P}.
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <fmodex/fmod.h>
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *wallet = NULL;
+	SDL_Event event;
+	SDL_Rect position;
+	int cont = 1;
+	FMOD_SYSTEM *system;
+	FMOD_SOUND *music;
+	FMOD_RESULT result;
+	FMOD_System_Create(&system);
+	FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
+	// We open the music
+	result = FMOD_System_CreateSound(system, "hype_home.mp3", FMOD_SOFTWARE | FMOD_2D  | FMOD_CREATESTREAM, 0, &music);
+	// We check if it has been opened successfully (IMPORTANT) 
+	if (result != FMOD_OK)
+	{
+		fprintf(stderr, "Can't read the mp3 file\n");
+		exit(EXIT_FAILURE);
+	}
+	// We activate the music repetition infinitely
+	FMOD_Sound_SetLoopCount(music, -1);
+	// We play the music
+	FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, music, 0, NULL);
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Managing sound with FMOD", NULL);
+	wallet = IMG_Load("hype_liesandspeeches.jpg");
+	position.x = 0;
+	position.y = 0;
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+			case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_p) // If we press P
+			{
+				FMOD_CHANNELGROUP *channel;
+				FMOD_BOOL state;
+				FMOD_System_GetMasterChannelGroup(system, &channel);
+				FMOD_ChannelGroup_GetPaused(channel, &state);
+				if (state) // If the music is paused
+					FMOD_ChannelGroup_SetPaused(channel, 0); // We play it
+				else // Else, the music is being played
+					FMOD_ChannelGroup_SetPaused(channel, 1); // We pause it       	}
+			break;
+		}
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+		SDL_BlitSurface(wallet, NULL, screen, &position);
+		SDL_Flip(screen);
+	}
+	FMOD_Sound_Release(music);
+	FMOD_System_Close(system);
+	FMOD_System_Release(system);
+	SDL_FreeSurface(wallet);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+لكي لا تكون خلفية البرنامج مجرّد صورة سوداء استعملت صورة الألبوم كخلفيّة.
+
+يمكنك مشاهدة الفيديو الذي يمثّل تشغيل البرنامج من هنا.
+
+\textenglish{\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/musique_hype.html} (730 Ko)}
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item لدى الـ\textenglish{SDL}
+	مزايا محدودة بالنسبة للصوت و يُنصح أن تتم الإستعانة بمكتبة مخصصة لتشغيل الصوت مثل
+	\textenglish{FMOD}.
+	\item نميّز بين نوعين من الصوت بالـ\textenglish{FMOD} :
+	أصوات قصيرة (ضجيج الخطوات مثلا) و أصوات طويلة (موسيقى مثلاً).
+	\item كلّ من هذين النوعين يُقرأ بنفس الدالة لكن بواسطة أعلام مختلفة كخيارات.
+	\item تسمح
+	\textenglish{FMOD}
+	بتشغيل كثير من الأصوات في آن واحد بالإستعانة بالكثير من القنوات.
+\end{itemize}
