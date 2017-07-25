@@ -344,3 +344,290 @@ FMOD_System_Release(system);
 \end{Csource}
 
 هل يجدر بي أن أعلّق على هذه الشفرة ؟
+
+\section{الأصوات القصيرة}
+
+فلنبدأ بدراسة الأصوات قصيرة المدّة.\\
+"الصوت القصير"  كما أسمّيه، هو صوت يستمرّ غالباً بضعة ثوانٍ (أحياناً أقل من ثانية) و غالباً ما يُوجه للاستعمال المنتظم.
+
+أمثلة عن أصوات قصيرة :
+
+\begin{itemize}
+	\item صوت إطلاق رصاصة.
+	\item صوت مشي اللاعب.
+	\item صوت 
+	\textenglish{tic-tac}
+	(لكيّ نوتّر اللاعب قبل انتهاء العد العكسي).
+	\item صوت التصفيق.
+	\item إلخ.
+\end{itemize}
+
+باختصار، كل صوت لا يعتبر موسيقى.\\
+بشكل عام، هذه الأصوات قصيرة المدة إلى درجة أنه لا نحتاج إلى ضغطها. نجدها إذا في غالب الأحيان بصيغة
+\textenglish{WAV}
+غير مضغوطة.
+
+\subsection{إيجاد الأصوات القصيرة}
+
+ قبل أن نبدأ، سيكون من الجيد أن نتعرّف على بعض المواقع التي تقترح بنوكاً من الأصوات. بالفعل، لا أحد يريد أن يبدأ في تسجيل الأصوات بنفسه في المنزل.
+ 
+سيكون الأمر جيداً فالأنترنت تقترح أصواتا قصيرة، غالباً بصيغة 
+\textenglish{WAV}.\\
+أين نجدها ؟ قد يبدو الأمر سخيفاً، لا يجب علينا أن نفكّر في ذلك (مع أنه لازم)، لكن
+\textenglish{Google}
+صديقنا. بشكل عشوائي، أكتب : 
+"\textenglish{Free Sounds}"
+و التي تعني "أصوات مجانية" بالإنجليزيّة، ستظهر لي ملايين النتائج.
+
+لا شيء تحتاجه أكثر من الصفحة الأولى للبحث، ستجد ضالّتك هناك.\\
+شخصياً حفظت الموقع 
+\href{http://www.findsounds.com/}{\textenglish{FindSounds.com}}،
+محرّك بحث متخصص في الأصوات. لا أدري إن كان الأفضل، لكن على أي حال هو موقع كامل.
+
+\begin{information}
+إذا لم تعرف  ماهي الكلمات المفتاحية التي تستعملها في البحث، توجّه إلى الصفحة الخاصة بأمثلة عن الكلمات المفتاحية للبحث.
+يجب عليك أن تجيد بعض الكلمات الإنجليزية بالتأكيد (لكن على أي حال إن كنت تريد أن تصبح مبرمجاً، كيف ستفعل لو أنك لا تجيد على الأقل اللغة الإنجليزية ؟).
+\end{information}
+
+بالبحث عن كلمة 
+"\textenglish{gun}"،
+سنجد أطنان من أصوات إطلاق النار بالبندقية، لو نكتب
+"\textenglish{door}"
+سنجد أصوات تحرّك الباب (الصورة التالية)، إلخ.
+
+\Picture{Chapter_III-8_FindSounds}
+
+\subsection{الخطوات التي يجب إتّباعها لتشغيل الصوت}
+
+ الخطوة الأولى تنصّ على تحميل الصوت الذي نريد تشغيله في الذاكرة.\\
+أنصحك بتحميل كلّ الأصوات التي ترى أنك ستستعملها كثيراً منذ بداية البرنامج. تقوم بتحريرها في النهاية. في الواقع، ما إن يتم تحميل الصوت في الذاكرة، ستكون قراءته سريعة جداً.
+
+\subsubsection{المؤشّر}
+
+الخطوة الأولى : إنشاء المؤشّر من نوع
+\InlineCode{FMOD\_SOUND}
+و الذي يمثّل الصوت.
+
+\begin{Csource}
+FMOD_SOUND *fire = NULL;
+\end{Csource}
+
+\subsubsection{تحميل الصوت}
+
+الخطوة الثانية : تحميل الصوت بواسطة الدالة
+\InlineCode{FMOD\_System\_CreateSound}.
+هي تأخذ \dots خمسة معاملات :
+
+\begin{itemize}
+	\item \textbf{الغرض النظامي}
+	 الذي تحدّثنا عنه سابقاً.
+	
+	بالطبع يجب أن يكون هذا الغرض جاهزاً للاستعمال (معرّفا، محجوزاً و مهيّئاً).
+	\item \textbf{اسم الملف الصوتي}
+	الذي نريد تحميله. يمكن أن يكون ذو صيغة
+	\textenglish{WAV}، \textenglish{MP3}، \textenglish{OGG}،
+	إلخ. من المستحسن دائماً أن يتم تحميل أصوات قصيرة (بضع ثوانٍ كحدّ أقصى) على أن يتم تحميل أصوات طويلة. في الواقع، تحمّل الدالة و تفك تشفير كلّ الصوت في الذاكرة، مما قد يأخذ مكانا كبيرا لو أن الصوت هو موسيقى !
+	\item المعامل الثالث هو عَلم. 
+	
+	يهمّنا بشكل خاص هنا لأنه بفضله يمكننا أن نقول لـ\textenglish{FMOD}
+	أن الصوت الذي ستشّغله هو عبارة عن صوت قصير. من أجل هذا نستعمل القيمة
+	\InlineCode{FMOD\_CREATESAMPLE}.
+	\item و الرابع لا يهمّنا، سنعطيه القيمة 
+	\InlineCode{NULL}.
+	\item المعامل الأخير هو من نوع
+	\InlineCode{FMOD\_SOUND ** sound}،
+	و هذا المؤّشر سنستعمله لاحقاً من أجل تشغيل الصوت.
+	
+	بشكل ما، يمكننا القول بأن هذا المؤشّر سيؤشّر على الصوت الذي نريد تشغيله.
+\end{itemize}
+
+ هذا مثال عن تحميل :
+
+\begin{Csource}
+FMOD_System_CreateSound(system, "pan.wav", FMOD_CREATESAMPLE, 0, &fire);
+\end{Csource}
+
+هنا، أقوم بتحميل الصوت
+\InlineCode{pan.wav}.
+المؤشّر
+\InlineCode{fire}
+سيعتبر كمرجع للصوت لاحقاً.
+
+\begin{information}
+ إذا كنت تريد أن تختبر الشفرات في نفس الوقت الذي أعطيها لك، أنصحك بتنزيل الصوت
+\InlineCode{pan.wav}\\
+ (\url{http://www.siteduzero.com/uploads/fr/ftp/mateo21/pan.wav})\\
+ و الذي سأستعمله أيضاً في بقيّة هذا الفصل.
+\end{information}
+
+إذا اشتغل كلّ شيء على ما يُرام، تُرجع الدالة القيمة
+\InlineCode{FMOD\_OK}
+و إلا، فهذا يعني انه حدث مشكل خلال فتح الملف الصوتي (ملف تالف أو غير موجود مثلا).
+
+\subsubsection{تشغيل الصوت}
+
+تريد تشغيل الصوت ؟ لا يوجد مشكل مع الدالة
+\InlineCode{FMOD\_System\_PlaySound} !\\
+يكفي أن تعطيها غرضا نظاميا جاهزا للإستعمال، رقم القناة التي نريد أن يُلعب فيها الصوت و أيضاً المؤشّر نحو الصوت، إضافة إلى معاملات أخرى لا تهمّنا سنعطيها القيمة
+\InlineCode{NULL}
+أو 0. بالنسبة لرقم القناة، لا تشغل بالك بالتفكير و ابعث القيمة
+\InlineCode{FMOD\_CHANNEL\_FREE}
+و اترك
+\textenglish{FMOD}
+تتحكّم في ذلك.
+
+\begin{Csource}
+FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, fire, 0, NULL);
+\end{Csource}
+
+\subsubsection{تحرير الصوت من الذاكرة}
+
+حينما تصبح غير محتاجاً للصوت، يجب عليك تحريره. \\
+لا يوجد ما هو أسهل، يكفي أن تشير إلى المؤشّر الذي تريد تحريره بواسطة الدالة
+\InlineCode{FMOD\_Sound\_Release}.
+
+
+\subsection{مثال : لعبة إطلاق النار}
+
+الأفضل الآن هو أن نلخّص كل ما تعلّمناه، عن طريق مثال واضح عن برنامج مكتوب بالـ\textenglish{SDL}.\\
+لا يوجد شيء معقّد هنا و يجدر ألا تصادفك أية مشكلة في تحقيق هذا التمرين.
+
+\subsubsection{الموضوع}
+
+مهمتك سهلة : إنشاء لعبة إطلاق النار.\\
+حسناً، لن ننشئ لعبة كاملة هنا، لكننا سنتحكّم في
+\underline{المصوّب}
+ لقد صممتُ لك مصوّباً بسيطاً بواسطة برنامج الرسام :
+
+\Picture{Chapter_III-8_Aim}
+
+باختصار، إليك المهام :
+
+\begin{itemize}
+	\item خلفية النافذة : سوداء.
+	\item مؤشّر الفأرة : غير مرئي.
+	\item يتم تسوية صورة المصوّب على وضعية الفأرة حينما نقوم بتحريكه. احذر : يجب أن يتم لصق مركز الصورة على مستوى مؤشّر الفأرة.
+	\item حينما ننقر بالفأرة، يجب تشغيل الصوت
+	\InlineCode{pan.wav}.
+\end{itemize}
+
+قد تكون هذه البداية لصنع لعبة إطلقا نار كاملة.\\
+سهل جداً ؟ حسناً، حان وقت العمل إذا !
+
+\subsubsection{التصحيح}
+
+هذه هي الشفرة المصدرية الكاملة :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+#include <fmodex/fmod.h>
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL, *gunSight = NULL;
+	SDL_Event event;
+	SDL_Rect position;
+	int cont = 1;
+	FMOD_SYSTEM *system;
+	FMOD_SOUND *fire;
+	FMOD_RESULT result;
+	// Initializing and creating a system object
+	FMOD_System_Create(&system);
+	FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
+	// Loading the sound and checking the loading
+	result = FMOD_System_CreateSound(system, "pan.wav", FMOD_CREATESAMPLE, 0, &fire);
+	if (result != FMOD_OK)
+	{
+		fprintf(stderr, "Can't read pan.wav\n");
+		exit(EXIT_FAILURE);
+	}
+	// Initializing the SDL
+	SDL_Init(SDL_INIT_VIDEO);
+	SDL_ShowCursor(SDL_DISABLE);
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Managing sound with FMOD", NULL);
+	gunSight = IMG_Load("viseur.png");
+	while (cont)
+	{
+		SDL_WaitEvent(&event);
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+			case SDL_MOUSEBUTTONDOWN:
+			// When we click, we play the sound
+			FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE , fire, 0, NULL);
+			break;
+			case SDL_MOUSEMOTION:
+			// When we move the mouse, we move the gun sight too. To do this we have to use gunSight->w/2, gunSight->h/2
+			position.x = event.motion.x - (gunSight->w / 2);
+			position.y = event.motion.y - (gunSight->h / 2);
+			break;
+		}
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+		SDL_BlitSurface(gunSight, NULL, screen, &position);
+		SDL_Flip(screen);
+	}	
+	// We close the SDL
+	SDL_FreeSurface(gunSight);
+	SDL_Quit();
+	// We free the sound, free and close the system object
+	FMOD_Sound_Release(fire);
+	FMOD_System_Close(system);
+	FMOD_System_Release(system);
+	return EXIT_SUCCESS;
+}
+\end{Csource}
+
+الصورة التالية تعطيك لمحة عن اللعبة المصغّرة، لكن الأفضل أن ترى الفيديو بالصوت على الأنترنت :
+
+\Picture{Chapter_III-8_Window-aim}
+
+مشاهدة الفيديو هنا :\\
+\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/viseur.html}
+
+ هنا، حمّلت
+\textenglish{FMOD}
+ قبل الـ\textenglish{SDL}
+ و حررتها بعدها. لا توجد قواعد من ناحية الترتيب (كان بإمكاني القيام بالعكس). اخترتُ تحميل الـ\textenglish{SDL}
+ و فتح النافذة بعد تحميل
+\textenglish{FMOD}
+ لكي تكون اللعبة جاهزة للاستعمال ما إن يتم فتح النافذة (و إلا كان بالإمكان أن تنتظر بعض الميلي ثواني ريثما يتم تحميل
+\textenglish{FMOD}).\\
+ و مع ذلك أنت حر باختيار الترتيب، هذه تفاصيل ليس إلا.
+
+أعتقد أنني علّقت كفاية على الشفرة. لا يوجد فخ معيّن، و لا يوجد جديد يذكر. يمكننا أن نذكر الصعوبة "الصغيرة" التي تنص على لصق مركز المصوّب على مستوى مؤشّر الفأرة. يتم حساب وضعية الصورة بدلالة ذلك.
+
+بالنسبة لمن لم يفهم الفرق بعد، سنرى ذلك الآن. بالمناسبة، لقد أعدت تفعيل الإظهار الخاص بالمؤشّر كي نرى كيف يتموضع المصوّب بالنسبة لمؤشّر الفأرة.
+
+\begin{Table*}{3}
+شفرة خاطئة (المصوب في وضعية خاطئة) &
+\includegraphics[width=0.07\textwidth]{Chapter_III-8_Aim-misplaced} &
+\parbox{0.45\textwidth}{\small\setLTR
+\textenglish{\texttt{position.x = event.motion.x;\\
+position.y = event.motion.y;}
+}
+\unsetLTR}
+\\
+شفرة صحيحة (المصوب في وضعية صحيحة) &
+\includegraphics[width=0.07\textwidth]{Chapter_III-8_Aim-wellplaced} &
+\parbox{0.45\textwidth}{\small\setLTR
+\textenglish{\texttt{position.x = event.motion.x - (gunSight->w / 2);\\
+position.y = event.motion.y - (gunSight->h / 2);}
+}
+\unsetLTR}
+\\
+\end{Table*}
+
+\subsubsection{أفكار للتحسين}
+
+هذه اللعبة تعتبر قاعدة للعبة إطلاق النار. لديك المصوّب، صوت إطلاق النار، لم يتبقّ لك سوى إظهار أو تمرير أعداء لكي يقوم اللاعب بإطلاق النار عليهم ثم يتم تسجيل النتيجة. كالعادة، عليك بالعمل وحدك. تريد صنع لعبة ؟ لا شيء يمنعك، بل لديك المستوى الكافي الآن، و لديك أيضاً شفرة مبدئية للعبة إطلاق النار ! ماذا تنتظر، صدقاً ؟ 
+
+\begin{information}
+طبعاً، منتديات
+\href{http://www.siteduzero.com/forum-81-126-langage-c.html}{\textenglish{OpenClassrooms}}
+ستساعدك في حال علقت في أيّ لحظة أثناء إنشائك للعبة. مواجهة الصعوبات أمر عادي مهما كان المستوى الذي أنت فيه.
+\end{information}
