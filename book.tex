@@ -86,7 +86,7 @@
         directivestyle=\color{DarkOrange},
         deletekeywords={return,if,else,switch,for,while,do,const,static,sizeof},
     	morekeywords={SDL_Surface,Uint32,SDL_Rect,SDL_Event,SDL_TimerID,SDL_NewTimerCallback,TTF_Font,SDL_Color,
-    	FMOD_SYSTEM,FMOD_RESULT,FMOD_SOUND,FMOD_CHANNEL,FMOD_CHANNELGROUP,FMOD_BOOL},
+    	FMOD_SYSTEM,FMOD_RESULT,FMOD_SOUND,FMOD_CHANNEL,FMOD_CHANNELGROUP,FMOD_BOOL,FMOD_DSP_FFT_WINDOW},
         morekeywords=[2]{return,if,else,switch,for,while,do,const,static,sizeof}, keywordstyle=[2]\bfseries\color{Magenta},
         morekeywords=[3]{printf,scanf,fprintf,fscanf,fputc,fgetc,fputs,fgets,fopen,fclose,fseek,ftell,rewind,srand,rand,
         time,SDL_Delay,SDL_GetTicks,SDL_AddTimer,SDL_RemoveTimer,TTF_OpenFont,TTF_CloseFont,TTF_Init,TTF_GetError,TTF_Quit,
@@ -96,7 +96,8 @@
     	TTF_SetFontStyle,sprintf,TTF_RenderText_Shaded,FMOD_System_Create,FMOD_System_Init,FMOD_System_Close,
     	FMOD_System_Release,FMOD_System_CreateSound,FMOD_System_PlaySound,FMOD_Sound_Release,FMOD_System_GetChannel,
     	FMOD_System_GetMasterChannelGroup,FMOD_Sound_SetLoopCount,FMOD_Channel_GetPaused,FMOD_Channel_SetPaused,
-    	FMOD_Sound_Release,FMOD_ChannelGroup_GetPaused,FMOD_ChannelGroup_SetPaused},
+    	FMOD_Sound_Release,FMOD_ChannelGroup_GetPaused,FMOD_ChannelGroup_SetPaused,FMOD_Channel_GetSpectrum,
+    	SDL_LockSurface,SDL_UnlockSurface},
         keywordstyle=[3]\color{RoyalBlue},
 }
 \lstnewenvironment{Csource}{\lstset{style=C}\setLTR}{\unsetLTR}
