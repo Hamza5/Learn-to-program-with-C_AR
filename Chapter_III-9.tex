@@ -314,7 +314,7 @@ int main(int argc, char *argv[])
 	// We check if it has been opened correctly (IMPORTANT)
 	if (result != FMOD_OK)
 	{
-		fprintf(stderr, "Can’t read the mp3 file\n");
+		fprintf(stderr, "Can't read the mp3 file\n");
 		exit(EXIT_FAILURE);
 	}
 	// We play the music
@@ -457,7 +457,7 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 لاحظ أن ضغط الملف أنقص من جودة الصوت و عدد الصور في الثانية.\\
 الأفضل هو أن تقوم بتحميل البرنامج كاملاً (مرفقاً بالشفرة المصدرية) لكي تجربه عندك. يمكنك حينها تقدير البرنامج في ظروف أفضل.
 
-تحميل الملف التنفيذي و الشفرة المصدرية الكاملة :
+تنزيل الملف التنفيذي و الشفرة المصدرية الكاملة :
 
 \url{https://openclassrooms.com/uploads/fr/ftp/mateo21/spectre.zip}
 
@@ -466,3 +466,30 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 \InlineCode{Hype\_Home.mp3}
 متواجداً في مجلّد المشروع لكي يشتغل البرنامج (و إلا فسيتوقف حالاً).
 \end{critical}
+
+\section*{أفكار للتحسين}
+
+يمكن دائما تحسين البرنامج. هنا، لدي مثلاً أفكار تمديد كثيرة يمكنها أن تصل بك إلى إنشاء برنامج صغير لقراءة الملفات
+\textenglish{MP3}.
+
+\begin{itemize}
+	\item سيكون من الجيد أن نختار بأنفسنا الملف
+	\textenglish{MP3}
+	الذي نريد قراءته. يمكن مثلاً أن نقدّم لائحة تضم كلّ الملفات بذات الصيغة و المتواجدة في مجلّد المشروع. لم نرَ كيف نقوم بذلك، لكن يمكنك وحدك أن تكتشف ذلك. كمساعدة : استعمل المكتبة
+	\textenglish{dirent}
+	( قم بتضمين الملف 
+	\InlineCode{dirent.h}).
+	عليك بالبحث في الأنترنت لتعرف كيفيّة العمل بها.
+	\item إذا كان البرنامج قادرا على التحكّم في لائحات التشغيل
+	(\textenglish{Playlists})
+	المشغّلة، سيكون أمراً أفضل. توجد كثير من صيغ اللائحات و أشهرها الصيغة
+	\textenglish{M3U}.
+	\item يمكنك إظهار اسم الـ\textenglish{MP3}
+	التي أنت بصدد تشغيله في النافذة مثلاً (يجب استعمال
+	\textenglish{SDL\_ttf}).
+	\item يمكنك إظهار مؤشّر يشير إلى المكان في القراءة الّذي وصل إليه التشغيل، هذا ما يفعله أغلب قارئي الـ\textenglish{MP3}.
+	\item يمكنك أيضاً أن تقترح التعديل على قوة الصوت.
+	\item إلى آخره.
+\end{itemize}
+
+باختصار، هناك الكثير لفعله. لديك إمكانيّة إنشاء قارئي أصوات ممتازة، ليس عليك سوى كتابة الشفرة الخاصة بها !

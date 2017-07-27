@@ -43,7 +43,7 @@
     - [x] <span dir='rtl'>الحجز الحيّ للذاكرة</span>
     - [x] <span dir='rtl'>عمل تطبيقي: لعبة الـPendu</span>
     - [x] <span dir='rtl'>إدخال نص بشكل أكثر أمانا</span>
-- [ ] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
+- [x] <span dir='rtl'>إنشاء ألعاب 2D في SDL</span>
     - [x] <span dir='rtl'>تثبيت SDL</span>
     - [x] <span dir='rtl'>إنشاء نافذة و مساحات</span>
     - [x] <span dir='rtl'>إظهار صور</span>
@@ -52,7 +52,7 @@
     - [x] <span dir='rtl'>تحكّم في الوقت</span>
     - [x] <span dir='rtl'>كتابة نصوص باستخدام SDL_ttf</span>
     - [x] <span dir='rtl'>تشغيل الصوت بـFMOD</span>
-    - [ ] <span dir='rtl'>عمل تطبيقي: الإظهار الطيفيّ للصوت</span>
+    - [x] <span dir='rtl'>عمل تطبيقي: الإظهار الطيفيّ للصوت</span>
 - [ ] <span dir='rtl'>هياكل البيانات</span>
     - [ ] <span dir='rtl'>السلاسل المتّصلة</span>
     - [ ] <span dir='rtl'>المكدّسات و الطوابير</span>
