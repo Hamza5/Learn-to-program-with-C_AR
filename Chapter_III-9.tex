@@ -139,7 +139,7 @@ spectrum[511] // The highest frequency (Right)
 مثلاً، إذا كانت القيمة هي $ 0.5 $ يجدر بك رسم شريط يكون علّوه مساوياً لنصف علوّ النافذة. إذا كانت القيمة هي $ 1 $، فسيأخذ الشريط كلّ علو النافذة.
 
 بشكل عام، تكون القيم ضعيفة (أكثر قرباً من $ 0 $ على $ 1 $). أنصحك بضرب كلّ القيم بـ20 لكي ترى الطيف بشكل أفضل.\\
-إحذر : إذا قمت بهذا، تأكد بأنك لن تتجاوز $ 1 $ (قم بتدوير القيمة إلى $ 1 $ إذا احجت إلى ذلك). إذا وجدت أنك تتعامل مع أعداد تفوق $ 1 $، فقد تواجه مشاكل لاحقاً في رسم الشرائط العموديّة لاحقا !
+احذر : إذا قمت بهذا، تأكد بأنك لن تتجاوز $ 1 $ (قم بتدوير القيمة إلى $ 1 $ إذا احجت إلى ذلك). إذا وجدت أنك تتعامل مع أعداد تفوق $ 1 $، فقد تواجه مشاكل لاحقاً في رسم الشرائط العموديّة لاحقا !
 
 \begin{question}
 لكن يجدر بالشرائط أن تتحرّك في نفس الوقت الذي يتم فيه تشغيل الصوت، أليس كذلك ؟ بما أن الصوت يتحرّك كلّ الوقت، يجب تحديث الصورة الرسومية، ما العمل ؟
@@ -247,7 +247,7 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	\item وضعية الترتيبة الخاصة بالبيكسل الذي نريد التعديل عليه في المساحة
 	(\InlineCode{y}).
 	\item اللون الجديد الذي نعطيه للبيكسل. يجب أن يكون هذا اللون بصيغة
-	\InlineCode{Uint32}
+	\InlineCode{Uint32}.
 	يمكنك إذا توليده بالإستعانة بالدالة
 	\InlineCode{SDL\_MapRGB}
 	التي تتقننها جيداً الآن.
@@ -273,3 +273,196 @@ SDL_UnlockSurface(screen); // We unlock the surface
 \end{Csource}
 
 من هذه القاعدة، يجدر بك أن تتمكن من تحقيق التدرّج اللوني من الأخضر للأحمر (يجب أن تستعمل الحلقات التكرارية).
+
+\section{التصحيح}
+
+إذا، كيف وجدت الموضوع ؟ ليس صعب الفهم، يجب فقط القيام ببعض الحسابات، خاصة من أجل تحقيق التدرّج اللوني. مستوى التمرين هو مستوً عام، يجب فقط أن تفكّر أكثر. 
+
+بعض الأشخاص يأخذون وقتاً أطول من آخرين لإيجاد التصحيح. إذا لم تتمكّن من حلّ التمرين، هذا ليس سيئاً. ما يهمّ هو أن ننتهي بالوصول إلى هدفنا. مهما كان المشروع الذي تعمل عليه، فسيكون هناك بالتأكيد أوقات نجد فيها أنه لا ينقصنا أن نجيد البرمجة لكي نتمكّن من حلّ المشكل، يجب أيضاً أن نكون منطقيين و نجيد التفكير.
+
+سأعطيك الشفرة المصدرية الكاملة أسفله. لقد علّقت عليها بشكل كافٍ :
+
+\begin{Csource}
+#include <stdlib.h>
+#include <stdio.h>
+#include <SDL/SDL.h>
+#include <fmodex/fmod.h>
+#define WINDOW_WIDTH 512 // MUST stay equal to 512 because there are 512 bars corresponding to 512 floats
+#define WINDOW_HIGHT 400 // You can change this.
+#define RATIO (WINDOW_HIGHT / 255.0)
+#define LIMIT_TIME_TO_REFRESH 25 // Time in ms between two updates of the graph (25 is the minimum)
+#define SPECTERUM_SIZE 512
+void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+int main(int argc, char *argv[])
+{
+	SDL_Surface *screen = NULL;
+	SDL_Event event;
+	int continue = 1, barHeight = 0, currentTime = 0, previousTime = 0, i = 0, j = 0;
+	float spectrum[SPECTERUM_SIZE];
+	/* Initializing FMOD:
+	Load FMOD, the music and start playing the music
+	*/
+	
+	FMOD_SYSTEM *system;
+	FMOD_SOUND *music;
+	FMOD_CHANNEL *channel;
+	FMOD_RESULT result;
+	FMOD_System_Create(&system);
+	FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
+	// We open the music
+	result = FMOD_System_CreateSound(system, "hype_home.mp3", FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM, 0, &music);
+	// We check if it has been opened correctly (IMPORTANT)
+	if (result != FMOD_OK)
+	{
+		fprintf(stderr, "Can’t read the mp3 file\n");
+		exit(EXIT_FAILURE);
+	}
+	// We play the music
+	FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, music, 0, NULL);
+	
+	// We get the channel pointer
+	FMOD_System_GetChannel(system, 0, &channel);
+	/*
+	Initializing the SDL:
+	---------------------
+	We load the SDL, open a window and write in its title bar.
+	We get also a pointer to the surface screen which will be the only surface to use in this program 
+	*/
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HIGHT, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
+	SDL_WM_SetCaption("Sound spectrum visualisation", NULL);
+	// Main loop	
+	while (cont)
+	{
+		SDL_PollEvent(&event); // We have to use PollEvent because we don't have to wait for the user's event to refresh the window
+		switch(event.type)
+		{
+			case SDL_QUIT:
+			cont = 0;
+			break;
+		}
+		// We clear the screen every time before drawing the graph (black wallpaper)
+		SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+		/* Managing the time
+		-----------------
+		We compare between the current time and the previous one (the last iteration of the loop).
+		If the difference is less than 25 ms (updating time limit)
+		Then we wait until 25ms pass.
+		After that, we update previousTime with the new time. */
+		currentTime = SDL_GetTicks();
+		if (currentTime - previousTime < LIMIT_TIME_TO_REFRESH)
+		{
+			SDL_Delay(LIMIT_TIME_TO_REFRESH-(currentTime-previousTime));
+		}
+		previousTime = SDL_GetTicks();
+		/* Drawing the sound spectrum
+		------------------------
+		It's the most important part. We have to think a little bit before drawing the spectrum. Maybe it's hard but it's possible, here is the proof.
+		We fill the 512 floats table via FMOD_Channel_GetSpectrum()
+		Then we work pixel by pixel on the surface screen to draw the bars.
+		We make a first loop to browse the window in width.
+		The second loop browses the window in height to draw the bars.
+		*/
+		
+		/* We fill the 512 floats table. I've chosen to be interested in the left output */
+		FMOD_Channel_GetSpectrum(channel, spectrum, SPECTERUM_SIZE, 0, FMOD_DSP_FFT_WINDOW_RECT);
+		SDL_LockSurface(screen);
+		/* We block the surface screen because we're going to directly modify its pixels */
+		
+		/* LOOP 1 : We browse the window in width (for every vertical bar) */
+		for (i = 0 ; i < WINDOW_WIDTH ; i++)
+		{
+			/* We calculate the vertical bar's height that we're going to draw.
+			spectrum[i] will return a number between 0 and 1 that we're going to multiply by 20 to zoom in order to have a better view (As I said).
+			
+			The, we multiply by WINDOW_HEIGHT so the bar will be expanded comparing to the window's size. */
+			
+			barHeight = spectrum[i] * 20 * WINDOW_HIGHT;
+			/* We verify that the bar doesn't exceed the height of the window
+			If it's the case, we crop the bar so it become equal to the window's height. */
+			if (barHeight > WINDOW_HIGHT)	
+				barHeight = WINDOW_HIGHT;
+			/* LOOP 2 : we browse in height the vertical bar to draw it */
+			
+			for (j = WINDOW_HIGHT - barHeight ; j < WINDOW_HIGHT ; j++)	
+			{
+				/* We draw each pixel of the bar with the right colour.
+				We simply vary the red and green colours, each one in a different way.
+				
+				j doesn't vary between 0 and 255 but between 0 and WINDOW_HEIGHT.
+				
+				If we want to adapt it proportionally to the window's height, we can simply calculate j / RATIO, where RATIO is equal to (WINDOW_HEIGHT / 255.0).
+				
+				It tooks for me 2-3 minutes so I can find the write calculation to do, every one can do it. You just have to think a little bit */
+				
+				setPixel(screen, i, j, SDL_MapRGB(screen->format, 255 - (j / RATIO), j / RATIO, 0));
+			}
+		}
+		SDL_UnlockSurface(screen); /* We have finished working on the screen, we block the surface */
+		SDL_Flip(screen);
+	}
+	/* The program is finished.
+	We free the music from the memory
+	And we close FMOD and SDL */
+	
+	FMOD_Sound_Release(music);
+	FMOD_System_Close(system);
+	FMOD_System_Release(system);
+	SDL_Quit();
+	return EXIT_SUCCESS;
+}
+/* The function setPixel lets us draw a surface pixel by pixel */
+
+void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+{
+	int bpp = surface->format->BytesPerPixel;
+	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	switch(bpp) 
+	{
+		case 1:
+		*p = pixel;
+		break;
+		case 2:
+		*(Uint16 *)p = pixel;
+		break;
+		case 3:
+		if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+		{
+			p[0] = (pixel >> 16) & 0xff;
+			p[1] = (pixel >> 8) & 0xff;
+			p[2] = pixel & 0xff;
+		} 
+		else
+		{
+			p[0] = pixel & 0xff;
+			p[1] = (pixel >> 8) & 0xff;
+			p[2] = (pixel >> 16) & 0xff;
+		}
+		break;
+		case 4:
+		*(Uint32 *)p = pixel;
+		break;
+	}
+}
+\end{Csource}
+
+يجدر بك أن تتحصّل على نتيجة تشبه الصورة التالية :
+
+\Picture{Chapter_III-9_Window-spectral}
+
+من المعلوم أن النتيجة المرئية أفضل لتقدير النتيجة. أنصحك بالإطلاع عليها من هنا :
+
+\textenglish{\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/spectre.html} (4.3 Mo)}
+
+لاحظ أن ضغط الملف أنقص من جودة الصوت و عدد الصور في الثانية.\\
+الأفضل هو أن تقوم بتحميل البرنامج كاملاً (مرفقاً بالشفرة المصدرية) لكي تجربه عندك. يمكنك حينها تقدير البرنامج في ظروف أفضل.
+
+تحميل الملف التنفيذي و الشفرة المصدرية الكاملة :
+
+\url{https://openclassrooms.com/uploads/fr/ftp/mateo21/spectre.zip}
+
+\begin{critical}
+يجب قطعاً أن يكون الملف
+\InlineCode{Hype\_Home.mp3}
+متواجداً في مجلّد المشروع لكي يشتغل البرنامج (و إلا فسيتوقف حالاً).
+\end{critical}
