@@ -54,7 +54,7 @@
     - [x] <span dir='rtl'>تشغيل الصوت بـFMOD</span>
     - [x] <span dir='rtl'>عمل تطبيقي: الإظهار الطيفيّ للصوت</span>
 - [ ] <span dir='rtl'>هياكل البيانات</span>
-    - [ ] <span dir='rtl'>السلاسل المتّصلة</span>
+    - [x] <span dir='rtl'>القوائم المتسلسلة</span>
     - [ ] <span dir='rtl'>المكدّسات و الطوابير</span>
     - [ ] <span dir='rtl'>جداول التجزئة</span>
 
