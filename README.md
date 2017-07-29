@@ -55,7 +55,7 @@
     - [x] <span dir='rtl'>عمل تطبيقي: الإظهار الطيفيّ للصوت</span>
 - [ ] <span dir='rtl'>هياكل البيانات</span>
     - [x] <span dir='rtl'>القوائم المتسلسلة</span>
-    - [ ] <span dir='rtl'>المكدّسات و الطوابير</span>
+    - [x] <span dir='rtl'>المكدّسات و الطوابير</span>
     - [ ] <span dir='rtl'>جداول التجزئة</span>
 
 ## <div dir='rtl'>الترخيص</div>

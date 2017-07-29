@@ -266,3 +266,176 @@ Stack's state :
 يمكنك تنزيل مشروع المكدّسات كاملاً لو أردت :
 
 \url{http://www.siteduzero.com/uploads/fr/ftp/mateo21/c/piles.zip}
+
+\section{الطوابير (\textenglish{Queues})}
+
+تشبه الطوابير المكدّسات كثيراً، إلا أنها تعمل بالإتجاه المعاكس !
+
+\subsection{كيفية عمل الطوابير}
+
+في هذا النظام، يتم وضع العناصر الواحد بعدَ الآخر. أوّل عنصر يخرج من الطابور هو أول عنصر يدخل إليه. نتكلّم هنا عن خوارزمية 
+\textenglish{FIFO} (\textenglish{First In First Out})،
+و هذا يعني : "أول من يصل هو أول من يخرج".
+
+تسهل المشابهة بالحياة اليوميّة. حينما تشتري تذكرة لمشاهدة السينما، تقف في طابور شبّاك التذاكر (الصورة الموالية). باستثناء إن كنت أحد إخوة بائع التذاكر، يجدر بك الوقوف في الطابور و انتظار دورك مثل كلّ الآخرين. أول الواصلين هو أول من تتم خدمته.
+
+\Picture{Chapter_IV-2_Humans-queue}
+
+ في البرمجة، تفيد الطوابير في إيقاف مؤقّت للمعلومات حسب الترتيب الذي وصلت به. مثلاً، في برنامج مُحادثة، لو تتلقى ثلاثة رسائل يفصلها فارق زمني قصير جداً، يتم صفُّها في طابور واحدة تلو الأخرى في الذاكرة. ثم يتم إظهار أوّل رسالة وصلت ثم الثانية و هكذا.
+ 
+يتم تخزين الأحداث التي تبعثها المكتبة
+\textenglish{SDL}
+التي قُمنا بدراستها أيضا في طابور. إذا حرّكت الفأرة، يتم توليد حدث من أجل كلّ بيكسل تحرّك فوقه مؤشّر الفأرة. تخزن الـ\textenglish{SDL}
+الأحداث في طابور ثم تبعثها لنا واحدا واحدا في كلّ مرة نستدعي فيها الدالة
+\InlineCode{SDL\_PollEvent}
+(أو
+\InlineCode{SDL\_WaitEvent}).
+
+في لغة الـ\textenglish{C}.
+الطابور هو قائمة متسلسلة أين يقوم كلّ عنصر فيها بالتأشير على العنصر الموالي، تماماً مثل المكدّسات. آخر عنصر من الطابور يؤشّر نحو
+\InlineCode{NULL} :
+
+\Picture{Chapter_IV-2_Queue}
+
+\subsection{إنشاء نظام طابور}
+
+نظام الطابور يشبه ذلك الخاص بالمكدّسات. يوجد اختلاف بسيط في كون أن العناصر تخرج في الإتجاه المعاكس، لا يوجد شيء صعب إن كنت قد فهمت المكدّسات.
+
+سننشئ هيكل
+\InlineCode{Element}
+و هيكل تحكّم
+\InlineCode{Queue} :
+
+\begin{Csource}
+typedef struct Element Element;
+struct Element
+{
+	int number;
+	Element *next;
+};
+typedef struct Queue Queue;
+struct Queue
+{
+	Element *first;
+};
+\end{Csource}
+
+تماما كالمكدّسات، كل عنصر من الطابور سيكون من نوع
+\InlineCode{Element}.
+بالإستعانة بالمؤشّر 
+\InlineCode{first}
+سنتوفّر دائماً على العنصر الأول و يمكننا من خلاله الصعود إلى آخر عنصر.
+
+\subsubsection{إضافة عنصر إلى الطابور (\textenglish{enqueuing})}
+
+الدالة التي تضيف عُنصُراً إلى الطابور تسمّى دالة "الإلحاق"
+(\textenglish{enqueuing}).
+توجد حالتان :
+
+\begin{itemize}
+	\item إما أن الطابور فارغ، في هذه الحالة يجب أن ننشئ الطابور بجعل المؤشّر
+	\InlineCode{first}
+	يؤشّر نحو العنصر الجديد الذي نحن بصدد انشائه.
+	\item إما أن الطابور غير فارغ، في هذه الحالة يجب أن نتقدّم في الطابور إنطلاقاً من العنصر الأول حتى نصل إلى آخر عنصر. نضيف العنصر الجديد بعد آخر عنصر.
+\end{itemize}
+إليك ما يمكننا فعله عملياً :
+
+\begin{Csource}
+void enqueue(Queue *q, int newNumber)
+{
+	Element *new = malloc(sizeof(*new));
+	if (new == NULL || new== NULL)
+	{
+		exit(EXIT_FAILURE);
+	}
+	new->number = newNumber;
+	new->next = NULL;
+	if (q->first != NULL) // The queue is not empty
+	{
+		// We move to the end of the queue
+		Element *currentElement = q->first;
+		while (currentElement->next != NULL)
+		{
+			currentElement= currentElement->next;
+		}
+		currentElement->next = new;
+	}
+	else /* The queue is empty, it's our first element */
+	{
+		q->first = new;
+	}
+}
+\end{Csource}
+
+ترى في هذه الشفرة المصدرية تحليل كلتا الحالتين، كلّ منهما يجب أن تتم دراستها على حدى. الاختلاف مقارنةً بالمكدّسات، و الذي يضيف لمسة صعوبة صغيرة، هو أنه يجب التموضع في نهاية الطابور لوضع العنصر الجديد. لكن لابأس فحلقة
+\InlineCode{while}
+كافية للقيام باللازم، هذا ما يمكنك ملاحظته.
+
+\subsubsection{إزالة عنصر من الطابور (\textenglish{dequeuing})}
+
+عملية إلغاء الإلحاق 
+(\textenglish{dequeuing})
+تشابه كثيراً عملية إلغاء التكديس. بامتلاكنا مؤشّرا نحو أول عنصر من الطابور، يكفي أن ننزعه و أن نُرجع قيمته.
+
+\begin{Csource}
+dequeue(Queue *queue)
+{
+	if (queue == NULL)
+	{
+		exit(EXIT_FAILURE);
+	}
+	int dequeuedNumber = 0;
+	// We verify if there's something to dequeue
+	if (queue->first != NULL)
+	{
+		Element *dequeuedElement = queue->first;
+		dequeuedNumber = dequeuedElement->number;
+		queue->first = dequeuedElement->next;
+		free(dequeuedElement);
+	}
+	return dequeuedNumber;
+}
+\end{Csource}
+
+\subsubsection{حان دورك !}
+
+تبقى دالة إظهار محتوى الطابور
+\InlineCode{displayQueue}
+و عملها مشابه لما قمنا به مع المكدّسات. سيسمح لك هذا بالتأكد من سلامة عمل الطابور.
+
+قم بعد ذلك بكتابة
+\InlineCode{main}
+من أجل تجريب البرنامج. يجدر بنتيجة البرنامج أن تشبه هذه :
+
+\begin{Console}
+Queue's state :
+4 8 15 16 23 42
+
+I dequeue 4
+I dequeue 8
+
+Queue's state :
+15 16 23 42
+\end{Console}
+
+يجدر أن تكون قادراً على إنشاء مكتبة الطوابير الخاصة بك، بملفات
+\InlineCode{queue.h}
+و
+\InlineCode{queue.c}
+مثلاً.
+
+أقترح عليك تنزيل مشروع التحكّم في الطوابير كاملاً إن أردت. إنه يتضمّن الدالة
+\InlineCode{displayQueue} :
+
+\url{http://www.siteduzero.com/uploads/fr/ftp/mateo21/c/files.zip}
+
+\section*{ملخّص}
+
+\begin{itemize}
+	\item تسمح المكدّسات و الطوابير بتنظيم معطيات في الذاكرة عند وصولها بالتوالي.
+	\item تستعمل المكدّسات و الطوابير نظام قوائم متسلسلة لتجميع العناصر.
+	\item في حالة المكدّسات، تتم إضافة المعطيات الواحدة فوق الأخرى. و إن أردنا استخراج بيانة، فسنستخرج آخر واحدة و التي كنا بصدد إضافتها (الأحدث). نتكّلم هنا عن خوارزمية 
+	\textenglish{LIFO} (\textenglish{Last In First Out}).
+	\item في حالة الطوابير، تتم إضافة المعطيات الواحدة بعد الأخرى. نقوم باستخراج البيانة الأولى و التي قمنا بإضافتها أولا للطابور (الأقدم). نتكلّم عن خوارزمية
+	\textenglish{FIFO} (\textenglish{First In First Out}).
+\end{itemize}
