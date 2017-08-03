@@ -1,12 +1,13 @@
-\chapter{السلاسل المحرفيّة}
-السلاسل المحرفيّة (\textenglish{Strings}) هي اسم صحيح
+\chapter{السلاسل المحرفيّة (\textenglish{Strings})}
+السلاسل المحرفيّة هي اسم صحيح
 \textit{برمجيّا}
-لتسمية ... النصّ، ببساطة !\\
+لتسمية \dots النصّ، ببساطة !\\
 السلسلة المحرفيّة هي إذن نصّ يمكننا حفظه على شكل متغيّر في الذاكرة. بهذه الطريقة يمكننا تخزين اسم المستخدم.
 
-كنت قد قلت من قبل أن الحاسوب لا يفهم إلا الأعداد، فما هو السحر الذي يفعله المبرمجون للتعامل مع النصوص ؟ إنّعم ماكرون، سوف ترى !
+كنت قد قلت من قبل أن الحاسوب لا يفهم إلا الأعداد، فما هو السحر الذي يفعله المبرمجون للتعامل مع النصوص ؟ إنّهم ماكرون، سوف ترى !
 
 \section{النوع \texttt{char}}
+
 في هذا الفصل سنعطي أهمية خاصة للنوع
 \InlineCode{char}.
 إن كنت تتذكّر جيداً فهذا النوع يسمح بخزين الأعداد المحصورة بين
@@ -25,7 +26,7 @@ $128$.
 \end{information}
 إذا فالنوع
 \InlineCode{char}
-مستعمل لتخزين ... "حرف" ! إحذر، لقد قلت :
+مستعمل لتخزين \dots "حرف" ! احذر، لقد قلت :
 \underline{حرف واحد}.
 
 و لأنّ الذاكرة لا يمكنها تخزين شيء سوى الأعداد، فلقد تمّ اختراع جدول يقوم بالتحويل بين الحروف و الأعداد. هذا الجدول يخبرنا مثلا أنّ العدد 65 مكافئ للحرف
@@ -40,6 +41,7 @@ $128$.
 بالقيمة الموافقة.
 
 فلنجرّب :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -48,6 +50,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 نعلم إذن أن الحرف
 \textenglish{A}
 يمثل بالعدد 65،
@@ -55,7 +58,7 @@ int main(int argc, char *argv[])
 بـ66،
 \textenglish{C}
 بـ67، إلخ.\\
-جرّبوا بالأحرف الصغيرة و سترون أن القيم مختلفة. في الواقع، الحرف
+جرّب بالأحرف الصغيرة و سترى أن القيم مختلفة. في الواقع، الحرف
 \InlineCode{'a'}
 ليس مطابقا لـ\InlineCode{'A'}،
 الحاسوب يقوم بالتفريق بين الحروف الصغيرة و الكبيرة (نقول أنّه يحترم حالة الحرف).
@@ -63,16 +66,18 @@ int main(int argc, char *argv[])
 أغلب الحروف "الأساسيّة" مشفّرة بين $0$ و $127$. يوجد جدول يقوم بالتحويل بين الأعداد و الحروف : الجدول
 \textenglish{ASCII}
 (ينطق "أسكي"). الموقع
-\href{http://www.asciitable.com/}{AsciiTable.com}
+\href{http://www.asciitable.com/}{\textenglish{AsciiTable.com}}
 مشهور لعرض هذا الجدول لكنّه ليس الوحيد، يمكننا أن نجده على ويكيبيديا و مواقع أخرى أيضا.
 
 \subsection{إظهار محرف}
+
 كما نعلم فلإظهار أي شيء على الشاشة نستعمل الدالة
 \InlineCode{printf}،
 هذه الدالة قادرة أيضا على إظهار محرف على الشاشة و ذلك باستعمال الرمز :
 \InlineCode{\%c}
-(\textenglish{c} تعني \textenglish{character})
+(\textenglish{c} تعني \textenglish{Character})
 كالتالي :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -81,9 +86,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 A
 \end{Console}
+
 حسنا، لقد تعلّمنا كيف نظهر حرفا في الشاشة.
 
 يمكننا أيضا أن نطلب من المستعمل أن يقوم بإدخال حرف عن طريق لوحة المفاتيح، و ذلك بالإستعانة بالدالة
@@ -91,6 +98,7 @@ A
 و هذا بوضع الرمز
 \InlineCode{\%c}
 دائماً، كالتالي :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -100,9 +108,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 إن كتبت الحرف
 \textenglish{B}
 فسأتحصّل على :
+
 \begin{Console}
 B
 B
@@ -114,6 +124,7 @@ B
 
 هذا تقريبا ما يجب عليك أن تتذكره بخصوص النوع \InlineCode{char}.
 تذكّر جيّدا :
+
 \begin{itemize}
   \item  النوع
 \InlineCode{char}
@@ -138,14 +149,17 @@ $255$.
 \end{itemize}
 
 \section{السلاسل المحرفيّة هي جداول من نوع \texttt{char}}
+
 مثلما يشير العنوان. في الواقع، فإن السلسلة المحرفيّة ما هي إلا عبارة عن جدول من نوع
 \InlineCode{char}.
 مجرّد جدول بسيط.
 
 إن قمنا بإنشاء جدول :
+
 \begin{Csource}
 char string[5];
 \end{Csource}
+
 و قمنا بوضع الحرف
 \InlineCode{'H'}
 في
@@ -156,7 +170,7 @@ char string[5];
 \InlineCode{'string[1]'}...
 فيمكننا تكوين سلسلة محرفيّة، أي نصّ.
 
-المخطط التالي يعطيك فكرة عن كيفيّة تخزين السلسلة في الذاكرة (إحذر : في الحقيقة الأمر أصعب بقليل مما هو ظاهر، سأشرح ذلك لاحقا).
+المخطط التالي يعطيك فكرة عن كيفيّة تخزين السلسلة في الذاكرة (احذر : في الحقيقة الأمر أصعب بقليل مما هو ظاهر، سأشرح ذلك لاحقا).
 \Picture{Chapter_II-4_String-Memory}
 كما نرى فهذا جدول يتكون من 5 خانات في الذاكرة ليمثل الكلمة
 '\textenglish{Hello}'.
@@ -167,12 +181,14 @@ char string[5];
 \textbf{تحتوي بالضرورة محرفا خاصّا في النهاية}،
 يسمّى "محرف نهاية السلسلة". هذا المحرف يكتب
 \InlineCode{\textbackslash 0}.
+
 \begin{question}
   لماذا يجب أن تنتهي السلسلة المحرفيّة بـ\InlineCode{\textbackslash 0} ؟
 \end{question}
+
 ببساطة لكي يعرف الحاسوب أين تنتهي السلسلة. المحرف
 \InlineCode{\textbackslash 0}
-يقول : "توقّف، لا يوجد المزيد لقرائته!".
+يقول : "توقّف، لا يوجد المزيد لقراءته !".
 
 لذلك، كي نخزن الكلمة
 '\textenglish{Hello}'
@@ -208,11 +224,13 @@ char string[5];
 بالنسبة للأنواع الأخرى من الجداول، عليك أن تحفظ حجم الجدول في مكان ما.
 
 \subsection{إنشاء و تهيئة سلسلة محرفيّة}
+
 إن أردنا إنشاء جدول
 \InlineCode{string}
 يحتوي النصّ
 '\textenglish{Hello}'،
 يمكننا استعمال الطريقة اليدويّة و لكنّها غير فعّالة :
+
 \begin{Csource}
 char string[6]; // A table of  6 chars used to store H-e-l-l-o + \0
 string[0] = 'H';
@@ -222,6 +240,7 @@ string[3] = 'l';
 string[4] = 'o';
 string[5] = '\0';
 \end{Csource}
+
 هذه الطريقة تعمل. يمكننا التحقق من ذلك باستعمال
 \InlineCode{printf}.
 
@@ -231,10 +250,11 @@ string[5] = '\0';
 \InlineCode{\%s}
 (\textenglish{s}
 تعني
-\textenglish{string}،
-أي "سلسلة محارف" بالانجليزية). هذه هي الشفرة الكاملة التي تنشئ السلسلة
+\textenglish{String}،
+أي "سلسلة محارف" بالإنجليزية). هذه هي الشفرة الكاملة التي تنشئ السلسلة
 '\textenglish{Hello}'
 في الذاكرة :
+
 \begin{Csource}
 #include <stdio.h>
 #include <stdlib.h>
@@ -254,13 +274,17 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 النتيجة :
+
 \begin{Console}
 Hello
 \end{Console}
+
 تلاحظ أن القيام بتخزين النص حرفا بحرف في الجدول
 \InlineCode{string}
 أمر متعب للغاية. لتهيئة سلسلة محرفيّة توجد لحسن الحظ  طريقة أبسط بكثير :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -269,9 +293,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 Hello
 \end{Console}
+
 كما تلاحظ في السطر الأول ترى أنني أنشأت متغيّرا من نوع
 \InlineCode{char[]}،
 كان بإمكاني كتابة
@@ -288,13 +314,15 @@ Hello
 باختصار، هذا أمر عمليّ أكثر.
 
 و مع ذلك فهناك مشكل : هذا الأمر لا يعمل إلّا مع التهيئة ! لاحقا في الشفرة لا يمكنك كتابة :
+
 \begin{Csource}
 string = "Hello";
 \end{Csource}
+
 هذه التقنيّة محجوزة للتهيئة فقط. بعد هذا، يجب أن نقوم بالتعديل على المحارف يدويّا في الذاكرة واحداً واحداً كما فعلنا في البداية.
 
-\subsection{إدخال سلسلة محرفيّة عن طريق
-\texttt{scanf}}
+\subsection{إدخال سلسلة محرفيّة عن طريق \texttt{scanf}}
+
 يمكننا حفظ سلسلة محرفّية مُدخَلة من طرف المستخدم عن طريق
 \InlineCode{scanf}،
 باستخدام الرمز
@@ -311,22 +339,25 @@ string = "Hello";
 \InlineCode{char[100]}.
 قد تشعر بأنّ هذا إهدار للذاكرة، لكن تذكّر مرّة أخرى بأنّ المكان في الذاكرة ليس الشيء الذي ينقصنا
 (كما أنّه توجد برامج تهدر الذاكرة بطريقة أسوء بكثير من هذه !).
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
 	char firstName[100];
-	printf("What’s your name ? ");
+	printf("What's your name ? ");
 	scanf("%s", firstName);
 	printf("Hello %s, nice to meet you !", firstName);
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 What's your name ? Mateo21
 Hello Mateo21, nice to meet you !
 \end{Console}
 
 \section{دوال التعامل مع السلاسل المحرفيّة}
+
 السلاسل المحرفيّة مستعملة بكثرة. فكلّ الكلمات، كلّ النصوص التي تراها على الشاشة هي في الواقع جداول
 \InlineCode{char}
 في الذاكرة و تعمل كما شرحت لك من قبل.\\
@@ -338,28 +369,34 @@ Hello Mateo21, nice to meet you !
 سأعلّمك الأساسيّة منها و الّتي ستحتاجها حتما لاحقا.
 
 \subsection{فكّر في تضمين \texttt{string.h}}
+
 حتّى لو بدا لك هذا الأمر بديهيّا، فأنا أفضّل أن أتحدّث عنه مرّة أخرى : بما أنّنا سنستخدم مكتبة جديدة تسمّى
 \InlineCode{string.h}،
 فيجب أن تضمّنها في أعلى ملفّات
 \InlineCode{.c}
 حيثما تحتاجها :
+
 \begin{Csource}
 #include <string.h>
 \end{Csource}
+
 إن لم تقم بهذا فإن المترجم لن يتعرف على الدوال التي سأعرضها لك لأنّه لا يملك نماذجها، و بالتالي فستتوقف الترجمة.\\
 باختصار، لا تنس تضمين هذه المكتبة في كلّ مرّة تستخدم فيها دوال التعامل مع النصوص.
 
 \subsection{\texttt{strlen} : حساب طول سلسلة محرفيّة}
+
 \InlineCode{strlen}
 تقوم بحساب طول السلسلى المحرفيّة (دون حساب المحرف
 \InlineCode{\textbackslash 0}).\\
-يحب أن تعطيها معاملا وحيدا : السلسلة المحرفيّة.هذه الدالة تُرجع طول السلسلة.
+يحب أن تعطيها معاملا وحيدا : السلسلة المحرفيّة. هذه الدالة تُرجع طول السلسلة.
 
 الآن بما أنّك تعرف مالّذي يعنيه النموذج، سأعطيك نموذج الدوال الّتي أكلّمك عنها. المبرمجون يعتبرونه كـ"دليل استخدام" للدالّة.
 هذا نموذج الدالة :
+
 \begin{Csource}
 size_t strlen(const char* string);
 \end{Csource}
+
 \begin{information}
 \InlineCode{size\_t}
 هو نوع خاص يدلّ على أنّ الدالة تعيد عددا يمثّل طولا. هو ليس نوعاً قاعديا مثل
@@ -378,18 +415,20 @@ size_t strlen(const char* string);
 \InlineCode{int}
 كاف لهذا.
 \end{information}
+
 الدالّة تأخد معاملا من نوع
 \InlineCode{const char*}.
 الـ\InlineCode{const} (التي تعني ثابت، تذكّر) تعني أن الدالة "ستَمتَنِع" عن تغير السلسلة. عندما ترى
 \InlineCode{const}،
-فستعلم أن المتغيَر لا يتمّ تعديله من طرف الدالّة، بل قرائته فقط.
+فستعلم أن المتغيَر لا يتمّ تعديله من طرف الدالّة، بل قراءته فقط.
 
 فلنجرّب الدالّة \InlineCode{strlen}
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
 	char string[] = "Hello";
-	int stringLength= 0;
+	int stringLength = 0;
 	// We put the length of string in stringLength
 	 stringLength = strlen(string);
 	// We display the length of string
@@ -397,16 +436,19 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 The string Hello contains 5 characters
 \end{Console}
+
 هذه الدالة سهلة الكتابة، يكفي القيام بحلقة على جدول
 \InlineCode{char}
 حتى تصل إلى المحرف
 \InlineCode{\textbackslash 0}.
-عدّاد تتمّ زيادته في كل دورة من الحلقة، و هذا العدّاد يتمّ إعادته في النهاية.
+يوجد عدّاد تتمّ زيادته في كل دورة من الحلقة، و هذا العدّاد يتمّ إعادته في النهاية.
 
 هذا جعلني أريد كتابة شفرة شبيهة بتلك الخاصّة بـ\InlineCode{strlen}. هذا سيمكّنك من أن تفهم جيّدا كيف تعمل هذه الدالّة :
+
 \begin{Csource}
 int stringLen(const char* string);
 int main(int argc, char *argv[])
@@ -434,13 +476,14 @@ int stringLen(const char* string)
 	return charactersCount;
 }
 \end{Csource}
+
 هذه الدالة
 \InlineCode{stringLen}
 تقوم بحلقة على الجدول
 \InlineCode{string}.
 تقوم في كل مرة بتخزين المحرف الحالي في محرف مُساعد سميناه
 \InlineCode{currentCharacter}،
-ما إن يكون الحرف الحالي هو
+ما إن يكون المحرف الحالي هو
 \InlineCode{\textbackslash 0}،
 نخرج من الحلقة.
 
@@ -452,13 +495,16 @@ int stringLen(const char* string)
 \subsection{\texttt{strcpy} : نسخ سلسلة محرفيّة في أخرى}
 الدالة
 \InlineCode{strcpy}
-(و الّتي تعني "\textenglish{string copy}")
+(و الّتي تعني "\textenglish{String copy}")
 تسمح بنسخ سلسلة محرفيّة إلى داخل أخرى.\\
 نموذج الدالّة :
+
 \begin{Csource}
 char* strcpy(char* stringCopy, const char* stringToCopy);
 \end{Csource}
+
 الدالّة تأخذ معاملين :
+
 \begin{itemize}
   \item \InlineCode{stringCopy} : مؤشّر نحو \InlineCode{char*} (جدول \InlineCode{char}). في هذا الجدول يتمّ لصق السلسلة.
   \item \InlineCode{stringToCopy} : مؤشّر نحو جدول آخر من \InlineCode{char}. هذه السلسلة يتمّ نسخها إلى \InlineCode{stringCopy}.
@@ -499,8 +545,7 @@ copy is : Text
   \InlineCode{string}.
   إن قمت في هذا المثال بتعريف
   \InlineCode{copy[5]}
-  (و الذي هو غير كاف لأنه لن يبق مكان لـ
-  \InlineCode{\textbackslash 0})،
+(و الذي هو غير كاف لأنه لن يبق مكان لـ\InlineCode{\textbackslash 0})،
   الدالّة
   \InlineCode{strcpy}
   "ستخرج عن الذاكرة" و ربّما ستوقف البرنامج عن العمل. تجنّب ذلك، إلّا إذا كنت تريد تعطيل برنامجك.
@@ -514,13 +559,13 @@ copy is : Text
 السلسلة المحرفيّة
 \InlineCode{copy}
 تحوي عددا كبيرا من المحارف غير المستعملة، قد لاحظت هذا. أعطيته الحجم 100 من باب الحماية، لكنّ الحجم 6 كان كافيا.
-الفائدة من إنشاء جدول أكبر هي أنّه بهذه الطريقة السلسلة المحرفيّة
+الفائدة من إنشاء جدول أكبر هي أنّه بهذه الطريقة، السلسلة المحرفيّة
 \InlineCode{string}
 تكون قادرة على احتواء سلاسل أخرى قد تكون أكبر في بقيّة البرنامج.
 
 \subsection{\texttt{strcat} : وصل سلسلتين محرفيّتين}
 هذه الدالة تضيف سلسلة محرفيّة إلى نهاية الأخرى. نسمّي هذه العملية بالوصل
-(\textenglish{concatenation}).\\
+(\textenglish{Concatenation}).\\
 فلنفرض أن لدينا المتغيّرات التالية :
 \begin{itemize}
   \item \InlineCode{string1 = "Hello "}
@@ -548,17 +593,18 @@ char* strcat(char* string1, const char* string2);
 كما يمكنك أن ترى،
 \InlineCode{string2}
 غير قابل للتعديل لأنّه تمّ التصريح عنه كثابت في نموذج الدالّة.\\
-الدالّى تعيد مؤشّرا نحو
+الدالّة تعيد مؤشّرا نحو
 \InlineCode{string1}،
 و مثلما هو الحال مع
 \InlineCode{strcpy}،
-فهذا لا يصلح لشيء كبير في حالتنا هذه : يمكننا إذن تجاهل ما تعيده الدالّة.
+فهذا لا يصلح لشيء كبير في حالتنا هذه~: يمكننا إذن تجاهل ما تعيده الدالّة.
 
 الدالّة تضيف إلى
 \InlineCode{string1}
 محتوى
 \InlineCode{string2}.
 فلنرى هذا عن قرب :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -566,7 +612,7 @@ int main(int argc, char *argv[])
 	strcat(string1, string2); // We concatenate string2 to string1
 	// If everything is okay, string1 is equal to "Hello Mateo21"
 	 printf("string1 is : %s\n", string1);
-	// string2 didn’t change :
+	// string2 didn't change :
 	printf("string2 is as always : %s\n", string2);
 	return 0;
 }
@@ -611,7 +657,7 @@ int strcmp(const char* string1, const char* string2);
 \InlineCode{string1}
 و
 \InlineCode{string2}
-يتمّ مقارنتهما. كما تلاحظون، لا يتمّ تعديل أيّ منهما لأنّه تمّ التصريح عنهما كثوابت.
+يتمّ مقارنتهما. كما تلاحظ، لا يتمّ تعديل أيّ منهما لأنّه تمّ التصريح عنهما كثوابت.
 
 إنه من الضروري أن نقوم باسترجاع ما تعيده إلينا الدالة. في الواقع، \InlineCode{strcmp} تعيد :
 \begin{itemize}
@@ -647,9 +693,9 @@ int main(int argc, char *argv[])
 \begin{Console}
 The strings are identical
 \end{Console}
-بما أنّ السلاسل متطابقة، فالدالّة
+بما أنّ السلسلتين متطابقتين، فالدالّة
 \InlineCode{strcmp}
-أعادت العدد 0.\\
+أعادت 0.\\
 لاحظ أنّه كان بإمكاني تخزين ما أعادته الدالّة في متغيّر من نوع
 \InlineCode{int}.
 لكنّ ذلك ليس ضروريّا، فيمكننا وضعها مباشرة داخل
@@ -702,7 +748,7 @@ int main(int argc, char *argv[])
 \begin{Console}
 This is the rest of the string after the first s: st text
 \end{Console}
-هل فهمت ما حصل ؟ إن الأمر استثنائيّ قليلا.\\
+هل فهمت ما حصل ؟ إن الأمر خاصّ قليلا.\\
 في الحقيقة، إن
 \InlineCode{restOfString}
 هو مؤشر مثل
@@ -842,7 +888,7 @@ First occurrence of text in Test text : text
 هذا الاسم يذكّرك بشيء ما. هذه الدالّة مشابهة إلى حدّ كبير لـ\InlineCode{printf}
 التي تعرفها، و لكن بدل الكتابة على الشاشة،
 \InlineCode{printf}
-تكتب في... سلسلة محرفيّة ! و من هذا اسمها الذي يبدأ بـ"\textenglish{s}" من "\textenglish{string}" (سلسلة محرفيّة بالإنجليزيّة).
+تكتب في \dots سلسلة محرفيّة ! و من هذا اسمها الذي يبدأ بـ"\textenglish{s}" من "\textenglish{string}" (سلسلة محرفيّة بالإنجليزيّة).
 
 إنّها دالّة عمليّة جدّا لتنسيق سلسلة محرفيّة. مثال صغير :
 \begin{Csource}
@@ -877,7 +923,7 @@ You have 15 years !
 \InlineCode{printf}
 تطبّق، يمكنك إذا أردت أم تضع
 \InlineCode{\%s}
-لادراج سلاسل أخرى داخل سلسلتك !
+لادراج سلاسل أخرى داخل سلسلتك~!
 
 كالعادة، تأكّد أن سلسلتك كبيرة كفاية لاحتواء النصّ الذي سترسله لها
 \InlineCode{sprintf}.
