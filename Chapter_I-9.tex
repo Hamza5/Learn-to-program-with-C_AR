@@ -1,4 +1,4 @@
-\chapter{الدوال}
+\chapter{الدوال (\textenglish{Functions})}
 
 ننتهي من الجزء الأول من الكتاب (المبادئ) بهذها المفهوم المهم الذي يتكلّم عن الدوال في لغة
 \textenglish{C}.
@@ -14,7 +14,7 @@
 
 \section{إنشاء و استدعاء دالة}
 
-رأينا في الدروس السابقة بأن برامج الـ\textenglish{C}
+رأينا في الفصول السابقة بأن برامج الـ\textenglish{C}
 تبدأ بدالة تدعى 
 \InlineCode{main}.
 لقد أعطيتك مخططاً تلخيصيّاً لتذكيرك ببعض الكلمات المفتاحية :
@@ -46,7 +46,7 @@
 سنتعلّم الآن كيف ننظّم عملنا. سنبدأ بتقسيم برامجنا إلى قطع صغيرة (تذكّر فكرة
 \textenglish{Lego}
 الّتي حدّثتك عنها قبل قليل). كلّ قطعة تسمّى
-\underline{دالّة}.
+\textbf{دالّة}.
 
 الدالة تقوم بتنفيذ تعليمات و تقوم بإرجاع نتيجة. هي عبارة عن 
 \textbf{قطعة من الشفرة المصدرية} 
@@ -80,7 +80,7 @@
 \InlineCode{showWindow}،
 أظهري لي النافذة !". يمكننا أيضاً كتابة دالة
 \InlineCode{moveCharacter}
-تهدف إلى تحريك شخصية ما في اللعبة، الخ.
+تهدف إلى تحريك شخصية ما في اللعبة، إلخ.
 
 \subsection{مخطط دالة}
 
@@ -134,12 +134,12 @@ type functionName(parameters)
 		
 		مثلاً، بالنسبة للدالة 
 		\InlineCode{triple}،
-		أنت تبعث عدداً كمعامل. الدالة "تسترجع" العدد و تضربه في العدد 3. تقوم بعد ذلك بإرجاع نتيجة حساباتها.
+		أنت تبعث عدداً كمعامل. الدالة "تسترجع" العدد و تضربه في 3. تقوم بعد ذلك بإرجاع نتيجة حساباتها.
 		\item بعد ذلك، نجد 
 		\textbf{الحاضنتين}
 		اللّتان تشيران إلى بداية الدالة و نهايتها. داخل الحاضنتين، تضع التعليمات التي تريدها. بالنسبة للدالة 
 		\InlineCode{triple}،
-		يجب أن تكتب التعليمات التي توافق ضرب قيمة الإدخال في العدد 3.
+		يجب أن تكتب التعليمات التي توافق ضرب قيمة الإدخال في 3.
 	\end{itemize}
 \end{itemize}
 الدالة إذا هي عبارة عن آلية تتلقّى قيم إدخال (المعاملات) و ترجع قيمة إخراج.
@@ -157,8 +157,8 @@ type functionName(parameters)
 \begin{Csource}
 int triple (int number)
 {
-	int result=0;
-	result=number*3; // We multiply the input number by 3
+	int result = 0;
+	result = number * 3; // We multiply the input number by 3
 	return result; // We return the result as an output value
 }
 \end{Csource}
@@ -210,7 +210,7 @@ return result;
 \begin{Csource}
 int triple (int number)
 {
-	return number*3;
+	return number * 3;
 }
 \end{Csource}
 
@@ -234,7 +234,7 @@ int triple (int number)
 \begin{Csource}
 int addition (int a, int b)
 {
-	return a+b;
+	return a + b;
 }
 \end{Csource}
 
@@ -394,7 +394,7 @@ int main(int argc, char *argv[]) // 1
 
 \paragraph{ملاحظة :}
 
-ليس الأمر نفسه بالنسبة لكل الدوال. أحياناً، لا تأخذ دالة أية معامل كإدخال، و بالعكس أحياناً تأخذ الكثير من المعاملات كإدخال (لقد شرحت لك هذا سابقاً).\\
+ليس الأمر نفسه بالنسبة لكل الدوال. أحياناً، لا تأخذ الدالة أية معامل كإدخال، و بالعكس أحياناً تأخذ الكثير من المعاملات كإدخال (لقد شرحت لك هذا سابقاً).\\
 أيضاً، يمكن لدالة أن ترجع قيمة كما يمكنها ألا ترجع أي شيء (و في هذه الحالة لا يكون هناك
 \InlineCode{return}).
 
@@ -408,7 +408,7 @@ The number's triple = 30
 \end{Console}
 
 \begin{information}
-لست مضطراً أن تخزن النتيجة في متغير ! يمكنك أن تعطي النتيجة المُرجعة من طرف الدالة 
+لست مضطراً إلى أن تخزن النتيجة في متغير ! يمكنك أن تعطي النتيجة المُرجعة من طرف الدالة 
 \InlineCode{triple}
 إلى دالة أخرى و كأن التعليمة
 \InlineCode{triple(inputNumber)}
@@ -446,7 +446,7 @@ int main(int argc, char *argv[])
 \InlineCode{printf}.\\
 ماذا يفعل الجهاز حينما يصل إلى هذا السطر من الشفرة المصدرية ؟
 
-الأمر سهل، يجد أن السطر يبدؤ بـ\InlineCode{printf}،
+الأمر سهل، يجد أن السطر يبدأ بـ\InlineCode{printf}،
 فسيقوم إذا باستدعاء الدالة 
 \InlineCode{printf}.
 يبعث إلى هذه الأخيرة كل المعاملات التي كتبناها. أول معامل هو النص الذي نريد طباعته و الثاني هو عدد.\\
@@ -480,7 +480,7 @@ int main(int argc, char *argv[])
 
 سنبدأ بدالة مشابهة كثيراً للدالة
 \InlineCode{triple}،
-لكنها تحمل أهمية لابأس بها هذه المرة : دالة تحوّل من الأورو إلى لفرنك. لمن لا يعرف فإن 1 أورو = 6,55957 فرنك.
+لكنها تحمل أهمية لابأس بها هذه المرة : دالة تحوّل من الأورو إلى الفرنك. لمن لا يعرف فإن 1 أورو = 6,55957 فرنك.
 
 سننشئ دالة نسميها 
 \InlineCode{conversion}.\\
@@ -491,7 +491,7 @@ int main(int argc, char *argv[])
 \begin{Csource}
 double conversion(double euros)
 {
-	double francs=0;
+	double francs = 0;
 	francs = 6.55957*euros;
 	return francs;
 }
@@ -584,7 +584,7 @@ I won't misbehave in class again
 \begin{Csource}
 double rectangleSurface(double width, double height)
 {
-	return width*height;
+	return width * height;
 }
 int main(int argc, char * argv[])
 {
@@ -611,7 +611,7 @@ Width = 4.2 and height = 9.7. Surface = 40.740000
 void rectangleSurface(double width, double height)
 {
 	double surface;
-	surface = width*height;
+	surface = width * height;
 	printf("Width = %f and height = %f. Surface = %f\n", width, height, surface);
 }
 int main(int argc, char * argv[])
