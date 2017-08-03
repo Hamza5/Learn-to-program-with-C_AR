@@ -38,14 +38,14 @@
 \newcommand\InlineCode[1]{\fcolorbox{LightGray}{Snow}{\ttfamily \LR{#1}}}
 % Titles settings (Make them orange)
 \makeatletter
+\let\oldpart\part
+\newcommand{\@partstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{part}{#1}{\color{orange}\oldpart*{#1}}}
+\newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
+\renewcommand{\part}{\@ifstar{\@partstar}{\@partnostar}}
 \let\oldchapter\chapter
 \newcommand{\@chapterstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{#1}{\color{green!30!blue!80}\oldchapter*{#1}}}
 \newcommand{\@chapternostar}[1]{{\color{green!30!blue!80}\oldchapter{#1}}}
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
-\let\oldpart\part
-\newcommand{\@partstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{part}{#1}{\color{orange}\oldpart*{#1}}}
-\newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
-\renewcommand{\part}{\setcounter{chapter}{0}\@ifstar{\@partstar}{\@partnostar}}
 \let\oldsection\section
 \newcommand{\@sectionstar}[1]{\phantomsection\addcontentsline{toc}{section}{#1}{\color{orange}\oldsection*{#1}}\sectionmark{#1}}
 \newcommand{\@sectionnostar}[1]{{\color{orange}\oldsection{#1}}}
@@ -72,11 +72,13 @@
 \setlength{\footskip}{1.5cm}
 % Fixing the issues of the numbering
 \renewcommand{\thepart}{\Alph{part}}
-\renewcommand{\thechapter}{\Alph{part}.\arabic{chapter}}
-\renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
-\renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
-\renewcommand{\thesubsubsection}{\Alph{part}.\arabic{subsubsection}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
+%\renewcommand{\thechapter}{\Alph{part}.\arabic{chapter}}
+\renewcommand{\thesection}{\arabic{section}.\arabic{chapter}}
+%\renewcommand{\thesection}{\Alph{part}.\arabic{section}.\arabic{chapter}}
+%\renewcommand{\thesubsection}{\Alph{part}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
+%\renewcommand{\thesubsubsection}{\Alph{part}.\arabic{subsubsection}.\arabic{subsection}.\arabic{section}.\arabic{chapter}}
 \setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
 % Global settings for code and console
 \lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip}
 % C source code
@@ -132,6 +134,7 @@
 
 \title{تعلّم البرمجة بلغة الـC}
 \begin{document}
+  \tableofcontents
   \include{Introduction}
   \include{Introduction_original}
   \part{أساسيّات البرمجة بلغة الـ\textenglish{C}}
