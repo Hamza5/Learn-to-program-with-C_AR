@@ -1,18 +1,20 @@
-\chapter{المعالج القبلي}
-بعد كل المعلومات المتعبة التي تلقّيتها في الدروس حول الجداول، النصوص و المؤشرات، فسنقوم بالتوقف قليلا. لقد تعلّمت أشياء جديدة كثيرة في الفصول السابقة، لن يكون لديّ مانع من نسترجع أنفاسنا قليلا.
+\chapter{المعالج القبلي (\textenglish{Preprocessor})}
+
+بعد كل المعلومات المتعبة التي تلقّيتها في الفصول حول الجداول، النصوص و المؤشرات، فسنقوم بالتوقف قليلا. لقد تعلّمت أشياء جديدة كثيرة في الفصول السابقة، لن يكون لديّ مانع من نسترجع أنفاسنا قليلا.
 
 هذا الفصل يتحدّث عن المعالج القبلي، هذا البرنامج الّذي يعمل مباشرة قبل الترجمة.\\
 لا تخطئ : المعلومات التي به ستكون مهمّة لك. لكنّها ستكون أقل تعقيداً من الّتي تعلّمتها مؤخّراً.
 
 \section{الـ\texttt{include}}
-كما شرحت لكم في الفصول الأولى من الكتاب، نجد في الشفرات المصدريّة سطورا خاصّة تسمّى بـ\textbf{توجيهات المعالج القبلي} (\textenglish{Preprocessor directives}).\\
+
+كما شرحت لك  في الفصول الأولى من الكتاب، نجد في الشفرات المصدريّة سطورا خاصّة تسمّى بـ\textbf{توجيهات المعالج القبلي} (\textenglish{Preprocessor directives}).\\
 هذه السطور لديها الخاصيّة التالية : تبدأ دائما بالرمز
 \InlineCode{\#}.
 لذا فمن السهل التعرّف عليها.
 
 التوجيهة الوحيدة التي رأيناها لحدّ الآن هي
 \InlineCode{\#include}.\\
-هذه التوجيهة تسمح لنا بتضمين محتوى ملف في آخر. قلت لكم هذا من قبل.\\
+هذه التوجيهة تسمح لنا بتضمين محتوى ملف في آخر. قلت لك هذا من قبل.\\
 نحن نحتاجها في تضمين الملفات ذات الصيغة
 \InlineCode{.h}
 كملفات
@@ -30,15 +32,19 @@
 مثلا)، نستعمل علامات الترتيب
 \InlineCode{< >}
 كالتالي :
+
 \begin{Csource}
 #include <stdlib.h>
 \end{Csource}
+
 بينما لتضمين ملفّ
 \InlineCode{.h}
 موجود في المجلّد الذي به مشروعنا، فسنقوم يذلك باستخدام علامتي الترتيب كالتالي :
+
 \begin{Csource}
 #include "myfile.h"
 \end{Csource}
+
 في الحقيقة، المعالج القبلي يتمّ تشغيله قبل الترجمة. يبحث في كلّ ملفاتك عن توجيهات المعالج القبلي، تلك الأسطر المشهورة التي تبدأ بـ\InlineCode{\#}.\\
 عندما يجد التوجيهة
 \InlineCode{\#include}،
@@ -64,6 +70,7 @@
 تخيّل أن لدينا في الملف
 \InlineCode{file.c}
 التالي :
+
 \begin{Csource}
 #include "file.h"
 
@@ -76,12 +83,15 @@ void anotherFunction(int value)
   /* The code of the function */
 }
 \end{Csource}
+
 و في الملف
 \InlineCode{file.h} :
+
 \begin{Csource}
 int myFunction(int something, double stupid);
 void anotherFunction(int value);
 \end{Csource}
+
 عندما يمر المعالج القبلي بهذه الشفرة، قبل أن تتم ترجمة الملف
 \InlineCode{file.c}،
 سيضع كما قلت محتوى الملف
@@ -92,6 +102,7 @@ void anotherFunction(int value);
 \InlineCode{file.c}
 \textit{قُبَيْل}
 الترجمة سيحتوي التالي :
+
 \begin{Csource}
 int myFunction(int something, double stupid);
 void anotherFunction(int value);
@@ -105,15 +116,17 @@ void anotherFunction(int value)
   /* The code of the function */
 }
 \end{Csource}
+
 محتوى
 \InlineCode{.h}
-تمّ ادخاله مكان
+تمّ إدخاله مكان
 \InlineCode{\#include}.
 
 هذا ليس بالأمر المعقد لفهمه، و لعلّ بعض القراء يشكك في أن الأمر يحصل بهذه الطريقة.\\
 مع هذه الشروحات الإضافيّة، أتمنّى أنّ الجميع يوافقني.
 الـ\InlineCode{\#include}
 لا تفعل أي شيء سوى إحضار محتوى ملف و تضمينه في آخر، من المهمّ فهم هذا الأمر جيّدا.
+
 \begin{information}
   إن كنّا قد قررنا وضع النماذج في ملفّات
 \InlineCode{.h}
@@ -132,44 +145,54 @@ void anotherFunction(int value)
 \end{information}
 
 \section{الـ\texttt{define}}
+
 سنتعرف الآن على توجيهة معالج جديدة و هي
 \InlineCode{\#define}.
 
 هذه التوجيهة تسمح بالتصريح عن
 \textbf{ثابت معالج قبلي}.
 هذا يسمح بإرفاق قيمة بعبارة.\\
-إليكم مثالا :
+إليك مثالا :
+
 \begin{Csource}
 #define INITIAL_NUMBER_OF_LIVES 3
 \end{Csource}
+
 يجب أن تكتب بالترتيب :
+
 \begin{itemize}
   \item الـ\InlineCode{define}.
   \item الكلمة التي تريد ربط القيمة بها.
   \item قيمة الكلمة.
 \end{itemize}
+
 احذر : رغم التشابه (خصوصا في الاسم الذي اعتدنا كتابته بحروف كبيرة)، فهذه مختلفة كثيرا عن الثوابت التي تعلّمناها حتّى الآن، مثل :
+
 \begin{Csource}
 const int INITIAL_NUMBER_OF_LIVES = 3;
 \end{Csource}
+
 الثوابت تأخذ حيّزا في الذاكرة. حتى و إن لم تتغير قيمتها فإن العدد 3 مخزّن في مكان ما من الذاكرة. هذا ليس هو الحال مع ثوابت المعالج القبلي !
 
 كيف تعمل ؟ في الواقع، الـ\InlineCode{\#define}
 تستبدل في شفرتك المصدريّة كلّ الكلمات بقيمتهم الموافقة. هذا تقريبا مثل عمليّة البحث و الاستبدال
-(\textenglish{Search/Replace})
+(\textenglish{Search / Replace})
 الموجودة في برنامج
 \textenglish{Word}
 مثلا. إذن السطر :
+
 \begin{Csource}
 #define INITIAL_NUMBER_OF_LIVES 3
 \end{Csource}
+
 يستبدل في الملف كلّ
 \InlineCode{INITIAL\_NUMBER\_OF\_LIVES}
-بالعدد 3.
+بالرقم 3.
 
 هذا مثال على ملف
 \InlineCode{.c}
 قبل مرور المعالج القبلي :
+
 \begin{Csource}
 #define INITIAL_NUMBER_OF_LIVES 3
 int main(int argc, char *argv[])
@@ -178,19 +201,23 @@ int main(int argc, char *argv[])
   /* Code ... */
 \end{Csource}
 و بعدما يمرّ المعالج القبلي :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
 	int lives = 3;
   /* Code ... */
 \end{Csource}
+
 قبل الترجمة، كلّ
 \InlineCode{\#define}
 يتمّ استبدالها بالقيمة الموافقة. المترجم "يرى" الملفّ بعد مرور المعالج القبلي، حيث تكون الاستبدالات قد تمت.
+
 \begin{question}
 ما الفائدة بالنسبة للثوابت التي رأيناها حتّى الآن ؟
 \end{question}
-كما قلت لك، هي لا تأخذ مكانا في الذاكرة. هذا منطقيّ، نظرا لأنّه عند الترجمة لا يتبقّى سوى الأعداد في الشفرة المصدريّة.
+
+كما قلت لك، هي لا تأخذ مكانا في الذاكرة. هذا منطقيّ، نظرا لأنّه عند الترجمة لا يتبقّى سوى الأرقام في الشفرة المصدريّة.
 
 توجد فائدة أخرى و هي أنّ الاستبدال يتمّ في كامل الملف حيث توجد
 \InlineCode{\#define}.
@@ -202,10 +229,12 @@ int main(int argc, char *argv[])
 \InlineCode{\#define} ؟\\
 هذا ما لن تتأخّر هن فعله. عندما تفتح نافذة في
 \textenglish{C}، قد تحتاج إلى تعريف ثوابت المعالج القبلي لتحديد أبعاد النافذة :
+
 \begin{Csource}
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGTH 600
 \end{Csource}
+
 الفائدة هي أنّه إن أردت تغيير حجم الواجهة (لأنّها تبدو لك صغيرة جدّا)، فيكفي أن تغيّر
 \InlineCode{\#define}
 و تعيد ترجمة الشفرة.
@@ -228,9 +257,11 @@ int main(int argc, char *argv[])
 كملخّص، ثوابت المعالج القبلي تسمح بـ"إعداد" برنامجك قبل ترجمته. إنّها أشبه بطريقة إعدادات صغيرة.
 
 \subsection{الـ\texttt{define} من أجل حجم جدول}
+
 نستخدم كثيرا
 \InlineCode{\#define}
 من أجل تعريف حجم الجداول. نكتب مثلا :
+
 \begin{Csource}
 #define MAX_SIZE 1000
 int main(int argc, char *argv[])
@@ -238,18 +269,22 @@ int main(int argc, char *argv[])
 	char string1[MAX_SIZE], string2[MAX_SIZE];
 	// ...
 \end{Csource}
+
 \begin{question}
-  و لكن... كنت أعتقد أنّه لا يمكننا وضع متغيّر أو ثابت بين القوسين المربعين أثناء تعريف جدول ؟
+  و لكن \dots كنت أعتقد أنّه لا يمكننا وضع متغيّر أو ثابت بين القوسين المربعين أثناء تعريف جدول ؟
 \end{question}
+
 نعم هذا صحيح، لكنّ
 \InlineCode{MAX\_SIZE}
 ليس متغيّرا و لا ثابتا. في الواقع لقد قلت لك، المعالج القبلي يحوّل الملف قبل الترجمة إلى :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
 	char string1[1000], string2[1000];
 	// ...
 \end{Csource}
+
 و هذا شيء صحيح.
 
 بتعريف
@@ -261,6 +296,7 @@ int main(int argc, char *argv[])
 تأخذ القيمة الجديدة الّتي حددتها.
 
 \subsection{الحسابات في الـ\texttt{define}}
+
 من الممكن القيام بحسابات صغيرة في الـ\InlineCode{\#define}.\\
 مثلا، هذه الشفرة تنشئ ثابتا
 \InlineCode{WINDOW\_WIDTH}،
@@ -269,11 +305,13 @@ int main(int argc, char *argv[])
 ثمّ ثالثا
 \InlineCode{PIXELS\_NUMBER}،
 الذي يحوي عدد البيكسلز المعروضة داخل النافذة (الحساب بسيط : العرض $\times$ الطول).
+
 \begin{Csource}
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define PIXELS_NUMBER (WINDOW_WIDTH * WINDOW_HEIGHT)
 \end{Csource}
+
 قيمة
 \InlineCode{PIXELS\_NUMBER}
 يتمّ استبدالها قبل الترجمة بالشفرة التالية :
@@ -284,70 +322,87 @@ int main(int argc, char *argv[])
 يمكنك القيام بكل العمليات القاعدية التي تعرفها : جمع (+)، طرح (-)، ضرب (*)، قسمة (/)، ترديد (\%).
 
 \subsection{الثوابت مسبقة التعريف}
+
 بالإضافة إلى الثوابت التي أنت عرّفتها، فإنه توجد ثوابت معرّفة من قِبَل المعالج القبلي.
 
-كل من هذه الثوابت تبدأ و تنتهي برمزين
+كل من هذه الثوابت تبدأ و تنتهي برمزي
 \textenglish{underscore} \InlineCode{\_}
 (تجده في لوحة المفاتيح تحت الرقم 8 أعلى اللوحة بالنسبة للتخطيط
 \textenglish{AZERTY}).
+
 \begin{itemize}
   \item \InlineCode{\_\_LINE\_\_} : يعطي رقم السطر الحالي من الشفرة.
-  \item \InlineCode{\_\_FILE\_\_} : يعطي إسم الملف الحالي.
+  \item \InlineCode{\_\_FILE\_\_} : يعطي اسم الملف الحالي.
   \item \InlineCode{\_\_DATE\_\_} : يعطي تاريخ ترجمة الشفرة.
   \item \InlineCode{\_\_TIME\_\_} : تعطي وقت ترجمة الشفرة.
 \end{itemize}
-قد تكون هذه الثوابت مفيدة للتحكم في الأخطاء، مثال :
+
+قد تكون هذه الثوابت مفيدة لمعالجة الأخطاء، مثال :
+
 \begin{Csource}
 printf("Error in the line n° %d of the file %s\n", __LINE__, __FILE__);
 printf("This file has been compiled on %s at %s\n", __DATE__, __TIME__);
 \end{Csource}
+
 \begin{Console}
 Error in the line n° 9 of the file main.c
 This file has been compiled on 13 Jan 2006 at 19:21:10
 \end{Console}
 
 \subsection{المعرّفات البسيطة}
+
 إنه من الممكن أن نكتب بكل بساطة :
+
 \begin{Csource}
 #define CONSTANT
 \end{Csource}
+
 دون إعطاء القيمة.\\
 هذا يعني للمعالج القبلي أنّ الكلمة
 \InlineCode{CONSTANT}
 معرّفة، بكلّ بساطة. ليست لها قيمة لكنّها "موجودة".
+
 \begin{question}
   ما الفائدة من ذلك ؟
 \end{question}
+
 القائدة قد لا تبدو واضحة كما كان الأمر في السابق، لكن لهذا فائدة و سنكتشفها بسرعة.
 
 \section{الماكرو (\textenglish{Macro})}
+
 كنا قد رأينا بانه باستعمال الـ\InlineCode{\#define}،
 بامكاننا أن نطلب من المعالج القبلي استبدال كلمة بقيمتها في الشفرة بأكملها. مثال :
+
 \begin{Csource}
 #define NUMBER 9
 \end{Csource}
+
 و الذي يعني أنّ جميع
 \InlineCode{NUMBER}
 في الشفرة يتمّ استبدالها بـ9. لقد رأينا أنّها تعمل كوظيفة بحث و استبدال يقوم بها المعالج القبلي قبل الترجمة.
 
 لديّ خبر جديد ! في الواقع
 \InlineCode{\#define}
-أقوى من هذا بكثير. فهي قادرة على الاستبدال بـ... شفرة مصدرية بأكملها ! عندما نستخدم
+أقوى من هذا بكثير. فهي قادرة على الاستبدال بـ\dots شفرة مصدرية بأكملها ! عندما نستخدم
 \InlineCode{\#define}
 للبحث و استبدال كلمة بشفرة مصدرية نقول أننا أنشأنا
 \textbf{ماكرو
 (\textenglish{Macro})}.
 
 \subsection{ماكرو بدون معاملات}
+
 هذا مثال عن ماكرو بسيطة :
+
 \begin{Csource}
 #define COUCOU() printf("Coucou");
 \end{Csource}
+
 الشيء الذي تغيّر هو القوسين الذين أضفناهما بعد الكلمة المفتاحيّة (هنا
 \InlineCode{COUCOU()}).
 سنرى فائدتهما بعد قليل.
 
 فلنجرب الماكرو داخل الشفرة المصدرية:
+
 \begin{Csource}
 #define COUCOU() printf("Coucou");
 int main(int argc, char *argv[])
@@ -356,11 +411,14 @@ int main(int argc, char *argv[])
   return 0;
 }
 \end{Csource}
+
 \begin{Console}
 Coucou
 \end{Console}
+
 أعلم أنّ هذا ليس شيئا جديدا حاليّا. لكنّ الّذي عليك فهمه، هو أن الماكرو عبارة عن بضعة أسطر من الشفرة التي يتم استبدالها مباشرة في الشفرة قبل الترجمة.\\
 الشفرة التي كتبناها تصبح هكذا قبل الترجمة :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -368,13 +426,17 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 إذا فهمت هذا فقد فهمت مبدأ عمل الماكرو.
+
 \begin{question}
   لكن، هل يمكننا أن نضع سطراً واحدا فقط من الشفرة في كلّ ماكرو ؟
 \end{question}
+
 لا، لحسن الحظ يمكنك وضع عدّة أسطر من الشفرة في المرّة. يكفي وضع
 \InlineCode{\textbackslash}
 قبل كلّ سطر جديد، مثل هذا :
+
 \begin{Csource}
 #define TELL_YOUR_STORY() printf("Hello, my name is Brice\n"); \
                           printf("I live at Nice\n"); \
@@ -385,14 +447,16 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 Hello, my name is Brice
 I live at Nice
 I love rice
 \end{Console}
+
 كما تلاحظ في
 \InlineCode{main}،
-أنّ نداء الماكرو لا يوضع بعده فاصلة منقوطة في النهاية. في الواقع، لأنها توجيهة خاصة بالمعالج القبلي و لا تحتاج إلى  أن تنتهي بفاصلة منقوطة.
+أنّ استدعاء الماكرو لا يوضع بعده فاصلة منقوطة في النهاية. في الواقع، لأنها توجيهة خاصة بالمعالج القبلي و لا تحتاج إلى  أن تنتهي بفاصلة منقوطة.
 
 \subsection{ماكرو بالمعاملات}
 لحدّ الآن، رأينا كيف نقوم بإنشاء ماكرو بدون معاملات، أي بقوسين فارغين. الفائدة من هذا النوع من الماكرو أنّه يفيد في "اختصار" شفرة طويلة، خاصّة إذا كانت ستتكرّ كثيرا في شفرتك المصدريّة.
@@ -407,14 +471,16 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 You are adult
 \end{Console}
+
 \begin{information}
 يمكننا مثلا إضافة الـ\InlineCode{else}
 لكي نُظهر على الشاشة : أنت لست بالغاً
 "\textenglish{You are not adult}".
-حاول القيام بذلك، الأمر ليس صعبا.لا تنس وضع الشرطة الخلفيّة
+حاول القيام بذلك، الأمر ليس صعبا. لا تنس وضع الشرطة الخلفيّة
 \InlineCode{\textbackslash}
 قبل السطر الجديد.
 \end{information}
@@ -427,7 +493,7 @@ You are adult
 \InlineCode{age}.
 في كلّ شفرة الماكرو،
 \InlineCode{age}
-سيتم استبداله بالعدد المحدد عند النداء (هنا 22).
+سيتم استبداله بالعدد المحدد عند الاستدعاء (هنا 22).
 
 أي أن الشفرة المصدريّة السابقة بعد مرور المعالج القبلي مباشرة تصبح هكذا :
 \begin{Csource}
@@ -438,14 +504,14 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
-تم استبدال السطر الذي ينادي الماكرو بالشفرة التي تحتويه الماكرو، و تم تعويض "المتغير"
+تم استبدال السطر الذي يستدعي الماكرو بالشفرة التي تحتويه الماكرو، و تم تعويض "المتغير"
 \InlineCode{age}
 بقيمته مباشرة في الشفرة المصدريّة للاستبدال.
 
-يمكننا انشاء ماكرو بعدة معاملات :
+يمكننا إنشاء ماكرو بعدة معاملات :
 \begin{Csource}
-#define ADULT(age, name) if (age >= 18)
-printf("You are adult %s\n", name);
+#define ADULT(age, name) if (age >= 18)\
+			printf("You are adult %s\n", name);
 int main(int argc, char *argv[])
 {
 	ADULT(22, "Maxime")
@@ -550,8 +616,7 @@ int main(int argc, char *argv[])
 \InlineCode{B.h}.
 إذا فالملف
 \InlineCode{B.h}
-مضمّن الآن بـ
-\InlineCode{A.h}.\\
+مضمّن الآن بـ\InlineCode{A.h}.\\
 و هنا يبدأ المشكل، تخيّل أن الملف
 \InlineCode{B.h}
 يحتوي نفسه على
@@ -568,7 +633,7 @@ int main(int argc, char *argv[])
 \InlineCode{B.h}.
   \item يقوم بقراءة
 \InlineCode{B.h}
-فيجد بان عليه تضمين
+فيجد بأن عليه تضمين
 \InlineCode{A.h}.
   \item  يضمّن
 \InlineCode{A.h}
@@ -584,6 +649,7 @@ int main(int argc, char *argv[])
 \InlineCode{A.h}.
   \item إلخ.
 \end{itemize}
+
 قد تظنّ أنّ هذا الأمر لا نهاية له !\\
 في الحقيقة، من كثرة التضمينات، سيتوقّف المعالج القبلي قائلا "لقد سئمت من التضمينات !" و هذا ما يعطّل الترجمة.
 
@@ -591,6 +657,7 @@ int main(int argc, char *argv[])
 \textbf{كلّ ملفّات
 \InlineCode{.h}
 الخاصّة بك} بدون استثناء :
+
 \begin{Csource}
 #ifndef DEF_FILENAME // If the constant has not been defined, the file then has never been included
 #define DEF_FILENAME // We define the constant so the file will not be included the next time
@@ -599,6 +666,7 @@ int main(int argc, char *argv[])
 
 #endif
 \end{Csource}
+
 أي أننا نضع كل محتوى الملف
 \InlineCode{.h}
 (بما في ذلك
@@ -618,24 +686,26 @@ int main(int argc, char *argv[])
 \InlineCode{if}.
 
 أوّل تعليمة سيجدها هي :
+
 \begin{Csource}
 #define DEF_FILENAME
 \end{Csource}
+
 الآن لقد تم تعريف الثابت. في المرّة القادمة التي يتم فيها تضمين الملف، لن يكون الشرط فيها صحيحا و لهذا لن نخاطر بإعادة تضمين الملف من جديد.
 
 يمكنك تسمية اسم الثابت كما تريد، أنا اعتدت على تسميته
 \InlineCode{DEF\_FILENAME}.
 
-الشيء الأهمّ، و الّذي أتمنّى أنّكم فهمتموه جيّدا، هو أن تغيّر اسم الثابت من ملف
+الشيء الأهمّ، و الّذي أتمنّى أنّك فهمته جيّدا، هو أن تغيّر اسم الثابت من ملف
 \InlineCode{.h}
 إلى آخر. يجب ألّا يكون نفس الثابت في كلّ ملفّات
 \InlineCode{.h}،
 و إلا فلن تتم قراءة سوى أول ملف
 \InlineCode{.h}
-و الباقي سيتم تجاهلها !\\
+و الباقية سيتم تجاهلها !\\
 إذا فلتغيّر
 \InlineCode{FILENAME}
-باسم الملف الحالي.
+إلى اسم الملف الحالي.
 \begin{information}
 أنصحك بإلقاء نظرة على
 \InlineCode{.h}
@@ -664,7 +734,7 @@ int main(int argc, char *argv[])
 \InlineCode{\#elif}
 و
 \InlineCode{\#endif}.
-  \item لنتجنب أنّ ملف
+  \item لنتجنب أنّ ملفّاً
 \InlineCode{.h}
 يتمّ تضمينه عددا لامنتهيا من المرّات، نحميه بمجموعة من ثوابت المعالج القبلي و الشروط. كلّ ملفّاتك
 \InlineCode{.h}
