@@ -3,18 +3,18 @@
 إدخال النصوص في لغة الـ\textenglish{C}
 هي من أكثر الأمور حساسية. أنت تعرف الدالة
 \InlineCode{scanf}
-التي تعرّفنا عليها في الدروس الأولى. ستقول : و أيّ الأدوات ستكون أكثر سهولة و طبيعية منها ؟ لكن جهّز نفسك، بعد هذا الدرس ستقول عنها أي شيء باستثناء "بسيطة".
+التي تعرّفنا عليها في الفصول الأولى. ستقول : و أيّ الأدوات ستكون أكثر سهولة و طبيعية منها ؟ لكن جهّز نفسك، بعد هذا الفصل ستقول عنها أي شيء باستثناء "بسيطة".
 
-الذين سيستعملون برنامجك هم بطبيعة الحال بشر. فهناك منهم من يخطئ في كتابة شيء، بينما هناك من يتعمّدون إرباك برنامجك بمعلومات غير منتظرة. فإن طلبت من المستعمل : ما هو عُمرك ؟ من يضمن لك بأنه لن يجيبك بـ:" إسمي فلان و أنا من البلد فلان" ؟
+الذين سيستعملون برنامجك هم بطبيعة الحال بشر. فهناك منهم من يخطئ في كتابة شيء، بينما هناك من يتعمّدون إرباك برنامجك بمعلومات غير منتظرة. فإن طلبت من المستعمل : ما هو عُمرك ؟ من يضمن لك بأنه لن يجيبك بـ:" اسمي فلان و أنا من البلد فلان" ؟
 
-الهدف من هذا الدرس هو تعريفك إلى بعض المشاكل التي يمكن أن نواجهها أثناء استعمالنا للدالة
+الهدف من هذا الفصل هو تعريفك إلى بعض المشاكل التي يمكن أن نواجهها أثناء استعمالنا للدالة
 \InlineCode{scanf}،
 و تقديم دالة بديلة أكثر أماناً و هي
 \InlineCode{fgets}.
 
 \section{حدود الدالة \texttt{scanf}}
 
-هذه الدالة التي نستعملها جميعاً من الدروس الأولى في الكتاب، هي سلاح ذو حدين :
+هذه الدالة التي نستعملها جميعاً من الفصول الأولى في الكتاب، هي سلاح ذو حدين :
 
 \begin{itemize}
   \item سهلة الاستعمال حينما نكون في مستوى "مبتدئ" ، و لهذا السبب عرّفتك بها.
@@ -30,21 +30,21 @@
 لنفرض أننا طلبنا من المستعمل أن يقوم بإدخال سلسلة محارف في الكونسول، و هو يقوم بكتابة فراغ في سلسلته~:
 
 \begin{Csource}
-  #include <stdio.h>
-  #include <stdlib.h>
-  int main(int argc, char *argv[])
-  {
-  	char name[20] = {0};
-  	printf("What's your name ? ");
-  	scanf("%s", name);
-  	printf("Ah ! Your name is %s !\n\n", name);
-  	return 0;
-  }
+#include <stdio.h>
+#include <stdlib.h>
+int main(int argc, char *argv[])
+{
+	char name[20] = {0};
+	printf("What's your name ? ");
+	scanf("%s", name);
+	printf("Ah ! Your name is %s !\n\n", name);
+	return 0;
+}
 \end{Csource}
 
 \begin{Console}
-  What's your name ? Mathieu Nebra
-  Ah ! Your name is Mathieu !
+What's your name ? Mathieu Nebra
+Ah ! Your name is Mathieu !
 \end{Console}
 
 \begin{question}
@@ -85,7 +85,7 @@
 في الشفرة التي رأيناها، يوجد السطر التالي :
 
 \begin{Csource}
-  char name[5] = {0};
+char name[5] = {0};
 \end{Csource}
 
 ترى أنني قمت بحجز 5 خانات من أجل الجدول المسمّى
@@ -94,7 +94,7 @@
 \InlineCode{char}.
 يعني أننا قادرون على تخزين كلمة من 4 محارف، بينما الحرف الأخير فهو محجوز لعلامة نهاية السلسلة
 \InlineCode{\textbackslash 0}.\\
-إذا نسيت كلّ هذا فراجع درس السلاسل المحرفية.
+إذا نسيت كلّ هذا فراجع فصل السلاسل المحرفية.
 
 المخطط التالي يمثل المكان الذي هو محجوز للكلمة التي عرّفناها :
 
@@ -124,21 +124,21 @@ Ah ! Your name is Patrice !
 \Picture{Chapter_II-10_array_overflow}
 
 \begin{question}
-  لم الأمر خطير ؟
+  لما الأمر خطير ؟
 \end{question}
 
-دون الدخول في التفاصيل، لأنه بإمكاننا البدء في محادثة  قدر 50 صفحة و لا نتوقف أبداً، فلنقل بأنه إن لم يقم البرنامج بالتحكم في حالات كهذه، فالمستعمل سيقوم بكتابة ما يحلو له و تخريب المعلومات المتواجدة في الخانات التالية من الذاكرة. أي أنه قادر على كتابة شفرة في تلك الخانات و برنامجك سيقوم بتشغيل تلك الشفرات و كأنها تابعة له، و هذا ما نسميه بالهجوم عبر المتغير المؤقت
-\textenglish{buffer overflow attack}،
+دون الدخول في التفاصيل، لأنه بإمكاننا البدء في محادثة  قدر 50 صفحة و لا نتوقف أبداً، فلنقل بأنه إن لم يقم البرنامج بمعالجة حالات كهذه، فالمستعمل سيقوم بكتابة ما يحلو له و تخريب المعلومات المتواجدة في الخانات التالية من الذاكرة. أي أنه قادر على كتابة شفرة في تلك الخانات و برنامجك سيقوم بتشغيل تلك الشفرات و كأنها تابعة له، و هذا ما نسميه بالهجوم عبر المتغير المؤقت
+(\textenglish{Buffer overflow attack})،
 نوع من الهجومات المعروفة عند القراصنة، و لكنه صعب التحقيق.\\
-إذا كنت مهتماً بهذا الموضوع، يمكنك قراءة المقال التالي من ويكيبيديا ( حذار، إنّه مع ذلك معقد جدا ) :
+إذا كنت مهتماً بهذا الموضوع، يمكنك قراءة المقال التالي من ويكيبيديا (حذار، إنّه مع ذلك معقد جدا) :
 
 \url{http://fr.wikipedia.org/wiki/D%C3%A9passement_de_tampon}
 
 الهدف من هذا الفصل هو تأمين قراءة البيانات و ذلك بمنع المستعمل من تجاوز الذاكرة و إحداث
 \textenglish{buffer overflow}.
-بالطبع كان بإمكاننا تعريف جدول كبير للغاية ( 10.000 خانة ) لكن هذا لا يحلّ المشكل فالشخص الذي يريد الوصول إلى الذاكرة ما عليه سوى إدخال سلسلة يتجاوز طولها 10.000 محرف و سيعمل هجومه كما يريد.
+بالطبع كان بإمكاننا تعريف جدول كبير للغاية (10,000 خانة) لكن هذا لا يحلّ المشكل فالشخص الذي يريد الوصول إلى الذاكرة ما عليه سوى إدخال سلسلة يتجاوز طولها 10,000 محرف و سيعمل هجومه كما يريد.
 
-الشيء المحزن هو أن معظم المبرمجين لا ينتبهون دائما لهذه الأخطاء، و لو أنهم قاموا بكتابة الشفرة من المرة الأولى بشكل نظيف و صحيح، لما ظهرت كثير من الثغرات من التي نتحدّث عنها اليوم.
+الشيء المحزن هو أن معظم المبرمجين لا ينتبهون دائما لهذه الأخطاء، و لو أنهم قاموا بكتابة الشفرة من المرة الأولى بشكل نظيف و صحيح، لما ظهرت كثير من الثغرات التي نتحدّث عنها اليوم.
 
 \section{استرجاع سلسلة محارف}
 
@@ -173,10 +173,10 @@ Ah ! Your name is Patrice !
 هو :
 
 \begin{Csource}
-char *fgets( char *str, int num, FILE *stream );
+char *fgets(char *str, int num, FILE *stream);
 \end{Csource}
 
-من المهم أن نفهم هذا النموذج. معاملات الدالة هي التالية.
+من المهم أن نفهم هذا النموذج. معاملات الدالة هي التالية :
 
 \begin{itemize}
   \item \InlineCode{str} :
@@ -190,12 +190,12 @@ char *fgets( char *str, int num, FILE *stream );
 \InlineCode{char}،
 فإن الدالة
 \InlineCode{fgets}
-ستقرأ 9 محارف على الأكثر ( آخر خانة محجوزة للمحرف
+ستقرأ 9 محارف على الأكثر (آخر خانة محجوزة للمحرف
 \InlineCode{\textbackslash 0}
-المشير إلى نهاية السلسلة ).
+المشير إلى نهاية السلسلة).
   \item \InlineCode{stream} :
 مؤشّر نحو الملف الذي سنقرأ منه. في حالتنا "الملف المراد قراءته" هو الإدخال القياسي
-( \textenglish{standard input} )،
+(\textenglish{Standard input})،
 أي لوحة المفاتيح. لطلب قراءة الإدخال القياسي نرسل المؤشّر
 \InlineCode{stdin}
 المعرّف تلقائيّا في الملفات الرأسيّة للمكتبة القياسيّة للـ\textenglish{C}
@@ -265,7 +265,7 @@ Ah ! Your name is NEBRA
 الّتي يفترض بك معرفتها. إذا تمّ العثور على
 \InlineCode{\textbackslash n}،
 فستستبدله بـ\InlineCode{\textbackslash 0}
-( نهاية السلسلة ) لتجنّب الاحتفاظ بـ"علامة الإدخال".
+(نهاية السلسلة) لتجنّب الاحتفاظ بـ"علامة الإدخال".
 
 هاهي الشفرة علّقت عليها خطوة بخطوة :
 
@@ -275,14 +275,14 @@ Ah ! Your name is NEBRA
 #include <string.h> // Think to include string.h for strchr()
 int read(char *string, int length)
 {
-	char *inputPosition = NULL;
+	char *enterPosition = NULL;
 	// We read the text
 	if (fgets(string, length, stdin) != NULL)  // No error ?
 	{
-    		inputPosition = strchr(string, '\n'); // We search for the "input"
-    		if (inputPosition != NULL) // If we find the \n
+    		enterPosition = strchr(string, '\n'); // We search for the "Enter"
+    		if (enterPosition != NULL) // If we find the \n
     		{
-        			*inputPosition = '\0'; // We replace the character by \0
+        			*enterPosition = '\0'; // We replace the character by \0
     		}
     		return 1; // We return 1 if there's no error
 	}
@@ -297,15 +297,15 @@ int read(char *string, int length)
 \InlineCode{fgets}
 مباشرة داخل
 \InlineCode{if}.
-هذا اختصار كتابي، كي لا استعمل مؤشّرا يستقبل القيمة المُرجعة من الدالة ثم اختبر قيمته إن كانت
+هذا اختصار كتابي، كي لا أستعمل مؤشّرا يستقبل القيمة المُرجعة من الدالة ثم أختبر قيمته إن كانت
 \InlineCode{NULL}
 أم لا.
 
-إنطلاقا من
+انطلاقا من
 \InlineCode{if}
 الأول، أعرف هل
 \InlineCode{fgets}
-عملت على ما يرام أم حدث مشكل ما ( قام المستخدم بادخال محارف أكبر من العدد المسموح به ).
+عملت على ما يرام أم حدث مشكل ما (قام المستخدم بادخال محارف أكبر من العدد المسموح به).
 
 إذا تم كل شيء بشكل جيد، سأذهب للبحث عن الـ\InlineCode{\textbackslash n}
 باستعمال الدالة
@@ -323,10 +323,10 @@ int read(char *string, int length)
 ثم قمنا باستبدال الـ\InlineCode{\textbackslash n}
 بـ\InlineCode{\textbackslash 0}
 و هذا ما أعطانا
-"\InlineCode{NEBRA\textbackslash 0\textbackslash 0}"،.\\
+"\InlineCode{NEBRA\textbackslash 0\textbackslash 0}".\\
 ليس مشكلا أن توجد علامتا
 \InlineCode{\textbackslash 0}
-متتابعتان. الحاسوب سيتوقف عند الإشارة الأولى و يعتبرها نهاية السلسلة.
+متتابعتين. الحاسوب سيتوقف عند الإشارة الأولى و يعتبرها نهاية السلسلة.
 
 و النتيجة ؟ حسنا، لقد عملت بشكل جيّد.
 
@@ -358,7 +358,7 @@ Ah ! Your name is Jean Edou !
 
 بما أن الدالة
 \InlineCode{fgets}
-تدعم الحماية، فهي توقفت عند الحرف التاسع الذي قام المستعمل بإدخاله لأنّنا حجزنا جدولا من 10 محارف ( يجب عدم نسيان أنّ العاشر محجوز لإشارة نهاية السلسلة ).
+تدعم الحماية، فهي توقفت عند الحرف التاسع الذي قام المستعمل بإدخاله لأنّنا حجزنا جدولا من 10 محارف (يجب عدم نسيان أنّ العاشر محجوز لإشارة نهاية السلسلة).
 المشكل هو أن بقيّة السلسلة الّتي لم تتم قراءتها.
 "\textenglish{ard Albert 1er}"
 لم تختف ! و إنّما لازالت موجودة في المتغير المؤقّت. هذا المتغير المؤقت هو مكان في الذاكرة يعمل كوسيط بين لوحة المفاتيح و الجدول الّذي سيتم تخزين السلسلة فيه. في الـ\textenglish{C}،
@@ -370,13 +370,15 @@ Ah ! Your name is Jean Edou !
 
 \Picture{Chapter_II-10_buffer}
 
-حينما يقوم المستعمل بإدخال نص بلوحة المفاتيح، فإن نظام التشغيل ( ويندوز مثلا ) يقوم بنسخ النص مباشرة في المتغير المؤقّت
+حينما يقوم المستعمل بإدخال نص بلوحة المفاتيح، فإن نظام التشغيل 
+(\textenglish{Windows}
+مثلا) يقوم بنسخ النص مباشرة في المتغير المؤقّت
 \InlineCode{stdin}.
 
 مهمة الدالة
 \InlineCode{fgets}
-هي إحضار المحارف الموجودة في المتغير المؤقت ووضعها في الذاكرة التي قمت أنت بتحديدها ( الجدول
-\InlineCode{string} ).\\
+هي إحضار المحارف الموجودة في المتغير المؤقت ووضعها في الذاكرة التي قمت أنت بتحديدها (الجدول
+\InlineCode{string}).\\
 بعد القيام بعملها، تمسح ما قامت بنسخه من المتغير المؤقّت.
 
 إذا عمل كل شيء على ما يرام، فالدالة
@@ -416,16 +418,16 @@ Ah ! Your name is Jean Edou !
 فلنجرّب هذه الشفرة :
 
 \begin{Csource}
-  int main(int argc, char *argv[])
-  {
-  	char name[10];
-  	printf("What's your name ? ");
-  	read(name, 10);
-  	printf("Ah ! Your name is %s !\n\n", name);
-  	read(name, 10);
-  	printf("Ah ! Your name is %s !\n\n", name);
-  	return 0;
-  }
+int main(int argc, char *argv[])
+{
+ 	char name[10];
+ 	printf("What's your name ? ");
+ 	read(name, 10);
+ 	printf("Ah ! Your name is %s !\n\n", name);
+ 	read(name, 10);
+ 	printf("Ah ! Your name is %s !\n\n", name);
+ 	return 0;
+}
 \end{Csource}
 
 نحن نقوم باستدعاء الدالة
@@ -451,36 +453,36 @@ Ah ! Your name is Jean Edou !
 لكي نتأكد من تفريغ المتغير المؤقت في حال ما احتوى على محارف زائدة :
 
 \begin{Csource}
-  void clearBuffer()
-  {
-  	int c = 0;
-  	while (c != '\n' && c != EOF)
-  	{
-      		c = getchar();
-  	}
-  }
-  int read(char *string, int length)
-  {
-  	char *inputPosition = NULL;
-  	if (fgets(string, length, stdin) != NULL)
-  	{
-      		inputPosition = strchr(string, '\n');
-      		if (inputPosition != NULL)
-      		 {
-          			*inputPosition = '\0';
-      		}
-      		else
-      		 {
-          			clearBuffer();
-      		}
-      		return 1;
-  	 }
-  	else
-  	{
-      		clearBuffer();
-      		return 0;
-  	 }
-  }
+void clearBuffer()
+{
+ 	int c = 0;
+ 	while (c != '\n' && c != EOF)
+ 	{
+     		c = getchar();
+ 	}
+}
+int read(char *string, int length)
+{
+ 	char *enterPosition = NULL;
+ 	if (fgets(string, length, stdin) != NULL)
+ 	{
+     		enterPosition = strchr(string, '\n');
+     		if (enterPosition != NULL)
+     		{
+         			*enterPosition = '\0';
+     		}
+     		else
+     		{
+         			clearBuffer();
+     		}
+     		return 1;
+ 	}
+ 	else
+ 	{
+     		clearBuffer();
+     		return 0;
+	}
+}
 \end{Csource}
 
 الدالة
@@ -490,9 +492,9 @@ Ah ! Your name is Jean Edou !
 في حالتين :
 
 \begin{itemize}
-  \item السلسلة المدخلة طويلة جداً ( يمكننا أن نعرف ذلك بعدم وجود الإشارة
+  \item السلسلة المدخلة طويلة جداً (يمكننا أن نعرف ذلك بعدم وجود الإشارة
 \InlineCode{\textbackslash 0}
-في السلسلة المنسوخة )
+في السلسلة المنسوخة).
   \item إذا حدث أي خطأ مهما كان، يجب تفريغ محتوى المتغير المؤقت لأسباب حماية لكي لا يبقى شيء هناك.
 \end{itemize}
 
@@ -502,9 +504,9 @@ Ah ! Your name is Jean Edou !
 \InlineCode{getchar}.
 هذه الدالة تقوم بإرجاع
 \InlineCode{int}
-( و ليس
+(و ليس
 \InlineCode{char}،
-سوف تعرف السبب لاحقا، أيّا يكن ).\\
+سوف تعرف السبب لاحقا، أيّا يكن).\\
 سنكتفي نحن باسترجاع القيمة في متغير
 \InlineCode{c}
 من نوع
@@ -513,7 +515,7 @@ Ah ! Your name is Jean Edou !
 \InlineCode{\textbackslash 0}
  أو الرمز
 \InlineCode{EOF}
-( نهاية الملف ) و هما يعنيان : لقد وصلت إلى نهاية المتغير المؤقت. سنتوقّف عند الوصول إلى أحد هذين المحرفين.
+(نهاية الملف) و هما يعنيان : لقد وصلت إلى نهاية المتغير المؤقت. سنتوقّف عند الوصول إلى أحد هذين المحرفين.
 
 يبدو عمل الدالة
 \InlineCode{clearBuffer}
@@ -536,38 +538,38 @@ Ah ! Your name is Jean Edou !
 نموذج هذه الدالة خاص نوعاً ما :
 
 \begin{Csource}
-  long strtol( const char *start, char **end, int base );
+long strtol(const char *start, char **end, int base);
 \end{Csource}
 
 الدالة ستقوم بقراءة السلسلة المحرفيّة المرسلة إليها
-( \InlineCode{start} )
+(\InlineCode{start})
 و ستحاول تحويلها إلى
 \InlineCode{long}
 باستعمال الأساس
 (\InlineCode{base})
-المحدد ( غالباً ما نستعمل الأساس 10، لأننا نستعمل الأرقام من 0 إلى 9، و لهذا ضع مكانه العدد 10 ). ستقوم بإرجاع العدد الذي نجحت في قراءته.\\
+المحدد (غالباً ما نستعمل الأساس 10، لأننا نستعمل الأرقام من 0 إلى 9، و لهذا ضع مكانه العدد 10). ستقوم بإرجاع العدد الذي نجحت في قراءته.\\
 بالنسبة لمؤشر المؤشر
 \InlineCode{end}،
-فالدالة ستقوم استغلاله لإرجاع أول محرف صادفته و لم يكن رقماً. لكننا لسنا بحاجة إليه، فلنكتفي بوضع
+فالدالة ستقوم باستغلاله لإرجاع أول محرف صادفته و لم يكن رقماً. لكننا لسنا بحاجة إليه، فلنكتفي بوضع
 \InlineCode{NULL}
 مكانه لنقول أننا لا نريد استرجاعه.
 
-على السلسلة المحرفيّة أن تبدأ برقم، فبعد العدد كل شيء يتم تجاهله. يمكن أن تكون مسبوقة بفراغات.\\
+على السلسلة المحرفيّة أن تبدأ برقم، فبعد الأرقام كل شيء يتم تجاهله. يمكن أن تكون مسبوقة بفراغات.\\
 هذه أمثلة للفهم الجيد :
 
 \begin{Csource}
-  long i;
-  i = strtol( "148", NULL, 10 ); // i = 148
-  i = strtol( "148.215", NULL, 10 ); // i = 148
-  i = strtol( " 148.215", NULL, 10 ); // i = 148
-  i = strtol( " 148+34", NULL, 10 ); // i = 148
-  i = strtol( " 148 dead leaves", NULL, 10 ); // i = 148
-  i = strtol( " There are 148 dead leaves", NULL, 10 ); // i = 0 (error : The string doesn’t start with a number)
+long i;
+i = strtol("148", NULL, 10); // i = 148
+i = strtol("148.215", NULL, 10); // i = 148
+i = strtol(" 148.215", NULL, 10); // i = 148
+i = strtol(" 148+34", NULL, 10); // i = 148
+i = strtol(" 148 dead leaves", NULL, 10); // i = 148
+i = strtol( " There are 148 dead leaves", NULL, 10 ); // i = 0 (error : The string doesn't start with a number)
 \end{Csource}
 
-كل السلاسل التي تبدأ برقم ( أو ربما بفراغات قبله ) سيتم تحويلها إلى
+كل السلاسل التي تبدأ برقم (أو ربما بفراغات قبله) سيتم تحويلها إلى
 \InlineCode{long}
-حتى الوصول إلى محرف غير مقبول ( نقطة، فاصلة، علامة استفهام، زائد، الخ ).
+حتى الوصول إلى محرف غير مقبول (نقطة، فاصلة، علامة استفهام، زائد، إلخ).
 
 بالنسبة لسلسلة لا تبدأ بأرقام و أو بفراغات تليها أرقام، فلا يمكن تحويلها و بالتالي تقوم الدالة بإرجاع القيمة~0.
 
@@ -575,23 +577,23 @@ Ah ! Your name is Jean Edou !
 \InlineCode{readLong}،
 و التي تقوم باستدعاء الدالة
 \InlineCode{read}
-( لقراءة النص )، و بعد ذلك تحويل النص إلى عدد :
+(لقراءة النص)، و بعد ذلك تحويل النص إلى عدد :
 
 \begin{Csource}
-  long readLong()
-  {
-  	char textNumber[100] = {0}; // 100 boxes are sufficient
-  	if (read(textNumber, 100))
-  	{
-      		// If we read the text without problems, we convert textNumber to long and we return it
-      		 return strtol(textNumber, NULL, 10);
-  	}
-  	else
-  	{
-      		 // If there’s a problem, we return 0
-      		return 0;
-  	 }
-  }
+long readLong()
+{
+ 	char textNumber[100] = {0}; // 100 cells are sufficient
+ 	if (read(textNumber, 100))
+ 	{
+     		// If we read the text without problems, we convert textNumber to long and we return it
+    		 return strtol(textNumber, NULL, 10);
+ 	}
+ 	else
+ 	{
+    		 // If there's a problem, we return 0
+     		return 0;
+	 }
+}
 \end{Csource}
 
 يمكنك تجريب الشفرة داخل
@@ -599,14 +601,14 @@ Ah ! Your name is Jean Edou !
 بسيط.
 
 \begin{Csource}
-  int main(int argc, char *argv[])
-  {
-  	long age = 0;
-  	printf("How old are you ? ");
-  	age = readLong();
-  	printf("Ah ! You are %d years old !\n\n", age);
-  	return 0;
-  }
+int main(int argc, char *argv[])
+{
+ 	long age = 0;
+ 	printf("How old are you ? ");
+ 	age = readLong();
+ 	printf("Ah ! You are %d years old !\n\n", age);
+ 	return 0;
+}
 \end{Csource}
 
 \begin{Console}
@@ -624,7 +626,7 @@ Ah ! You are 18 years old!
 \InlineCode{double}.
 
 \begin{Csource}
-double strtod( const char *start, char **end );
+double strtod(const char *start, char **end);
 \end{Csource}
 
 تجد أن المعامل الثالث
@@ -635,7 +637,7 @@ double strtod( const char *start, char **end );
 
 على خلاف الدالة السابقة، فإن هذه الدالة ستأخذ في الحسبان "النقطة" العشرية. عندما أقول نقطة يعني أن الدالة لا تقبل الفاصلة
 "\textenglish{,}"
-( يبدو أنّها مبرمجة من طرف ناطقين بالإنجليزية ).
+(يبدو أنّها مبرمجة من طرف ناطقين بالإنجليزية).
 
 فلتقم بكتابة الدالة
 \InlineCode{readDouble}
@@ -660,8 +662,8 @@ double strtod( const char *start, char **end );
 "\InlineCode{,}"
 بالمحرف
 "\InlineCode{.}"
-( بالاستعانة بالدالة
-\InlineCode{strchr} )،
+(بالاستعانة بالدالة
+\InlineCode{strchr})،
 ثم قم ببعث النص الجديد إلى الدالة
 \InlineCode{strtod}.
 
@@ -670,7 +672,7 @@ double strtod( const char *start, char **end );
 \begin{itemize}
   \item الدالة
 \InlineCode{scanf}
-بالرغم من أنها تبدو سهلة و طبيعية إلا انها معقّدة و تفرض علينا بعض الحدود. فمثلاً، هي لا تقبل قراءة نص يحتوي فراغات.
+بالرغم من أنها تبدو سهلة و طبيعية إلا أنها معقّدة و تفرض علينا بعض الحدود. فمثلاً، هي لا تقبل قراءة نص يحتوي فراغات.
   \item نقول أننا تسببنا في الـ\textenglish{buffer overflow}
 إذا تجاوزنا المساحة المخصصة في الذاكرة، فمثلاً لو قام المستخدم بإدخال 10 محارف و نحن قد حجزنا 5 خانات فقط.
   \item الحل الأمثل هو استدعاء الدالة
