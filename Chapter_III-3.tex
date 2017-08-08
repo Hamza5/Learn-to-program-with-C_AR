@@ -34,7 +34,7 @@
 
 الصيغة
 \textenglish{BMP}
-(إختصار لـ\textenglish{bitmap})
+(اختصار لـ\textenglish{bitmap})
 هي صيغة صور.\\
 الصور الّتي نجدها في الحاسوب مخزّنة في ملفات. يوجد العديد من صيغ الصور، أي العديد من الطرق لتخزين صورة في ملف. على حسب الصيغة، يمكن للصورة أخذ الكثير أو القليل من مساحة القرص الصلب، و تملك جودة أحسن أو أسوء.
 
@@ -57,7 +57,7 @@
 الشيء الجيد هو أن نوع الملف سيكون بسيطا و سهل القراءة. إذا كان عليك تحميل الصور دائما في نفس وقت تشغيل برنامجك، من المستحسن استعمال صور بصيغة 
 \textenglish{BMP}.
 سيكون حجم الملف ضخما حتما، لكنه يـُحمّل بشكل أسرع من الـ\textenglish{GIF}
-مثلاً. سيكون الأمر مهّما إذا كان على برنامجك تحميل الكثير من الصور في وقت قليل.
+مثلاً. سيكون الأمر مهّما إذا كان على برنامجك تحميل الكثير من الصور في وقت قصير.
 
 \subsection{تحميل صورة \textenglish{Bitmap}}
 
@@ -107,7 +107,7 @@ mySurface = SDL_LoadBMP("image.bmp");
 	\item الحجم الذي نقوم بحجزه في الذاكرة  من أجل المساحة يعتمد على حجم الصورة : اذا كان حجم الصورة هو 
 	$250 \times 300$
 	فستأخذ المساحة نفس الحجم.
-	\item من جهة أخرى، يتم ملئ المساحة بيكسلا ببيكسل بمحتوى الصورة 
+	\item من جهة أخرى، يتم ملأ المساحة بيكسلا ببيكسل بمحتوى الصورة 
 	\textenglish{BMP}.
 \end{itemize}
 
@@ -160,7 +160,9 @@ int main(int argc, char *argv[])
 
 كلّا، ليس شرطاً ! على كلّ فالامتداد
 \InlineCode{.ico}
-لا يوجد إلا في نظام الويندوز. الـ\textenglish{SDL}
+لا يوجد إلا في نظام
+\textenglish{Windows}.
+ الـ\textenglish{SDL}
 تتعامل مع كلّ أنظمة التشغيل باستعمالها نظاما خاصا بها : المساحة !\\
 نعم، أيقونة برنامج 
 \textenglish{SDL}
@@ -169,7 +171,9 @@ int main(int argc, char *argv[])
 \begin{warning}
 يجدر بالأيقونة أن تكون ذات حجم 
 $16 \times 16$
-بيكسلز. بينما في الويندوز يجب أن تكون بحجم
+بيكسلز. بينما في 
+\textenglish{Windows}
+يجب أن تكون بحجم
 $32 \times 32$
 بيكسلز و إلا فستسوء جودتها. لا تقلق إذ يمكن للـ\textenglish{SDL}
 "تصغير" أبعاد الصورة لتتمكن من الدخول في 
@@ -191,7 +195,7 @@ SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
  
 تم تحميل الصورة في الذاكرة بواسطة
 \InlineCode{SDL\_LoadBMP}
-و تم بعث عنوان المساحة مباشرة إلى
+و بعث عنوان المساحة مباشرة إلى
 \InlineCode{SDL\_WM\_SetIcon}.
 
 \begin{critical}
@@ -265,7 +269,7 @@ int main(int argc, char *argv[])
 	SDL_WM_SetCaption("Loading images on SDL", NULL);
 	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
 	SDL_BlitSurface(backgroundImage, NULL, ecran, &backgroundPosition);
-	//Loading and blitting Zozor on the screen
+	// Loading and blitting Zozor on the screen
 	zozor = SDL_LoadBMP("zozor.bmp");
 	SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 	SDL_Flip(screen);
@@ -497,7 +501,7 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 لكي تعمل. يمكننا تسمية هذا الأمر بالـ\textenglish{add-ons}
 (بمعنى "إضافات").
 \textenglish{SDL\_Image}
-هي واحدة من بين هذه المكتبات .
+هي واحدة من بين هذه المكتبات.
 
 \subsection{تثبيت الـ\textenglish{SDL\_Image} على \textenglish{Windows}}
 
@@ -520,10 +524,12 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 
 \url{https://www.libsdl.org/projects/SDL_image}
 
-حمّل النسخة التي تناسبك من القسم
+نزّل النسخة التي تناسبك من القسم
 "\textenglish{Binary}"
 (لا تحمّل الملفات المصدرية، لن نحتاجها !).\\
-إذا كنت تعمل على الويندوز، حمّل الملف
+إذا كنت تعمل على
+\textenglish{Windows}،
+نزّل الملف
 \InlineCode{SDL\_image-devel-1.2.10-VC.zip}،
 و هذا حتى و إن لم تكن تستعمل البيئة التطويرية 
 \textenglish{Visual C++} !
@@ -612,7 +618,7 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 
 إن كنت تستعمل
 \textenglish{Mac OS X}،
-نزّل الملف ذو الامتداد
+نزّل الملف ذا الامتداد
 \InlineCode{.dmg}
 من موقع الـ\textenglish{SDL}
 و ضعه في المجلد\\
@@ -626,7 +632,7 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
  انقر مرتين على السطر من اليمين و أضف\\
 \InlineCode{/Library/Frameworks/SDL\_image.framework/Headers}.
 
-لم يبق لك سوى اضافة إطار العمل إلى المشروع. الصورة التالية توضح لك كيف يظهر\\
+لم يبق لك سوى إضافة إطار العمل إلى المشروع. الصورة التالية توضح لك كيف يظهر\\
 الـ\InlineCode{Header search paths}
 بعد تثبيت الـ\textenglish{SDL\_image}.
 
@@ -692,7 +698,7 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 #include <stdlib.h>
 #include <stdio.h>
 #include <SDL/SDL.h>
-/* including the header of SDL_image (adapt your directory) */
+/* including the header of SDL_image (adapt to your directory) */
 #include <SDL/SDL_image.h> 
 void pause();
 int main(int argc, char *argv[])
