@@ -1,6 +1,6 @@
 \chapter{إنشاء نافذة و مساحات}
 
-في الدرس السابق، قمنا بالإلمام حول أهم المميزات التي تمنحها المكتبة 
+في الفصل السابق، قمنا بالإلمام حول أهم المميزات التي تمنحها المكتبة 
 \textenglish{SDL}.
 يجدر بك أن تكون قد ثبتّ المكتبة، و تعلّمت كيفية إنشاء مشروع جديد يشتغل بشكل جيد.  على الرغم من أنّه كان فارغا.
 
@@ -123,7 +123,7 @@ SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER);
 هذه "الخيارات" التي نبعثها للدالة 
 \InlineCode{SDL\_Init}
 نسميها بـ\textit{الأعلام}
-(\textenglish{flags}).
+(\textenglish{Flags}).
 هذه الكلمة نستعملها كثيراً في علوم الحاسوب.\\
 تذكّر إذا أن الإشارة
 \InlineCode{|}
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 
 هذا نموذج عن برنامج بسيط، عبارة عن مخطط لبرامج
 \textenglish{SDL}
-التي نكتبها. في الواقع، البرنامج الحقيقي يكون ممتلأ كثيرا إذ يحتوي عدّة استدعاءات لدوال، تقوم بدورها بمزيد من الاستدعاءات.\\
+التي نكتبها. في الواقع، البرنامج الحقيقي يكون ممتلأً كثيرا إذ يحتوي عدّة استدعاءات لدوال، تقوم بدورها بمزيد من الاستدعاءات.\\
 الأمر المهمّ في النهاية، هو أنّ
 \textenglish{SDL}
 يجب أن تُحمّل في البداية و تُغلق عندما لا تصبح بحاجة إليها.
@@ -172,8 +172,8 @@ int main(int argc, char *argv[])
 تقوم بإرجاع قيمة :
 
 \begin{itemize}
-	\item -1 : في حال وجود خطأ.
-	\item 0 : في حالة عدم وجود أي خطأ.
+	\item $ -1 $ : في حال وجود خطأ.
+	\item $ 0 $ : في حالة عدم وجود أي خطأ.
 \end{itemize}
 
 لست مجبراً، لكن يمكنك اختبار القيمة المُرجعة. قد تكون طريقة جيّدة لمعالجة الأخطاء في برنامجك، و هذا ما سيساعدك على حلّها.
@@ -224,8 +224,7 @@ int main(int argc, char *argv[])
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == -1) // Starting the SDL, if there's an error :
 	{
-		fprintf(stderr, "Error while initializing SDL : %s\n",
-		SDL_GetError()); // Writing the error
+		fprintf(stderr, "Error while initializing SDL : %s\n", SDL_GetError()); // Writing the error
 		exit(EXIT_FAILURE); // We exit the program
 	}
 	SDL_Quit();
@@ -299,12 +298,12 @@ int main(int argc, char *argv[])
 هذه هي حالتك لو اتبعت جيداً من بداية الفصل. حاليّا، كلّ ما سنقوم بتحميله هو نظام العرض
 (\InlineCode{SDL\_INIT\_VIDEO})،
 هذا ما يهمّنا.
-\subsection{إختيار وضع العرض}
+\subsection{اختيار وضع العرض}
 
 أول شيء نقوم به بعد 
 \InlineCode{SDL\_Init}،
 هو تحديد وضع العرض الذي نريد استعماله، أي الدقة
-(\textenglish{resolution})،
+(\textenglish{Resolution})،
 عدد الألوان بالإضافة إلى خصائص أخرى.
 
 من أجل هذا سنستعمل الدالة
@@ -505,7 +504,7 @@ $640 \times 480$).
 إن أردت، قم بوضع العَلم الذي يسمح بتعديل مقاييس النافذة. للعِلْم، في ألعاب الفيديو نفضّل النوافذ ذات الأبعاد الثابتة (لأنه يسهل التعامل معها)، إذا فلنترك النافذة ثابتة كما هي الآن.
 
 \begin{warning}
-إحذر من العَلَم 
+احذر من العَلَم 
 \InlineCode{SDL\_FULLSCREEN}
 الخاص بوضع الشاشة الكاملة، و من العَـلم 
 \InlineCode{SDL\_NOFRAME}
@@ -524,7 +523,7 @@ $640 \times 480$).
 \InlineCode{SDL\_WM\_SetCaption}.\\
 هذه الدالة تأخذ معاملين : المعامل الأول هو العنوان الذي تريد إعطاءه للنافذة، و المعامل الثاني هو العنوان الذي تريد إعطاءه للأيقونة.
 
-خلافاً على ما يعتقده الجميع، تغيير اسم الأيقونة لا يعني تغيير صورة الأيقونة التي تظهر أعلى يسار النافذة. هذا لا يعمل دائما (حسب معرفتي، قد يعطي نتائج على الـ\textenglish{GNU/Linux}
+خلافاً لما يعتقده الجميع، تغيير اسم الأيقونة لا يعني تغيير صورة الأيقونة التي تظهر أعلى يسار النافذة. هذا لا يعمل دائما (حسب معرفتي، قد يعطي نتائج على الـ\textenglish{GNU/Linux}
 في بيئة الـ\textenglish{Gnome}).
 شخصياً، أنا أبعث القيمة
 \InlineCode{NULL}
@@ -586,7 +585,7 @@ int main(int argc, char *argv[])
 
 في الشفرة المصدرية، كل مساحة يتم تخزينها في متغير من نوع
 \InlineCode{SDL\_Surface}.
-نعم، إنه نوع بيانات تم انشاؤه من طرف الـ\textenglish{SDL}
+نعم، إنه نوع بيانات تم إنشاؤه من طرف الـ\textenglish{SDL}
 (هذا المتغير عبارة عن هيكل).
 
 بما أن أول مساحة ننشئها هي الشاشة، فهيا بنا :
@@ -609,7 +608,7 @@ SDL_Surface *screen = NULL;
 screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
 \end{Csource}
 
-المؤشّر يمكن الآن أن يساوي قيمتين :
+المؤشّر الآن يمكن أن يساوي إحدى القيمتين :
 
 \begin{itemize}
 	\item \InlineCode{NULL} :
@@ -639,7 +638,7 @@ int main(int argc, char *argv[])
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE); // We try to open the window
 	if (screen  == NULL) // If we can't, we note it and we exit.
 	{
-		fprintf(stderr, "Impossible to load video mode :%s\n", SDL_GetError());
+		fprintf(stderr, "Impossible to load the video mode : %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
 	SDL_WM_SetCaption("My super SDL window !", NULL);
@@ -654,7 +653,7 @@ int main(int argc, char *argv[])
 مفيدة من أجل معرفة ما الّذي لم يعمل.
 
 \begin{information}
-حكاية صغيرة : مرة أخطأت بينما أريد أن أفتح نافذة بأسلوب الشاشة الكاملة 
+حكاية صغيرة : مرة أخطأت بينما أردت أن أفتح نافذة بأسلوب الشاشة الكاملة 
 (\textenglish{Full screen})،
 في عوض أن أطلب الدقة
 $1024 \times 768$
@@ -780,7 +779,7 @@ SDL_MapRGB(screen->format, 0, 0, 255)
 SDL_MapRGB(screen->format, 255, 255, 255)
 \end{Csource}
 
-اللون سيكون أبيض لأننا دمجنا كل الألوان، لو أنك تريد تشكيل اللون الأسود، فلتجعل كل القيم على 0.
+اللون سيكون أبيضا لأننا دمجنا كل الألوان، لو أنك تريد تشكيل اللون الأسود، فلتجعل كل القيم على 0.
 
 \begin{question}
 ألا يمكننا استعمال لون آخر غير هذه الألوان ؟
@@ -820,7 +819,7 @@ Uint32 blueGreen = SDL_MapRGB(screen->format, 17, 206, 112);
 إلى الدالة
 \InlineCode{SDL\_FillRect}.
 
-لو نريد أن نملئ الشاشة باللون الأخضر المزرق، يمكننا كتابة :
+لو نريد أن نملأ الشاشة باللون الأخضر المزرق، يمكننا كتابة :
 
 \begin{Csource}
 SDL_FillRect(screen , NULL, SDL_MapRGB(screen->format, 17, 206, 112));
@@ -854,7 +853,7 @@ int main(int argc, char *argv[])
 	SDL_Surface *screen = NULL;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("My super SDL window!", NULL);
+	SDL_WM_SetCaption("My super SDL window !", NULL);
 	// We colorize the screen with blue-green color
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206, 112));
 	SDL_Flip(screen); 
@@ -932,7 +931,7 @@ SDL_Quit();
 \end{Csource}
 
 \begin{information}
-ليس هناك من داعي إلى تحرير المساحة
+ليس هناك من داعٍ إلى تحرير المساحة
 \InlineCode{screen}
 باستعمال
 \InlineCode{SDL\_FreeSurface}
@@ -975,9 +974,9 @@ SDL_FillRect(rectangle, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
 	\end{itemize}	
 \end{itemize}
 
-يجب أن تعرف ان الإحداثيّة 
+يجب أن تعرف أن الإحداثيّة
 \InlineCode{(0, 0)}
-توافق اقصى نقطة في يسار أعلى الشاشة.\\
+توافق أقصى نقطة في يسار أعلى الشاشة.\\
 أما الإحداثيّة 
 \InlineCode{(640, 480)}
 فهي توافق النقطة الموجودة في أقصى يمين أسفل الشاشة، و هذا إن كنت قد فتحت نافذة بحجم
