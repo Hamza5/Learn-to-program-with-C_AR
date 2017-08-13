@@ -14,7 +14,7 @@
 \textenglish{C}
 ، صدقني !"، لكنّي أعرف أن هذه الحجّة ليست كافية لك.
 
-سأطرح عليك مشكلاً لا يمكنك حلّه إلا باستخدام المؤشرات. سيكون هذا الخيط الأحمر في هذا الفصل. سنعود إليه في نهاية هذا الفصل و سنترون حلّه باستعمال ما تعلّمتموه في هذا الفصل.
+سأطرح عليك مشكلاً لا يمكنك حلّه إلا باستخدام المؤشرات. سيكون هذا الخيط الأحمر في هذا الفصل. سنعود إليه في نهاية هذا الفصل و سترى حلّه باستعمال ما تعلّمته في هذا الفصل.
 
 إليك المشكل: أريد كتابة دالة تقوم بإرجاع قيمتين مختلفتين. ستجيبني "هذا مستحيل !". بالفعل، الدالة لا يمكنها إرجاع سوى قيمة واحدة.
 
@@ -153,8 +153,14 @@ void minutesDevision(int hours, int minutes)
 
 سأعود بك قليلاً إلى الوراء، هل تتذكر فصل المتغيرات ؟
 
-أيّا كانت إجابتك، أنصحك بأن تعود إلى ذلك الفصل و تقرأ منه القسم الذي يحمل عنوان (مسألة ذاكرة). هناك مخطط مهم جداً سأقترحه عليك من جديد (الصورة الموالية) :
-\Picture{Chapter_II-2_RAM-Schema}
+أيّا كانت إجابتك، أنصحك بأن تعود إلى ذلك الفصل و تقرأ منه القسم الذي يحمل عنوان (مسألة ذاكرة). هناك مخطط مهم جداً سأقترحه عليك من جديد :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-2_RAM-Schema}
+\end{figure}
+
+
 هكذا نقوم تقريباً بتمثيل الذاكرة الحية
 (\textenglish{RAM})
 الخاصة بالحاسوب.
@@ -283,7 +289,7 @@ The address of the variable age is : 0023FF74
 \InlineCode{\&age}
 فسيعيد العنوان الذي يوجد فيه المتغيّر.
 
-\section{إستعمال المؤشرات}
+\section{استعمال المؤشرات}
 
 لحدّ الآن، قمنا فقط بإنشاء متغيرات تحتوي على أعداد. الآن سنتعلّم كيف ننشئ متغيرات تحتوي على عناوين : هذا ما نسميه بالمؤشرات.
 
@@ -304,8 +310,7 @@ int *myPointer;
 \end{Csource}
 
 \begin{information}
-	
-	لاحظ أنه يمكننا أيضا أن نكتب
+لاحظ أنه يمكننا أيضا أن نكتب
 \InlineCode{int* myPointer;}
 لهذا نفس المعنى. لكن الطريقة الأولى هي المفضّلة. في الواقع، إن كنت تريد التصريح عن العديد من المؤشرات في نفس السطر، سيكون عليك أن تعيد كتابة النجمة أمام كل اسم :
 \InlineCode{int *pointer1, *pointer2, *pointer3;}
@@ -358,9 +363,11 @@ PointerOnAge = &age; // 2) Means the pointer "PointerOnAge contains the address 
 و
 \InlineCode{double}.
 أي أنه لا يمكننا أن نكتب :
+
 \begin{Csource}
 pointer PointerOnAge;
 \end{Csource}
+
 في مكان هذا، نستعمل الرمز
 \InlineCode{*}
 ، و لكن نستمر في كتابة
@@ -385,7 +392,12 @@ pointer PointerOnAge;
 \InlineCode{age}.
 
 المخطط التالي يلخّص ما يحصل في الذاكرة :
-\Picture{Chapter_II-2_RAM-Schema-Pointer}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_II-2_RAM-Schema-Pointer}
+\end{figure}
+
 في هذا المخطط، تم تعويض المتغير
 \InlineCode{age}
 بالعنوان 177450 (أنت ترى بأن قيمته هي 10)، و المؤشّر
@@ -484,10 +496,14 @@ printf("%d, *PointerOnAge);
 
 اكتفِ بفهم و حفظ النقاط الأربع السابقة، قم باختبارات و تأكد أنها تعمل. المخطط التالي سيعينك على فهم هذه النقاط :
 
-\Picture{Chapter_II-2_RAM-Schema-Pointer2}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-2_RAM-Schema-Pointer2}
+\end{figure}
+
 
 \begin{warning}
-إحذر في عدم الخلط بين مختلف تفسيرات النجمة ! حينما تصرّح عن مؤشّر، فّإن النجمة تشير إلى أننا بصدد إنشاء مؤشر :
+احذر في عدم الخلط بين مختلف تفسيرات النجمة ! حينما تصرّح عن مؤشّر، فّإن النجمة تشير إلى أننا بصدد إنشاء مؤشر :
 \InlineCode{int *PointerOnAge;}
 بينما لما نكتبها بجانب اسم المؤشر بكتابة~:
 \InlineCode{printf("\%d", *PointerOnAge);}
@@ -546,9 +562,9 @@ void triplePointeur(int *numberPointer)
 \InlineCode{triplePointer}
 المتغير في المؤشر
 \InlineCode{numberPointer}.
-داخل الدالة
+داخل الدالة\\
 \InlineCode{triplePointer}،
-ٍ لدينا إذن المؤشر
+لدينا إذن المؤشر
 \InlineCode{numberPointer}
 الذي يؤشر على المتغير
 \InlineCode{number}.
