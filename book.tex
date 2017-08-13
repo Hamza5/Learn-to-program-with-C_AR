@@ -44,7 +44,7 @@
 \newcommand{\@partnostar}[1]{{\color{orange}\oldpart{#1}}}
 \renewcommand{\part}{\@ifstar{\@partstar}{\@partnostar}}
 \let\oldchapter\chapter
-\newcommand{\@chapterstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{#1}{\color{green!30!blue!80}\oldchapter*{#1}}}
+\newcommand{\@chapterstar}[1]{\cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{#1}{\color{green!30!blue!80}\oldchapter*{#1}}\markboth{#1}{}}
 \newcommand{\@chapternostar}[1]{{\color{green!30!blue!80}\oldchapter{#1}}}
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
 \let\oldsection\section
