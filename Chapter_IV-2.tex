@@ -74,7 +74,7 @@
 	\InlineCode{main}.
 	\item أخيراً، ما إن تنتهي الدالة
 	\InlineCode{main}.
-	لا تبقى أية دالة تحتاج إلى الإستدعاء، ينتهي البرنامج.
+	لا تبقى أية دالة تحتاج إلى الاستدعاء، ينتهي البرنامج.
 \end{enumerate}
 
 لكي "يتذكّر" الترتيب الذي تم فيه استدعاء الدوال، يُنشئ الحاسوب مكدّساً لهذه الدوال على التوالي :
@@ -129,7 +129,7 @@ struct Stack
 أن تأخذ كمعاملين هيكل التحكّم في المكدّس (من نوع
 \InlineCode{Stack})
 و العدد الجديد لتخزينه.\\
-أذكّرك بأننا نخزّن هنا أعداد صحيحة
+أذكّرك بأننا نخزّن هنا أعداداً صحيحة
 \InlineCode{int}،
 لكن لا شيء يمنعنا من تعديل هذه الأمثلة لأنواع أخرى من البيانات. يمكننا تخزين أي شيء : أعداد
 \InlineCode{double}،
@@ -177,7 +177,7 @@ int unstack(Stack *stack)
 	}
 	int unstackedNumber = 0;
 	Element *unstackedElement = stack->first;
-	if (stack != NULL && stack->first != NULL)
+	if (stack != NULL§\footnotemark§ && stack->first != NULL)
 	{
 		unstackedNumber = unstackedElement->number;
 		stack->first = unstackedElement->next;
@@ -186,6 +186,18 @@ int unstack(Stack *stack)
 	return unstackedNumber;
 }
 \end{Csource}
+
+\begin{tcolorbox}[title=ملاحظة مُرَاجِع الكتاب,colback=orange!20,colframe=orange!70,fontupper=\small,coltitle=white,fonttitle=\small]
+يبدو لي أن مؤلّف الكتاب قد أضاف جزءً عديم الفائدة في الشرط الثاني :
+\InlineCode{stack != NULL}،
+فَبِوُصول البرنامج إلى ذلك السطر سيكون هذا الجزء من الشرط خاطئا بكلّ تأكيد لأنّنا قد تحقّقنا من عكسه في الشرط الأوّل 
+(\InlineCode{if(stack == NULL)}).
+و حتى عند عدم وجود الشرط الأوّل، فالتعليمة
+\InlineCode{stack->first}
+كانت ستعطّل البرنامج لأنّ مؤشّراً
+\InlineCode{NULL}
+لا يملك أيّة مركّبات !
+\end{tcolorbox}
 
 نسترجع العدد الذي في رأس المكدّس لنبعثه في نهاية الدالة. نعدّل عنوان أول عنصر من المكدّس بما أن هذا الأخير يتغير.
 أخيراً، نحذف بالتأكيد رأس المكدّس القديم باستعمال
@@ -344,7 +356,7 @@ struct Queue
 void enqueue(Queue *q, int newNumber)
 {
 	Element *new = malloc(sizeof(*new));
-	if (new == NULL || new== NULL)
+	if (q == NULL || new == NULL)
 	{
 		exit(EXIT_FAILURE);
 	}
@@ -356,7 +368,7 @@ void enqueue(Queue *q, int newNumber)
 		Element *currentElement = q->first;
 		while (currentElement->next != NULL)
 		{
-			currentElement= currentElement->next;
+			currentElement = currentElement->next;
 		}
 		currentElement->next = new;
 	}
@@ -378,7 +390,7 @@ void enqueue(Queue *q, int newNumber)
 تشابه كثيراً عملية إلغاء التكديس. بامتلاكنا مؤشّرا نحو أول عنصر من الطابور، يكفي أن ننزعه و أن نُرجع قيمته.
 
 \begin{Csource}
-dequeue(Queue *queue)
+int dequeue(Queue *queue)
 {
 	if (queue == NULL)
 	{
