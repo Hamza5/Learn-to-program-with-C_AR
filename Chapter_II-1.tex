@@ -1,4 +1,5 @@
 \chapter{البرمجة المجزّأة (\textenglish{Modular Programming})}
+
 في هذه المرحلة الثانية، سنكتشف مبادئ متقدّمة في لغة الـ\textenglish{C}
  لن أخفي عليك، هذه المرحلة صعبة الفهم و تحتاج منك التركيز. في نهاية المرحلة، ستكون قادراً على تدبّر أمرك في معظم البرامج المكتوبة بلغة الـ\textenglish{C}. 
 في المرحلة التي تليها نتعلّم كيف نفتح نافذة، كيف ننشئ لعبة ثنائية الأبعاد\dots إلخ.
@@ -10,6 +11,7 @@
 ، سنقوم بتفريقها إلى عدة ملفات.
 
 \section{النماذج (\textenglish{Prototypes})}
+
 لحدّ الآن، كنت عندما تنشئ دالة، أطلب منك وضعها قبل الدالة الرئيسية
 \InlineCode{main}
 . لماذا ؟
@@ -29,17 +31,20 @@
 بفضل ما سأعلمك إياه الآن، ستتمكن من الدوال في أي ترتيب كان في الشفرة المصدرية، هكذا لن تقلق من هذه الناحية.
 
 \subsection{استعمال النموذج للتصريح عن دالة}
+
 سنقوم بتصريح دوالنا للحاسوب، و هذا بكتابة ما نسميه بـ\textbf{النماذج}
 .لا تنبهر بهذا الاسم، إنه يخبّئ معلومة بسيطة جداً.
 
 تأمل في السطر الأول من دالتنا
 \InlineCode{rectangleSurface}
+
 \begin{Csource}
 double rectangleSurface(double width, double height)
 {
 	return width * height;
 }
 \end{Csource}
+
 قم بنسخ السطر الأول
 (\InlineCode{double rectangleSurface...})
 المتواجد أعلى الشفرة المصدرية (مباشرة بعد تعليمات التضمين
@@ -54,6 +59,7 @@ double rectangleSurface(double width, double height)
 ان أردت !
 
 هذا ما يجب أن تكون عليه الشفرة المصدرية :
+
 \begin{Csource}
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,6 +79,7 @@ double rectangleSurface(double width , double height )
 	return width * height ;
 }
 \end{Csource}
+
 الشيء الذي تغيّر هنا هو إضافة النموذج أعلى الشفرة المصدرية.\\
 النموذج هو عبارة عن إشارة للجهاز، يوحي إليه بوجود دالة تسمى
 \InlineCode{rectangleSurface}
@@ -89,10 +96,13 @@ double rectangleSurface(double width , double height )
 عليك أن تعرف أنه في سطر النموذج، لست مضطراً إلى تحديد المعاملات التي تتلقاها الدالة كمدخل. الجهاز يحتاج أن يتعرّف إلى نوع المداخل فقط.
 
 يمكننا أن نكتب ببساطة :
+
 \begin{Csource}
 double rectangleSurface (double, double);
 \end{Csource}
+
 و مع ذلك، فالطريقة التي أريتك إياها أعلاه تعمل أيضاً. الشيء الجيد فيها هو أن كلّ ما عليك فعله هو نسخ و لصق السطر الأول الخاص بالدالة مع إضافة فاصلة منقوطة (طريقة سهلة و سريعة).
+
 \begin{critical}
   لا تنس
 \underline{أبدا}
@@ -101,10 +111,12 @@ double rectangleSurface (double, double);
 \end{critical}
 
 \section{الملفات الرأسية (\textenglish{Headers})}
+
 لحدّ الآن لا نملك غير ملفٍ مصدريٍ واحد في مشروعنا و هو الذي كنّا نسمّيه
 \InlineCode{main.c}.
 
 \subsection{عدة ملفات في مشروع واحد}
+
 تطبيقياً، برامجك لن تكون مكتوبة في ملف واحد
 \InlineCode{main.c}.
 بالطبع يمكن فعل ذلك، لكن لن يكون من الممتع أن تتجوّل في ملف به 10000 سطر (شخصياً أعتقد هذا). و لهذا فإنه في العادة ننشئ العديد من الملفات في المشروع الواحد.
@@ -113,15 +125,24 @@ double rectangleSurface (double, double);
 \end{question}
 لا ! هل نسيت بسرعة ؟ سأعيد الشرح لأنه من اللازم أن نتّفق على هذا المصطلح.
 
-المشروع هو مجموع الملفات المصدرية الخاصة ببرنامجك. لحد الآن برنامجنا لم تتكون إلا من ملف واحد. و يمكنك التحقق من هذا بالنظر في البيئة التطويرية الخاصة بك، غالبا ما يظهر المشروع في القائمة على اليسار (الصورة الموالية):
-\Picture{Chapter_II-1_Project}
+المشروع هو مجموع الملفات المصدرية الخاصة ببرنامجك. لحد الآن برنامجنا لم تتكون إلا من ملف واحد. و يمكنك التحقق من هذا بالنظر في البيئة التطويرية الخاصة بك، غالبا ما يظهر المشروع في القائمة على اليسار (الصورة الموالية) :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-1_Project}
+\end{figure}
+
 كما يمكنك رؤيته في يسار الصورة، هذا المشروع ليس مكوّنا إلا من الملف
 \InlineCode{main.c}.
 
 اسمح لي الآن أن أُرِيَكَ صورة لمشروع حقيقي ستقوم به في وقت لاحق من الكتاب : لعبة 
-\textenglish{Sokoban}
-(الصورة الموالية) :
-\Picture{Chapter_II-1_Project-Sokoban}
+\textenglish{Sokoban} :
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-1_Project-Sokoban}
+\end{figure}
+
 كما ترى، هناك ملفات عديدة. هذا ما يكون عليه المشروع الحقيقي، أي تتواجد به ملفات عديدة في القائمة اليسارية  يمكن التعرّف على الملف
 \InlineCode{main.c}
 من بين القائمة و الذي يحتوي الدالة
@@ -131,9 +152,11 @@ double rectangleSurface (double, double);
 في الـملف
 \InlineCode{main.c}.
 لمعلوماتك، هذا ليس أمراً إجبارياً، كل واحد ينظّم ملفاته بالشكل الذي يريد. لكن لكي تتبعني جيّداً أنصحك بفعل ذلك.
+
 \begin{question}
   لكن لم يجب عليّ إنشاء ملفات عديدة ؟ و كم من ملف يجب علىّ أن أنشئ في مشروعي ؟
 \end{question}
+
 هذا يبقى اختيارك أنت، في الغالب نجمع في نفس الملف المصدري الدوال التي تشترك في الموضوع الذي تعالجه. و هكذا ففي الملف
 \InlineCode{editeur.c}
 جمعت كلّ الدوال الخاصة ببناء المستوى، و في الملف
@@ -141,7 +164,9 @@ double rectangleSurface (double, double);
 قمت بتجميع الدوال الخاصة باللعبة نفسها و هكذا ...
 
 \subsection{الملفات \texttt{.c} و \texttt{.h}}
+
 كما يمكنك أن تلاحظ، يوجد نوعان مختلفان من الملفات في الصورة السابقة.
+
 \begin{itemize}
   \item \textbf{ملفات ذات الإمتداد
 \InlineCode{.c}}
@@ -150,6 +175,7 @@ double rectangleSurface (double, double);
 \InlineCode{.h}}
 : تسمى الملفات الرأسية و هي تحتوي النماذج الخاصة بالدوال.
 \end{itemize}
+
 عموما، إنه لمن النادر وضع نماذج في الملفات من صيغة
 \InlineCode{.c}
 مثلما فعلنا للتوّ في الـملف
@@ -180,6 +206,7 @@ double rectangleSurface (double, double);
 \InlineCode{.c}
 ؟
 \end{question}
+
 يجب عليك تضمين الملف الرأسي
 \InlineCode{.h}.
 مستعيناً بتوجهات المعالج القبلي.\\
@@ -189,6 +216,7 @@ double rectangleSurface (double, double);
 
 أنظر مثالاً من بداية الملف
 \InlineCode{jeu.c} :
+
 \begin{Csource}
 #include <stdlib.h>
 #include <stdio.h>
@@ -197,15 +225,18 @@ void play(SDL_Surface* screen)
 {
 // ...
 \end{Csource}
+
 التضمين يتم عن طريق توجيهات المعالج القبلي
 \InlineCode{\#include}
 التي يجدر بك أن تكون قد تعلّمتها من قبل.\\
 تمعن في التالي :
+
 \begin{Csource}
 #include <stdlib.h>
 #include <stdio.h>
 #include "jeu.h" // We include jeu.h
 \end{Csource}
+
 قمنا بتضمين ثلاثة ملفات من صيغة
 \InlineCode{.h}
 و هي :
@@ -216,6 +247,7 @@ void play(SDL_Surface* screen)
 (\InlineCode{<stdio.h>}).
 
 تستعمل إذا :
+
 \begin{itemize}
   \item علامتي الترتيب
 \InlineCode{< >}
@@ -227,6 +259,7 @@ void play(SDL_Surface* screen)
  : لتضمين  الملفات المتواجدة في مجلّد المشروع (و غالبا بجانب الملفات
 \InlineCode{.c}).
 \end{itemize}
+
 الأمر
 \InlineCode{\#include}
 يطلب إدخال محتوى ملف معيّن في الملف
@@ -322,12 +355,22 @@ void moveBox(int *firstBox, int *secondeBox);
 \InlineCode{.h}.
 
 مجلّد المشروع في النهاية سيكون مثل هذا :
-\Picture{Chapter_II-1_Project-Sokoban-Folder}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_II-1_Project-Sokoban-Folder}
+\end{figure}
+
 الملف الذي أنشأته محفوظ لكن لم تتم إضافته إلى مشروعك بعد !\\
 لإضافته قم بالنقر يمينا على القائمة أيسر الشاشة (الخاصة بملفات المشروع) و اختر
 \InlineCode{Add files}
 كالتالي :
-\Picture{Chapter_II-1_Project-Add-File}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-1_Project-Add-File}
+\end{figure}
+
 ستظهر لك نافذة تطلب منك اختيار الملفات التي تريد أن تدخلها للمشروع، اختر الملف الذي قمت بإنشاءه، للتو، و سيتم إدخاله أخيرا في المشروع.  ستجده حاضراً في القائمة اليسارية !
 
 \subsection{الـ\texttt{include} الخاصّة بالمكتبات النموذجية}
@@ -410,8 +453,14 @@ void moveBox(int *firstBox, int *secondeBox);
 الآن و بعدما عرفت أن المشروع مبنى على أساس ملفات مصدرية عديدة، يمكننا الدخول الآن في تفاصيل عملية الترجمة فلحد الآن لم نر سوى مخطط مبسط عنها.
 
 سأعطيك الآن مخططا مفصلا عنها و من المستحسن أن تحفظه عن ظهر قلب :
-\Picture{Chapter_II-1_Compilation-Schema}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_II-1_Compilation-Schema}
+\end{figure}
+
 هذا مخطط حقيقي عمّا يجري بالضبط أثناء التجميع و سأشرحه لك :
+
 \begin{enumerate}
   \item \textbf{المعالج القبلي} :
 المعالج القبلي هو برنامج ينطلق قبل عملية الترجمة و هو مخصص للقيام بتشغيل تعليمات نطلبها منه عن طريق ما سميناه بتوجيهات المعالج القبلي، و هي الأسطر الشهيرة التي تبدأ يإشارة
@@ -461,7 +510,12 @@ void moveBox(int *firstBox, int *secondeBox);
 أو
 \InlineCode{.lib}
 وفقا للمترجم) :
-\Picture{Chapter_II-1_Compilation-Schema-Libraries}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_II-1_Compilation-Schema-Libraries}
+\end{figure}
+
 هكذا ننتهي و يكون مخططنا هذه المرة كاملا، ملفاتك من المكتبات
 \InlineCode{.a}
 (أو
@@ -640,12 +694,14 @@ int increment()
 	return number;
 }
 \end{Csource}
+
 \begin{Console}
 1
 2
 3
 4
 \end{Console}
+
 هنا، في المرة الأولى التي نطلب فيها الدالة
 \InlineCode{increment}،
 يتم إنشاء المتغير
@@ -657,22 +713,27 @@ int increment()
 هذا النوع من المتغيرات ليس مستعملا بكثرة، لكن يمكنه مساعدتك في بعض الأحيان و لهذا ذكرته في هذا الكتاب.
 
 \subsubsection{الدوال المحلية لملف}
+
 لإنهاء حديثنا عن المتغيرات و الدوال،  نتكلم قليلا حول نطاق الدوال. من المفروض، عندما تنشئ دالة، و التي هي شاملة بالنسبة لكل البرنامج، يمكن الوصول إليها من أي ملف
 \InlineCode{.c}.
 
 قد تحتاج أحياناً إلى إنشاء دوال يمكن الوصول إليها فقط في الملفات التي تتواجد بها، و للقيام بذلك، أضف الكلمة المفتاحيّة
 \InlineCode{static}
 قبل الدالة كالتالي :
+
 \begin{Csource}
 static int triple(int number)
 {
 	// Instructions
 }
 \end{Csource}
+
 و لا تنس النموذج أيضا :
+
 \begin{Csource}
 static int triple(int number);
 \end{Csource}
+
 إنتهى ! دالتك الساكنة
 \InlineCode{triple}
 لا يمكن استدعاؤها إلا من داخل دوال تنتمى لنفس الملف (مثلا
@@ -686,6 +747,7 @@ static int triple(int number);
 وقتها لن تكون مرئية.
 
 لنلخص كلّ شيء يتعلّق بنطاق المتغيرات :
+
 \begin{itemize}
   \item المتغير الذي يتم التصريح عنه داخل دالة يتم حذفه في نهاية الدالة مباشرة . لا يمكن أن يكون مرئيا إلا داخل هذه الدالة.
   \item المتغير الذي  يتم التصريح عنه في داخل دالة بالكلمة المفتاحية
@@ -696,7 +758,9 @@ static int triple(int number);
 \InlineCode{static}
 مرئي فقط في الملف الّذي يتواجد به، و لا يكون مرئيا في دوال باقي الملفات.
 \end{itemize}
+
 و بالمثل، هذه هي النطاقات الممكنة للدوال :
+
 \begin{itemize}
   \item الدالة الّتي يتم التصريح عنها عادياً تكون مرئية في كل ملفات المشروع، يمكننا طلبها إذا من أي ملف كان.
   \item إذا أردنا أن تكون الدالة مرئية فقط في الملف الذي تتواجد به فيجب إضافة الكلمة المفتاحيّة
@@ -705,6 +769,7 @@ static int triple(int number);
 \end{itemize}
 
 \section*{ملخّص}
+
 \begin{itemize}
   \item البرنامج يحتوي العديد من الملفات
 \InlineCode{.c}.
