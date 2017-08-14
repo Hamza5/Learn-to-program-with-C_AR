@@ -98,7 +98,10 @@ char name[5] = {0};
 
 المخطط التالي يمثل المكان الذي هو محجوز للكلمة التي عرّفناها :
 
-\Picture{Chapter_II-10_array}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-10_array}
+\end{figure}
 
 ماذا لو كتبنا عددا كبيرا من المحارف بالنسبة للمساحة المتوقّعة لتخزين المتغير ؟
 
@@ -117,11 +120,17 @@ Ah ! Your name is Patrice !
 \InlineCode{scanf}~؟
  لقد قامت بمواصلة الكتابة في الذاكرة وكأن شيئاً لم يحدث ! فلقد استغلّت خانات ليس لها الحق في الكتابة فيها.
 
-\Picture{Chapter_II-10_array_patrice}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-10_array_patrice}
+\end{figure}
 
 الذي جرى في الحقيقة، هو أن المحارف الزائدة تسببت في مسح معلومات من الذاكرة و استبدالها بهذه المحارف. هذا ما نسميه بالـ\emph{\textenglish{buffer overflow}}.
 
-\Picture{Chapter_II-10_array_overflow}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-10_array_overflow}
+\end{figure}
 
 \begin{question}
   لما الأمر خطير ؟
@@ -314,7 +323,10 @@ int read(char *string, int length)
 \InlineCode{\textbackslash 0}
 كما في الشكل التالي.
 
-\Picture{Chapter_II-10_string}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-10_string}
+\end{figure}
 
 هذا المخطط يبيّن أن السلسلة الّتي تمت قراءتها من طرف الدالة
 \InlineCode{fgets}
@@ -368,7 +380,10 @@ Ah ! Your name is Jean Edou !
 
 أعتقد أن مخططا صغيرا سيساعد على توضيح الأمور.
 
-\Picture{Chapter_II-10_buffer}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-10_buffer}
+\end{figure}
 
 حينما يقوم المستعمل بإدخال نص بلوحة المفاتيح، فإن نظام التشغيل 
 (\textenglish{Windows}
@@ -409,7 +424,10 @@ Ah ! Your name is Jean Edou !
 \InlineCode{fgets}
 قامت بنسخ المحارف التسعة الأولى كما كان متوقّعا. المشكل هو أن المحارف المتبقية لازالت في المتغير المؤقت !
 
-\Picture{Chapter_II-10_buffer_rest}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-10_buffer_rest}
+\end{figure}
 
 هذا يعني أنه لو استدعينا الدالة
 \InlineCode{fgets}
