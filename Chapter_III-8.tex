@@ -11,7 +11,7 @@
 
 \subsection{لماذا \textenglish{FMOD} ؟}
 
-أنت تعرف ذلك الآن: الـ\textenglish{SDL}
+أنت تعرف ذلك الآن : الـ\textenglish{SDL}
 ليست فقط مكتبة رسومية. هي تسمح أيضاً بمعالجة الصوت عن طريق وحدة تسمّى
 \textenglish{SDL\_audio}.
 فلماذا إذاً سنحضّر مكتبة خارجية لا علاقة لها بالـ\textenglish{SDL}
@@ -77,7 +77,7 @@
 إن كنت قد حكيت لك كل هذا، فهذا فقط لأخبرك بأن اختيار
 \textenglish{FMOD}
 لم يكن عشوائياً. ببساطة هي أفضل مكتبة مجانية استطعت إيجادها.\\
-كما أنها سهلة الإستخدام كـ\textenglish{SDL\_mixer}
+كما أنها سهلة الاستخدام كـ\textenglish{SDL\_mixer}
 بأفضلية لا يمكن تجاهلها : لا توجد بها عِلَل برمجية.
 
 تسمح
@@ -395,7 +395,10 @@ FMOD_System_Release(system);
 "\textenglish{door}"
 سنجد أصوات تحرّك الباب (الصورة التالية)، إلخ.
 
-\Picture{Chapter_III-8_FindSounds}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.4\textheight]{Chapter_III-8_FindSounds}
+\end{figure}
 
 \subsection{الخطوات التي يجب إتّباعها لتشغيل الصوت}
 
@@ -499,7 +502,10 @@ FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, fire, 0, NULL);
 \underline{المصوّب}.
  لقد صممتُ لك مصوّباً بسيطاً بواسطة برنامج الرسام~:
 
-\Picture{Chapter_III-8_Aim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.05\textwidth]{Chapter_III-8_Aim}
+\end{figure}
 
 باختصار، إليك المهام :
 
@@ -584,7 +590,10 @@ int main(int argc, char *argv[])
 
 الصورة التالية تعطيك لمحة عن اللعبة المصغّرة، لكن الأفضل أن ترى الفيديو بالصوت على الأنترنت :
 
-\Picture{Chapter_III-8_Window-aim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-8_Window-aim}
+\end{figure}
 
 مشاهدة الفيديو هنا :\\
 \url{https://openclassrooms.com/uploads/fr/ftp/mateo21/viseur.html}
@@ -687,7 +696,7 @@ position.y = event.motion.y - (gunSight->h / 2);}
 \url{http://www.myspace.com/hypemusic}
 
 \begin{information}
-متيقّن جداً أن الأذواق و الألوان لا مجال للنقاش فيهما. لا بأس باختيارك لأغنية أخرى إن كانت هذه لا تًعجبك.
+متيقّن جداً أن الأذواق و الألوان لا مجال للنقاش فيهما. لا بأس باختيارك لأغنية أخرى إن كانت هذه لا تُعجبك.
 \end{information}
 
 لقد حمّلت إذاً الألبوم و سأستعمل أغنية
