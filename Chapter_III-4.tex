@@ -1,4 +1,4 @@
-\chapter{معالجة الأحداث}
+\chapter{معالجة الأحداث (\textenglish{Event handling})}
 
 معالجة الأحداث هو من أهم الأساسيات في الـ\textenglish{SDL}.\\
 و ربّما قد يكون الشطر الأكثر شغفاً لاكتشافه. لأنه انطلاقا من هنا ستبدأ فعلاً في التحكّم في تطبيقك.
@@ -31,7 +31,10 @@
 هذا حدث يـُنتجُ حينما يقوم المستعمل بالنقر على الزر
 \InlineCode{X} :
 
-\Picture{Chapter_III-4_Close}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.05\textwidth]{Chapter_III-4_Close}
+\end{figure}
 
 إنه فعلاً الحدث الأكثر سهولة. إضافة على ذلك، هو حدث قد استعملته سابقاً دون أن تعلم بذلك لأنه متواجد في الدالة 
 \InlineCode{pause} !\\
@@ -503,7 +506,10 @@ zozorPosition.y = screen->h / 2 - zozor->h / 2;
 \textenglish{Zozor}
 في وسط النافذة.
 
-\Picture{Chapter_III-4_Window-Zozor}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor}
+\end{figure}
 
 لقد اخترت هذه المرة وضع خلفية بيضاء (قمت بـ\InlineCode{SDL\_FillRect})
 لكن هذا ليس واجباً.
@@ -569,7 +575,7 @@ while (cont)
 switch(event.type)
 {
 	case SDL_QUIT:
-	continue = 0;
+	cont = 0;
 	break;
 	case SDL_KEYDOWN:
 	switch(event.key.keysym.sym)
@@ -705,7 +711,10 @@ int main(int argc, char *argv[])
 
 و بهذا نتمكن من تحريك الحيوان إلى أي مكان نريده !
 
-\Picture{Chapter_III-4_Window-Zozor-moved}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor-moved}
+\end{figure}
 
 \subsection{بعض التحسينات}
 
@@ -756,14 +765,20 @@ SDL_EnableKeyRepeat(10, 10);
 \textenglish{B}
 الصورة القادمة في  الخلفية. لاحظ الصورة التالية :
 
-\Picture{Chapter_III-4_Double-buffering-1}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Double-buffering-1}
+\end{figure}
 
 ما إن يتم رسم الصورة في الشاشة الخلفية (الشاشة 
 \textenglish{B})،
 نقوم بقلب الشاشتين و ذلك باستدعاء الدالة
 \InlineCode{SDL\_Flip}.
 
-\Picture{Chapter_III-4_Double-buffering-2}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Double-buffering-2}
+\end{figure}
 
 الشاشة
 \textenglish{A}
@@ -999,7 +1014,10 @@ while (cont)
 \textenglish{Zozor}
 في الإحداثيات الخاصة به، و هاهي النتيجة :
 
-\Picture{Chapter_III-4_Window-Zozor-moved-mouse}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor-moved-mouse}
+\end{figure}
 
 إليك تمريناً سهلاً جداً : لحد الآن، نقوم بتحريك
 \textenglish{Zozor}
