@@ -59,7 +59,11 @@
 يحتوي نماذج الدوال التي هي موجودة بالملف
 \InlineCode{file.c}،
 يمكن تلخيص ذلك بالمخطط التالي.
-\Picture{Chapter_II-5_file-c-file-h}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-5_file-c-file-h}
+\end{figure}
 كل محتوى الملف
 \InlineCode{file.h}
 سيتم وضعه داخل الملف
@@ -123,7 +127,7 @@ void anotherFunction(int value)
 \InlineCode{\#include}.
 
 هذا ليس بالأمر المعقد لفهمه، و لعلّ بعض القراء يشكك في أن الأمر يحصل بهذه الطريقة.\\
-مع هذه الشروحات الإضافيّة، أتمنّى أنّ الجميع يوافقني.
+مع هذه الشروحات الإضافيّة، أتمنّى أنّ يوافقني الجميع.
 الـ\InlineCode{\#include}
 لا تفعل أي شيء سوى إحضار محتوى ملف و تضمينه في آخر، من المهمّ فهم هذا الأمر جيّدا.
 
@@ -401,7 +405,7 @@ This file has been compiled on 13 Jan 2006 at 19:21:10
 \InlineCode{COUCOU()}).
 سنرى فائدتهما بعد قليل.
 
-فلنجرب الماكرو داخل الشفرة المصدرية:
+فلنجرب الماكرو داخل الشفرة المصدرية :
 
 \begin{Csource}
 #define COUCOU() printf("Coucou");
@@ -582,7 +586,7 @@ int main(int argc, char *argv[])
 هذا مثال عن برنامج متعدد المنصات
 (\textenglish{multi-platform})
 للتلاؤم مع النظام مثلا.\\
-إذن ،يجب من أجل كلّ نظام إعادة ترجمة الشفرة (هذا ليس أمرا سحريّا).
+إذن، يجب من أجل كلّ نظام إعادة ترجمة الشفرة (هذا ليس أمرا سحريّا).
 إن كنت في
 \textenglish{Windows}
 فستكتب
