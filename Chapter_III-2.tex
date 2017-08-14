@@ -412,7 +412,7 @@ int main(int argc, char *argv[])
 ما العمل كي تقوم النافذة بالانتظار و لا تختفي مباشرة ؟
 \end{question}
 
-يجب أن نفعل ما تفعله جميع البرامج، سواء كانت ألعابا أو غير ذلك، حلقة تكرارية غير منتهية. في الواقع، بمساعدة حلقة غير منتهية بسيطة سنمنع البرنامج من التوقف. لكن هذه الطريقة فعالة جدّا لدرجة أنّه لا يمكننا إيقاف البرنامج (إلا إذا أجبرناه باستدعاء المعالج، لكنّها تبقى طريقة عنيفة لانهاء عمل برنامج).
+يجب أن نفعل ما تفعله جميع البرامج، سواء كانت ألعابا أو غير ذلك، حلقة تكرارية غير منتهية. في الواقع، بمساعدة حلقة غير منتهية بسيطة سنمنع البرنامج من التوقف. لكن هذه الطريقة فعالة جدّا لدرجة أنّه لا يمكننا إيقاف البرنامج (إلا إذا أجبرناه باستدعاء المعالج، لكنّها تبقى طريقة عنيفة لإنهاء عمل برنامج).
 
 هذه شفرة تعمل، لكنّي أدعوك إلى
 \textbf{عدم تجريبها}،
@@ -497,7 +497,10 @@ void pause()
 الصورة التالية هي عبارة عن النافذة التي نحصل عليها حين نترجم الشفرة المصدرية السابقة (النافذة ذات أبعاد
 $640 \times 480$).
 
-\Picture{Chapter_III-2_Empty-window}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Empty-window}
+\end{figure}
 
 ها قد وصلنا !
 
@@ -557,7 +560,10 @@ int main(int argc, char *argv[])
 
 للنافذة الآن عنوان.
 
-\Picture{Chapter_III-2_Window-title}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-title}
+\end{figure}
 
 \section{التعامل مع المساحات}
 
@@ -661,7 +667,7 @@ $1024 \times 768$
 $10244 \times 768$،
 لم أفهم لماذا لم يتم التحميل، لأنّي لم أنتبه إلى أنني كتبت 4 مرّتين (ربما كنت متعباً). و لحل المشكل ألقيتُ نظرة على الملف 
 \InlineCode{stderr.txt}،
-توجهت إلى رسالة الخطأ و اكتشفت بأن الدقة التي طلبتها مرفوضة (شيء يثير الفضول أليس كذلك ؟).
+توجهت إلى رسالة الخطأ و اكتشفت بأن الدقة التي طلبتها مرفوضة (شيء يثير الفضول أليس كذلك~؟).
 \end{information}
 
 \subsection{تلوين مساحة}
@@ -795,7 +801,10 @@ SDL_MapRGB(screen->format, 255, 255, 255)
 \InlineCode{Custom}.\\
 هنا، اختر اللون الّذي يلائمك. أنظر إلى الصورة التالية :
 
-\Picture{Chapter_III-2_Colors}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_III-2_Colors}
+\end{figure}
 
 مركّبات اللون متواجدة في أسفل يمين النافذة. كما ترى فقد اخترت لونا أخضر مزرقّا، و هو يتكوّن من 17 من الأحمر، 206 من الأخضر، و 112 من الأزرق.
 \subsubsection{تلوين الشاشة}
@@ -865,7 +874,10 @@ int main(int argc, char *argv[])
 
 هاهي النتيجة :
 
-\Picture{Chapter_III-2_Window-color}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-color}
+\end{figure}
 
 \subsection{رسم مساحة أخرى في الشاشة}
 
@@ -985,7 +997,10 @@ $640 \times 480$
 
 هذا المخطط سيساعدك في الفهم  :
 
-\Picture{Chapter_III-2_Window-coordinates}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-coordinates}
+\end{figure}
 
 إذا كنت قد درست الرياضيات من قبل، فعلى الأرجح لن تضيع بينما تحاول  فهم كيفية العمل. فلننشئ إذا متغيرا 
 \InlineCode{position}.
@@ -1038,7 +1053,10 @@ int main(int argc, char *argv[])
 
 شاهد النتيجة :
 
-\Picture{Chapter_III-2_Colors-paste}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Colors-paste}
+\end{figure}
 
 \subsubsection{مركزةُ المساحة في الشاشة}
 
@@ -1065,7 +1083,10 @@ position.y = (480 / 2) - (180 / 2);
 
 النتيجة : المستطيل الأبيض يتمركز بشكل جيد في الشاشة.
 
-\Picture{Chapter_III-2_Window-color-centered}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-color-centered}
+\end{figure}
 
 \section{تمرين : إنشاء تدرّج لونيّ}
 
@@ -1076,7 +1097,10 @@ position.y = (480 / 2) - (180 / 2);
 
 هذا ما يجب عليك الحصول عليه في النهاية، صورة مشابهة لهذه :
 
-\Picture{Chapter_III-2_Window-gradient}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-gradient}
+\end{figure}
 
  إنه أمر جميل، أليس كذلك ؟ الشيء الأجمل هو أن بعض الحلقات التكرارية كافية من أجل تحقيق المطلوب.
  
@@ -1094,7 +1118,7 @@ position.y = (480 / 2) - (180 / 2);
 (255, 255, 255) // White
 \end{Csource}
 
-يجب على الجميع أن يعرف أنّه بحاجة إلى حلقة تكراريّة للقيام بهذا (لن تسعد بتكرار 256 سطرا !). و لهذا سنقوم بإنشاء جدول من نوع 
+يجب على أيّ كان أن يعرف أنّه بحاجة إلى حلقة تكراريّة للقيام بهذا (لن تسعد بتكرار 256 سطرا !). و لهذا سنقوم بإنشاء جدول من نوع 
 \InlineCode{SDL\_Surface*}
 من 256 خانة.
 
@@ -1170,7 +1194,10 @@ $0, 0, 0$
 
 في المخطط التالي أريك مركبات النقطة المتواجدة أعلى يسار الشاشة (وضعية أول سطر) ومركبات النقطة المتواجدة أسفل يسار الشاشة (وضعية آخر سطر).
 
-\Picture{Chapter_III-2_Window-gradient-coordinates}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-2_Window-gradient-coordinates}
+\end{figure}
 
 كما ترى، من الأعلى إلى الأسفل، المحور لا يتغير 
 (\InlineCode{x}
@@ -1252,5 +1279,5 @@ int main(int argc, char *argv[])
 	\InlineCode{SDL\_FillRect}،
 	ولصقها في الشاشة يتم باستعمال
 	\InlineCode{SDL\_BlitSurface}.
-	\item الألوان معرّفة بمزيج من الأحمر، الأزرق و الأخضر.	
+	\item الألوان معرّفة بمزيج من الأحمر، الأزرق و الأخضر.
 \end{itemize}
