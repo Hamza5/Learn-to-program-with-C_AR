@@ -63,7 +63,10 @@
 
 سنقوم الآن بدراسة هذه المكتبة. لماذا اخترتها هي و ليس أخرى ؟
 
-\Picture{Chapter_III-1_SDL}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_III-1_SDL}
+\end{figure}
 
 \begin{itemize}
 	\item \textbf{هي مكتبة مكتوبة بلغة
@@ -150,7 +153,10 @@
 "\textenglish{Civilisation : Call to power}"،
 تم دعمها في نظام اللينكس لاحقاً باستخدام الـ\textenglish{SDL}.
 
-\Picture{Chapter_III-1_Game}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_Game}
+\end{figure}
 
 يجب أن تعلم أنّ جودة اللعبة تعود إليك و إلى الفريق الذي تعمل معه. إن كان لديك مصمم موهوب، فيمكنك صنع لعبة أجمل.
 
@@ -359,7 +365,11 @@
 يجب عليك استخراج كل الملفات و المجلّدات الداخلية ووضعها في مكان ما بالقرص الصلب لحاسوبك، يمكنك مثلا وضعها في مجلد خاص بـ\textenglish{SDL}
 داخل مجلّد الـ\textenglish{Code::Blocks}.
 
-\Picture{Chapter_III-1_SDL-folder}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-folder}
+\end{figure}
+
 
 بالنسبة لي فإن المسار هو التالي :
 
@@ -377,8 +387,14 @@
  في المجلّد الأب، (أي في :\\ 
 \InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash include}).
 
-\Picture{Chapter_III-1_SDL-h-copy}
-\Picture{Chapter_III-1_SDL-h-past}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-h-copy}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-h-past}
+\end{figure}
 
 ها قد تم تسطيب المكتبة، فلنقم الآن بتعديل إعدادات
 \textenglish{Code::Blocks}.
@@ -387,47 +403,71 @@
 
 افتح
 \textenglish{Code::Blocks}
-و قم بانشاء مشروع جديد.
+و قم بإنشاء مشروع جديد.
 
-\Picture{Chapter_III-1_CodeBlocks-New-Project}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_III-1_CodeBlocks-New-Project}
+\end{figure}
+
 
 عوض أن تقوم باختيار 
 \textenglish{Console Application}
 كما جرت العادة، اختر 
 \textenglish{SDL project}.
 
-\Picture{Chapter_III-1_SDL-Project}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-Project}
+\end{figure}
 
 النافذة الأولى لا جدوى منها، قم بتجاوزها بالضغط على "التالي"
-
 (\textenglish{Next}).
 
-\Picture{Chapter_III-1_SDL-Project-Welcome}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-Project-Welcome}
+\end{figure}
 
 سيُطلب منك أن تقوم بإدخال اسم المشروع، قم بذلك كالعادة :
 
-\Picture{Chapter_III-1_SDL-Project-path}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-Project-path}
+\end{figure}
 
 الآن يجب اختيار المسار الذي ثبتنا فيه المكتبة :
 
-\Picture{Chapter_III-1_SDL-path}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-path}
+\end{figure}
 
 اضغط على الزر الذي يأخذ شكل مربّع به ثلاث نقاط، ستظهر لك النافذة التالية :
 
-\Picture{Chapter_III-1_SDL-path-select}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_SDL-path-select}
+\end{figure}
 
 قم باختيار المسار (بالنسبة لي هو
 \InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13}).
 
 قد تظهر لك في مكان النافذة السابقة هذه النافذة :
 
-\Picture{Chapter_III-1_SDL-path-select-2}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Chapter_III-1_SDL-path-select-2}
+\end{figure}
 
 املأ الحقل
 \textenglish{base}
 بنفس الطريقة السابقة، ثمّ اضغط على زر الخروج، و ستلاحظ أن المسار قد تم تسجيله كالتالي :
 
-\Picture{Chapter_III-1_SDL-path-filled}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-path-filled}
+\end{figure}
 
 اضغط على
 \textenglish{Next}،
@@ -441,7 +481,11 @@
 (\textenglish{Finish}).
  سيتم إنشاء المشروع التجريبي :
  
-\Picture{Chapter_III-1_SDL-test-project}
+ \begin{figure}[H]
+ 	\centering
+ 	\includegraphics[width=\textwidth]{Chapter_III-1_SDL-test-project}
+ \end{figure}
+
 
 يحتوي المشروع على ملفين 
 \InlineCode{main.cpp}
@@ -453,14 +497,24 @@
 \InlineCode{C:\textbackslash Program Files (x86)\textbackslash CodeBlocks\textbackslash SDL-1.2.13\textbackslash bin\textbackslash SDL.dll})
 و ضعه في المجلّد الخاص بالمشروع.
 
-\Picture{Chapter_III-1_SDL-DLL-copy}
-\Picture{Chapter_III-1_SDL-DLL-past}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-DLL-copy}
+\end{figure}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-DLL-past}
+\end{figure}
 
 أخرج من 
 \textenglish{Code::Blocks}
 و أعد الدخول إليه، ثم قم بترجمة البرنامج المُقترح مسبقاً. يفترض أن تظهر النافذة التالية :
 
-\Picture{Chapter_III-1_SDL-test-window}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-test-window}
+\end{figure}
+
 
 إذا ظهرت لك النافذة السابقة، فهنيئا لك، المكتبة مثبتة بشكل جيد !
 
@@ -506,13 +560,20 @@
 قم بتغيير اسمه إلى
 \InlineCode{main.c}.
 
-\Picture{Chapter_III-1_SDL-rename}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_III-1_SDL-rename}
+\end{figure}
 
 أدخل الآن إلى
 \textenglish{Code::Blocks}،
 ستظهر لك على الأرجح النافذة التالية :
 
-\Picture{Chapter_III-1_SDL-keep-open}
+ \begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_III-1_SDL-keep-open}
+\end{figure}
+
 
 اضغط على الزر "لا"
 (\textenglish{No}).
@@ -521,31 +582,46 @@
 \InlineCode{main.cpp}
 و اختر حذفه من المشروع :
 
-\Picture{Chapter_III-1_SDL-remove-cpp}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_III-1_SDL-remove-cpp}
+\end{figure}
 
 اضغط على اسم المشروع، و اطلب إضافة ملف جديد :
 
-\Picture{Chapter_III-1_SDL-add}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_III-1_SDL-add}
+\end{figure}
 
 اختر الملف
 \InlineCode{main.c}
 من ملفات المشروع :
 
-\Picture{Chapter_III-1_SDL-mainc}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_SDL-mainc}
+\end{figure}
 
 ستظهر لك نافذة أخرى، قم باختيار
 \textenglish{Next}،
 ثم انقر على "موافق"
 (\textenglish{OK}).
 
-\Picture{Chapter_III-1_SDL-selection}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_III-1_SDL-selection}
+\end{figure}
 
 أنقر باليمين مجددا على الملف 
 \InlineCode{main.c}
 و اختر "خصائص" 
 (\textenglish{Properties}) :
 
-\Picture{Chapter_III-1_SDL-file-properties}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_SDL-file-properties}
+\end{figure}
 
 توجه إلى القائمة
 \textenglish{Advanced}،
@@ -557,12 +633,19 @@
 \textenglish{CC}
 كالتالي :
 
-\Picture{Chapter_III-1_SDL-file-properties-advanced}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_III-1_SDL-file-properties-advanced}
+\end{figure}
 
 اضغط بعد ذلك على
 \textenglish{OK}
 هذا ما سيبدو عليه المشروع الجديد :
-\Picture{Chapter_III-1_SDL-new-file}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_III-1_SDL-new-file}
+\end{figure}
 
 ضع الشفرة التالية بدل الشفرة السابقة :
 
@@ -581,7 +664,11 @@ int main(int argc, char *argv[])
 و أخيراً، من القائمة العلوية، اختر هدف البناء 
 \InlineCode{Release}.
 
-\Picture{Chapter_III-1_SDL-build-target}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_III-1_SDL-build-target}
+\end{figure}
+
 
 يمكنك ترجمة البرنامج، ستظهر لك نافذة و تختفي فجأة، لا تقلق، سنعالج ذلك لاحقاً، أنا أهنّئك، كل شيء يعمل بشكل جيد جدا.
 
@@ -689,7 +776,10 @@ int main(int argc, char *argv[])
 \InlineCode{Empty project}
 مختارة.
 
-\Picture{Chapter_III-1_VisualCpp-Assistant}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_VisualCpp-Assistant}
+\end{figure}
 
 لقد تمّ إنشاء المشروع إذا. إنّه فارغ. أضف إليه ملفاً جديداً و ذلك بالنقر على
 \InlineCode{Source files}
@@ -698,7 +788,10 @@ int main(int argc, char *argv[])
 ثم
 \InlineCode{New element} :
 
-\Picture{Chapter_III-1_VisualCpp-Add}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_VisualCpp-Add}
+\end{figure}
 
 حينما تفتح نافذة جديدة، أطلب إنشاء ملف جديد من نوع
 \InlineCode{C++ File (.cpp)}،
@@ -751,7 +844,11 @@ int main(int argc, char *argv[])
 	إلى الـ\InlineCode{Windows}.
 \end{itemize}
 
-\Picture{Chapter_III-1_VisualCpp-project-properties}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_VisualCpp-project-properties}
+\end{figure}
+
 
 قم بالضغط على "موافق" لحفظ التغييرات.\\
 يمكنك الآن الترجمة و ذلك بالذهاب إلى
@@ -775,7 +872,11 @@ int main(int argc, char *argv[])
 و ذلك من خلال الجزء
 "\textenglish{Download}"
 أسفل يسار الموقع، كالتالي :
-\Picture{Chapter_III-1_SDL-Mac-Download}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.25\textwidth]{Chapter_III-1_SDL-Mac-Download}
+\end{figure}
 
 في أسفل الصفحة ستجد قسماً يدعى 
 "\textenglish{Runtime Libraries}".
@@ -790,7 +891,10 @@ int main(int argc, char *argv[])
 ستجد إما
 \textenglish{Intel} أو \textenglish{PowerPC}.
 
-\Picture{Chapter_III-1_SDL-Mac-Download-version}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_SDL-Mac-Download-version}
+\end{figure}
 
 حينما يتم تنزيل الملف، انقر عليه مرتين، يفترض أن يفتح لوحده. ستجد بهذا المجلّد مجلّدا
 \InlineCode{SDL.framework}
@@ -818,7 +922,10 @@ int main(int argc, char *argv[])
 ما إن يتم إنشاء المشروع، قم بالتخلص من الملفات التي لا تحتاجها :
 \InlineCode{AppDelegate.h}، \InlineCode{AppDelegate.m}، \InlineCode{MainMenu.xib}، \InlineCode{InfoPlist.strings}، \InlineCode{main.m} و \InlineCode{Credits.rtf} :
 
-\Picture{Chapter_III-1_SDL-project-unused-files}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-1_SDL-project-unused-files}
+\end{figure}
 
 اختر المشروع من التفرع الشجري اليساري (القسم
 \InlineCode{Install SDL}
@@ -827,7 +934,10 @@ int main(int argc, char *argv[])
 و ليس من
 \InlineCode{TARGETS} :
 
-\Picture{Chapter_III-1_Xcode-SDL-project}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{Chapter_III-1_Xcode-SDL-project}
+\end{figure}
 
 يمكنك أيضاً تغيير الـ\textenglish{localisation}
 من 
@@ -860,14 +970,21 @@ int main(int argc, char *argv[])
  و اختر
 \InlineCode{32-bit Intel} :
 
-\Picture{Chapter_III-1_Xcode-SDL-build-setting}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_Xcode-SDL-build-setting}
+\end{figure}
+
 
 ما إن تفعل ذلك، اختر
 \InlineCode{LLVM GCC 4.2}
 من السطر
 \InlineCode{Compiler for C/C++/Objective-C}.
 
-\Picture{Chapter_III-1_Xcode-gcc}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_Xcode-gcc}
+\end{figure}
 
 اذهب إلى منطقة البحث في أعلى اليمين، و اكتب
 "\textenglish{search paths}"،
@@ -886,12 +1003,18 @@ int main(int argc, char *argv[])
 أضف المسار\\
 \InlineCode{/Library/Frameworks/SDL.framework/Headers}.
 
-\Picture{Chapter_III-1_Xcode-SDL-framework}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-1_Xcode-SDL-framework}
+\end{figure}
 
 اختر الآن "هدفك"، و هذه المرة من قسم 
 \InlineCode{TARGETS} :
 
-\Picture{Chapter_III-1_Xcode-SDL-target}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{Chapter_III-1_Xcode-SDL-target}
+\end{figure}
 
 توجه إلى 
 \InlineCode{Summary}،
@@ -957,7 +1080,10 @@ int main(int argc, char *argv[])
 \InlineCode{Build phase}،
 كما يظهر بالصورة  :
 
-\Picture{Chapter_III-1_Xcode-drop-framework}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_III-1_Xcode-drop-framework}
+\end{figure}
 
 أنصحك بترتيب كل الـ\textenglish{frameworks}
 الخاص بك في مجلد 
