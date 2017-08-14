@@ -1,4 +1,5 @@
-\chapter{الحجز الحيّ للذاكرة (\textenglish{Dynamic memory allocation})}
+\chapter{الحجز الحيّ للذاكرة
+(\textenglish{Dynamic memory allocation})}
 
 كل المتغيّرات التي أنشأناها لحد الآن تمّ إنشاؤها تلقائيّا من طرف المترجم الخاصّ بلغة
 \textenglish{C}.
@@ -174,7 +175,10 @@ int number = 18;
 $1600$
 من الذاكرة. سيكون لدينا إذا المخطط التالي للذاكرة :
 
-\Picture{Chapter_II-8_RAM-Schema-int}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-8_RAM-Schema-int}
+\end{figure}
 
 هنا، يمكننا فعلاً أن نرى بأن المتغير
 \InlineCode{number}
@@ -192,7 +196,10 @@ $1604$ !
 \InlineCode{char}،
 فالمتغير لن يأخذ سوى بايت واحد في الذاكرة (الشكل التالي) :
 
-\Picture{Chapter_II-8_RAM-Schema-char}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-8_RAM-Schema-char}
+\end{figure}
 
 تخيّل الآن جدولا من
 \InlineCode{int} !\\
