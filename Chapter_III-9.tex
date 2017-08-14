@@ -20,7 +20,10 @@
 
 الصورة التالية تعطيك مظهراً للبرنامج الذي سنكتبه في هذا الفصل.
 
-\Picture{Chapter_III-9_Window-spectral}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-9_Window-spectral}
+\end{figure}
 
 هو نوع الإظهار الذي نجده في قارئي الأصوات كـ\textenglish{Winamp}،
 \textenglish{Windows Media Player} أو \textenglish{AmaroK}.\\
@@ -56,7 +59,10 @@
 (\textenglish{Frequencies}).
 بعض الترددات منخفضة، بعضها متوسطة و بعضها مرتفعة. ما سنقوم به في عملية الإظهار هو إظهار كمية كلّ واحدة من الترددات على شكل شرائط و كلّما يكون الشريط كبيراً، كلما يكون التردد مستعملاً أكثر :
 
-\Picture{Chapter_III-9_Frequencies}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-9_Frequencies}
+\end{figure}
 
 على يسار النافذة، نقوم بإظهار الترددات المنخفضة، و على اليمين الترددات المرتفعة.
 
@@ -101,7 +107,7 @@ FMOD_RESULT FMOD_Channel_GetSpectrum(
 \InlineCode{float}
 هو نوع عشري، مثل
 \InlineCode{double}.
-الاختلاف بين الإثنين يكمن في كون الـ\InlineCode{double}
+الاختلاف بين الاثنين يكمن في كون الـ\InlineCode{double}
 أكثر دقّة من الآخر، لكن في حالتنا يكفينا الـ\InlineCode{float}.
 هذا الأخير مستعمل من طرف
 \textenglish{FMOD}
@@ -116,7 +122,7 @@ float spectrum[512];
 
 ثم، حين يتم تشغيل الموسيقى، نطلب من 
 \textenglish{FMOD}
-ملئ جدول الأطياف بالقيام مثلاً بـ :
+ملء جدول الأطياف بالقيام مثلاً بـ :
 
 \begin{Csource}
 FMOD_Channel_GetSpectrum(channel, spectrum, 512, 0, FMOD_DSP_FFT_WINDOW_RECT);
@@ -237,7 +243,7 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 \end{Csource}
 \end{enumerate}
 
-هي سهلة الإستعمال. ابعث لها المعاملات التالية :
+هي سهلة الاستعمال. ابعث لها المعاملات التالية :
 
 \begin{itemize}
 	\item المؤشّر نحو المساحة التي تريد التعديل عليها (يجب أن تكون معطّلة بواسطة
@@ -248,7 +254,7 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 	(\InlineCode{y}).
 	\item اللون الجديد الذي نعطيه للبيكسل. يجب أن يكون هذا اللون بصيغة
 	\InlineCode{Uint32}.
-	يمكنك إذا توليده بالإستعانة بالدالة
+	يمكنك إذا توليده بالاستعانة بالدالة
 	\InlineCode{SDL\_MapRGB}
 	التي تتقننها جيداً الآن.
 	\item أخيراً، حينما تنتهي من العمل على المساحة، يجب ألا تنسى أن تزيل تعطيلها باستدعاء\\ 
@@ -448,7 +454,10 @@ void setPixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 
 يجدر بك أن تتحصّل على نتيجة تشبه الصورة التالية :
 
-\Picture{Chapter_III-9_Window-spectral}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-9_Window-spectral}
+\end{figure}
 
 من المعلوم أن النتيجة المرئية أفضل لتقدير النتيجة. أنصحك بالاطلاع عليها من هنا :
 
