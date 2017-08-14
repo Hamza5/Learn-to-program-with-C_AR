@@ -14,7 +14,10 @@
 ماهي القائمة المتسلسلة ؟ أقترح عليك أن تنطلق من نموذج الجدول. يمكن تمثيل الجدول في الذاكرة بالطريقة التي توضّحها الصورة التالية. نتكلّم هنا عن جدول يحتوي على خانات من نوع
 \InlineCode{int}.
 
-\Picture{Chapter_IV-1_Array}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_IV-1_Array}
+\end{figure}
 
 \begin{information}
 اخترت هنا تمثيل الجدول أفقياً، لكن يمكن تمثيله عمودياً كذلك، هذا لا يهم.
@@ -23,7 +26,10 @@
 
 كما قلت لك في المقدّمة، مشكل الجداول يكمن في كونها ثابتة. لا يمكن تكبير حجمها، إلا إذا فكّرنا في إعادة إنشائها من جديد و تكون أكبر (لاحظ الشكل التالي). أيضاً، لا يمكن أن نضيف عنصُراً في وسط الجدول إلا إذا قمنا بإزاحة كلّ العناصر الأخرى.
 
-\Picture{Chapter_IV-1_Array-add}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_Array-add}
+\end{figure}
 
 لا تقترح علينا لغة الـ\textenglish{C}
 نظاماً آخراً لتخزين البيانات، لكن من الممكن أن ننشئ بأنفسنا هذا النظام بعناصره الكاملة : ستكون الغاية من هذا الفصل و الفصول الموالية اكتشاف حلول لهذا المشكل.
@@ -32,7 +38,10 @@
 (\textenglish{structures})
 مرتبطة ببعضها البعض بواسطة مؤشّرات. يمكننا تمثيلها كالتالي :
 
-\Picture{Chapter_IV-1_Linked-list}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_IV-1_Linked-list}
+\end{figure}
 
 يمكن لكلّ عنصر أن يحتوي على ما نريد : قيمة من نوع 
 \InlineCode{int}
@@ -40,7 +49,10 @@
 \InlineCode{double} \dots
 بالإضافة إلى ذلك، كلّ عنصر يحتوي على مؤشّر نحو العنصر الموالي :
 
-\Picture{Chapter_IV-1_Linked-list-data}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_IV-1_Linked-list-data}
+\end{figure}
 
 أعرف بأن كلّ هذه المعلومات نظرية و ربّما تبدو لك غير واضحة الآن. احفظ فقط طريقة اتّصال العناصر ببعضها : هي تشكل 
 \textbf{سلسلة من المؤشّرات}،
@@ -121,7 +133,10 @@ struct List
 \InlineCode{List}.
 هي تسمح بالتحكّم في كلّ القائمة المتسلسلة :
  
-\Picture{Chapter_IV-1_List-struct}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Chapter_IV-1_List-struct}
+\end{figure}
 
 \subsection{آخر عنصر في القائمة}
 
@@ -137,7 +152,10 @@ struct List
 \InlineCode{NULL}.
 هذا سيسمح لنا أخيراً برسم مخطط كامل لبُنية القائمة المتسلسلة :
 
-\Picture{Chapter_IV-1_List-NULL}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_IV-1_List-NULL}
+\end{figure}
 
 \section{دوال معالجة القوائم المتسلسلة}
 
@@ -231,7 +249,10 @@ List *initialization()
 
 لقد نجحنا الآن في إنشاء قائمة في الذاكرة متكوّنة من عنصر واحد و لها الشكل التالي :
 
-\Picture{Chapter_IV-1_List-1-element}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{Chapter_IV-1_List-1-element}
+\end{figure}
 
 \subsection{إضافة عنصر}
 
@@ -241,7 +262,10 @@ List *initialization()
 
 يجدر بنا إنشاء دالة قادرة على أن تضيف عُنصراً جديداً إلى بداية القائمة. و لكي نفهم أكثر، تخيّل أننا في حالة مشابهة لما تعرضه الصورة الموالية : تتكون القائمة من ثلاثة عناصر و نريد أن نضيف لها عُنصراً جديدا في البداية :
 
-\Picture{Chapter_IV-1_List-new}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_IV-1_List-new}
+\end{figure}
 
 يجب أن نقوم بتغيير وضعية المؤشّر
 \InlineCode{first}
@@ -290,7 +314,10 @@ void insertion(List *list, int newNumber)
 
 بإتباع الخطوتين سنتمكن من إدراج العنصر الجديد بشكل صحيح إلى القائمة المتسلسلة :
 
-\Picture{Chapter_IV-1_List-new-linked}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Chapter_IV-1_List-new-linked}
+\end{figure}
 
 \subsection{حذف عنصر}
 
@@ -318,7 +345,7 @@ void deletion(List *list)
 \InlineCode{NULL}،
 و إلا فلن نتمكّن من العمل. نتأكد بعد ذلك إذا كان هناك على الأقل عنصر واحد في القائمة و إلا فلا يوجد أي شيء لنقوم به.
 
-بعد الانتهاء من هذه الإختبارات، يمكننا حفظ عنوان العنصر الذي نريد حذفه في مؤشّر نسميه
+بعد الانتهاء من هذه الاختبارات، يمكننا حفظ عنوان العنصر الذي نريد حذفه في مؤشّر نسميه
 \InlineCode{toDelete}.
 يؤشّر بعد ذلك المؤشّر
 \InlineCode{first}
@@ -329,7 +356,10 @@ void deletion(List *list)
 باستعمال الدالة
 \InlineCode{free} :
 
-\Picture{Chapter_IV-1_List-to-delete}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_List-to-delete}
+\end{figure}
 
 هذه الدالة قصيرة لكن هل يمكنك إعادة كتابتها لوحدك ؟ يجب أن نفهم جيداً بأننا يجب أن نقوم بالعمل اتّباعاً لخطوات محددة :
 
