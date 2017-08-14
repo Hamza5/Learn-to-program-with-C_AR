@@ -14,7 +14,10 @@
 
 تخيّل مكدّساً للقطع النقدية (الصورة التالية). يمكنك إضافة قطع أخرى واحدة تلو الأخرى في أعلى المكدّس، و يمكنك أيضاً نزع القطع من أعلى المكدّس. بالمقابل، لا يمكن نزع قطعة من أسفل المكدّس. إن أردت التجريب، أتمنى لك حظًاً موفّقاً !
 
-\Picture{Chapter_IV-2_Money-stack}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.2\textheight]{Chapter_IV-2_Money-stack}
+\end{figure}
 
 \subsection{كيفية عمل المكدّسات}
 
@@ -25,14 +28,23 @@
 فستتم إضافته في أعلى المكدّس، تماماً كما في لعبة 
 \textenglish{Tetris} :
 
-\Picture{Chapter_IV-2_Stack}
-\Picture{Chapter_IV-2_Stack-add}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.2\textheight]{Chapter_IV-2_Stack}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.3\textheight]{Chapter_IV-2_Stack-add}
+\end{figure}
 
 الأكثر أهمية هو وجود عملية تقوم باستخراج الأعداد من المكدّس. نحن نتكلّم عن
 \textbf{إلغاء التكديس}.
 نسترجع القيم واحدة تلو الأخرى، بدءً من الأخيرة الموضوعة أعلى المكدّس (الصورة الموالية). ننزع البيانات على التوالي حتى نصل إلى قاع المكدّس.
 
-\Picture{Chapter_IV-2_Stack-remove}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.3\textheight]{Chapter_IV-2_Stack-remove}
+\end{figure}
 
 نسمي هذا بخوارزمية
 \textbf{\textenglish{LIFO}}،
@@ -44,7 +56,10 @@
 \InlineCode{NULL}
 لكي يقول أنّنا \dots لمسنا القاع :
 
-\Picture{Chapter_IV-2_Stack-numbers}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.2\textheight]{Chapter_IV-2_Stack-numbers}
+\end{figure}
 
 \begin{question}
  فيما ينفع كلّ هذا، واقعيّا ؟
@@ -79,7 +94,10 @@
 
 لكي "يتذكّر" الترتيب الذي تم فيه استدعاء الدوال، يُنشئ الحاسوب مكدّساً لهذه الدوال على التوالي :
 
-\Picture{Chapter_IV-2_Stack-history}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_IV-2_Stack-history}
+\end{figure}
 
 هذا مثال واقعيّ عن استعمال المكدّسات. و بفضل هذه التقنية يعرف الجهاز الآن إلى أي دالة يجب عليه أن يعود. يمكنه أن يكدّس 100 استدعاء للدوال إن وجب الأمر، لكنّه سيرجع ليجد الدالة الرئيسية في أسفل المكدّس !
 
@@ -187,7 +205,7 @@ int unstack(Stack *stack)
 }
 \end{Csource}
 
-\begin{tcolorbox}[title=ملاحظة مُرَاجِع الكتاب,colback=orange!20,colframe=orange!70,fontupper=\small,coltitle=white,fonttitle=\small]
+\begin{tcolorbox}[title={\footnotemark[1]ملاحظة مُرَاجِع الكتاب},colback=orange!20,colframe=orange!70,fontupper=\small,coltitle=white]
 يبدو لي أن مؤلّف الكتاب قد أضاف جزءً عديم الفائدة في الشرط الثاني :
 \InlineCode{stack != NULL}،
 فَبِوُصول البرنامج إلى ذلك السطر سيكون هذا الجزء من الشرط خاطئا بكلّ تأكيد لأنّنا قد تحقّقنا من عكسه في الشرط الأوّل 
@@ -291,7 +309,10 @@ Stack's state :
 
 تسهل المشابهة بالحياة اليوميّة. حينما تشتري تذكرة لمشاهدة السينما، تقف في طابور شبّاك التذاكر (الصورة الموالية). باستثناء إن كنت أحد إخوة بائع التذاكر، يجدر بك الوقوف في الطابور و انتظار دورك مثل كلّ الآخرين. أول الواصلين هو أول من تتم خدمته.
 
-\Picture{Chapter_IV-2_Humans-queue}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_IV-2_Humans-queue}
+\end{figure}
 
  في البرمجة، تفيد الطوابير في إيقاف مؤقّت للمعلومات حسب الترتيب الذي وصلت به. مثلاً، في برنامج مُحادثة، لو تتلقى ثلاثة رسائل يفصلها فارق زمني قصير جداً، يتم صفُّها في طابور واحدة تلو الأخرى في الذاكرة. ثم يتم إظهار أوّل رسالة وصلت ثم الثانية و هكذا.
  
@@ -307,7 +328,10 @@ Stack's state :
 الطابور هو قائمة متسلسلة أين يقوم كلّ عنصر فيها بالتأشير على العنصر الموالي، تماماً مثل المكدّسات. آخر عنصر من الطابور يؤشّر نحو
 \InlineCode{NULL} :
 
-\Picture{Chapter_IV-2_Queue}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_IV-2_Queue}
+\end{figure}
 
 \subsection{إنشاء نظام طابور}
 
