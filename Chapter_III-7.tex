@@ -385,9 +385,18 @@ TTF_Font *font = NULL;
 
 لاحظ الصور التالية التي ستعطيك فكرة عن الخطوط التي ستجدها هناك بسهولة :
 
-\Picture{Chapter_III-7_Font1}
-\Picture{Chapter_III-7_Font2}
-\Picture{Chapter_III-7_Font3}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.1\textheight]{Chapter_III-7_Font1}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.1\textheight]{Chapter_III-7_Font2}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.1\textheight]{Chapter_III-7_Font3}
+\end{figure}
 
 \subsubsection{تحميل الخط}
 
@@ -463,9 +472,18 @@ TTF_Quit();
 	التي تفرض وجود خلفية موحّدة اللون). احذر : عملية اللصق بهذه الطريقة أبطأ من تلك الخاصة بالـ\textenglish{Shaded}.
 \end{itemize}
 
-\Picture{Chapter_III-7_Solid}
-\Picture{Chapter_III-7_Shaded}
-\Picture{Chapter_III-7_Blended}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-7_Solid}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-7_Shaded}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_III-7_Blended}
+\end{figure}
 
 ملخّص :
 
@@ -635,7 +653,10 @@ int main(int argc, char *argv[])
 
 النتيجة تمثّلُها الصورة التالية :
 
-\Picture{Chapter_III-7_Blended-text}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-7_Blended-text}
+\end{figure}
 
 إذا أردت تغيير طريقة الكتابة للتجريب، لا يوجد سوى سطر للتعديل : السطر الخاص بإنشاء المساحة (استدعاء الدالة 
 \InlineCode{TTF\_RenderText\_Blended}).
@@ -693,7 +714,10 @@ text = TTF_RenderText_Blended(font, "Salut les Zér0s !", blackColor);
 
 النتيجة : النص مكتوب بخاصية مائل و مسطّر :
 
-\Picture{Chapter_III-7_Italic-underlined-text}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-7_Italic-underlined-text}
+\end{figure}
 
 لإرجاع خط ما إلى حالته العاديّة، يكفي أن نعيد استدعاء الدالة
 \InlineCode{TTF\_SetFontStyle}
@@ -814,7 +838,10 @@ int main(int argc, char *argv[])
  
 الصورة التالية تمثّل النتيجة في غضون 13,9 ثانية بالتحديد :
 
-\Picture{Chapter_III-7_Time-text}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-7_Time-text}
+\end{figure}
 
 لا تتردد في تنزيل المشروع إذا أردت دراسته بالتفصيل و تحسينه. هو ليس مثالياً بعد : يمكننا مثلاً استعمال
 \InlineCode{SDL\_Delay}
