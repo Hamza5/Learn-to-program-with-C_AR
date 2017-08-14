@@ -24,7 +24,10 @@
 \textenglish{Luc Doncieux}
  في الصورة الموالية، يجب عليّ التقدّم في كلّ القائمة كي أكتشف بأنه العنصر الأخير فيها !
  
-\Picture{Chapter_IV-3_Student-list}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_IV-3_Student-list}
+\end{figure}
 
 \begin{information}
 بالفعل، لو أننا بحثنا عن الشخص 
@@ -93,7 +96,10 @@ table["Luc Doncieux"];
 \InlineCode{Student}.
 أنت تعرف القيام بهذا الآن :
 
-\Picture{Chapter_IV-3_Array-indices}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.3\textheight]{Chapter_IV-3_Array-indices}
+\end{figure}
 
  لو أردنا إيجاد الخانة التي توافق
 \textenglish{Luc Doncieux}،
@@ -112,7 +118,10 @@ table["Luc Doncieux"];
 
 السؤال الذي يُطرح هو : كيف نحوّل سلسلة محارف إلى عدد ؟ هذا هو سحر التجزئة. تجب كتابة دالة تأخذ كمعامل سلسلة محارف، تطبّق حسابات عليها، ثم تُرجع لنا عدداً يوافق تلك السلسلة. سيكون هذا العدد هو فهرس الخانة في الجدول :
 
-\Picture{Chapter_IV-3_Array-indices-hash}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_IV-3_Array-indices-hash}
+\end{figure}
 
 \section{كتابة دالة تجزئة}
 
@@ -239,7 +248,10 @@ infoAboutLuc = findHashTable(table, "Luc Doncieux");
 
 حلّ آخر ينصّ على إنشاء قائمة متسلسلة في مكان التصادم. هل تريد تخزين بيانتين (أو أكثر) في نفس الخانة ؟ استعمل قائمة متسلسلة و أنشئ مؤشّراً نحو هذه القائمة انطلاقاً من الجدول :
 
-\Picture{Chapter_IV-3_Hash-list}
+\begin{figure}[H]
+	\centering
+	\includegraphics[height=0.3\textheight]{Chapter_IV-3_Hash-list}
+\end{figure}
 
 بالفعل، سنعود لمشكل القوائم المتسلسلة : إذا كان هناك 300 عنصرٍ في هذا الموقع من الجدول، يجب تصفّح القائمة المتسلسلة إلى حين إيجاد العنصر الصحيح.
 
