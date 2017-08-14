@@ -1,4 +1,5 @@
 \chapter{السلاسل المحرفيّة (\textenglish{Strings})}
+
 السلاسل المحرفيّة هي اسم صحيح
 \textit{برمجيّا}
 لتسمية \dots النصّ، ببساطة !\\
@@ -24,6 +25,7 @@ $128$.
 \InlineCode{int}.
 بالطبع، هذا سيأخذ  شيئا أكبر من الذاكرة، لكن في هذه الأيّام، ليست الذاكرة ما ينقص الحواسيب فعلا.
 \end{information}
+
 إذا فالنوع
 \InlineCode{char}
 مستعمل لتخزين \dots "حرف" ! احذر، لقد قلت :
@@ -171,7 +173,12 @@ char string[5];
 فيمكننا تكوين سلسلة محرفيّة، أي نصّ.
 
 المخطط التالي يعطيك فكرة عن كيفيّة تخزين السلسلة في الذاكرة (احذر : في الحقيقة الأمر أصعب بقليل مما هو ظاهر، سأشرح ذلك لاحقا).
-\Picture{Chapter_II-4_String-Memory}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-4_String-Memory}
+\end{figure}
+
 كما نرى فهذا جدول يتكون من 5 خانات في الذاكرة ليمثل الكلمة
 '\textenglish{Hello}'.
 في المخطط اخترت تمثيل الحروف بين علامتي تنصيص  لأبيّن أنه يتمّ تخزين عدد و ليس حرف. في الحقيقة، دائما في الذاكرة، يتمّ تخزين الأعداد الموافقة لهذه الحروف.
@@ -208,7 +215,12 @@ char string[5];
 المخطط التالي هو الأصحّ في تمثيل السلسلة المحرفيّة
 '\textenglish{Hello}'
 في الذاكرة.
-\Picture{Chapter_II-4_String-Memory2}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Chapter_II-4_String-Memory2}
+\end{figure}
+
 كما ترى، السلسلة تحوي 6 محارف لا 5، يجب أن يكون الأمر كذلك. السلسلة تنتهي بـ\InlineCode{\textbackslash 0}،
 محرف نهاية السلسلة يسمح للحاسوب بمعرفة أين تنتهي السلسلة.
 
@@ -283,7 +295,7 @@ Hello
 
 تلاحظ أن القيام بتخزين النص حرفا بحرف في الجدول
 \InlineCode{string}
-أمر متعب للغاية. لتهيئة سلسلة محرفيّة توجد لحسن الحظ  طريقة أبسط بكثير :
+أمر متعب للغاية. لتهيئة سلسلة محرفيّة توجد، لحسن الحظ، طريقة أبسط بكثير :
 
 \begin{Csource}
 int main(int argc, char *argv[])
@@ -471,7 +483,7 @@ int stringLen(const char* string)
     	 	currentCharacter = string[charactersCount];
     	 	charactersCount++;
 	}
-	while(currentCharacter != '\0'); // We loop while we didn’t reach \0
+	while(currentCharacter != '\0'); // We loop while we didn't reach \0
 	charactersCount--; // We decrement by 1 in order to not count \0
 	return charactersCount;
 }
@@ -493,6 +505,7 @@ int stringLen(const char* string)
 \InlineCode{charactersCount}.
 
 \subsection{\texttt{strcpy} : نسخ سلسلة محرفيّة في أخرى}
+
 الدالة
 \InlineCode{strcpy}
 (و الّتي تعني "\textenglish{String copy}")
@@ -523,10 +536,12 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 string is : Text
 copy is : Text
 \end{Console}
+
 نلاحظ أنّ قيمة
 \InlineCode{string}
 هي
@@ -538,6 +553,7 @@ copy is : Text
 \InlineCode{string}.
 لقد تمّ فعلا نسخ السلسلة في
 \InlineCode{copy}.
+
 \begin{warning}
   تأكّد أن السلسلة
   \InlineCode{copy}
@@ -550,8 +566,13 @@ copy is : Text
   \InlineCode{strcpy}
   "ستخرج عن الذاكرة" و ربّما ستوقف البرنامج عن العمل. تجنّب ذلك، إلّا إذا كنت تريد تعطيل برنامجك.
 \end{warning}
+
 النسخ يمكن تمثيله كالتالي :
-\Picture{Chapter_II-4_String-Copy}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-4_String-Copy}
+\end{figure}
 كلّ محرف من
 \InlineCode{string}
 يتمّ وضعه في
@@ -564,13 +585,16 @@ copy is : Text
 تكون قادرة على احتواء سلاسل أخرى قد تكون أكبر في بقيّة البرنامج.
 
 \subsection{\texttt{strcat} : وصل سلسلتين محرفيّتين}
+
 هذه الدالة تضيف سلسلة محرفيّة إلى نهاية الأخرى. نسمّي هذه العملية بالوصل
 (\textenglish{Concatenation}).\\
 فلنفرض أن لدينا المتغيّرات التالية :
+
 \begin{itemize}
   \item \InlineCode{string1 = "Hello "}
   \item \InlineCode{string2 = "Mateo21"}
 \end{itemize}
+
 إن وصلت
 \InlineCode{string1}
 في
@@ -587,9 +611,11 @@ copy is : Text
 
 هذا تماما ما تفعله
 \InlineCode{strcat}، هذا هو نموذجها :
+
 \begin{Csource}
 char* strcat(char* string1, const char* string2);
 \end{Csource}
+
 كما يمكنك أن ترى،
 \InlineCode{string2}
 غير قابل للتعديل لأنّه تمّ التصريح عنه كثابت في نموذج الدالّة.\\
@@ -617,10 +643,12 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 string1 is : Hello Mateo21
 string2 is as always : Mateo21
 \end{Console}
+
 تأكّد دائما أنّ
 \InlineCode{string1}
 كبيرة بما فيه الكفاية لكي نستطيع إضافة محتوى
@@ -633,7 +661,12 @@ string2 is as always : Mateo21
 تلقائيّا (هذا يعني أنني لم أحدد الحجم) لأنّ هذه السلسلة لا يتمّ تعديلها، فلا حاجة إذن لجعلها أكبر من اللازم.
 
 المخطط التالي يلخّص عمليّة الوصل.
-\Picture{Chapter_II-4_String-Concatenation}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_II-4_String-Concatenation}
+\end{figure}
+
 الجدول
 \InlineCode{string2}
 تمّت إضافته إلى نهاية
@@ -648,11 +681,14 @@ string2 is as always : Mateo21
 إلّا في نهاية سلسلة محرفيّة، فقط عندما ننهيها.
 
 \subsection{\texttt{strcmp} : مقارنة سلسلتين محرفيّتين}
+
 \InlineCode{strcmp}
 تقارن سلسلتين فيما بينهما. هذا هو نموذجها :
+
 \begin{Csource}
 int strcmp(const char* string1, const char* string2);
 \end{Csource}
+
 المتغيّران
 \InlineCode{string1}
 و
@@ -660,10 +696,12 @@ int strcmp(const char* string1, const char* string2);
 يتمّ مقارنتهما. كما تلاحظ، لا يتمّ تعديل أيّ منهما لأنّه تمّ التصريح عنهما كثوابت.
 
 إنه من الضروري أن نقوم باسترجاع ما تعيده إلينا الدالة. في الواقع، \InlineCode{strcmp} تعيد :
+
 \begin{itemize}
   \item 0 إن كانت السلسلتان متطابقتين.
   \item قيمة أخرى (موجبة أو سالبة) إن كانت السلسلتان مختلفتين.
 \end{itemize}
+
 \begin{information}
 أعلم أنّه كان من المنطقيّ أكثر أن تعيد الدالّة 1 إن كانت السلسلتين متطابقتين لكي نقول "صحيح" (تذكّر المتغيّرات المنطقيّة). السبب بسيط :
 الدالّة تقارن قيم المحارف من كلّ سلسلة واحدا واحدا. إن كانت كلّ المحارف متطابقة فستعيد 0. إن كانت محارف
@@ -674,7 +712,9 @@ int strcmp(const char* string1, const char* string2);
 \InlineCode{strcmp}
 كثيرا للتحقّق من أنّ سلسلتين متطابقتان أم لا.
 \end{information}
+
 هذه شفرة التجريب الخاصّة بي :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -690,9 +730,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 The strings are identical
 \end{Console}
+
 بما أنّ السلسلتين متطابقتين، فالدالّة
 \InlineCode{strcmp}
 أعادت 0.\\
@@ -705,17 +747,22 @@ The strings are identical
 ليس لديّ ما أضيفه فيما يتعلّق بهذه الدالّة. هي بسيطة الاستخدام، لكنّ الشيء الوحيد الذي لا يجب نسيانه هو أنّ 0 يعني "متطابق" و أي قيمة أخرى تعني "مختلف". هذا هو مصدر الأخطاء الوحيد هنا.
 
 \subsection{\texttt{strchr} : البحث عن محرف}
+
 الدالّة
 \InlineCode{strchr}
 تبحث عن محرف في سلسلة محرفيّة. نموذجها :
+
 \begin{Csource}
 char* strchr(const char* string, int characterToFind);
 \end{Csource}
+
 الدالّة تأخذ معاملين :
+
 \begin{itemize}
   \item \InlineCode{string} : السلسلة التي يتمّ البحث فيها.
   \item \InlineCode{characterToFind} : المحرف الّذي نبحث عنه في السلسلة.
 \end{itemize}
+
 \begin{information}
   تلاحظ أنّ
   \InlineCode{characterToFind}
@@ -729,10 +776,12 @@ char* strchr(const char* string, int characterToFind);
   \InlineCode{int}
   لتخزين المحارف في الذاكرة.
 \end{information}
+
 الدالة تقوم بإرجاع مؤشر نحو أوّل ظهور للمحرف الذي وجدته في السلسلة، أي أنها ترجع عنوانه في الذاكرة. إن لم تجد شيئا فستعيد
 \InlineCode{NULL}.\\
 في المثال التالي، سأسترحع هذا المؤشّر في
 \InlineCode{restOfString}.
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -745,9 +794,11 @@ int main(int argc, char *argv[])
   return 0;
 }
 \end{Csource}
+
 \begin{Console}
 This is the rest of the string after the first s: st text
 \end{Console}
+
 هل فهمت ما حصل ؟ إن الأمر خاصّ قليلا.\\
 في الحقيقة، إن
 \InlineCode{restOfString}
@@ -765,7 +816,11 @@ This is the rest of the string after the first s: st text
 \InlineCode{string}.
 
 المخطّط التالي يوضّح أين يؤشّر كلّ مؤشّر :
-\Picture{Chapter_II-4_String-Search}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_II-4_String-Search}
+\end{figure}
 
 عندما أقوم بـ\InlineCode{printf}
 لـ\InlineCode{restOfString}،
@@ -778,7 +833,9 @@ This is the rest of the string after the first s: st text
 حتّى الوصول إلى
 \InlineCode{\textbackslash 0}
 الذي يعلمها بنهاية السلسلة.
+
 \subsubsection{نسخة مختلفة}
+
 توجد دالّة
 \InlineCode{strrchr}
 مطابقة تماما لـ\InlineCode{strchr}
@@ -787,6 +844,7 @@ This is the rest of the string after the first s: st text
 الموجود في السلسلة بدلا من الأوّل.
 
 \subsection{\texttt{strpbrk} : أوّل محرف في القائمة}
+
 هذه الدالّة تشبه كثيرا السابقة. هذه تبحث عن محرف من بين تلك التي تعطيها على شكل سلسلة محرفيّة، بخلاف
 \InlineCode{strchr}
 التي لا يمكنها البحث عن سوى محرف وحيد في المرّة.
@@ -806,10 +864,13 @@ This is the rest of the string after the first s: st text
 \InlineCode{'e'}.
 
 النموذج :
+
 \begin{Csource}
 char* strpbrk(const char* string, const char* charactersToFind);
 \end{Csource}
+
 فلنجرّب الدالّة :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -823,22 +884,28 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 This is the rest of the string starting by the first occurrence of the characters found : est text
 \end{Console}
+
 في هذا المثال، القيم المراد ارسالها إلى الدالّة مباشرة (بين علامتي اقتباس). لسنا مجبرين على استخدام متغيّر في كلّ المرّات، يمكننا كتابة السلسلة مباشرة.\\
 يجب تذكّر هذه القاعدة البسيطة :
+
 \begin{itemize}
   \item إذا استخدمت علامتي الاقتباس \InlineCode{" "}، فهذا يعني \textbf{سلسلة محرفيّة}.
   \item إذا استخدمت علامتي التنصيص \InlineCode{' '}، فهذا يعني \textbf{محرفا}.
 \end{itemize}
 
 \subsection{\texttt{strstr} : البحث عن سلسلة محرفيّة في أخرى}
+
 هذه الدالّة تبحث عن أوّل ظهور لسلسلة محرفيّة داخل أخرى.\\
 نموذجها :
+
 \begin{Csource}
 char* strstr(const char* string, const char* stringToFind);
 \end{Csource}
+
 النموذج مشابه لذلك الخاص بـ\InlineCode{strpbrk}،
 لكن احذر من الخلط :
 \InlineCode{strpbrk}
@@ -849,6 +916,7 @@ char* strstr(const char* string, const char* stringToFind);
 تبحث عن كلّ السلسلة.
 
 مثال :
+
 \begin{Csource}
 int main(int argc, char *argv[])
 {
@@ -862,9 +930,11 @@ int main(int argc, char *argv[])
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 First occurrence of text in Test text : text
 \end{Console}
+
 الدالّة
 \InlineCode{strstr}
 تبحث عن السلسلة
@@ -879,18 +949,21 @@ First occurrence of text in Test text : text
 لمعرفة إن مان البحث قد أعاد أيّ شيء، و تُظهر "النصّ الذي تبحث عنه قد تمّ العثور عليه".
 
 \subsection{\texttt{sprintf} : الكتابة في سلسلة محرفيّة}
+
 \begin{information}
   هذه الدالّة موجودة في
   \InlineCode{stdio.h}
   بخلاف الدوال التي درسناها إلى حدّ الآن، و التي كانت في
   \InlineCode{string.h}
 \end{information}
+
 هذا الاسم يذكّرك بشيء ما. هذه الدالّة مشابهة إلى حدّ كبير لـ\InlineCode{printf}
 التي تعرفها، و لكن بدل الكتابة على الشاشة،
-\InlineCode{printf}
+\InlineCode{sprintf}
 تكتب في \dots سلسلة محرفيّة ! و من هذا اسمها الذي يبدأ بـ"\textenglish{s}" من "\textenglish{string}" (سلسلة محرفيّة بالإنجليزيّة).
 
 إنّها دالّة عمليّة جدّا لتنسيق سلسلة محرفيّة. مثال صغير :
+
 \begin{Csource}
 #include <stdio.h>
 #include <stdlib.h>
@@ -901,13 +974,15 @@ int main(int argc, char *argv[])
 	// We write "You have 15 years" in string
 	sprintf(string, "You have %d years !", age);
 	// We display string to check its content
-  printf("%s", string);
+	printf("%s", string);
 	return 0;
 }
 \end{Csource}
+
 \begin{Console}
 You have 15 years !
 \end{Console}
+
 تُستخدم بنفس طريقة
 \InlineCode{printf}
 باستثناء أنّه يجب إعطائها كمعامل أوّل مؤشّرا نحو السلسلة التي يجب أن تستقبل النصّ.
@@ -923,13 +998,14 @@ You have 15 years !
 \InlineCode{printf}
 تطبّق، يمكنك إذا أردت أم تضع
 \InlineCode{\%s}
-لادراج سلاسل أخرى داخل سلسلتك~!
+لإدراج سلاسل أخرى داخل سلسلتك~!
 
 كالعادة، تأكّد أن سلسلتك كبيرة كفاية لاحتواء النصّ الذي سترسله لها
 \InlineCode{sprintf}.
 و إلّا، فقد يحدث تجاوز في الذاكرة و بالتالّي تعطّل برنامجك.
 
 \section*{ملخّص}
+
 \begin{itemize}
   \item الحاسوب لا يجيد التعامل مع النصوص، هو لا يعرف إلّا الأعداد. لإصلاح هذا المشكل، تمّ ربط كلّ حرف بعدد موافق له في جدول يسمّى
   \textbf{جدول \textenglish{ASCII}}.
