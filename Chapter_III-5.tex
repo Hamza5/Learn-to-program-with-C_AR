@@ -30,7 +30,10 @@
 
 الصورة الموالية تُريك كيف تبدو اللعبة التي سنقوم ببرمجتها :
 
-\Picture{Chapter_III-5_Mario-Sokoban}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_III-5_Mario-Sokoban}
+\end{figure}
 
 \subsubsection{لماذا اخترتُ هذه اللعبة بالذات ؟}
 
@@ -149,7 +152,10 @@
 
 قمت أيضاً بإنشاء صورة أخرى لتكون عبارة عن الواجهة الأساسية للعبة حين تبدأ، لقد أرفقت لك الصورة بالحزمة الّتي يفترض بك تنزيلها. لاحظ الصورة التالية :
 
-\Picture{Chapter_III-5_Home}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{Chapter_III-5_Home}
+\end{figure}
 
 ستلاحظ بأن الصور تأخذ صيغا مختلفة. يوجد منها ماهو
 \textenglish{GIF}،
@@ -634,7 +640,10 @@ map[11][11]
 
 الصورة التالية تعطيك فكرة كيف قُمنا بتمثيل الخريطة  :
 
-\Picture{Chapter_III-5_Map}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_III-5_Map}
+\end{figure}
 
 و بهذا فالخانة في أعلى اليسار مخزّنة في
 \InlineCode{map[0][0]}.\\
@@ -749,7 +758,7 @@ if (!loadLevel(map))
 يصف محتوى كلّ خانة : 
 \InlineCode{WALL}، \InlineCode{EMPTY}، \InlineCode{BOX}\dots
 
-\subsubsection{البحث عن وضعية الإنطلاق لـ\textenglish{Mario}}
+\subsubsection{البحث عن وضعية الانطلاق لـ\textenglish{Mario}}
 
 يجب الآن أن نعطي قيمة ابتدائية للمتغير
 \InlineCode{playerPosition}.\\
@@ -887,7 +896,7 @@ currentMario = mario[DOWN];
 \end{itemize}
 
 \begin{question}
-يا إلاهي، ماهذا السوق ؟
+يا إلاهي ! ماهذا السوق ؟
 \end{question}
 
 هذا ما نسمّيه بـ\textbf{معالجة الاصطدامات}
@@ -1040,7 +1049,7 @@ SDL_Flip(screen);
 
 \subsection{نهاية الدالة : إلغاء التحميل}
 
-بعد الحلقة الرئيسية، يجدر بنا القيام بتحرير الذاكرة التي حجزناها للـ\InlineCode{sprites}
+بعد الحلقة الرئيسية، يجدر بنا القيام بتحرير الذاكرة التي حجزناها للـ\textenglish{sprites}
 التي حمّلناها.\\
 نقوم أيضا بتعطيل تكرار الضغط على الأزرار و ذلك بإعطاء القيمة 0 للدالة
 \InlineCode{SDL\_EnableKeyRepeat} :
@@ -1146,7 +1155,7 @@ if (map[pos->x][pos->y - 1] == WALL) // If there's a wall, we stop
 هنا أيضاً، الأمر بسيط. نتحقق من عدم وجود جدار فوق اللاعب. إذا كان هناك واحد، نتوقّف
 (\InlineCode{break}).
 
-بعد ذلك (حافظ على عينيك): 
+بعد ذلك (حافظ على عينيك) : 
 
 \begin{Csource}
 // If we want to push a box, we have to verify that there's no wall behind it (or another box, or the world's limit)
@@ -1419,7 +1428,10 @@ int saveLevel(int level[][NB_BLOCKS_HEIGHT])
 	\InlineCode{Esc}.
 \end{itemize}
 
-\Picture{Chapter_III-5_Editor}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Chapter_III-5_Editor}
+\end{figure}
 
 \subsection{التهيئات}
 
@@ -1748,7 +1760,10 @@ SDL_FreeSurface(mario);
 \InlineCode{ressources.rc}.
 إنه ملف يمكن إضافته للمشروع (فقط على الويندوز) و يسمح بإدخال ملفات في الملف التنفيذي. هنا، استعنت به لإدخال أيقونة في الملف التنفيذي. و هذا يسمح بإعطاء أيقونة للملف التنفيذي مرئية في الويندوز، أنظر الصورة التالية :
 
-\Picture{Chapter_III-5_Mario-Sokoban-exe}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-5_Mario-Sokoban-exe}
+\end{figure}
 
 اِعترف بذلك، صنع أيقونة من أجل البرنامج أمر أجمل من ترك الأيقونة الافتراضيّة !\\
 يمكنك قراءة المزيد عن هذه التقنيّة في درس "إنشاء أيقونة لبرنامجك" المتوفّر على هذا الرابط :
