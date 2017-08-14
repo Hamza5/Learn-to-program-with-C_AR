@@ -145,7 +145,10 @@ int main(int argc, char *argv[])
 \InlineCode{screen}
 و هذا كلّ شيء ! الصورة التالية توضّح النتيجة :
 
-\Picture{Chapter_III-3_Window-Image}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_III-3_Window-Image}
+\end{figure}
 
 كما ترى، لم يكن الأمر صعباً !
 
@@ -233,7 +236,11 @@ int main(int argc, char *argv[])
 \end{Csource}
 
 النتيجة : تم تحميل الصورة و عرضها أعلى يسار النافذة.
-\Picture{Chapter_III-3_Window-icon}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{Chapter_III-3_Window-icon}
+\end{figure}
 
 \section{التحكم في الشفافية}
 
@@ -285,7 +292,10 @@ int main(int argc, char *argv[])
 \textenglish{Zozor}،
 و التي نقوم بلصقها في مكان معيّن من المشهد :
 
-\Picture{Chapter_III-3_Window-Image-Zozor}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-3_Window-Image-Zozor}
+\end{figure}
 
 يبدو المشهد سيّئا، أليس كذلك ؟
 
@@ -317,7 +327,11 @@ int main(int argc, char *argv[])
 \InlineCode{zozor.bmp}
 من ناحية أقرب :
 
-\Picture{Chapter_III-3_Zozor}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\textwidth]{Chapter_III-3_Zozor}
+\end{figure}
+
 
 الخلفية الزرقاء إذا مـُختارة. لاحظ أنني اخترت اللون الأزرق بشكل عشوائي، كان بإمكاني استعمال اللون الأحمر أو الأصفر مثلاً. الشيء المهم هو أنه يجب على اللون أن يكون وحيداً و موحّدا. لقد اخترت اللون الأزرق لأنه ليس متواجدا في صورة 
 \textenglish{Zozor}
@@ -377,7 +391,10 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 \textenglish{Zozor}
 بشكل ممتاز في المشهد :
 
-\Picture{Chapter_III-3_Window-Image-Zozor-transparent}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-3_Window-Image-Zozor-transparent}
+\end{figure}
 
 هذه هي التقنية المبدئية التي ستعيد استعمالها كل الوقت في برامجك. تعلّم كيف تتحكم جيداً بالشفافية لأنها من أساسيات صنع لعبة تملك الحدّ الأدنى من الواقعية.
 
@@ -583,7 +600,10 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 \InlineCode{SDL\_image.lib}،
 لاحظ الصورة :
 
-\Picture{Chapter_III-3_CodeBlocks-Linker}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-3_CodeBlocks-Linker}
+\end{figure}
 
 إذا ظهرت لك رسالة تحمل سؤال : 
 "\textit{\textenglish{Keep as a relative path ?}}"،
@@ -636,7 +656,10 @@ SDL_BlitSurface(zozor, NULL, screen, &zozorPosition);
 الـ\InlineCode{Header search paths}
 بعد تثبيت الـ\textenglish{SDL\_image}.
 
-\Picture{Chapter_III-3_Xcode-frameworks}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{Chapter_III-3_Xcode-frameworks}
+\end{figure}
 
 و بهذا يجب عليك تضمين الملف الرأسي في بداية الكود كالتالي :
 \begin{Csource}
@@ -744,7 +767,10 @@ void pause()
 
 كما يمكننا الملاحظة، فقد تم دمج الصورة مع الخلفية بشكل ممتاز :
 
-\Picture{Chapter_III-3_Window-Image-Sapin}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{Chapter_III-3_Window-Image-Sapin}
+\end{figure}
 
 \section*{ملخّص}
 
