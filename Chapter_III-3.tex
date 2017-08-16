@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
 	backgroundPosition.y = 0;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Loading the images on SDL", NULL);
+	SDL_WM_SetCaption("Chargement d'images en SDL", NULL);
 	/* Loading a Bitmap image in a surface */	
 	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
 	/* We blit on the screen */
@@ -224,7 +224,7 @@ int main(int argc, char *argv[])
 	/* Loading the icon before SDL_SetVideoMode*/
 	SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
 	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	SDL_WM_SetCaption("Chargement d'images en SDL", NULL);
 	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
 	SDL_BlitSurface(backgroundImage, NULL, screen, &backgroundPosition);
 	SDL_Flip(screen);
@@ -273,7 +273,7 @@ int main(int argc, char *argv[])
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetIcon(SDL_LoadBMP("sdl_icone.bmp"), NULL);
 	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	SDL_WM_SetCaption("Chargement d'images en SDL", NULL);
 	backgroundImage = SDL_LoadBMP("lac_en_montagne.bmp");
 	SDL_BlitSurface(backgroundImage, NULL, ecran, &backgroundPosition);
 	// Loading and blitting Zozor on the screen
@@ -735,7 +735,7 @@ int main(int argc, char *argv[])
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetIcon(IMG_Load("sdl_icone.bmp"), NULL);
 	screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Loading images on SDL", NULL);
+	SDL_WM_SetCaption("Chargement d'images en SDL", NULL);
 	backgoundImage = IMG_Load("lac_en_montagne.bmp");
 	SDL_BlitSurface(backgoundImage, NULL, screen, &backgoundPosition);
 	/* Loading a PNG image with IMG_Load

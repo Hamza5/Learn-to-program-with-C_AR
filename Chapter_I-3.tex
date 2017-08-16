@@ -313,7 +313,7 @@ return 0;
 \section{كتابة رسالة على الشاشة}
 
 من الآن سنقوم بإدخال التعديلات على الشفرة المصدرية السابقة. مهمّتك، إن قبلتها : عرض رسالة
-"\textenglish{Good morning}"
+"\textenglish{Bonjour}"
  على الشاشة.
 
 \begin{question}
@@ -322,7 +322,7 @@ return 0;
 
 الأمر بسيط جدا، إذا بدأت من الشفرة التي رأيناها سابقاً، فسيكون عليك استبدال
 "\textenglish{Hello world!}"
- بـ"\textenglish{Good morning}"
+ بـ"\textenglish{Bonjour}"
  في السطر الذي يستدعي
 \InlineCode{printf}.
 
@@ -380,7 +380,7 @@ printf();
 في حالتنا هذه سنكتب تماما :
 
 \begin{Csource}
-printf("Good morning\n");
+printf("Bonjour");
 \end{Csource}
 
 آمل ألا تكون قد نسيت رمز الفاصلة المنقوطة في النهاية، وأذكّرك أنّها مهمّة جدا لأنّها تدلّ على نهاية التعليمة.\\
@@ -392,7 +392,7 @@ printf("Good morning\n");
 
 int main()
 {
-    printf("Good morning");
+    printf("Bonjour");
     return 0;
 }
 \end{Csource}
@@ -400,7 +400,7 @@ int main()
 لدينا إذن تعليمتان تطلبان من الحاسوب القيام بهذين الأمرين بهذا الترتيب :
 \begin{enumerate}
   \item عرض
-"\textenglish{Good morning}"
+"\textenglish{Bonjour}"
 على الشاشة.
   \item نهاية الدالّة
 \InlineCode{main}
@@ -416,7 +416,7 @@ int main()
 
 كما ترى، السطر الذي يحتوي الرسالة يكون ملتصقاً قليلا بباقي النص، على خلاف ما رأيناه سابقا.\\
 أحد الحلول الممكنة هو إضافة رمز للعودة إلى السطر بعد
- "\textenglish{Good morning}"
+ "\textenglish{Bonjour}"
  (كما لو أنّنا ضغطنا على المفتاح
 \InlineCode{Enter}).
 
@@ -442,15 +442,15 @@ int main()
 في حالتنا هذه، يكفي أن نكتب
 \InlineCode{\textbackslash n}
  لإنشاء العودة إلى السطر. إذن، إذا أردنا أن نضع عودة إلى السطر بعد
-\textenglish{Good morning}
+\textenglish{Bonjour}
 ، فيكفي أن نكتب :
 
 \begin{Csource}
-printf("Good morning\n");
+printf("Bonjour\n");
 \end{Csource}
 
 وسيفهم حاسوبك أنّ عليه كتابة
-"\textenglish{Good morning}"
+"\textenglish{Bonjour}"
  ويعود إلى السطر.
 
 \begin{figure}[H]
@@ -478,7 +478,7 @@ printf("Good morning\n");
   مرحبا، اسمي
 \textenglish{Gérard}
 و قد حاولت تعديل برنامجك ليقول
-"\textenglish{Good morning Gérard}"،
+"\textenglish{Bonjour Gérard}"،
 و لكنّي ألاحظ أنّ حرف
 \textenglish{é}
  لا يظهر بشكل جيّد
@@ -509,7 +509,7 @@ printf("Good morning\n");
 لكيلا تنزعج، يمكنك الكتابة دون استخدام الحروف التي تملك علامات النطق الصوتي :
 
 \begin{Csource}
-printf("Good morning Gerard\n");
+printf("Bonjour Gerard\n");
 \end{Csource}
 
 نشكر صديقنا
@@ -548,7 +548,7 @@ printf("Good morning Gerard\n");
 بإمكانك إضافة تعليق وحده على السطر، أو على يمين تعليمة معينة. وهذا أمر مهمّ جدّا، لأنّ بهذه الطريقة يمكننا تحديد ما الذي يعنيه السطر الّذي كُتب بجانبه. مثال :
 
 \begin{Csource}
-printf("Hello"); // This instruction displays 'Hello' on the screen
+printf("Bonjour"); // This instruction displays 'Bonjour' on the screen
 \end{Csource}
 
   \item  إذا كان تعليقك
@@ -571,7 +571,7 @@ written on several lines */
   \end{Csource}
 \end{itemize}
 فلنعد إلى الشفرة المصدرية التي تُظهر
-"\textenglish{Good morning}"
+"\textenglish{Bonjour}"
 على الشاشة ونضيف إليها بعض التعليقات للتدرّب :
 
 \begin{Csource}
@@ -588,12 +588,12 @@ for example, a message on screen.
 /*
 Following, you have the principal function of the program, called main.
 All programs start with this function.
-Here, all what does my function is displaying "Good morning" on the screen.
+Here, all what does my function is displaying "Bonjour" on the screen.
 */
 
 int main()
 {
-  printf("Hello"); // This instruction displays 'Hello' on the screen
+  printf("Bonjour"); // This instruction displays 'Bonjour' on the screen
   return 0;          // The program returns 0 then it stops.
 }
 \end{Csource}

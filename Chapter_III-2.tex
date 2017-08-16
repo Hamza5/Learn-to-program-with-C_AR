@@ -541,7 +541,7 @@ int main(int argc, char *argv[])
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("My super SDL window !", NULL);
+	SDL_WM_SetCaption("Ma super fenêtre SDL !", NULL);
 	pause();
 	SDL_Quit();
 	return EXIT_SUCCESS;
@@ -647,7 +647,7 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Impossible to load the video mode : %s\n", SDL_GetError());
 		exit(EXIT_FAILURE);
 	}
-	SDL_WM_SetCaption("My super SDL window !", NULL);
+	SDL_WM_SetCaption("Ma super fenêtre SDL !", NULL);
 	pause();
 	SDL_Quit();
 	return EXIT_SUCCESS;
@@ -862,7 +862,7 @@ int main(int argc, char *argv[])
 	SDL_Surface *screen = NULL;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("My super SDL window !", NULL);
+	SDL_WM_SetCaption("Ma super fenêtre SDL !", NULL);
 	// We colorize the screen with blue-green color
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206, 112));
 	SDL_Flip(screen); 
@@ -1036,7 +1036,7 @@ int main(int argc, char *argv[])
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
 	// Surface allocation
 	rectangle = SDL_CreateRGBSurface(SDL_HWSURFACE, 220, 180, 32, 0,0, 0, 0);
-	SDL_WM_SetCaption("My super SDL window !", NULL);
+	SDL_WM_SetCaption("Ma super fenêtre SDL !", NULL);
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 17, 206,112));
 	position.x = 0; // The coordinates of the surface will be (0, 0)
 	position.y = 0;
@@ -1229,7 +1229,7 @@ int main(int argc, char *argv[])
 	screen = SDL_SetVideoMode(640, 256, 32, SDL_HWSURFACE);
 	for (i = 0 ; i <= 255 ; i++)
 		lines[i] = SDL_CreateRGBSurface(SDL_HWSURFACE, 640, 1, 32,0, 0, 0, 0);
-	SDL_WM_SetCaption("My SDL gradient !", NULL);
+	SDL_WM_SetCaption("Mon dégradé en SDL !", NULL);
 	SDL_FillRect(screen , NULL, SDL_MapRGB(screen ->format, 0, 0, 0));
 	for (i = 0 ; i <= 255 ; i++)
 	{

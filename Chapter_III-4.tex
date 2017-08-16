@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	SDL_Event event; // This variable will help us to manage the events
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Managing the events in SDL", NULL);
+	SDL_WM_SetCaption("Gestion des événements en SDL", NULL);
 	SDL_Quit();
 	return EXIT_SUCCESS;
 }
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 	int cont = 1; // A boolean for the loop
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Managing the events in SDL", NULL);
+	SDL_WM_SetCaption("Gestion des événements en SDL", NULL);
 	while (cont) // While the variable's value is 
 	{            // not equal to 0
 		SDL_WaitEvent(&event); // We wait for an event that we recuperate in "event"
@@ -630,7 +630,7 @@ int main(int argc, char *argv[])
 	int cont = 1;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE);
-	SDL_WM_SetCaption("Managing events in SDL", NULL);
+	SDL_WM_SetCaption("Gestion des événements en SDL", NULL);
 	// Loading Zozor
 	zozor = SDL_LoadBMP("zozor.bmp");
 	SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
@@ -827,7 +827,7 @@ int main(int argc, char *argv[])
 	int cont = 1;
 	SDL_Init(SDL_INIT_VIDEO);
 	zozorPosition = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); // Double buffering
-	SDL_WM_SetCaption("Managing events in SDL", NULL);
+	SDL_WM_SetCaption("Gestion des événements en SDL", NULL);
 	zozor = SDL_LoadBMP("zozor.bmp");
 	SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
 	zozorPosition.x = screen->w / 2 - zozor->w / 2;

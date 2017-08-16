@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
 	int cont = 1;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-	SDL_WM_SetCaption("Time management in SDL", NULL);
+	SDL_WM_SetCaption("Gestion du temps en SDL", NULL);
 	zozor = SDL_LoadBMP("zozor.bmp");
 	SDL_SetColorKey(zozor, SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
 	zozorPosition.x = screen->w / 2 - zozor->w / 2;
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
 	int previousTime = 0, currentTime = 0;
 	SDL_Init(SDL_INIT_VIDEO);
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-	SDL_WM_SetCaption("Time management in SDL", NULL);
+	SDL_WM_SetCaption("Gestion du temps en SDL", NULL);
 	zozor = SDL_LoadBMP("zozor.bmp");
 	SDL_SetColorKey(zozor,SDL_SRCCOLORKEY, SDL_MapRGB(zozor->format, 0, 0, 255));
 	zozorPosition.x = screen->w / 2 - zozor->w / 2;
