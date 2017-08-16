@@ -27,6 +27,8 @@
 \newfontfamily\englishfont[Script=Latin]{Liberation Sans} % Font used for latin text in the document
 \newfontfamily\arabicfonttt{Liberation Mono} % Monospace font, for displaying codes
 
+\renewcommand{\dots}{...\enskip}
+
 % Colors
 \colorlet{questionback}{white!90!black}
 \colorlet{questionframe}{white!95!black}
@@ -57,8 +59,8 @@
 }
 
 % Boxes definitions
-\tcbset{arc=2pt, enhanced, attach boxed title to top right={yshift=-\tcboxedtitleheight/2, xshift=\tcboxedtitlewidth/2},
-		boxrule=0.5mm, fonttitle=\LARGE, boxed title style={circular arc, square, halign=center, valign=center}}
+\tcbset{arc=2pt, enhanced, attach boxed title to top right={yshift=-\tcboxedtitleheight/3*2, xshift=\tcboxedtitlewidth/5*2},
+		boxrule=0.5mm, fonttitle=\Large, boxed title style={circular arc, square, halign=center, valign=center}}
 	
 \newtcolorbox{question}{colback=questionback, colframe=questionframe, title=؟, coltitle=questiontitle,
 						boxed title style={colback=questionback}} % Used for question boxes
@@ -66,7 +68,7 @@
 \newtcolorbox{critical}{colback=criticalback, colframe=criticalframe, title=\textenglish{x}, coltitle=criticaltitle,
 						boxed title style={colback=criticalback}} % Used for critical warning boxes
 
-\newtcolorbox{warning}{colback=warningback, colframe=warningframe, title=!, coltitle=warningtitle,
+\newtcolorbox{warning}{colback=warningback, colframe=warningframe, title=!, coltitle=warningtitle, fonttitle=\LARGE,
 						boxed title style={colback=warningback}} % Used for warning boxes
 
 \newtcolorbox{information}{colback=infoback, colframe=infoframe, title=م, coltitle=infotitle,
@@ -124,7 +126,7 @@
 \setcounter{tocdepth}{1}
 
 % Global settings for code and console
-\lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip}
+\lstset{frame=single, basicstyle=\ttfamily, breaklines=true, showlines, aboveskip=\parskip, extendedchars}
 
 % C source code
 \lstdefinestyle{C}{language=C, showstringspaces=false, numbers=left, escapechar=§,
@@ -182,8 +184,10 @@
 % Footnote rule
 \renewcommand{\footnoterule}{\rule[5pt]{0.6\textwidth}{0.5pt}}
 
-\title{تعلّم البرمجة بلغة الـC}
 \begin{document}
+  \setcounter{page}{-2}
+  \include{Title_page}
+  \include{Project_page}
   \include{Introduction}
   \include{Introduction_original}
   \tableofcontents
