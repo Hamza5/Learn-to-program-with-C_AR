@@ -1,11 +1,13 @@
 # gitignore for this project
 # Ignore everything
 *
-# except this file, .md, .tex files and Pictures folder and its content
+# except this file, .md, .tex files and Pictures, Fonts folders and their content
 !.gitignore
 !*.tex
 !*.md
 !Pictures/
 !Pictures/*
+!Fonts
+!Fonts/*
 # But ignore hidden files
 Pictures/.*
