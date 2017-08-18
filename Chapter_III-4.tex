@@ -142,7 +142,7 @@ while (cont)
 \begin{question}
 لكن ألا يجب أن نستعمل دائماً الدالة 
 \InlineCode{SDL\_WaitEvent}
-بما أنها لا تستعمل المـُعالج كثيراً ؟
+بما أنها لا تستعمل المـُعالج كثيراً~؟
 \end{question}
 
 كلّا، لأنه توجد حالات لا يمكن الاستغناء فيها عن الدالة 
@@ -508,7 +508,7 @@ zozorPosition.y = screen->h / 2 - zozor->h / 2;
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor}
+	\includegraphics[width=0.6\textwidth]{Chapter_III-4_Window-Zozor}
 \end{figure}
 
 لقد اخترت هذه المرة وضع خلفية بيضاء (قمت بـ\InlineCode{SDL\_FillRect})
@@ -713,7 +713,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor-moved}
+	\includegraphics[width=0.6\textwidth]{Chapter_III-4_Window-Zozor-moved}
 \end{figure}
 
 \subsection{بعض التحسينات}
@@ -767,7 +767,7 @@ SDL_EnableKeyRepeat(10, 10);
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Double-buffering-1}
+	\includegraphics[width=0.5\textwidth]{Chapter_III-4_Double-buffering-1}
 \end{figure}
 
 ما إن يتم رسم الصورة في الشاشة الخلفية (الشاشة 
@@ -777,7 +777,7 @@ SDL_EnableKeyRepeat(10, 10);
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Double-buffering-2}
+	\includegraphics[width=0.5\textwidth]{Chapter_III-4_Double-buffering-2}
 \end{figure}
 
 الشاشة
@@ -888,7 +888,8 @@ int main(int argc, char *argv[])
  
 سنبدأ أولا بالعمل على النقر على الفأرة و بشكل خاص على
 \InlineCode{SDL\_MOUSEBUTTONUP}.
-لن نعمل مع الـ\InlineCode{SDL\_MOUSEBUTTONDOWN}،
+لن نعمل مع\\
+الـ\InlineCode{SDL\_MOUSEBUTTONDOWN}،
 لكنك تعرف بأن الطريقة لا تختلف إلا أن الحدث الأخير يُنتج قبل الحدث الآخر.\\
 سنعلم لاحقاً كيف نتعامل مع الحدث
 \InlineCode{SDL\_MOUSEMOTION}.
@@ -1016,7 +1017,7 @@ while (cont)
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-4_Window-Zozor-moved-mouse}
+	\includegraphics[width=0.6\textwidth]{Chapter_III-4_Window-Zozor-moved-mouse}
 \end{figure}
 
 إليك تمريناً سهلاً جداً : لحد الآن، نقوم بتحريك
@@ -1085,7 +1086,7 @@ while (cont)
 
 يمكننا إخفاء مؤشر الفأرة بسهولة تامة، يكفي أن نستدعي الدالة
 \InlineCode{SDL\_ShowCursor}
-و نُعطيها عَلَماً :
+و نُعطيها عَلَماً~:
 
 \begin{itemize}
 	\item \InlineCode{SDL\_DISABLE} :
@@ -1146,7 +1147,7 @@ SDL_WarpMouse(screen->w / 2, screen->h / 2);
 أذكّرك بأنه لتغيير ذلك، يجب إضافة العَلم
 \InlineCode{SDL\_RESIZABLE}
 إلى الدالة
-\InlineCode{SDL\_SetVideoMode} :
+\InlineCode{SDL\_SetVideoMode}~:
 
 \begin{Csource}
 screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_RESIZABLE);
@@ -1193,7 +1194,7 @@ break;
 \textit{التركيز}
 (\textenglish{Focus}).
 حينما نقول أن تطبيقاً يملك التركيز، فهذا يعني أنه يستعمل لوحة المفاتيح أو الفأرة. و أي ضغط على أزرار لوحة المفاتيح أو نقر بالفأرة يتم إرسالها إلى النافذة التي بها التركيز و ليس لأخرى.\\
-نافذة واحدة لها الحق في أن يكون لها تركيز في لحظة معيّنة (لا يمكن أن تكون نافذتان كشاشة أولى في آن واحد !)
+نافذة واحدة لها الحق في أن يكون لها تركيز في لحظة معيّنة (لا يمكن أن تكون نافذتان كشاشة أولى في آن واحد~!)
 \end{information}
 
 نظراً لكثرة الأسباب التي يمكن لها أن تسبب وقوع حدث ما، يجب قطعاً معرفة قيمة المتغيرات التالية لمعرفة المزيد :
@@ -1302,7 +1303,7 @@ if ((event.active.state & SDL_APPACTIVE) == SDL_APPACTIVE)
 
 \begin{itemize}
 	\item الأحداث هي عبارة عن إشارات ترسلها إلينا الـ\textenglish{SDL}
-	من أجل إطلاعنا على فعل قام به المستعمل : الضغط على زر، تحريك أو النقر بالفأرة، غلق النافذة، إلخ.
+	من أجل إطلاعنا على فعل قام به المستعمل~: الضغط على زر، تحريك أو النقر بالفأرة، غلق النافذة، إلخ.
 	\item يتم استرجاع الأحداث في متغير من نوع
 	\InlineCode{SDL\_Event}
 	بواسطة الدالة

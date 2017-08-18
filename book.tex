@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{book}
+\documentclass[10pt, a4paper]{book}
 \usepackage[svgnames,table,dvipsnames]{xcolor} % For color names
 \usepackage{fontspec} % font selecting commands
 \usepackage[breakable, skins]{tcolorbox} % For colored boxes
@@ -22,10 +22,10 @@
 \usepackage{bidi}
 
 % Font settings
-\defaultfontfeatures{Ligatures=TeX, Path=Fonts/, Extension=.ttf}
+\defaultfontfeatures{Ligatures=TeX, Path=Fonts/, Extension=.ttf, Scale=0.8}
 \newfontfamily\arabicfont{amiri-}[
 	Script=Arabic,
-	Scale=1.2,
+	Scale=1,
 	UprightFont=*regular,
 	BoldFont=*bold,
 	ItalicFont=*slanted,
@@ -49,9 +49,9 @@
 \renewcommand{\dots}{...\enskip}
 
 % Colors
-\colorlet{questionback}{white!90!black}
-\colorlet{questionframe}{white!95!black}
-\colorlet{questiontitle}{white!60!black}
+\colorlet{questionback}{white!80!black}
+\colorlet{questionframe}{white!85!black}
+\colorlet{questiontitle}{white!40!black}
 
 \colorlet{criticalback}{red!20}
 \colorlet{criticalframe}{red!10}

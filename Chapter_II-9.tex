@@ -149,7 +149,7 @@ int main(int argc, char* argv[])
 \end{Csource}
 
 يفترض بهذه الشفرة أن تطلب حرفاً و تظهره، و ذلك لمرّتين.\\
-جرّب. ما الذي يحصل ؟ تدخل حرفا، نعم، و لكن \dots البرنامج يتوقّف مباشرة بعدها، فهو لا يطلب منك المحرف الثاني ! و كأنه تم تجاهل
+جرّب. ما الذي يحصل ؟ تدخل حرفا، نعم، و لكن \dots البرنامج يتوقّف مباشرة بعدها، فهو لا يطلب منك المحرف الثاني~! و كأنه تم تجاهل
 \InlineCode{scanf}
 الثانية.
 
@@ -297,7 +297,7 @@ ZERO
 
 \begin{information}
 ستلاحظ أنني منذ البداية تعمّدت كتابة كلّ الكلمات بالحروف الكبيرة. في الواقع، في الـ\textenglish{Pendu}
-لا يتم التمييز بين الحروف الكبيرة و الحروف الصغيرة، و لهذا فمن المستحسن أن نقول منذ البداية : "كل حروف كلمات اللعبة كبيرة". عليك أن تنبّه اللاعب، في دليل استخدام اللعبة مثلا، أنه يفترض به إدخال حروف كبيرة لا صغيرة.\\
+لا يتم التمييز بين الحروف الكبيرة و الحروف الصغيرة، و لهذا فمن المستحسن أن نقول منذ البداية~: "كل حروف كلمات اللعبة كبيرة". عليك أن تنبّه اللاعب، في دليل استخدام اللعبة مثلا، أنه يفترض به إدخال حروف كبيرة لا صغيرة.\\
 بالمقابل، نتعمّد تجنب العلامات الصوتية
 (\textenglish{accents})
 لتبسيط اللعبة (إن بدأنا اختبار \textenglish{é}، \textenglish{è}، \textenglish{ê}، \textenglish{ë} \dots فلن ننتهي أبداً !). عليك إذن أن تكتب كلماتك كلّها بحروف كبيرة و بدون علامات صوتيّة.
@@ -332,7 +332,7 @@ AIRPLANE
 
 بقراءتك لهذه السطور، يعني أنك قد أكملت البرنامج، أو أنك لم تستطع إكماله.
 
-لقد استغرقت شخصيّا وقتا أكبر ممّا كنت أعتقد في إنشاء هذه اللعبة البسيطة للغاية. هكذا دائما : نقول "هذا بسيط"، لكن في الحقيقة توجد الكثير من الحالات لدراستها.
+لقد استغرقت شخصيّا وقتا أكبر ممّا كنت أعتقد في إنشاء هذه اللعبة البسيطة للغاية. هكذا دائما~: نقول "هذا بسيط"، لكن في الحقيقة توجد الكثير من الحالات لدراستها.
 
 رغم ذلك أصرّ على القول بأنك قادر على فعل هذا. يلزمك فقط بعض الوقت (بضع دقائق، بضع ساعات بضع أيام ؟)، لكنّنا لم نكن أبدا في سباق. أنا أفضّل أن تأخذ كثيرا من الوقت للوصول إلى الحل على ألّا تجرّب سوى 5 دقائق و ترى التصحيح.
 
@@ -340,7 +340,7 @@ AIRPLANE
 قمت بعدّة أخطاء أثناء كتابة الشفرة : نسيت في لحظة ما تهيئة متغير بشكل صحيح، نسيت كتابة نموذج دالة و كذلك حذف متغير لم يعد مفيدا في شفرتي. و حتى أنّي -أعترف- نسيت فاصلة منقوطة سخيفة في لحظة ما عند نهاية تعليمة.
 
 لماذا أقول كل هذا ؟ لكي أخبرك أنّني لست معصوما من الأخطاء و أنّي أواجه تقريبا نفس المشاكل مثلك
-("\textit{أيّها البرنامج البائس، هل ستعمل أم لا !؟}").
+("\textit{أيّها البرنامج البائس، هل ستعمل أم لا ؟!}").
 
 سأعرض عليك الحلّ على جزئين.
 
@@ -990,14 +990,14 @@ int aleatoryNumber(int maxNumber)
 :
 
 \begin{Csource}
-  int main(int argc, char* argv[])
-  {
-  	char letter = 0; // Stores the letter suggested by the user
-  	char secretWord[100] = {0}; // The word that the user must find
-  	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
-  	int remainingTries = 10; // Counting the remaining tries  (0 = dead)
-  	int i = 0; // A little variable to browse the table
-  	int wordSize= 0;
+int main(int argc, char* argv[])
+{
+ 	char letter = 0; // Stores the letter suggested by the user
+ 	char secretWord[100] = {0}; // The word that the user must find
+ 	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
+ 	int remainingTries = 10; // Counting the remaining tries  (0 = dead)
+ 	int i = 0; // A little variable to browse the table
+ 	int wordSize= 0;
 \end{Csource}
 
 ستتغير بداية الدالة
@@ -1005,8 +1005,8 @@ int aleatoryNumber(int maxNumber)
 فلنلاحظ هذا :
 
 \begin{Csource}
-  if (!findWord(chosenWord))
-  	 exit(0);
+if (!findWord(chosenWord))
+	 exit(0);
 \end{Csource}
 
 نحن نستدعي أولا الدالة
@@ -1053,8 +1053,8 @@ if (foundLetter  == NULL)
 مثال :
 
 \begin{Csource}
-  for (i = 0 ; i < wordSize ; i++)
-  	foundLetter[i] = 0;
+for (i = 0 ; i < wordSize ; i++)
+ 	foundLetter[i] = 0;
 \end{Csource}
 
 هذه الشفرة تقوم بوضع القيمة 0 في كل خانة من الجدول
@@ -1071,93 +1071,93 @@ if (foundLetter  == NULL)
 كاملا:
 
 \begin{Csource}
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <ctype.h>
-  #include <string.h>
-  #include "dico.h"
-  int win(int foundLetter[], int wordSize);
-  int findLetter(char letter, char secretWord[], int foundLetter[])
-  char readCharacter();
-  int main(int argc, char* argv[])
-  {
-  	char letter = 0; // Stores the letter suggested by the user
-  	char secretWord[100] = {0}; // The word that the user must find
-  	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
-  	int remainingTries = 10; // Counting the remaining tries  (0 = dead)
-  	int i = 0; // A little variable to browse the table
-  	int wordSize = 0;
-  	printf("Welcome !\n\n");
-  	if (!findWord(chosenWord))
-  	 	exit(0);
-  	wordSize = strlen(secretWord);
-  	foundLetter = malloc(wordSize  * sizeof(int)); // We allocate dynamically the table foundLetter ( that we don't know its size in the beginning )
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include "dico.h"
+int win(int foundLetter[], int wordSize);
+int findLetter(char letter, char secretWord[], int foundLetter[])
+char readCharacter();
+int main(int argc, char* argv[])
+{
+ 	char letter = 0; // Stores the letter suggested by the user
+ 	char secretWord[100] = {0}; // The word that the user must find
+ 	int *foundLetter = NULL; // Boolean table. Each box corresponds to a letter in the secret word. 0 = letter not found, 1 = letter found
+ 	int remainingTries = 10; // Counting the remaining tries  (0 = dead)
+ 	int i = 0; // A little variable to browse the table
+ 	int wordSize = 0;
+ 	printf("Welcome !\n\n");
+ 	if (!findWord(chosenWord))
+ 	 	exit(0);
+ 	wordSize = strlen(secretWord);
+ 	foundLetter = malloc(wordSize  * sizeof(int)); // We allocate dynamically the table foundLetter ( that we don't know its size in the beginning )
 
-  	if (foundLetter  == NULL)
-  		 exit(0);
-  	for (i = 0 ; i < wordSize; i++)
-      		 foundLetter [i] = 0;
-  	while (remainingTries > 0 && !win(foundLetter , wordSize))
-  	{
-      		printf("\n\nYou have %ld remaining tries", remainingTries);
-      		printf("\nWhat’s the secret word? ");
-      		for (i = 0 ; i < wordSize; i++)
-      		{
-          			if (foundLetter [i]) // If we have found the letter n° i
-  		      		printf("%c", secretWord[i]); // We display it
-  		        	else
-  		            	printf("*"); // Else, we display a * for the letters that are not found
-      		}
-      		 printf("\nSuggest a letter : ");
-  	    	letter = readCharacter();
-  	    	// If it's not the right letter
-  	    	if (!findLetter(letter , secretWord, foundLetter ))
-  	    	{
-  		        	 remainingTries--; // We decrement by 1 the remaining tries
-      		}
-  	}
-  	if (win(foundLetter , wordSize))
-  	    	printf("\n\nYou win ! The secret word is : %s",secretWord);
-  	else
-  	    	printf("\n\nTou lose ! The secret word is : %s", secretWord);
-  	free(foundLetter ); // We free the allocated memory
-      	return 0;
-  }
-  char readCharacter()
-  {
-  	char character = 0;
-  	character = getchar(); // We read the first character
-  	character = toupper(character); // We uppercase the character
-  	// We read other characters until we reach \n (to erase them)
-  	while (getchar() != '\n') ;
-  	return character; // We return the first character that we read
-  }
-  int win(int foundLetter[], int wordSize)
-  {
-  	int i = 0;
-  	int playerWins = 1;
-  	for (i = 0 ; i < wordSize ; i++)
-  	{
-      		if (foundLetter[i] == 0)
-          			playerWins = 0;
-  	}
-  	return playerWins;
-  }
-  int findLetter(char letter, char secretWord[], int foundLetter[])
-  {
-  	int i = 0;
-  	int rightLetter = 0;
-  	// We search for the letter in the table foundLetter
-  	for (i = 0 ; secretWord[i] != '\0' ; i++)
-  	{
-      		if (letter == secretWord[i]) // If it exists
-      		{
-          			rightLetter = 1; // We memorize that it was the right one
-          			 foundLetter[i] = 1; // We put the correspondent value to 1 in the table
-      		}
-  	}
-  	return rightLetter ;
-  }
+ 	if (foundLetter  == NULL)
+		 exit(0);
+ 	for (i = 0 ; i < wordSize; i++)
+    		 foundLetter [i] = 0;
+ 	while (remainingTries > 0 && !win(foundLetter , wordSize))
+ 	{
+     		printf("\n\nYou have %ld remaining tries", remainingTries);
+     		printf("\nWhat’s the secret word? ");
+     		for (i = 0 ; i < wordSize; i++)
+     		{
+         			if (foundLetter [i]) // If we have found the letter n° i
+ 		      		printf("%c", secretWord[i]); // We display it
+ 		        	else
+ 		            	printf("*"); // Else, we display a * for the letters that are not found
+     		}
+    		 printf("\nSuggest a letter : ");
+ 	    	letter = readCharacter();
+ 	    	// If it's not the right letter
+ 	    	if (!findLetter(letter , secretWord, foundLetter ))
+ 	    	{
+		        	 remainingTries--; // We decrement by 1 the remaining tries
+     		}
+ 	}
+ 	if (win(foundLetter , wordSize))
+ 	    	printf("\n\nYou win ! The secret word is : %s",secretWord);
+ 	else
+ 	    	printf("\n\nTou lose ! The secret word is : %s", secretWord);
+ 	free(foundLetter ); // We free the allocated memory
+     	return 0;
+}
+char readCharacter()
+{
+ 	char character = 0;
+ 	character = getchar(); // We read the first character
+ 	character = toupper(character); // We uppercase the character
+ 	// We read other characters until we reach \n (to erase them)
+ 	while (getchar() != '\n') ;
+ 	return character; // We return the first character that we read
+}
+int win(int foundLetter[], int wordSize)
+{
+ 	int i = 0;
+ 	int playerWins = 1;
+ 	for (i = 0 ; i < wordSize ; i++)
+ 	{
+     		if (foundLetter[i] == 0)
+         			playerWins = 0;
+ 	}
+ 	return playerWins;
+}
+int findLetter(char letter, char secretWord[], int foundLetter[])
+{
+ 	int i = 0;
+ 	int rightLetter = 0;
+ 	// We search for the letter in the table foundLetter
+ 	for (i = 0 ; secretWord[i] != '\0' ; i++)
+ 	{
+     		if (letter == secretWord[i]) // If it exists
+     		{
+         			rightLetter = 1; // We memorize that it was the right one
+        			 foundLetter[i] = 1; // We put the correspondent value to 1 in the table
+     		}
+ 	}
+ 	return rightLetter ;
+}
 \end{Csource}
 
 \section*{أفكار للتحسين}

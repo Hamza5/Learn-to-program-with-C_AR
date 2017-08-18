@@ -397,7 +397,7 @@ FMOD_System_Release(system);
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[height=0.4\textheight]{Chapter_III-8_FindSounds}
+	\includegraphics[height=0.5\textheight]{Chapter_III-8_FindSounds}
 \end{figure}
 
 \subsection{الخطوات التي يجب إتّباعها لتشغيل الصوت}
@@ -592,7 +592,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_III-8_Window-aim}
+	\includegraphics[width=0.6\textwidth]{Chapter_III-8_Window-aim}
 \end{figure}
 
 مشاهدة الفيديو هنا :\\
@@ -712,7 +712,8 @@ position.y = event.motion.y - (gunSight->h / 2);}
 في عوض أن نعطيها العَلم
 \InlineCode{FMOD\_CREATESAMPLE}،
 نعطيها الأعلام :
-\InlineCode{FMOD\_SOFTWARE}، \InlineCode{FMOD\_2D} و \InlineCode{FMOD\_CREATESTREAM}.\\
+\InlineCode{FMOD\_SOFTWARE}، \InlineCode{FMOD\_2D} و\\
+\InlineCode{FMOD\_CREATESTREAM}.\\
 لا تنتظر كثيراً أن أشرح لك بشكل موسّع معاني هذه الأعلام، العَلم الذي يهمّنا أكثر هو
 \InlineCode{FMOD\_CREATESTREAM}
 لأنه يطلب من
@@ -740,7 +741,7 @@ FMOD_System_CreateSound(system, "my_music.mp3", FMOD_SOFTWARE | FMOD_2D | FMOD_C
 من خلال رقم القناة، نستعمل دالة توفّر لنا مؤشّراً نحو القناة. الفكرة تبقى نفسها، تتغيّر طريقة التنفيذ فقط.\\
 يتم تعريف قناة كنوع
 \InlineCode{FMOD\_CHANNEL}
-و الدالة التي تسمح باسترجاع قناة إنطلاقاً من رقم الهوية هي
+و الدالة التي تسمح باسترجاع قناة إنطلاقاً من رقم الهوية هي\\
 \InlineCode{FMOD\_System\_GetChannel}.\\
 مثلاً، إذا كان لدي غرض نظامي و أردت استرجاع القناة رقم 9، يجب أن أكتب :
 
@@ -848,11 +849,11 @@ if (event.key.keysym.sym == SDLK_p) // If we press P
 break;
 \end{Csource}
 
- إذا أردنا إعادة تطبيق نفس الأمر من أجل كلّ القنوات معاً، نستعمل الدالتين\\
+ إذا أردنا إعادة تطبيق نفس الأمر من أجل كلّ القنوات معاً، نستعمل الدالتين
 \InlineCode{FMOD\_ChannelGroup\_GetPaused}
  و
 \InlineCode{FMOD\_ChannelGroup\_SetPaused}،
-الاختلاف الوحيد الذي يجب القيام به هو إعطاءها كمعامل
+الاختلاف الوحيد الذي يجب القيام به هو إعطاءها كمعامل\\
 \InlineCode{FMOD\_CHANNELGROUP}
 بدلاً عن 
 \InlineCode{FMOD\_CHANNEL}.

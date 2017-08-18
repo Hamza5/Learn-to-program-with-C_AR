@@ -109,7 +109,7 @@ FILE* fopen(const char* fileName, const char* openMode);
 لكن هذا ليس ما يهمّنا.
 
 \begin{question}
-  لكن لِمَا اسم الهيكل كله بأحرف كبيرة ؟ اعتقدت أن الأسماء بالأحرف الكبيرة حجزناها للثوابت و لـ\InlineCode{\#define} ؟
+  لكن لِمَا اسم الهيكل كله بحروف كبيرة ؟ اعتقدت أن الأسماء بالحروف الكبيرة حجزناها للثوابت و لـ\InlineCode{\#define}~؟
 \end{question}
 
 هذه "القاعدة"، أنا من قمت بتحديدها (و كثير من المبرمجين يتبعونها)، و لكنّها لم تكن أبدا مفروضة. و يبدو أنّ من برمجوا
@@ -277,7 +277,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{Chapter_II-7_Files}
+	\includegraphics[width=0.8\textwidth]{Chapter_II-7_Files}
 \end{figure}
 
 كما ترى فأنا أستعمل  حاليّا بيئة التطوير
@@ -547,7 +547,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\textwidth]{Chapter_II-7_test-A}
+	\includegraphics[width=0.3\textwidth]{Chapter_II-7_test-A}
 \end{figure}
 
 \subsubsection{\texttt{fputs}}
@@ -607,7 +607,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Chapter_II-7_test-string}
+	\includegraphics[width=0.4\textwidth]{Chapter_II-7_test-string}
 \end{figure}
 
 \subsubsection{\texttt{fprintf}}
@@ -643,7 +643,7 @@ int main(int argc, char *argv[])
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_II-7_test-fprintf}
+	\includegraphics[width=0.6\textwidth]{Chapter_II-7_test-fprintf}
 \end{figure}
 
 يمكنك إذا إعادة استعمال ما تعرفه عن
@@ -823,7 +823,7 @@ Hello, I'm the content of the file test.txt !
 لكي نقوم بالتكرار ما دامت
 \InlineCode{fgets}
 لم ترجع
-\InlineCode{NULL} :
+\InlineCode{NULL}~:
 
 \begin{Csource}
 #define MAX_SIZE 1000
@@ -1093,7 +1093,7 @@ int remove(const char* fileToDelete);
 
 هذه الدالة مناسبة لإنهاء الفصل، فلم أعد في حاجة إلى الملف
 \InlineCode{test.txt}،
-يمكنني الآن حذفه :
+يمكنني الآن حذفه~:
 
 \begin{Csource}
 int main(int argc, char *argv[])

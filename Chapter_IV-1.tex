@@ -16,7 +16,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\textwidth]{Chapter_IV-1_Array}
+	\includegraphics[width=0.3\textwidth]{Chapter_IV-1_Array}
 \end{figure}
 
 \begin{information}
@@ -28,7 +28,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_Array-add}
+	\includegraphics[width=0.5\textwidth]{Chapter_IV-1_Array-add}
 \end{figure}
 
 لا تقترح علينا لغة الـ\textenglish{C}
@@ -40,7 +40,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{Chapter_IV-1_Linked-list}
+	\includegraphics[width=0.4\textwidth]{Chapter_IV-1_Linked-list}
 \end{figure}
 
 يمكن لكلّ عنصر أن يحتوي على ما نريد : قيمة من نوع 
@@ -51,7 +51,7 @@
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Chapter_IV-1_Linked-list-data}
+	\includegraphics[width=0.4\textwidth]{Chapter_IV-1_Linked-list-data}
 \end{figure}
 
 أعرف بأن كلّ هذه المعلومات نظرية و ربّما تبدو لك غير واضحة الآن. احفظ فقط طريقة اتّصال العناصر ببعضها : هي تشكل 
@@ -85,7 +85,7 @@ struct Element
 يمكننا أيضاً إنشاء قوائم متسلسلة تحتوي أعدادا عشرية أو حتى جداول أو هياكل. مبدأ القوائم المتسلسلة صالح من أجل أي نوع من البيانات مهما كان، لكن هنا، أنصحك بتبسيط العملية حتى تفهم المبدأ.
 \end{information}
 
-قُمنا الآن بإنشاء عنصر واحد من القائمة، يوافق الصورة التي رأيناها أعلاه. على ماذا يحتوي الهيكل ؟
+قُمنا الآن بإنشاء عنصر واحد من القائمة، يوافق الصورة التي رأيناها أعلاه. على ماذا يحتوي الهيكل~؟
 
 \begin{itemize}
 	\item قطعة بيانات، هنا تتمثل في عدد من نوع 
@@ -101,7 +101,7 @@ struct Element
 	\end{information}
 	\item مؤشّر نحو عنصر من نفس النوع يسمّى
 	\InlineCode{next}.
-	هذا ما يسمح بوصل العناصر الواحد بالآخر : كلّ عنصر "يعلم" أين يتواجد العنصر الذي يليه في الذاكرة. كما قلتُ لك مسبقاً، الخانات لا تتواجد جنباً إلى جنب في الذاكرة. هذا هو الاختلاف الكبير بالنسبة للجداول. هذا ما سيمنحنا مرونة أكثر لأنه بإمكاننا بسهولة إضافة خانات أخرى لاحقاً حينما نحتاج إليها.
+	هذا ما يسمح بوصل العناصر الواحد بالآخر~: كلّ عنصر "يعلم" أين يتواجد العنصر الذي يليه في الذاكرة. كما قلتُ لك مسبقاً، الخانات لا تتواجد جنباً إلى جنب في الذاكرة. هذا هو الاختلاف الكبير بالنسبة للجداول. هذا ما سيمنحنا مرونة أكثر لأنه بإمكاننا بسهولة إضافة خانات أخرى لاحقاً حينما نحتاج إليها.
 
 \begin{information}
 	و بالمقابل، لا يمكننا معرفة العنصر السابق، أي أنه من المستحيل الرجوع إلى الخلف انطلاقاً من عنصر من هذا النوع من القوائم. لأننا هنا نتكلّم عن قائمة "بسيطة التسلسل"، بينما توجد قوائم أخرى تسمّى "مزدوجة التسلسل" و تحتوي على مؤشّرات في كلتا الجهتين و بهذا فهي أصعب بقليل.
@@ -135,7 +135,7 @@ struct List
  
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Chapter_IV-1_List-struct}
+	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_List-struct}
 \end{figure}
 
 \subsection{آخر عنصر في القائمة}
@@ -154,7 +154,7 @@ struct List
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_IV-1_List-NULL}
+	\includegraphics[width=0.6\textwidth]{Chapter_IV-1_List-NULL}
 \end{figure}
 
 \section{دوال معالجة القوائم المتسلسلة}
@@ -251,12 +251,12 @@ List *initialization()
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.3\textwidth]{Chapter_IV-1_List-1-element}
+	\includegraphics[width=0.2\textwidth]{Chapter_IV-1_List-1-element}
 \end{figure}
 
 \subsection{إضافة عنصر}
 
-هنا، تبدأ الأمور في التعقد قليلاً. أين سنضيف عنصراَ جديداً ؟ في بداية القائمة، في نهايتها أو في الوسط ؟
+هنا، تبدأ الأمور في التعقد قليلاً. أين سنضيف عنصراَ جديداً ؟ في بداية القائمة، في نهايتها أو في الوسط~؟
 
 الإجابة هي أنه لدينا الخيار. سنكون أحراراً في اختيار ما نريد. في هذا الفصل، أقترح عليك أن نتعلّم كيفية إضافة عنصر إلى بداية القائمة. من ناحية، هذا الأمر سهل الفهم، و من ناحية أخرى سأعطيك الفرصة في نهاية الفصل في التفكير في طريقة إنشاء دالة تضيف عُنصُراً في مكان محدد من القائمة.
 
@@ -264,7 +264,7 @@ List *initialization()
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Chapter_IV-1_List-new}
+	\includegraphics[width=0.6\textwidth]{Chapter_IV-1_List-new}
 \end{figure}
 
 يجب أن نقوم بتغيير وضعية المؤشّر
@@ -316,7 +316,7 @@ void insertion(List *list, int newNumber)
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Chapter_IV-1_List-new-linked}
+	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_List-new-linked}
 \end{figure}
 
 \subsection{حذف عنصر}
@@ -358,7 +358,7 @@ void deletion(List *list)
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{Chapter_IV-1_List-to-delete}
+	\includegraphics[width=0.5\textwidth]{Chapter_IV-1_List-to-delete}
 \end{figure}
 
 هذه الدالة قصيرة لكن هل يمكنك إعادة كتابتها لوحدك ؟ يجب أن نفهم جيداً بأننا يجب أن نقوم بالعمل اتّباعاً لخطوات محددة :
