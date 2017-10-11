@@ -2,6 +2,8 @@
 
 <div dir='rtl'>
 
+## <div dir='rtl'>التنزيل</div>
+
 يمكنكم تنزيل آخر نسخة من هذا الكتاب بصيغة PDF من <a href="https://github.com/Hamza5/Learn-to-program-with-C_AR/releases/latest">صفحة الإصدارات</a>.
 
 </div>
