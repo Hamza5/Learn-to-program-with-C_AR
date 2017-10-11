@@ -1,6 +1,11 @@
 # <div dir='rtl'>تعلّم البرمجة بلغة الـC</div>
 
+## <div dir='rtl'>التنزيل</div>
+
+يمكنكم تنزيل آخر نسخة من هذا الكتاب بصيغة PDF من [صفحة الإصدارات](https://github.com/Hamza5/Learn-to-program-with-C_AR/releases/latest).
+
 ## <div dir='rtl'>عن المشروع</div>
+
 
 <div dir='rtl'>
 <div>
@@ -25,9 +30,6 @@
 </div>
 </div>
 
-## <div dir='rtl'>التنزيل</div>
-
-يمكنكم تنزيل آخر نسخة من هذا الكتاب بصيغة PDF من [صفحة الإصدارات](https://github.com/Hamza5/Learn-to-program-with-C_AR/releases/latest).
 
 #### <div dir='rtl'>فصول الكتاب</div>
 
@@ -86,6 +88,7 @@
 </li>
 <li>الخاتمة</li>
 </ul>
+
 
 </div>
 
