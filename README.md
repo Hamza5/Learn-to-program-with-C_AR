@@ -2,6 +2,10 @@
 
 ## <div dir='rtl'>عن المشروع</div>
 
+## <div dir='rtl'>التنزيل</div>
+
+يمكنكم تنزيل آخر نسخة من هذا الكتاب بصيغة PDF من [صفحة الإصدارات](https://github.com/Hamza5/Learn-to-program-with-C_AR/releases/latest).
+
 <div dir='rtl'>
 <div>
 هذا الكتاب هو ترجمة لـ<a href='https://openclassrooms.com/courses/apprenez-a-programmer-en-c'>درس تعلّم البرمجة بلغة الـC</a>
