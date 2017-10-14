@@ -13,7 +13,7 @@
 
 <div dir='rtl'>
 <div>
-هذا الكتاب هو ترجمة لـ<a href='https://openclassrooms.com/courses/apprenez-a-programmer-en-c'>درس تعلّم البرمجة بلغة الـC</a>
+هذا الكتاب هو ترجمة لـ<a href='https://openclassrooms.com/courses/apprenez-a-programmer-en-c'>درس تعلّم البرمجة بلغة C</a>
 الخاص بموقع OpenClassrooms من الفرنسيّة إلى العربية. يمتاز هذا الدرس بكونه سهل الفهم على المبتدئين في مجال البرمجة، إذ أنّه لا يفترض وجود أيّة مكتسبات قبليّة في هذا المجال لدى القارئ.
 </div>
 
