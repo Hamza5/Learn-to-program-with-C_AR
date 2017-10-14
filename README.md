@@ -135,6 +135,7 @@
 * xcolor
 * tabu
 * booktabs
+* pdfpages
 
 ## <div dir='rtl'>المساهمة</div>
 
