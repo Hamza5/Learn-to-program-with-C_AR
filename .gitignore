@@ -9,5 +9,8 @@
 !Pictures/*
 !Fonts
 !Fonts/*
+# and the cover PDFs
+!FrontCover.pdf
+!BackCover.pdf
 # But ignore hidden files
 Pictures/.*
