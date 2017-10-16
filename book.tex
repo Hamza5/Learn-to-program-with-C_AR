@@ -17,6 +17,7 @@
             pdfauthor={عدن بلواضح,حمزة عباد,أحمد زبوشي},
             pdfdisplaydoctitle=true,
             pdfduplex=DuplexFlipLongEdge]{hyperref} % For hyperlinks and PDF metadata
+\usepackage{pdfpages} % To include PDF cover pages
 \usepackage{float}
 \usepackage{tabu,booktabs}
 \usepackage{bidi}
@@ -205,7 +206,8 @@
 \renewcommand{\footnoterule}{\rule[5pt]{0.6\textwidth}{0.5pt}}
 
 \begin{document}
-  \setcounter{page}{-2}
+  \setcounter{page}{-3}
+  \includepdf[fitpaper]{FrontCover.pdf}
   \include{Title_page}
   \include{Project_page}
   \include{Introduction}
@@ -247,4 +249,5 @@
   \include{Chapter_IV-2}
   \include{Chapter_IV-3}
   \include{Conclusion}
+  \includepdf[fitpaper]{BackCover.pdf}
 \end{document}
