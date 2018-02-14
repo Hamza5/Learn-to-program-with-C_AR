@@ -19,6 +19,7 @@
             pdfduplex=DuplexFlipLongEdge]{hyperref} % For hyperlinks and PDF metadata
 \usepackage{float}
 \usepackage{tabu,booktabs}
+\usepackage{pdfpages}
 \usepackage{bidi}
 
 % Font settings
@@ -205,6 +206,7 @@
 \renewcommand{\footnoterule}{\rule[5pt]{0.6\textwidth}{0.5pt}}
 
 \begin{document}
+  \includepdf{FrontCover.pdf}
   \setcounter{page}{-2}
   \include{Title_page}
   \include{Project_page}
@@ -247,4 +249,5 @@
   \include{Chapter_IV-2}
   \include{Chapter_IV-3}
   \include{Conclusion}
+  \includepdf{BackCover.pdf}
 \end{document}
