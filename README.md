@@ -1,6 +1,6 @@
 # <div dir='rtl'>تعلّم البرمجة بلغة C</div>
 
-![الغلاف الأمامي](Pictures\FrontCover.jpg)
+![الغلاف الأمامي](Pictures/FrontCover.jpg)
 
 ## <div dir='rtl'>التنزيل</div>
 
